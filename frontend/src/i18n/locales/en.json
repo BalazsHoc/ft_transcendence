@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "home": "Home",
+    "discover": "Discover",
+    "myEvents": "My events",
+    "createEvent": "Create event",
+    "chats": "Chats",
+    "profile": "Profile",
+    "apiTest": "API test",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "common": {
+    "join": "Join",
+    "leave": "Leave",
+    "delete": "Delete",
+    "edit": "Edit",
+    "send": "Send",
+    "language": "Language",
+    "refresh": "Refresh"
+  },
+  "landing": {
+    "title": "Find sports. Meet people. Belong to Vienna.",
+    "subtitle": "API-connected MVP frontend for testing backend routes.",
+    "ctaDiscover": "Explore events",
+    "ctaCreate": "Create event"
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Register",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "district": "District",
+    "submitLogin": "Login",
+    "submitRegister": "Create account"
+  },
+  "discover": {
+    "title": "Discover events",
+    "sport": "Sport",
+    "level": "Level",
+    "load": "Load events"
+  },
+  "event": {
+    "details": "Event details",
+    "participants": "Participants",
+    "messages": "Messages",
+    "title": "Title",
+    "description": "Description",
+    "sport": "Sport",
+    "level": "Level",
+    "location": "Location",
+    "start": "Start",
+    "end": "End",
+    "maxSlots": "Max slots"
+  },
+  "createEvent": {
+    "title": "Create event",
+    "submit": "Publish event"
+  },
+  "editEvent": {
+    "title": "Edit event",
+    "submit": "Update event"
+  },
+  "myEvents": {
+    "title": "My events",
+    "created": "Created by me",
+    "joined": "Joined / waiting"
+  },
+  "chats": {
+    "title": "Chats",
+    "selectEvent": "Select event",
+    "placeholder": "Type message...",
+    "connect": "Connect chat"
+  },
+  "profile": {
+    "title": "Profile",
+    "update": "Update profile"
+  },
+  "apiTest": {
+    "title": "API route tester"
+  },
+  "notFound": {
+    "title": "Page not found"
+  }
+}

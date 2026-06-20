@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "home": "Start",
+    "discover": "Entdecken",
+    "myEvents": "Meine Events",
+    "createEvent": "Event erstellen",
+    "chats": "Chats",
+    "profile": "Profil",
+    "apiTest": "API-Test",
+    "login": "Login",
+    "register": "Registrieren",
+    "logout": "Logout"
+  },
+  "common": {
+    "join": "Teilnehmen",
+    "leave": "Verlassen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "send": "Senden",
+    "language": "Sprache",
+    "refresh": "Aktualisieren"
+  },
+  "landing": {
+    "title": "Sport finden. Menschen treffen. In Wien ankommen.",
+    "subtitle": "API-verbundenes MVP-Frontend zum Testen der Backend-Routen.",
+    "ctaDiscover": "Events entdecken",
+    "ctaCreate": "Event erstellen"
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Registrieren",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "district": "Bezirk",
+    "submitLogin": "Login",
+    "submitRegister": "Konto erstellen"
+  },
+  "discover": {
+    "title": "Events entdecken",
+    "sport": "Sport",
+    "level": "Niveau",
+    "load": "Events laden"
+  },
+  "event": {
+    "details": "Eventdetails",
+    "participants": "Teilnehmer",
+    "messages": "Nachrichten",
+    "title": "Titel",
+    "description": "Beschreibung",
+    "sport": "Sport",
+    "level": "Niveau",
+    "location": "Ort",
+    "start": "Start",
+    "end": "Ende",
+    "maxSlots": "Max. Plätze"
+  },
+  "createEvent": {
+    "title": "Event erstellen",
+    "submit": "Event veröffentlichen"
+  },
+  "editEvent": {
+    "title": "Event bearbeiten",
+    "submit": "Event aktualisieren"
+  },
+  "myEvents": {
+    "title": "Meine Events",
+    "created": "Von mir erstellt",
+    "joined": "Beigetreten / Warteliste"
+  },
+  "chats": {
+    "title": "Chats",
+    "selectEvent": "Event auswählen",
+    "placeholder": "Nachricht eingeben...",
+    "connect": "Chat verbinden"
+  },
+  "profile": {
+    "title": "Profil",
+    "update": "Profil aktualisieren"
+  },
+  "apiTest": {
+    "title": "API-Routen testen"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden"
+  }
+}
