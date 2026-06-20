@@ -26,6 +26,14 @@
 | Major | Standard user management and authentication | 2 |
 | Minor | Implement remote authentication with OAuth 2.0, such as Google, GitHub, or 42 | 1 |
 
+## IV.10 Modules of choice
+
+| Type | Requirement | Points |
+|---|---|---:|
+| Major | Map integration | 2 |
+| Minor | Dark/Light theme | 1 |
+
+
 ## Total
 
-**16 points**
+**19 points**
