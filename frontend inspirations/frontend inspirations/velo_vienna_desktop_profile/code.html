@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Velo Vienna - Club Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Geist:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#bec6e0",
+                        "inverse-surface": "#213145",
+                        "surface-bright": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "primary": "#000000",
+                        "inverse-primary": "#bec6e0",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary-fixed-variant": "#005049",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-container": "#006f66",
+                        "on-tertiary-fixed": "#2a1700",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container": "#e5eeff",
+                        "primary-container": "#131b2e",
+                        "tertiary": "#000000",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "outline-variant": "#c6c6cd",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006a61",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-primary-container": "#7c839b",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-container": "#b87500",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#131b2e",
+                        "on-surface": "#0b1c30",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00201d",
+                        "tertiary-container": "#2a1700",
+                        "secondary-container": "#86f2e4",
+                        "on-error-container": "#93000a",
+                        "outline": "#76777d",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed": "#89f5e7",
+                        "surface": "#f8f9ff",
+                        "on-surface-variant": "#45464d",
+                        "surface-tint": "#565e74"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-gap-md": "16px",
+                        "section-margin": "40px",
+                        "container-padding": "20px",
+                        "stack-gap-lg": "24px",
+                        "stack-gap-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "label-sm": ["Geist"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(248,249,255,0) 0%, rgba(248,249,255,1) 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md selection:bg-primary-fixed selection:text-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-container-padding py-4 max-w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl shadow-sm border-b-0 hidden md:flex">
+<div class="flex items-center gap-8">
+<a class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-inverse-primary" href="#">VIENNA ATHLETIC</a>
+<div class="flex items-center gap-6">
+<a class="font-body-lg text-body-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Discovery</a>
+<a class="font-body-lg text-body-lg text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary pb-1 opacity-80 transition-opacity" href="#">Clubs</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Map</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Community</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-xl font-body-md hover:bg-primary/90 transition-colors">
+                Join Club
+            </button>
+</div>
+</nav>
+<!-- SideNavBar (Mobile Placeholder - Hidden on Desktop) -->
+<div class="md:hidden">
+<!-- Assuming bottom nav for mobile as per rules, but JSON only provided SideNav. Rendering a minimal bottom nav equivalent for structural integrity. -->
+<div class="fixed bottom-0 w-full bg-surface/80 backdrop-blur-2xl border-t border-outline-variant/30 flex justify-around p-4 z-50">
+<span class="material-symbols-outlined text-on-surface-variant">home</span>
+<span class="material-symbols-outlined text-primary">group</span>
+<span class="material-symbols-outlined text-on-surface-variant">map</span>
+</div>
+</div>
+<!-- Main Content -->
+<main class="pt-[80px] md:pt-[100px] pb-section-margin max-w-[1440px] mx-auto">
+<!-- Hero Section -->
+<section class="relative w-full h-[614px] min-h-[500px] flex items-end justify-center px-container-padding pb-section-margin">
+<img alt="Cyclists in Vienna" class="absolute inset-0 w-full h-full object-cover rounded-3xl object-center shadow-[0_4px_20px_rgba(0,0,0,0.04)]" data-alt="A group of cyclists riding high-end road bikes through the picturesque streets of Vienna during early morning golden hour. The sunlight casts long, elegant shadows on the cobblestone, highlighting the historic architecture in the background. The mood is energetic yet refined, capturing a premium athletic lifestyle. The visual style is crisp, bright, and modern, aligning perfectly with a clean, high-contrast light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbMLzUVMOMVMTUBqU1-xVD6P2sVjNJu0bMBC8EIy1RHadDJE-eAyf7AAzymMVE64Q8e6IHRIH0E64jAktZGuEatxJvrhLL08ran7rMWx4Za-EOhX1YCwJWcSU-dTUmATtZp41n78M9iXl3TCcpLdJuZ0IK88klsJFvVGHMLPwfDKrPKvn7_1xnQ58mZk50c4M8KzbyjWFI9XykOWZytmpu8FXeBfTHW6InEg76Rr4eYfag7TWlgHHJEAxGPMyBBjCqjPFcOKRD2Ps"/>
+<div class="absolute inset-0 hero-gradient rounded-3xl z-10 pointer-events-none"></div>
+<!-- Hero Content Glass Card -->
+<div class="relative z-20 glass-panel rounded-[24px] p-8 md:p-12 max-w-4xl w-full text-center flex flex-col items-center gap-stack-gap-md transform translate-y-12">
+<div class="flex gap-2 mb-2">
+<span class="bg-surface-dim px-3 py-1 rounded-full font-label-sm text-label-sm text-on-surface-variant">Cycling</span>
+<span class="bg-surface-dim px-3 py-1 rounded-full font-label-sm text-label-sm text-on-surface-variant">Vienna, AT</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary tracking-tight">Velo Vienna</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    A modern syndicate for the urban cyclist. Blending Vienna's rich heritage with high-performance pursuit and a meticulously curated community experience.
+                </p>
+<div class="flex gap-4 mt-4">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-[16px] font-body-md hover:opacity-90 transition-opacity">
+                        Apply to Join
+                    </button>
+<button class="border border-outline-variant text-on-surface px-8 py-3 rounded-[16px] font-body-md hover:bg-surface-dim transition-colors">
+                        View Schedule
+                    </button>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="mt-32 px-container-padding py-section-margin">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+<div class="bg-surface-container-lowest rounded-[20px] p-6 border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col items-center justify-center text-center hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-shadow">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl" style="font-variation-settings: 'FILL' 0;">group</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">342</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Active Members</span>
+</div>
+<div class="bg-surface-container-lowest rounded-[20px] p-6 border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col items-center justify-center text-center hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-shadow">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl" style="font-variation-settings: 'FILL' 0;">workspace_premium</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">94.5</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Club Score</span>
+</div>
+<div class="bg-surface-container-lowest rounded-[20px] p-6 border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col items-center justify-center text-center hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-shadow">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl" style="font-variation-settings: 'FILL' 0;">history</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">2018</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Established</span>
+</div>
+</div>
+</section>
+<!-- Main Bento Grid Content -->
+<section class="px-container-padding py-section-margin max-w-7xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Upcoming Events (Takes 8 cols on large screens) -->
+<div class="lg:col-span-8 bg-surface-container-lowest rounded-[24px] p-8 border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+<div class="flex justify-between items-center mb-8">
+<h2 class="font-headline-md text-headline-md text-primary">Upcoming Rides</h2>
+<button class="text-primary font-body-md hover:underline flex items-center gap-1">
+                            See All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Event Item 1 -->
+<div class="flex flex-col md:flex-row gap-4 items-start md:items-center p-4 rounded-xl hover:bg-surface-dim/30 transition-colors border border-transparent hover:border-outline-variant/20">
+<div class="w-16 h-16 bg-surface-container flex flex-col items-center justify-center rounded-lg flex-shrink-0 text-primary">
+<span class="font-bold text-lg">12</span>
+<span class="font-label-sm text-xs uppercase">Oct</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg font-medium text-primary mb-1">Morning Coffee Spin: Kahlenberg</h3>
+<div class="flex gap-4 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 06:30 AM</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">speed</span> Moderate (25km/h)</span>
+</div>
+</div>
+<button class="bg-surface-container-high text-primary px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-highest transition-colors flex-shrink-0">
+                                RSVP
+                            </button>
+</div>
+<!-- Event Item 2 -->
+<div class="flex flex-col md:flex-row gap-4 items-start md:items-center p-4 rounded-xl hover:bg-surface-dim/30 transition-colors border border-transparent hover:border-outline-variant/20">
+<div class="w-16 h-16 bg-surface-container flex flex-col items-center justify-center rounded-lg flex-shrink-0 text-primary">
+<span class="font-bold text-lg">15</span>
+<span class="font-label-sm text-xs uppercase">Oct</span>
+</div>
+<div class="flex-grow">
+<h3 class="font-body-lg text-body-lg font-medium text-primary mb-1">Donauinsel Sprint Intervals</h3>
+<div class="flex gap-4 text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 18:00 PM</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">speed</span> High Intensity</span>
+</div>
+</div>
+<button class="bg-surface-container-high text-primary px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-highest transition-colors flex-shrink-0">
+                                RSVP
+                            </button>
+</div>
+</div>
+</div>
+<!-- Member Highlights / Open Positions (Takes 4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Open Positions Card -->
+<div class="bg-surface-container-lowest rounded-[24px] p-6 border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-fixed/20 rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+<h2 class="font-headline-md text-headline-md text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">campaign</span> Recruiting
+                        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            We are currently looking for experienced ride leaders to guide our weekend long routes.
+                        </p>
+<button class="w-full border border-primary text-primary px-4 py-2 rounded-xl font-body-md hover:bg-primary hover:text-on-primary transition-colors flex justify-center items-center gap-2">
+                            Apply as Ride Leader
+                        </button>
+</div>
+<!-- Member Spotlight Card -->
+<div class="bg-surface-container-lowest rounded-[24px] p-6 border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+<h2 class="font-headline-md text-headline-md text-primary mb-6">Member Spotlight</h2>
+<div class="flex items-center gap-4 mb-4">
+<img alt="Sarah M." class="w-12 h-12 rounded-full object-cover border-2 border-surface-container" data-alt="A close-up portrait of a female cyclist in modern, minimalist cycling gear, softly lit against a clean, light studio background. The style is premium, high-contrast, and aligns perfectly with a clean, light-mode design aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnZQtORqlXC8gwYnoldnFaUcO0JM-Lv4mA19Q-k9j2GoOPQOTydYVk46pLB-vW0o-0WrAMsAZg7YCcdbHbe6E6P5IUsVapaCcbBBtw-qzrPe_ZAQTdZsHk-vHGGjS-JhlGrdZUqrgs5r440b2GV9cZE-KD6VM2FsaXjnXM4FKGdPjtXldzeK6XJWRd70ZKF8qMMItyFfNxJfOGbQCLlxDH-qD5uVjnhSzZR6YUVmKJEKthkHzKlv6MGLty_Y3z22LVSTCb-pML5is"/>
+<div>
+<p class="font-body-lg text-body-lg font-medium text-primary">Sarah M.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Top Climber • 240km this week</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">
+                            "The Tuesday morning Kahlenberg ascents have completely transformed my climbing mechanics. Incredible group energy."
+                        </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

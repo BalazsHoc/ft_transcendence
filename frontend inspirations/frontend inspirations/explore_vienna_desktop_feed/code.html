@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vienna Athletic - Discovery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#bec6e0",
+                      "inverse-surface": "#213145",
+                      "surface-bright": "#f8f9ff",
+                      "error": "#ba1a1a",
+                      "primary": "#000000",
+                      "inverse-primary": "#bec6e0",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "primary-fixed": "#dae2fd",
+                      "on-secondary-fixed-variant": "#005049",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-container": "#006f66",
+                      "on-tertiary-fixed": "#2a1700",
+                      "tertiary-fixed": "#ffddb8",
+                      "surface-container": "#e5eeff",
+                      "primary-container": "#131b2e",
+                      "tertiary": "#000000",
+                      "secondary-fixed-dim": "#6bd8cb",
+                      "outline-variant": "#c6c6cd",
+                      "surface-variant": "#d3e4fe",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-primary": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "secondary": "#006a61",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "on-primary-container": "#7c839b",
+                      "surface-container-low": "#eff4ff",
+                      "surface-container-lowest": "#ffffff",
+                      "background": "#f8f9ff",
+                      "surface-dim": "#cbdbf5",
+                      "on-tertiary-container": "#b87500",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed": "#131b2e",
+                      "on-surface": "#0b1c30",
+                      "on-background": "#0b1c30",
+                      "on-secondary-fixed": "#00201d",
+                      "tertiary-container": "#2a1700",
+                      "secondary-container": "#86f2e4",
+                      "on-error-container": "#93000a",
+                      "outline": "#76777d",
+                      "surface-container-high": "#dce9ff",
+                      "secondary-fixed": "#89f5e7",
+                      "surface": "#f8f9ff",
+                      "on-surface-variant": "#45464d",
+                      "surface-tint": "#565e74"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px",
+                      "2xl": "1.25rem"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "stack-gap-md": "16px",
+                      "section-margin": "40px",
+                      "container-padding": "20px",
+                      "stack-gap-lg": "24px",
+                      "stack-gap-sm": "8px"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-sm": [
+                              "Geist"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-md": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "38px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "40px",
+                              {
+                                      "lineHeight": "48px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .glass-tag {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .ambient-shadow-sm {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+        .ambient-shadow-lg {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-container-padding py-4 max-w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl shadow-sm bg-surface-bright/50 dark:bg-inverse-surface/50 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+<div class="flex items-center gap-stack-gap-lg">
+<div class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-inverse-primary">VIENNA ATHLETIC</div>
+<!-- Navigation Links -->
+<div class="hidden md:flex items-center gap-stack-gap-md ml-8 font-body-lg text-body-lg">
+<a class="text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary pb-1 opacity-80 transition-opacity" href="#">Discovery</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Clubs</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Map</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Community</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-gap-md">
+<!-- Search Bar (on_left configuration simulated by placement) -->
+<div class="relative hidden lg:block mr-4">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-full text-body-md font-body-md focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all w-64 placeholder:text-outline" placeholder="Search activities, clubs..." type="text"/>
+</div>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-xl font-body-md font-medium hover:bg-primary/90 transition-colors">Join Club</button>
+<button class="p-2 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="p-2 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Layout -->
+<main class="pt-[90px] px-container-padding max-w-[1440px] mx-auto pb-section-margin flex gap-section-margin">
+<!-- Sidebar Filtering -->
+<aside class="hidden xl:block w-72 flex-shrink-0 sticky top-[100px] h-[calc(100vh-120px)] overflow-y-auto pr-4 custom-scrollbar">
+<h2 class="font-headline-md text-headline-md mb-stack-gap-lg text-primary">Discover</h2>
+<div class="space-y-section-margin">
+<!-- Filter Group -->
+<div>
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-stack-gap-md uppercase tracking-wider">Categories</h3>
+<div class="flex flex-wrap gap-stack-gap-sm">
+<button class="px-4 py-1.5 bg-surface-container border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface hover:border-secondary transition-colors">All</button>
+<button class="px-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface hover:border-secondary transition-colors">Tennis</button>
+<button class="px-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface hover:border-secondary transition-colors">Running</button>
+<button class="px-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface hover:border-secondary transition-colors">Cycling</button>
+<button class="px-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface hover:border-secondary transition-colors">Yoga</button>
+</div>
+</div>
+<!-- Filter Group -->
+<div>
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-stack-gap-md uppercase tracking-wider">Level</h3>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="w-5 h-5 rounded border border-outline-variant flex items-center justify-center group-hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-[16px] text-transparent transition-colors">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary">Beginner</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="w-5 h-5 rounded border border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-primary" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body-md text-body-md text-primary font-medium">Intermediate</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="w-5 h-5 rounded border border-outline-variant flex items-center justify-center group-hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-[16px] text-transparent transition-colors">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary">Advanced</span>
+</label>
+</div>
+</div>
+<!-- Filter Group -->
+<div>
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-stack-gap-md uppercase tracking-wider">Time</h3>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="w-4 h-4 rounded-full border border-primary flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<span class="font-body-md text-body-md text-primary font-medium">Anytime</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="w-4 h-4 rounded-full border border-outline-variant flex items-center justify-center group-hover:border-secondary transition-colors">
+<div class="w-2 h-2 rounded-full bg-transparent"></div>
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary">Morning</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="w-4 h-4 rounded-full border border-outline-variant flex items-center justify-center group-hover:border-secondary transition-colors">
+<div class="w-2 h-2 rounded-full bg-transparent"></div>
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary">Evening</span>
+</label>
+</div>
+</div>
+</div>
+</aside>
+<!-- Feed Content -->
+<div class="flex-1 min-w-0 flex flex-col gap-section-margin">
+<!-- Happening Now -->
+<section>
+<div class="flex items-center justify-between mb-stack-gap-lg">
+<h2 class="font-display-lg text-display-lg text-primary flex items-center gap-3">
+                        Happening Now
+                        <span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-error"></span>
+</span>
+</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-gap-lg">
+<!-- Live Card 1 -->
+<article class="group relative rounded-2xl overflow-hidden bg-surface-container-lowest ambient-shadow-sm border border-outline-variant/30 hover:ambient-shadow-lg transition-all duration-300">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-dim">
+<img alt="Urban Tennis Match" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A dynamic, high-quality photograph of two athletes playing tennis on an urban rooftop court in Vienna during golden hour. The sunlight creates long, dramatic shadows and highlights the modern, minimalist aesthetic of the surrounding architecture. The overall tone is energetic yet sophisticated, utilizing a cool blue and warm gold color palette to match the premium athletic lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUlMF-CDxgyY21c2XJKd-onsdcJmlNMc14TtLwrikDaHBDbEAGlCUD6j3C_SLB5LWulDfmCpO2ii_iktcJQzaOeiu0XSG-QQT-ueAkk02vEPmz6laD8DbcWnaznKlLBdvkuQ-AK2-3HepPhUmXObULyxm4dagf0YZiHG9HdnpI0_BVUYimSry-SQ2xfi7_WFO62M1OMXLSNNNWQXbLxZO4wIusIjQp4BUc8MF55-QCr-fZ7DAcQB1mCf1UHRoBVrTTLyCv-3QS3_o"/>
+<div class="absolute top-4 left-4 glass-tag px-3 py-1 rounded-full flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Live Match</span>
+</div>
+</div>
+<div class="p-stack-gap-md flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-[20px] leading-[28px] font-semibold text-primary">Stadtpark Open</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">location_on</span>
+                                        Center Court, Vienna
+                                    </p>
+</div>
+<span class="px-2 py-1 bg-surface-container rounded-md font-label-sm text-label-sm text-on-surface">Tennis</span>
+</div>
+</div>
+</article>
+<!-- Live Card 2 -->
+<article class="group relative rounded-2xl overflow-hidden bg-surface-container-lowest ambient-shadow-sm border border-outline-variant/30 hover:ambient-shadow-lg transition-all duration-300">
+<div class="aspect-[4/3] relative overflow-hidden bg-surface-dim">
+<img alt="Indoor Cycling Class" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A cinematic, high-contrast image of a premium indoor cycling studio. The room is dark with sleek, modern stationary bikes arranged geometrically. Subtle, cool teal and deep midnight blue lighting accents the space, creating a focused, intense atmosphere. The aesthetic is clean, luxurious, and highly curated, focusing on the equipment's sharp lines." src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<div class="absolute top-4 left-4 glass-tag px-3 py-1 rounded-full flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Session Started</span>
+</div>
+</div>
+<div class="p-stack-gap-md flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-[20px] leading-[28px] font-semibold text-primary">Velodrome Sprint</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">location_on</span>
+                                        Studio A
+                                    </p>
+</div>
+<span class="px-2 py-1 bg-surface-container rounded-md font-label-sm text-label-sm text-on-surface">Cycling</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Curated Feed (Bento Grid Style) -->
+<section>
+<div class="flex items-center justify-between mb-stack-gap-lg">
+<h2 class="font-display-lg text-display-lg text-primary">Curated for You</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-stack-gap-lg">
+<!-- Large Feature Card (Span 8) -->
+<article class="md:col-span-8 group relative rounded-2xl overflow-hidden bg-surface-container-lowest ambient-shadow-sm border border-outline-variant/30 hover:ambient-shadow-lg transition-all duration-300 min-h-[400px]">
+<div class="absolute inset-0 bg-surface-dim">
+<img alt="Marathon Runners" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A striking, wide-angle shot of a group of runners moving along a minimalist, modern concrete path near a river at dawn. The morning light is soft and diffused, creating a serene, high-end editorial look. The color palette features cool misty grays, soft whites, and muted greens, reflecting a calm, premium athletic lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmj0MpYVy6qJULbayBJZHM2_kmzuFIqhYwGEvDwQoyZKtpyzVslCdg_qRVURfpdCrMxZMflWQh-y8qvcanTpdUn4rGV9DOdV0O6cT3OKsdMcyQWgHSYiPMhM0r8VqIpq1_hgzcAFUrzus3ic09kEXUXDdSxkm_gMAvYk0ePhfaPXL4pz3O0AU-5kuBv7q7I6xM_-tV3VdNBQ2SZVmfc5uR1tnKPLVQ7zCsbKDAPfTjeoXZy6qsK2CpAMO75M-s11PxwMTbvCxU-fc"/>
+<!-- Gradient overlay for text readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-stack-gap-lg flex flex-col gap-4">
+<div class="flex gap-2">
+<span class="glass-tag px-3 py-1 rounded-full font-label-sm text-label-sm text-primary">Featured Club</span>
+<span class="glass-tag px-3 py-1 rounded-full font-label-sm text-label-sm text-primary">Intermediate</span>
+</div>
+<div>
+<h3 class="font-display-lg text-display-lg text-on-primary mb-2">Vienna River Run Collective</h3>
+<p class="font-body-lg text-body-lg text-on-primary/90 max-w-2xl">Join the city's most dedicated morning runners for a crisp 10k along the Danube. Pacing groups available.</p>
+</div>
+<div class="flex items-center gap-4 mt-2">
+<button class="px-6 py-2 bg-on-primary text-primary rounded-xl font-body-md font-medium hover:bg-surface-bright transition-colors">Join Group</button>
+<span class="font-body-md text-on-primary/80 flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">group</span>
+                                    142 Members
+                                </span>
+</div>
+</div>
+</article>
+<!-- Stacked Small Cards (Span 4) -->
+<div class="md:col-span-4 flex flex-col gap-stack-gap-lg">
+<!-- Small Card 1 -->
+<article class="flex-1 group relative rounded-2xl overflow-hidden bg-surface-container-lowest ambient-shadow-sm border border-outline-variant/30 hover:ambient-shadow-lg transition-all duration-300">
+<div class="h-32 relative overflow-hidden bg-surface-dim">
+<img alt="Yoga Studio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A minimalist, brightly lit yoga studio with expansive white walls, light wood flooring, and large windows letting in natural sunlight. Several sleek black yoga mats are perfectly aligned. The space feels tranquil, high-end, and unhurried, using a palette of soft whites, warm wood tones, and subtle shadows to imply depth and calm." src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<div class="absolute top-3 left-3 glass-tag px-2 py-0.5 rounded-full font-label-sm text-label-sm text-primary">Yoga</div>
+</div>
+<div class="p-stack-gap-md flex flex-col gap-1">
+<h3 class="font-headline-md text-[18px] leading-[24px] font-semibold text-primary">Morning Flow &amp; Focus</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                     Tomorrow, 07:00 AM
+                                 </p>
+</div>
+</article>
+<!-- Small Card 2 -->
+<article class="flex-1 group relative rounded-2xl overflow-hidden bg-surface-container-lowest ambient-shadow-sm border border-outline-variant/30 hover:ambient-shadow-lg transition-all duration-300">
+<div class="h-32 relative overflow-hidden bg-surface-dim">
+<img alt="Weight Training" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A close-up, sophisticated shot of premium, matte black weightlifting equipment in a modern gym. The background is softly blurred (bokeh) emphasizing the sleek texture of the metal. Lighting is controlled and dramatic, highlighting the clean lines of the design. The mood is powerful yet refined, avoiding typical gym cliches in favor of an architectural aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWiXzlxBg5UVhX1jwi8Oo-229AaR5i-vGHDCcXT6oToxQXvuthslKxJUiSBnJBqg39nsKLlTHHTO5bqBE0cu6G4AjM9rVCxhmO-90qKQWGhJuWe1BZxjT1dODPDwMKK72Yrh4AmQ4JkUFtzwZV7ELpQ8QgBFhFKU1EkA1uDL5UhKBk0_aIQ-nKdKpdWRpF5PqlkUMod-kQWnjC-WN2o9BqOlUrcf-q8B2fZEaSvbioHp4-iGfSsI9guy6g9VIUyot1EJKfBPhafiQ"/>
+<div class="absolute top-3 left-3 glass-tag px-2 py-0.5 rounded-full font-label-sm text-label-sm text-primary">Strength</div>
+</div>
+<div class="p-stack-gap-md flex flex-col gap-1">
+<h3 class="font-headline-md text-[18px] leading-[24px] font-semibold text-primary">Olympic Lifting Basics</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                    Tomorrow, 18:30 PM
+                                </p>
+</div>
+</article>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>
