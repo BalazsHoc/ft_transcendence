@@ -64,15 +64,14 @@ All new UI features must include translations for all languages.
 
 ```text
 src/
-components/
-pages/
-layouts/
-hooks/
-services/
-types/
-store/
-i18n/
-styles/
+	components/
+	features/
+	pages/
+	layouts/
+	services/
+	types/
+	i18n/
+	styles/
 ```
 
 ## Components
