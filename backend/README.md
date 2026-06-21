@@ -60,6 +60,10 @@ python manage.py migrate
 
 ### 5. Start the server
 
+```bash
+python manage.py runserver
+```
+
 Use Daphne to run the ASGI app so WebSocket chat works in development:
 
 ```bash
