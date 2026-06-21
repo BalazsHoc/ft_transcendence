@@ -3,6 +3,9 @@
 /backend/.env.local
 /backend/.env.development
 /backend/.env.production
+/backend/.venv
+*__pycache__*
+
 
 /frontend/.env
 /frontend/.env.local
