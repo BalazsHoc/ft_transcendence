@@ -1,3 +1,9 @@
+// This file contains TypeScript type definitions 
+// for the frontend API. 
+// It defines the structure of user data, 
+// event participants, event items, 
+// and message items used in the application.
+
 export type User = {
   id: string;
   username: string;
