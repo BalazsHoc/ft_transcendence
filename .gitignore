@@ -11,6 +11,7 @@
 /frontend/.env.local
 /frontend/.env.development
 /frontend/.env.production
+/frontend/node_modules
 
 # Ignore log files and databases
 /logs
