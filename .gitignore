@@ -1,0 +1,28 @@
+/backend/.env
+/backend/.env.local
+/backend/.env.development
+/backend/.env.production
+
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development
+/frontend/.env.production
+
+# Ignore log files and databases
+/logs
+*.log
+*.sqlite
+*.db
+
+# Ignore node_modules and build artifacts
+/node_modules
+/dist
+/build
+
+# Ignore IDE and OS files
+/.idea
+/.vscode
+.DS_Store
+Thumbs.db
+
+/.agents

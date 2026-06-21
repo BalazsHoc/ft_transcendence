@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vienna Connect - Move. Connect. Belong.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@600;700&amp;family=Geist:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#bec6e0",
+                        "inverse-surface": "#213145",
+                        "surface-bright": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "primary": "#000000",
+                        "inverse-primary": "#bec6e0",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary-fixed-variant": "#005049",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-container": "#006f66",
+                        "on-tertiary-fixed": "#2a1700",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container": "#e5eeff",
+                        "primary-container": "#131b2e",
+                        "tertiary": "#000000",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "outline-variant": "#c6c6cd",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006a61",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-primary-container": "#7c839b",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-container": "#b87500",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#131b2e",
+                        "on-surface": "#0b1c30",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00201d",
+                        "tertiary-container": "#2a1700",
+                        "secondary-container": "#86f2e4",
+                        "on-error-container": "#93000a",
+                        "outline": "#76777d",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed": "#89f5e7",
+                        "surface": "#f8f9ff",
+                        "on-surface-variant": "#45464d",
+                        "surface-tint": "#565e74"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-gap-md": "16px",
+                        "section-margin": "40px",
+                        "container-padding": "20px",
+                        "stack-gap-lg": "24px",
+                        "stack-gap-sm": "8px",
+                        "section-pad-y": "120px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "label-sm": ["Geist"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-xl": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["13px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-xl": ["80px", { "lineHeight": "88px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    },
+                    "boxShadow": {
+                        'glass': '0 4px 20px rgba(0, 0, 0, 0.04)',
+                        'glass-hover': '0 10px 30px rgba(0, 0, 0, 0.08)',
+                        'card': '0 4px 20px rgba(0, 0, 0, 0.04)'
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(248, 249, 255, 0) 0%, rgba(248, 249, 255, 1) 100%);
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden selection:bg-surface-variant selection:text-on-surface">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-container-padding py-4 max-w-full bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-inverse-primary">VIENNA ATHLETIC</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="font-body-lg text-body-lg text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary pb-1 opacity-80 transition-opacity" href="#">Discovery</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Clubs</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Map</a>
+<a class="font-body-lg text-body-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Community</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+<button class="bg-primary text-on-primary font-body-md px-6 py-2 rounded-2xl hover:bg-on-surface transition-colors">
+                Join Club
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center object-cover" data-alt="A sweeping, cinematic wide shot of Vienna's skyline at dawn, showcasing historical architecture blended with modern urban elements. The lighting is soft, natural, and highly professional, creating a clean, bright, and aspirational mood. The color palette leans towards cool morning blues, warm sunlight hitting the stone facades, and vibrant greenery from urban parks. The overall aesthetic is premium, calm, and sophisticated, perfectly suited for a modern European lifestyle brand's hero banner." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBOXWmfEumbEvOGRGNU7AdhHe6nQe0AG4ljK7eOfAA7VTvd_Fet511r8w-5q2bRldOVFzVgx8j1UjYPxkYBfZxha384H_RvHkDnr-pPC-DO-QALBsvAmsxSor4LVgnfkE-jDuTq5TGVEqNuMNmTMMwh4VU25z_vRXBoLGwPcjUVPLo98sZ07RUfH8W53VZBxjXaF8Jv4S9FqPsVOE22yUE3-zkklL7UUcom-SR_WxkJLiaox1ayRGxR2uUDMXy_Y1UvOyfLqzLs6NA');">
+</div>
+<div class="absolute inset-0 bg-surface/30 backdrop-blur-[2px]"></div>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 container mx-auto px-container-padding text-center">
+<h1 class="font-display-xl text-display-xl text-on-surface mb-6 fade-in-up stagger-1 hidden md:block">
+                Move. Connect.<br/>Belong.
+            </h1>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface mb-6 fade-in-up stagger-1 md:hidden">
+                Move. Connect.<br/>Belong.
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10 fade-in-up stagger-2">
+                Discover sports, clubs and communities across Vienna. An elevated approach to urban athleticism.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-in-up stagger-3">
+<button class="bg-primary text-on-primary font-body-md px-8 py-4 rounded-2xl w-full sm:w-auto hover:bg-on-surface transition-all shadow-glass">
+                    Explore Activities
+                </button>
+<button class="bg-surface text-on-surface border border-outline-variant font-body-md px-8 py-4 rounded-2xl w-full sm:w-auto hover:bg-surface-variant transition-all shadow-glass">
+                    Learn More
+                </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid - Featured -->
+<section class="py-section-pad-y bg-background relative z-20">
+<div class="container mx-auto px-container-padding">
+<div class="text-center mb-section-margin fade-in-up">
+<h2 class="font-display-lg text-display-lg hidden md:block mb-4">Curated Experiences</h2>
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:hidden mb-4">Curated Experiences</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Find your next passion in the heart of the city.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
+<!-- Large Card -->
+<div class="md:col-span-2 md:row-span-2 rounded-[24px] overflow-hidden relative group cursor-pointer shadow-card fade-in-up stagger-1">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A high-end, editorial photograph of a modern tennis court bathed in golden hour sunlight. Two athletic individuals are mid-rally, their movements dynamic yet graceful. The scene is framed by minimalist urban architecture and lush green trees in the background. The lighting is crisp, casting long, dramatic shadows across the clay surface. The aesthetic is sophisticated, active, and perfectly aligned with a premium European sports club visual identity." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCqCTFWzGBB_HNE3c2owEFxoqVqY_5sSx_urWQNpL2YpsUv0hwAbIpcByOkxYszHrr_P8tPD3z2fKu-NjCZMZERlXDULqRebDz8Nt80FIDMzLguVoUf7dv1aYqAKCO7KN-fglDCM4ircsvWcYNF7TgfUosdjyUyZOwaUwhgP5WWs62GTbsjYVXNWLmyMwExAx1gEUOIs8ZEIuIX-b5OnATeskJbVMbLs1J62Sskqlv7s381ARfr2hiBXosEV9r4BGkKNhFee0RssAw');">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/80 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full glass-panel rounded-b-[24px] border-t-0 border-l-0 border-r-0">
+<div class="flex justify-between items-end">
+<div>
+<span class="inline-block bg-surface-container text-on-surface font-label-sm px-3 py-1 rounded-full mb-3">Tennis Club</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Prater Evening Sessions</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Join the competitive ladder or casual rallies.</p>
+</div>
+<button class="w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Small Card 1 -->
+<div class="rounded-[24px] overflow-hidden relative group cursor-pointer shadow-card fade-in-up stagger-2 bg-surface p-6 border border-outline-variant/30 flex flex-col justify-between">
+<div>
+<span class="inline-block bg-surface-container-high text-on-surface font-label-sm px-3 py-1 rounded-full mb-4">Running</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Danube Morning Run</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Start your day with a scenic 10k along the river with pace groups for all levels.</p>
+</div>
+<div class="flex items-center gap-3 mt-4">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant border-2 border-surface"></div>
+<div class="w-8 h-8 rounded-full bg-surface-dim border-2 border-surface"></div>
+<div class="w-8 h-8 rounded-full bg-outline-variant border-2 border-surface flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+<span class="font-label-sm text-on-surface-variant">Attending</span>
+</div>
+</div>
+<!-- Small Card 2 -->
+<div class="rounded-[24px] overflow-hidden relative group cursor-pointer shadow-card fade-in-up stagger-3">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A clean, minimalist shot of indoor cycling bikes lined up in a bright, modern studio in Vienna. Soft, diffused daylight pours in through large, frosted glass windows. The space feels premium, uncrowded, and focused, utilizing a color palette of crisp whites, soft greys, and touches of metallic steel. The composition emphasizes sleek lines and functional design, perfectly capturing the high-end fitness aesthetic." style="background-image: url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg');">
+</div>
+<div class="absolute inset-0 bg-black/20"></div>
+<div class="absolute bottom-4 left-4 right-4 glass-panel rounded-xl p-4 flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-on-surface text-[18px]">Studio Cycling</span>
+<span class="material-symbols-outlined text-on-surface">arrow_outward</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</body></html>

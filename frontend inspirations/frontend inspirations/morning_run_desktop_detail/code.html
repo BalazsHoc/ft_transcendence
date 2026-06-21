@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Morning Run — Donauinsel | Vienna Athletic</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#bec6e0",
+                        "inverse-surface": "#213145",
+                        "surface-bright": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "primary": "#000000",
+                        "inverse-primary": "#bec6e0",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary-fixed-variant": "#005049",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-container": "#006f66",
+                        "on-tertiary-fixed": "#2a1700",
+                        "tertiary-fixed": "#ffddb8",
+                        "surface-container": "#e5eeff",
+                        "primary-container": "#131b2e",
+                        "tertiary": "#000000",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "outline-variant": "#c6c6cd",
+                        "surface-variant": "#d3e4fe",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006a61",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-primary-container": "#7c839b",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-container": "#b87500",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#131b2e",
+                        "on-surface": "#0b1c30",
+                        "on-background": "#0b1c30",
+                        "on-secondary-fixed": "#00201d",
+                        "tertiary-container": "#2a1700",
+                        "secondary-container": "#86f2e4",
+                        "on-error-container": "#93000a",
+                        "outline": "#76777d",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed": "#89f5e7",
+                        "surface": "#f8f9ff",
+                        "on-surface-variant": "#45464d",
+                        "surface-tint": "#565e74"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-gap-md": "16px",
+                        "section-margin": "40px",
+                        "container-padding": "20px",
+                        "stack-gap-lg": "24px",
+                        "stack-gap-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Hanken Grotesk"],
+                        "label-sm": ["Geist"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased pb-section-margin">
+<!-- Glassmorphic Navigation Overlay (Task-Focused Detail Page) -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-container-padding py-4 max-w-full bg-surface/80 backdrop-blur-xl border-b border-surface-bright/50 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300">
+<button aria-label="Go back" class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-lowest shadow-sm border border-outline-variant/20 text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex gap-stack-gap-sm">
+<button aria-label="Share activity" class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-lowest shadow-sm border border-outline-variant/20 text-on-surface hover:text-primary hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">ios_share</span>
+</button>
+<button aria-label="Save activity" class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-lowest shadow-sm border border-outline-variant/20 text-on-surface hover:text-error hover:bg-error-container/20 transition-colors">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+</nav>
+<!-- Hero Header -->
+<header class="relative w-full h-[563px] md:h-[665px] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full" data-alt="A breathtaking, high-resolution wide shot of a scenic sunrise run along the Donauinsel in Vienna. The sky is painted with vibrant, warm hues of orange, pink, and soft purple, reflecting on the calm waters of the Danube river. A small group of athletic runners in modern, sleek, high-end sportswear is captured mid-stride. The mood is energetic, premium, and serene, fitting a high-end sports lifestyle brand. Professional architectural and sports photography style, bright light-mode aesthetic overall." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAEt5EwOCan2sUMFpSNgnirQDw6Wj6tGkJ_Jt7DD9fOlZStdC44Urqm9ojyzte1nZ1hRorx398wfaePz9ppadyLwIOZgbp0DUOvbzEJAU4p1C1e4CGMyPexPm-eKN7qgQvzEI3w22h_32ECOR6lFkW6Rk1yDS1siRk-GCtBgOGbTzI_TX4_gY3oGdrLIIQNfMOJk7ttPosNCXtJS5tkLHQxLaDAe_Ltgmsz8VMVMmsOFJEqkbgekge1SQ3-eGCqV3Hb1La8oXqHbM4');">
+</div>
+<!-- Gradient Overlay to blend with page body -->
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+<!-- Hero Content Anchor -->
+<div class="absolute bottom-0 w-full px-container-padding md:px-section-margin pb-stack-gap-lg max-w-7xl mx-auto left-0 right-0">
+<div class="flex flex-wrap gap-2 mb-stack-gap-sm">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/30 font-label-sm text-label-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] mr-1">directions_run</span>
+                    Running
+                </span>
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/30 font-label-sm text-label-sm text-on-surface">
+<span class="material-symbols-outlined text-[16px] mr-1">speed</span>
+                    Intermediate
+                </span>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-background tracking-tight">
+                Morning Run<br/>
+<span class="text-on-surface-variant font-medium">Donauinsel</span>
+</h1>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="max-w-7xl mx-auto px-container-padding md:px-section-margin mt-stack-gap-lg md:mt-section-margin grid grid-cols-1 lg:grid-cols-12 gap-stack-gap-lg md:gap-section-margin">
+<!-- Left Column: Details & Editorial -->
+<div class="lg:col-span-8 flex flex-col gap-section-margin">
+<!-- Quick Tags -->
+<section aria-label="Activity Tags" class="flex flex-wrap gap-3">
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-xl font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">language</span>
+                    English, German
+                </div>
+<div class="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-xl font-label-sm text-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">group</span>
+                    Max 15 participants
+                </div>
+</section>
+<!-- About Section -->
+<section aria-label="About Activity">
+<h2 class="font-headline-md text-headline-md text-on-background mb-stack-gap-md">The Experience</h2>
+<div class="font-body-lg text-body-lg text-on-surface-variant space-y-4">
+<p>
+                        Join us for our signature morning route along the scenic Donauinsel. Designed for intermediate runners, this 10km session focuses on consistent pacing and dynamic urban views as the city wakes up.
+                    </p>
+<p>
+                        We'll maintain a comfortable 5:30 min/km pace. The route is entirely flat, utilizing the premium paved paths of the island, ensuring a smooth and uninterrupted flow. Post-run, the group will gather for espresso at a nearby curated local café.
+                    </p>
+</div>
+</section>
+<!-- Bento Details Grid -->
+<section aria-label="Time and Location Details" class="grid grid-cols-1 md:grid-cols-2 gap-stack-gap-md">
+<!-- Time Card -->
+<div class="bg-surface-container-lowest p-stack-gap-lg rounded-[20px] border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-center">
+<div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary mb-stack-gap-md">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+</div>
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Date &amp; Time</h3>
+<p class="font-body-lg text-body-lg text-on-background font-medium">Saturday, Oct 14</p>
+<p class="font-body-md text-body-md text-on-surface-variant">07:00 AM – 08:15 AM</p>
+</div>
+<!-- Location Card -->
+<div class="bg-surface-container-lowest rounded-[20px] border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden flex flex-col">
+<div class="h-32 w-full bg-surface-container-high relative">
+<!-- Placeholder for map -->
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-location="Donauinsel, Vienna" style=""></div>
+</div>
+<div class="p-stack-gap-md">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Meeting Point</h3>
+<p class="font-body-md text-body-md text-on-background font-medium">Reichsbrücke Underpass</p>
+<a class="inline-flex items-center mt-2 text-secondary font-label-sm text-label-sm hover:underline" href="#">
+                            Open in Maps <span class="material-symbols-outlined text-[16px] ml-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Social & CTA (Sticky) -->
+<aside class="lg:col-span-4">
+<div class="sticky top-[100px] flex flex-col gap-stack-gap-lg">
+<!-- Social Action Card (Glassmorphic vibe) -->
+<div class="bg-surface-container-lowest p-stack-gap-lg rounded-[20px] border border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+<!-- Host -->
+<div class="flex items-center gap-4 mb-stack-gap-lg pb-stack-gap-md border-b border-surface-container-high">
+<img alt="Host Avatar" class="w-12 h-12 rounded-full border border-surface-container-high object-cover" data-alt="A close-up profile picture of an athletic, professional running coach in modern athletic wear. Bright, clean lighting against a minimalist light background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC07W9tkYbY5fNoQyKvoUfqwKt93L2nEWZzysq-P6KC01cjjGcZDEJdUUrWvAnrFJ6nPQ9h89fpfhjwi1zhnSiZfbXal9pOp8fq-Lu4xirBnATXeN2gYQHB2aQ6cweqIXY8PO4KYej0A9E6Z4Im7OLHH8tgXDUpR8lkDE3KoGHg_7EWWYrycbSTC8bF2AnmSvlH0X3O--9o5y5cmtosfHW37tc-IYtNZuG68rlIHJ8LI4xyytli_r07BCAKlpnRTTU-rn4NwNalx-c"/>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Hosted by</p>
+<p class="font-body-md text-body-md text-on-background font-medium">Vienna Athletic Club</p>
+</div>
+</div>
+<!-- Participants -->
+<div class="mb-stack-gap-lg">
+<div class="flex justify-between items-end mb-3">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Participants (8/15)</p>
+<p class="font-label-sm text-label-sm text-secondary font-medium">7 spots left</p>
+</div>
+<div class="flex -space-x-3 overflow-hidden p-1">
+<img alt="" class="inline-block h-10 w-10 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="A close-up portrait of a fit, modern young adult looking energetic and ready for a workout. Clean, light mode background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkRwVrLx3zQukIxtVVsq41EjRIK8FalJeZVlUZYg6C1MSsaMUqxj4SLbU3bKr8n1zm5qxXr-vl98x3arUwhczG1HzZ6xKpnbI1H_jm7KJQ4qaugebQWqlY3R-FGUrhWRZVm6K86K1TMO9W76myt2s9X6eezsiEn8P8YLICAM47wCT7uVqz0mB3sqbEv21lYcv0D9tC22wM5ldbR_9ug4sYFqYvOi1G4ywWrfoW-26z8z3NxWEQ2vLVAf-HiV6ba5W9l4yuCcygVUw"/>
+<img alt="" class="inline-block h-10 w-10 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="A portrait of an athletic runner with a slight smile, bright natural lighting, minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4oJwb7WfVxr-nE-QQ_jWOAWEasceFoVsIqBZdmDQLtACk04KR9m82tBpESJuX8Pbd3VoYjXVVNTvbbm9wwyk-ksgBzw1LWisTYXrHWzh0pDxzRdT5RQuZJ5R3-XdH6gy3NJhTUBhi9HtYFjWT9_c9GLe4fCNQnsijWj3z70v31jVFxXi6ST075HF-4-hOd1WH4DD_bCw69Cm80HtWoqHun4Hv5Rr0mewKklfr0-kO-jn_Ns7-ir-p26bR1Qn6gAZT0WezQw9CQTE"/>
+<img alt="" class="inline-block h-10 w-10 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Profile photo of a sports enthusiast in premium sportswear, clean white background, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOVK8cCiSCCSK6UwBfChjCpaIP8f2d5W26lC5WobsIrMJAMBIbTVxQ2GioHToO_LxpN63lTdQ-sreRcwH_z0lm4kO-JI1JHkyrX37DfBf0at90VpquV8Rtj6K4xLzWol72EAch381I1of2tHlyxeUeG54MNG82tvquCbWGuy4VVA8wZaPovZ1-RLrmINUPyH0-Ki42VJ3pHBPRTV7WES91KrmI9IYPpc9owdtdhOr9D8TBNljx1tkEBoW6iMN_ttVN4EqFxg7U00Y"/>
+<img alt="" class="inline-block h-10 w-10 rounded-full ring-2 ring-surface-container-lowest object-cover" data-alt="Young professional athlete portrait, soft lighting, modern european aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBav_7nP-YgcyLmVeM7kyMNpyaRb_7_-JvscdgXmruLZ3gLjpbGwVzkzs-w0xaNkcfbAqnKC9fVNOE3srN8vaPFvAbW2mturi0Od0Re6_gSjGL56s_OJ5j0-JTxwTdlCkNKkpVjZRSf4iJaxFgcQZWXrk53U3Fk6NgQQHfpEBJQSbuc_inTauR4a4VD-I7h8odgpvPshWcJ4FnviGrfW7sw4t8cLMt45xpgVPZ48QFTZmAKWjDk3jmprzUrYaxbdhXOWRlP3_6xNs"/>
+<div class="inline-flex items-center justify-center h-10 w-10 rounded-full ring-2 ring-surface-container-lowest bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm z-10">
+                                +4
+                            </div>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary text-on-primary py-4 rounded-[16px] font-body-lg text-body-lg font-medium shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:bg-primary-container transition-all active:scale-[0.98]">
+                        Join Activity
+                    </button>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant mt-4">Free for Members</p>
+</div>
+</div>
+</aside>
+</main>
+</body></html>
