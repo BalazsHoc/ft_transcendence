@@ -1,10 +1,11 @@
-import { type ChangeEvent, type FormEvent, useState } from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EventItem } from "../../types/api";
 import { EventPayload } from "../../api/eventsApi";
 import { rememberSearch } from "../../api/geoApi";
 import { LocationAutocomplete } from "../geo/LocationAutocomplete";
 import styles from "../shared/FormCard.module.css";
+import { DEFAULT_EVENT_IMAGE_SRC } from "../../utils/media";
 
 function toLocalInputValue(value?: string) {
   if (!value) return "";
@@ -24,7 +25,7 @@ export function EventForm({
   onSubmit,
 }: {
   initialEvent?: EventItem;
-  onSubmit: (payload: EventPayload) => Promise<void>;
+  onSubmit: (payload: EventPayload, imageFile?: File | null) => Promise<void>;
 }) {
   const { t } = useTranslation();
 
@@ -52,6 +53,22 @@ export function EventForm({
   const [languages, setLanguages] = useState(
     (initialEvent?.languages || ["en", "de"]).join(","),
   );
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState(
+    initialEvent?.image || DEFAULT_EVENT_IMAGE_SRC,
+  );
+
+  useEffect(() => {
+    if (!imageFile) {
+      setImagePreview(initialEvent?.image || DEFAULT_EVENT_IMAGE_SRC);
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(imageFile);
+    setImagePreview(previewUrl);
+
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [imageFile, initialEvent?.image]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -72,9 +89,10 @@ export function EventForm({
       start_at: new Date(startAt).toISOString(),
       end_at: new Date(endAt).toISOString(),
       max_slots: Number(maxSlots),
+      imageFile,
     };
 
-    await onSubmit(payload);
+    await onSubmit(payload, imageFile);
 
     if (locationName.trim() && locationAddress.trim()) {
       await rememberSearch({
@@ -119,6 +137,31 @@ export function EventForm({
           onChange={(e: ChangeEvent<HTMLInputElement>) => setSport(e.target.value)}
         />
       </label>
+
+      <label>
+        Event image
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setImageFile(e.target.files?.[0] || null)
+          }
+        />
+      </label>
+
+      <img
+        src={imagePreview}
+        alt="Event preview"
+        style={{
+          width: "100%",
+          maxHeight: "240px",
+          objectFit: "cover",
+          borderRadius: "12px",
+        }}
+        onError={(event) => {
+          event.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
+        }}
+      />
 
       <label>
         {t("event.level")}

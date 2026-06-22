@@ -27,6 +27,7 @@ export type EventItem = {
   id: string;
   title: string;
   description: string;
+  image?: string | null;
   sport: string;
   level: "beginner" | "intermediate" | "advanced" | "all";
   languages: string[];
