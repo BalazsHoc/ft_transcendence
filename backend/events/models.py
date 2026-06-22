@@ -2,13 +2,19 @@ import uuid
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from django.core.validators import FileExtensionValidator
 
 class Event(models.Model):
     LEVEL_CHOICES=(('beginner','Beginner'),('intermediate','Intermediate'),('advanced','Advanced'),('all','All levels'))
     id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title=models.CharField(max_length=200)
     description=models.TextField(blank=True)
-    image=models.URLField(blank=True, null=True)
+    image=models.FileField(
+        upload_to='event-images/',
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(['jpg','jpeg','png','gif','webp'])],
+    )
     sport=models.CharField(max_length=50)
     level=models.CharField(max_length=20, choices=LEVEL_CHOICES, default='all')
     languages=models.JSONField(default=list, blank=True)

@@ -7,3 +7,4 @@ Here we will share our thoughts on our project workflow.
 | Geo cache | Store only final selected searches in the backend so we can reuse them later without spamming external requests | DONE | Alex |
 | CSS modules cleanup | Moved page-specific and component-specific styles out of global CSS into local modules, keeping global styles for shared layout only | DONE | Alex |
 | Joined chats only | Chats page now shows only events the current user has joined, so private chat access stays scoped to memberships | DONE | Alex |
+| Media uploads | Added avatar upload for user profiles and image upload for events with backend media storage and multipart form submissions | DONE | Alex |

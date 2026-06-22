@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { useAuth } from "../../features/auth/AuthContext";
+import { DEFAULT_AVATAR_SRC } from "../../utils/media";
 
 export function Header() {
   const { t } = useTranslation();
@@ -34,7 +35,22 @@ export function Header() {
 
         {user ? (
           <>
-            <span className="user-chip">{user.username}</span>
+            <span className="user-chip">
+              <img
+                src={user.avatar || DEFAULT_AVATAR_SRC}
+                alt={user.username}
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  borderRadius: "999px",
+                  objectFit: "cover",
+                }}
+                onError={(event) => {
+                  event.currentTarget.src = DEFAULT_AVATAR_SRC;
+                }}
+              />
+              <span>{user.username}</span>
+            </span>
 
             <button onClick={logout}>{t("nav.logout")}</button>
           </>

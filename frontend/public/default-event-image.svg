@@ -1,0 +1,9 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="720" rx="40" fill="#0F172A"/>
+  <circle cx="240" cy="180" r="96" fill="#F59E0B" fill-opacity="0.9"/>
+  <circle cx="940" cy="150" r="64" fill="#38BDF8" fill-opacity="0.85"/>
+  <path d="M120 560C260 420 392 402 520 480C648 558 782 572 1080 352V720H120V560Z" fill="#1E293B"/>
+  <path d="M120 576C260 448 400 424 520 492C660 572 806 584 1080 378" stroke="#F8FAFC" stroke-opacity="0.45" stroke-width="10" stroke-linecap="round"/>
+  <text x="80" y="120" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700">Event image</text>
+  <text x="80" y="176" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="30">Upload a photo to personalize this event</text>
+</svg>

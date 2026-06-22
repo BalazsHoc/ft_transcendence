@@ -4,6 +4,7 @@ import { useAuth } from "../features/auth/AuthContext";
 import { updateMe } from "../api/authApi";
 import { ApiLog } from "../components/shared/ApiLog";
 import styles from "../components/shared/FormCard.module.css";
+import { DEFAULT_AVATAR_SRC } from "../utils/media";
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -11,6 +12,8 @@ export function ProfilePage() {
   const [district, setDistrict] = useState("");
   const [languages, setLanguages] = useState("");
   const [interests, setInterests] = useState("");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || DEFAULT_AVATAR_SRC);
   const [log, setLog] = useState("");
 
   useEffect(() => {
@@ -19,14 +22,28 @@ export function ProfilePage() {
     setInterests((user?.interests || []).join(","));
   }, [user]);
 
+  useEffect(() => {
+    if (!avatarFile) {
+      setAvatarPreview(user?.avatar || DEFAULT_AVATAR_SRC);
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(avatarFile);
+    setAvatarPreview(previewUrl);
+
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [avatarFile, user?.avatar]);
+
   async function save() {
     try {
       const data = await updateMe({
         district,
         languages: languages.split(",").map((x) => x.trim()).filter(Boolean),
         interests: interests.split(",").map((x) => x.trim()).filter(Boolean),
+        avatarFile,
       });
       await refreshMe();
+      setAvatarFile(null);
       setLog(JSON.stringify(data, null, 2));
     } catch (e: any) {
       setLog(e.message);
@@ -38,6 +55,27 @@ export function ProfilePage() {
       <h1>{t("profile.title")}</h1>
       <section className={styles.formCard}>
         <p>Username: {user?.username || "not logged in"}</p>
+        <label>
+          Avatar
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
+          />
+        </label>
+        <img
+          src={avatarPreview}
+          alt="Avatar preview"
+          style={{
+            width: "96px",
+            height: "96px",
+            borderRadius: "999px",
+            objectFit: "cover",
+          }}
+          onError={(event) => {
+            event.currentTarget.src = DEFAULT_AVATAR_SRC;
+          }}
+        />
         <label>
           District
           <input value={district} onChange={(e) => setDistrict(e.target.value)} />
