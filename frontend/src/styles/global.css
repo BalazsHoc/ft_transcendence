@@ -117,7 +117,7 @@ textarea {
 }
 .two-column {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 18px;
 }
 .event-list {
