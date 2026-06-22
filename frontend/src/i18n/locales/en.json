@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "discover": "Discover",
+    "map": "Map",
     "myEvents": "My events",
     "createEvent": "Create event",
     "chats": "Chats",
@@ -51,6 +52,8 @@
     "sport": "Sport",
     "level": "Level",
     "location": "Location",
+    "address": "Address",
+    "searchAddress": "Search address",
     "start": "Start",
     "end": "End",
     "maxSlots": "Max slots"
@@ -58,6 +61,17 @@
   "createEvent": {
     "title": "Create event",
     "submit": "Publish event"
+  },
+  "map": {
+    "title": "Map view",
+    "subtitle": "Search for an address, then inspect events around it.",
+    "search": "Search location",
+    "searchPlaceholder": "Type a street, city, or venue",
+    "reset": "Reset map",
+    "focusedOn": "Focused on",
+    "eventsNear": "Events nearby ({count})",
+    "noEvents": "No events found near this location.",
+    "focusEvent": "Focus event"
   },
   "editEvent": {
     "title": "Edit event",

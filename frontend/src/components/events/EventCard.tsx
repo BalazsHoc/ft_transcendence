@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { EventItem } from "../../types/api";
 import { useTranslation } from "react-i18next";
+import styles from "./EventCard.module.css";
 
 export function EventCard({
   event,
@@ -16,7 +17,7 @@ export function EventCard({
   const { t } = useTranslation();
 
   return (
-    <article className="event-card">
+    <article className={styles.eventCard}>
       <h3>
         <Link to={`/events/${event.id}`}>{event.title}</Link>
       </h3>
@@ -25,7 +26,11 @@ export function EventCard({
         {event.sport} / {event.level}
       </p>
 
-      <p>{event.location_name}</p>
+      <p className={styles.eventLocation}>{event.location_name}</p>
+
+      {event.location_address && event.location_address !== event.location_name && (
+        <p className={styles.eventAddress}>{event.location_address}</p>
+      )}
 
       <p>
         {new Date(event.start_at).toLocaleString()} -{" "}

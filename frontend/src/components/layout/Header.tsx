@@ -16,6 +16,8 @@ export function Header() {
 
         <NavLink to="/discover">{t("nav.discover")}</NavLink>
 
+        <NavLink to="/map">{t("nav.map")}</NavLink>
+
         <NavLink to="/my-events">{t("nav.myEvents")}</NavLink>
 
         <NavLink to="/events/new">{t("nav.createEvent")}</NavLink>

@@ -52,3 +52,18 @@ export type MessageItem = {
   text: string;
   created_at: string;
 };
+export type GeoSuggestion = {
+  id: string;
+  label: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  source: string;
+  raw: Record<string, unknown>;
+};
+export type GeoResponse = {
+  provider: string;
+  query: string;
+  language: string;
+  results: GeoSuggestion[];
+};

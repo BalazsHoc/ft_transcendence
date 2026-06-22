@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EventItem } from "../../types/api";
 import { EventPayload } from "../../api/eventsApi";
+import { rememberSearch } from "../../api/geoApi";
+import { LocationAutocomplete } from "../geo/LocationAutocomplete";
+import styles from "../shared/FormCard.module.css";
 
 function toLocalInputValue(value?: string) {
   if (!value) return "";
-
   const date = new Date(value);
   const offset = date.getTimezoneOffset();
   const local = new Date(date.getTime() - offset * 60000);
-
   return local.toISOString().slice(0, 16);
+}
+
+function shortStreetName(value?: string) {
+  if (!value) return "";
+  return value.split(",")[0]?.trim() || value.trim();
 }
 
 export function EventForm({
@@ -22,61 +28,42 @@ export function EventForm({
 }) {
   const { t } = useTranslation();
 
-  const [title, setTitle] = useState(
-    initialEvent?.title || "Football in Prater"
-  );
-
+  const [title, setTitle] = useState(initialEvent?.title || "Football in Prater");
   const [description, setDescription] = useState(
-    initialEvent?.description || "Casual test event."
+    initialEvent?.description || "Casual test event.",
   );
-
   const [sport, setSport] = useState(initialEvent?.sport || "football");
-
   const [level, setLevel] = useState(initialEvent?.level || "all");
-
   const [locationName, setLocationName] = useState(
-    initialEvent?.location_name || "Prater"
+    initialEvent?.location_name || "Prater",
   );
-
   const [locationAddress, setLocationAddress] = useState(
-    initialEvent?.location_address || "Prater, Vienna"
+    initialEvent?.location_address || "Prater, Vienna",
   );
-
-  const [latitude, setLatitude] = useState(
-    String(initialEvent?.latitude ?? 48.2167)
-  );
-
-  const [longitude, setLongitude] = useState(
-    String(initialEvent?.longitude ?? 16.395)
-  );
-
+  const [latitude, setLatitude] = useState(String(initialEvent?.latitude ?? 48.2167));
+  const [longitude, setLongitude] = useState(String(initialEvent?.longitude ?? 16.395));
   const [startAt, setStartAt] = useState(
-    toLocalInputValue(initialEvent?.start_at) || "2026-06-20T18:00"
+    toLocalInputValue(initialEvent?.start_at) || "2026-06-20T18:00",
   );
-
   const [endAt, setEndAt] = useState(
-    toLocalInputValue(initialEvent?.end_at) || "2026-06-20T20:00"
+    toLocalInputValue(initialEvent?.end_at) || "2026-06-20T20:00",
   );
-
-  const [maxSlots, setMaxSlots] = useState(
-    String(initialEvent?.max_slots || 10)
-  );
-
+  const [maxSlots, setMaxSlots] = useState(String(initialEvent?.max_slots || 10));
   const [languages, setLanguages] = useState(
-    (initialEvent?.languages || ["en", "de"]).join(",")
+    (initialEvent?.languages || ["en", "de"]).join(","),
   );
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    await onSubmit({
+    const payload = {
       title,
       description,
       sport,
       level,
       languages: languages
         .split(",")
-        .map((x) => x.trim())
+        .map((value) => value.trim())
         .filter(Boolean),
       location_name: locationName,
       location_address: locationAddress,
@@ -85,32 +72,60 @@ export function EventForm({
       start_at: new Date(startAt).toISOString(),
       end_at: new Date(endAt).toISOString(),
       max_slots: Number(maxSlots),
-    });
+    };
+
+    await onSubmit(payload);
+
+    if (locationName.trim() && locationAddress.trim()) {
+      await rememberSearch({
+        query: locationName,
+        suggestion: {
+          id: `${locationName}-${locationAddress}`,
+          label: locationName,
+          address: locationAddress,
+          latitude: Number(latitude),
+          longitude: Number(longitude),
+          source: "manual",
+          raw: {},
+        },
+      }).catch(() => void 0);
+    }
   }
 
   return (
-    <form className="form-card" onSubmit={handleSubmit}>
+    <form className={styles.formCard} onSubmit={handleSubmit}>
       <label>
         {t("event.title")}
-        <input value={title} onChange={(e) => setTitle(e.target.value)} />
+        <input
+          value={title}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+        />
       </label>
 
       <label>
         {t("event.description")}
         <textarea
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            setDescription(e.target.value)
+          }
         />
       </label>
 
       <label>
         {t("event.sport")}
-        <input value={sport} onChange={(e) => setSport(e.target.value)} />
+        <input
+          value={sport}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setSport(e.target.value)}
+        />
       </label>
 
       <label>
         {t("event.level")}
-        <select value={level} onChange={(e) => setLevel(e.target.value)}>
+        <select
+          value={level}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => setLevel(e.target.value)}
+        >
           <option value="all">all</option>
           <option value="beginner">beginner</option>
           <option value="intermediate">intermediate</option>
@@ -118,28 +133,34 @@ export function EventForm({
         </select>
       </label>
 
-      <label>
-        {t("event.location")}
-        <input
-          value={locationName}
-          onChange={(e) => setLocationName(e.target.value)}
-        />
-      </label>
+      <LocationAutocomplete
+        label={t("event.searchAddress")}
+        initialQuery={initialEvent ? shortStreetName(locationAddress || locationName) : ""}
+        onSelect={(suggestion) => {
+          setLocationName(suggestion.label);
+          setLocationAddress(suggestion.address);
+          setLatitude(String(suggestion.latitude));
+          setLongitude(String(suggestion.longitude));
+        }}
+      />
 
       <label>
-        Address
+        {t("event.address")}
         <input
           value={locationAddress}
-          onChange={(e) => setLocationAddress(e.target.value)}
+          readOnly
+          placeholder="Auto-filled from search"
         />
       </label>
 
-      <div className="form-grid">
+      <div className={styles.formGrid}>
         <label>
           Latitude
           <input
             value={latitude}
-            onChange={(e) => setLatitude(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setLatitude(e.target.value)
+            }
           />
         </label>
 
@@ -147,18 +168,22 @@ export function EventForm({
           Longitude
           <input
             value={longitude}
-            onChange={(e) => setLongitude(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setLongitude(e.target.value)
+            }
           />
         </label>
       </div>
 
-      <div className="form-grid">
+      <div className={styles.formGrid}>
         <label>
           {t("event.start")}
           <input
             type="datetime-local"
             value={startAt}
-            onChange={(e) => setStartAt(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setStartAt(e.target.value)
+            }
           />
         </label>
 
@@ -167,7 +192,9 @@ export function EventForm({
           <input
             type="datetime-local"
             value={endAt}
-            onChange={(e) => setEndAt(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setEndAt(e.target.value)
+            }
           />
         </label>
       </div>
@@ -177,7 +204,9 @@ export function EventForm({
         <input
           type="number"
           value={maxSlots}
-          onChange={(e) => setMaxSlots(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setMaxSlots(e.target.value)
+          }
         />
       </label>
 
@@ -185,7 +214,9 @@ export function EventForm({
         Languages comma-separated
         <input
           value={languages}
-          onChange={(e) => setLanguages(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setLanguages(e.target.value)
+          }
         />
       </label>
 

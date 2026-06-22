@@ -1,0 +1,17 @@
+.eventCard h3 {
+  margin-top: 0;
+}
+
+.compact {
+  margin-bottom: 0;
+}
+
+.eventLocation,
+.eventAddress {
+  margin: 0;
+}
+
+.eventAddress {
+  color: #475569;
+  font-size: 14px;
+}

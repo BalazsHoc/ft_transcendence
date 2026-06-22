@@ -3,6 +3,7 @@ import { getAccessToken } from "../../api/client";
 import { getEventMessages } from "../../api/eventsApi";
 import { MessageItem } from "../../types/api";
 import { useTranslation } from "react-i18next";
+import styles from "./EventChat.module.css";
 
 const WS_URL = import.meta.env.VITE_WS_URL || "ws://127.0.0.1:8000";
 
@@ -71,7 +72,7 @@ export function EventChat({ eventId }: { eventId: string }) {
   }, [eventId]);
 
   return (
-    <section className="chat-panel">
+    <section className={styles.chatPanel}>
       <div className={connected ? "ok" : "bad"}>
         WS: {connected ? "connected" : "not connected"}
       </div>
@@ -82,15 +83,15 @@ export function EventChat({ eventId }: { eventId: string }) {
         <button onClick={connect}>{t("chats.connect")}</button>
       </div>
 
-      <div className="chat-messages">
+      <div className={styles.messages}>
         {messages.map((m) => (
-          <div className="message" key={m.id}>
+          <div className={styles.message} key={m.id}>
             <b>{m.sender?.username || "user"}:</b> {m.text}
           </div>
         ))}
       </div>
 
-      <div className="chat-input-row">
+      <div className={styles.inputRow}>
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}

@@ -1,0 +1,74 @@
+.root {
+  position: relative;
+  display: grid;
+  gap: 6px;
+}
+
+.panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.14);
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  max-height: 280px;
+  overflow: auto;
+}
+
+.hint {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+}
+
+.results {
+  display: grid;
+  gap: 8px;
+}
+
+.result {
+  width: 100%;
+  text-align: left;
+  display: grid;
+  gap: 4px;
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.resultActive,
+.result:hover {
+  background: #111827;
+  color: white;
+  border-color: #111827;
+}
+
+.result strong {
+  display: block;
+}
+
+.result span {
+  color: inherit;
+  opacity: 0.82;
+  font-size: 13px;
+}
+
+.result mark {
+  padding: 0;
+  background: rgba(245, 158, 11, 0.24);
+  color: inherit;
+  border-radius: 4px;
+}
+
+.resultActive mark,
+.result:hover mark {
+  background: rgba(255, 255, 255, 0.18);
+}

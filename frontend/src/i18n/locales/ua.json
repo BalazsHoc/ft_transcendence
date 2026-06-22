@@ -1,87 +1,101 @@
 {
   "nav": {
-    "home": "Главная",
-    "discover": "Поиск",
-    "myEvents": "Мои события",
-    "createEvent": "Создать событие",
-    "chats": "Чаты",
-    "profile": "Профиль",
+    "home": "Головна",
+    "discover": "Пошук",
+    "map": "Карта",
+    "myEvents": "Мої події",
+    "createEvent": "Створити подію",
+    "chats": "Чати",
+    "profile": "Профіль",
     "apiTest": "API тест",
-    "login": "Вход",
-    "register": "Регистрация",
-    "logout": "Выйти"
+    "login": "Вхід",
+    "register": "Реєстрація",
+    "logout": "Вийти"
   },
   "common": {
-    "join": "Присоединиться",
-    "leave": "Покинуть",
-    "delete": "Удалить",
-    "edit": "Изменить",
-    "send": "Отправить",
-    "language": "Язык",
-    "refresh": "Обновить"
+    "join": "Приєднатися",
+    "leave": "Покинути",
+    "delete": "Видалити",
+    "edit": "Змінити",
+    "send": "Надіслати",
+    "language": "Мова",
+    "refresh": "Оновити"
   },
   "landing": {
-    "title": "Найди спорт. Познакомься с людьми. Стань частью Вены.",
-    "subtitle": "MVP frontend, подключенный к API backend для тестирования роутов.",
-    "ctaDiscover": "Смотреть события",
-    "ctaCreate": "Создать событие"
+    "title": "Знайди спорт. Познайомся з людьми. Стань частиною Відня.",
+    "subtitle": "MVP frontend, підключений до API backend для тестування роутів.",
+    "ctaDiscover": "Дивитися події",
+    "ctaCreate": "Створити подію"
   },
   "auth": {
-    "loginTitle": "Вход",
-    "registerTitle": "Регистрация",
-    "username": "Имя пользователя",
+    "loginTitle": "Вхід",
+    "registerTitle": "Реєстрація",
+    "username": "Ім'я користувача",
     "email": "Email",
     "password": "Пароль",
     "district": "Район",
-    "submitLogin": "Войти",
-    "submitRegister": "Создать аккаунт"
+    "submitLogin": "Увійти",
+    "submitRegister": "Створити акаунт"
   },
   "discover": {
-    "title": "Поиск событий",
+    "title": "Пошук подій",
     "sport": "Спорт",
-    "level": "Уровень",
-    "load": "Загрузить события"
+    "level": "Рівень",
+    "load": "Завантажити події"
   },
   "event": {
-    "details": "Детали события",
-    "participants": "Участники",
-    "messages": "Сообщения",
-    "title": "Название",
-    "description": "Описание",
+    "details": "Деталі події",
+    "participants": "Учасники",
+    "messages": "Повідомлення",
+    "title": "Назва",
+    "description": "Опис",
     "sport": "Спорт",
-    "level": "Уровень",
-    "location": "Место",
-    "start": "Начало",
-    "end": "Конец",
-    "maxSlots": "Макс. мест"
+    "level": "Рівень",
+    "location": "Місце",
+    "address": "Адреса",
+    "searchAddress": "Пошук адреси",
+    "start": "Початок",
+    "end": "Кінець",
+    "maxSlots": "Макс. місць"
   },
   "createEvent": {
-    "title": "Создать событие",
-    "submit": "Опубликовать"
+    "title": "Створити подію",
+    "submit": "Опублікувати"
+  },
+  "map": {
+    "title": "Карта",
+    "subtitle": "Знайди адресу і подивись події поруч.",
+    "search": "Пошук локації",
+    "searchPlaceholder": "Введіть вулицю, місто або місце",
+    "reset": "Скинути карту",
+    "focusedOn": "Фокус на",
+    "eventsNear": "Події поруч ({count})",
+    "noEvents": "Поблизу не знайдено подій.",
+    "focusEvent": "Сфокусувати подію"
   },
   "editEvent": {
-    "title": "Редактировать событие",
-    "submit": "Обновить событие"
+    "title": "Редагувати подію",
+    "submit": "Оновити подію"
   },
   "myEvents": {
-    "title": "Мои события",
-    "created": "Созданные мной",
-    "joined": "Я участвую / ожидание"
+    "title": "Мої події",
+    "created": "Створені мною",
+    "joined": "Я беру участь / очікую"
   },
   "chats": {
-    "title": "Чаты",
-    "selectEvent": "Выбери событие",
-    "placeholder": "Введите сообщение...",
-    "connect": "Подключить чат"
+    "title": "Чати",
+    "selectEvent": "Вибери подію",
+    "placeholder": "Введіть повідомлення...",
+    "connect": "Підключити чат"
   },
   "profile": {
-    "title": "Профиль",
-    "update": "Обновить профиль"
+    "title": "Профіль",
+    "update": "Оновити профіль"
   },
   "apiTest": {
-    "title": "Тест API роутов"
+    "title": "Тест API роутів"
   },
   "notFound": {
-    "title": "Страница не найдена"
+    "title": "Сторінку не знайдено"
   }
 }
