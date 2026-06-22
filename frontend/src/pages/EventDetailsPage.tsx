@@ -1,1 +1,98 @@
-import {useEffect,useState} from "react";import {Link,useParams} from "react-router-dom";import {useTranslation} from "react-i18next";import {EventChat} from "../components/chat/EventChat";import {ApiLog} from "../components/shared/ApiLog";import {EventItem} from "../types/api";import {getEvent,joinEvent,leaveEvent} from "../api/eventsApi";export function EventDetailsPage(){const {t}=useTranslation();const {eventId}=useParams();const [event,setEvent]=useState<EventItem|null>(null);const [log,setLog]=useState("");async function load(){if(!eventId)return;try{setEvent(await getEvent(eventId))}catch(e:any){setLog(e.message)}}async function join(){if(!eventId)return;try{setLog(JSON.stringify(await joinEvent(eventId),null,2));await load()}catch(e:any){setLog(e.message)}}async function leave(){if(!eventId)return;try{setLog(JSON.stringify(await leaveEvent(eventId),null,2));await load()}catch(e:any){setLog(e.message)}}useEffect(()=>{load()},[eventId]);if(!event||!eventId)return <ApiLog log={log||"Loading..."}/>;return <><h1>{event.title}</h1><section className="card"><p>{event.description}</p><p>{t("event.sport")}: {event.sport}</p><p>{t("event.level")}: {event.level}</p><p>{t("event.location")}: {event.location_name}</p><p>{t("event.start")}: {new Date(event.start_at).toLocaleString()}</p><p>{t("event.end")}: {new Date(event.end_at).toLocaleString()}</p><p>Slots: {event.attending_count}/{event.max_slots}, waiting: {event.waiting_count}</p><div className="row"><button onClick={join}>{t("common.join")}</button><button onClick={leave}>{t("common.leave")}</button><Link className="button secondary" to={`/events/${event.id}/edit`}>{t("common.edit")}</Link></div></section><section className="card"><h2>{t("event.participants")}</h2>{event.participants.map(p=><p key={p.id}>{p.user.username}: {p.status} #{p.queue_position}</p>)}</section><h2>{t("event.messages")}</h2><EventChat eventId={eventId}/><ApiLog log={log}/></>}
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { EventChat } from "../components/chat/EventChat";
+import { ApiLog } from "../components/shared/ApiLog";
+import { EventItem } from "../types/api";
+import { getEvent, joinEvent, leaveEvent } from "../api/eventsApi";
+import eventStyles from "../components/events/EventCard.module.css";
+
+export function EventDetailsPage() {
+  const { t } = useTranslation();
+  const { eventId } = useParams();
+  const [event, setEvent] = useState<EventItem | null>(null);
+  const [log, setLog] = useState("");
+
+  async function load() {
+    if (!eventId) return;
+    try {
+      setEvent(await getEvent(eventId));
+    } catch (e: any) {
+      setLog(e.message);
+    }
+  }
+
+  async function join() {
+    if (!eventId) return;
+    try {
+      setLog(JSON.stringify(await joinEvent(eventId), null, 2));
+      await load();
+    } catch (e: any) {
+      setLog(e.message);
+    }
+  }
+
+  async function leave() {
+    if (!eventId) return;
+    try {
+      setLog(JSON.stringify(await leaveEvent(eventId), null, 2));
+      await load();
+    } catch (e: any) {
+      setLog(e.message);
+    }
+  }
+
+  useEffect(() => {
+    load();
+  }, [eventId]);
+
+  if (!event || !eventId) return <ApiLog log={log || "Loading..."} />;
+
+  return (
+    <>
+      <h1>{event.title}</h1>
+      <section className="card">
+        <p>{event.description}</p>
+        <p>
+          {t("event.sport")}: {event.sport}
+        </p>
+        <p>
+          {t("event.level")}: {event.level}
+        </p>
+        <p>
+          {t("event.location")}: {event.location_name}
+        </p>
+        {event.location_address && event.location_address !== event.location_name && (
+          <p className={eventStyles.eventAddress}>{event.location_address}</p>
+        )}
+        <p>
+          {t("event.start")}: {new Date(event.start_at).toLocaleString()}
+        </p>
+        <p>
+          {t("event.end")}: {new Date(event.end_at).toLocaleString()}
+        </p>
+        <p>
+          Slots: {event.attending_count}/{event.max_slots}, waiting: {event.waiting_count}
+        </p>
+        <div className="row">
+          <button onClick={join}>{t("common.join")}</button>
+          <button onClick={leave}>{t("common.leave")}</button>
+          <Link className="button secondary" to={`/events/${event.id}/edit`}>
+            {t("common.edit")}
+          </Link>
+        </div>
+      </section>
+      <section className="card">
+        <h2>{t("event.participants")}</h2>
+        {event.participants.map((p) => (
+          <p key={p.id}>
+            {p.user.username}: {p.status} #{p.queue_position}
+          </p>
+        ))}
+      </section>
+      <h2>{t("event.messages")}</h2>
+      <EventChat eventId={eventId} />
+      <ApiLog log={log} />
+    </>
+  );
+}

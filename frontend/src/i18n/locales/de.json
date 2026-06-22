@@ -2,6 +2,7 @@
   "nav": {
     "home": "Start",
     "discover": "Entdecken",
+    "map": "Karte",
     "myEvents": "Meine Events",
     "createEvent": "Event erstellen",
     "chats": "Chats",
@@ -51,6 +52,8 @@
     "sport": "Sport",
     "level": "Niveau",
     "location": "Ort",
+    "address": "Adresse",
+    "searchAddress": "Adresse suchen",
     "start": "Start",
     "end": "Ende",
     "maxSlots": "Max. Plätze"
@@ -58,6 +61,17 @@
   "createEvent": {
     "title": "Event erstellen",
     "submit": "Event veröffentlichen"
+  },
+  "map": {
+    "title": "Kartenansicht",
+    "subtitle": "Suche eine Adresse und sieh dir Events in der Umgebung an.",
+    "search": "Ort suchen",
+    "searchPlaceholder": "Straße, Stadt oder Location eingeben",
+    "reset": "Karte zurücksetzen",
+    "focusedOn": "Fokus auf",
+    "eventsNear": "Events in der Nähe ({count})",
+    "noEvents": "Keine Events in dieser Umgebung gefunden.",
+    "focusEvent": "Event fokussieren"
   },
   "editEvent": {
     "title": "Event bearbeiten",

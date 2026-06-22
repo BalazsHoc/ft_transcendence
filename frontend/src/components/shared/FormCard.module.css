@@ -1,0 +1,17 @@
+.formCard {
+  display: grid;
+  gap: 13px;
+  max-width: 720px;
+}
+
+.formCard label {
+  display: grid;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}

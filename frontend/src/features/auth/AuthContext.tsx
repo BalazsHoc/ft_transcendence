@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { User } from "../../types/api";
 import { clearTokens, getAccessToken, setTokens } from "../../api/client";
 import * as authApi from "../../api/authApi";
@@ -17,7 +17,7 @@ type AuthContextValue = {
   logout: () => void;
 };
 const AuthContext = createContext<AuthContextValue | null>(null);
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [access, setAccess] = useState(getAccessToken());
   const [loading, setLoading] = useState(false);
