@@ -2,6 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.serializers.json import DjangoJSONEncoder
 from events.models import Event, EventParticipant
 from .models import Message
 from .serializers import MessageSerializer
@@ -33,7 +34,7 @@ class EventChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         await self.send_json({'type':'message', **event['message']})
     async def send_json(self, data):
-        await self.send(text_data=json.dumps(data))
+        await self.send(text_data=json.dumps(data, cls=DjangoJSONEncoder))
     @database_sync_to_async
     def user_can_access_event(self):
         try: event=Event.objects.get(id=self.event_id)
