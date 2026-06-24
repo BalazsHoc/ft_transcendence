@@ -8,3 +8,8 @@
   padding: 18px;
   margin-bottom: 18px;
 }
+
+:global(body.dark) .filters {
+  background: #111827;
+  border-color: #1f2937;
+}
