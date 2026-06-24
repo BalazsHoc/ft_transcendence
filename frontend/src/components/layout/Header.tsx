@@ -4,7 +4,12 @@ import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { useAuth } from "../../features/auth/AuthContext";
 import { DEFAULT_AVATAR_SRC } from "../../utils/media";
 
-export function Header() {
+type HeaderProps = {
+  darkMode: boolean;
+  onToggleDarkMode: () => void;
+};
+
+export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
 
@@ -14,24 +19,20 @@ export function Header() {
 
       <nav className="nav">
         <NavLink to="/">{t("nav.home")}</NavLink>
-
         <NavLink to="/discover">{t("nav.discover")}</NavLink>
-
         <NavLink to="/map">{t("nav.map")}</NavLink>
-
         <NavLink to="/my-events">{t("nav.myEvents")}</NavLink>
-
         <NavLink to="/events/new">{t("nav.createEvent")}</NavLink>
-
         <NavLink to="/chats">{t("nav.chats")}</NavLink>
-
         <NavLink to="/profile">{t("nav.profile")}</NavLink>
-
         <NavLink to="/api-test">{t("nav.apiTest")}</NavLink>
       </nav>
 
       <div className="header-actions">
         <LanguageSwitcher />
+        <button onClick={onToggleDarkMode} className="button secondary">
+          {darkMode ? "🌙" : "☀️"}
+        </button>
 
         {user ? (
           <>
@@ -57,7 +58,6 @@ export function Header() {
         ) : (
           <>
             <NavLink to="/login">{t("nav.login")}</NavLink>
-
             <NavLink to="/register">{t("nav.register")}</NavLink>
           </>
         )}
