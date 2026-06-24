@@ -29,10 +29,20 @@ button,
   cursor: pointer;
   font: inherit;
 }
+button:active,
+.button:active {
+  background: white;
+  color: black;
+}
 button.secondary,
 .button.secondary {
   background: white;
   color: #111827;
+}
+button.secondary:active,
+.button.secondary:active {
+  background: #111827;
+  color: white;
 }
 button.danger {
   background: #991b1b;
