@@ -13,4 +13,25 @@ import { ChatsPage } from "../pages/ChatsPage";
 import { ProfilePage } from "../pages/ProfilePage";
 import { ApiTesterPage } from "../pages/ApiTesterPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
-export function App(){return <Routes><Route path="/" element={<AppLayout/>}><Route index element={<LandingPage/>}/><Route path="discover" element={<DiscoverPage/>}/><Route path="map" element={<MapPage/>}/><Route path="events/new" element={<CreateEventPage/>}/><Route path="events/:eventId" element={<EventDetailsPage/>}/><Route path="events/:eventId/edit" element={<EditEventPage/>}/><Route path="my-events" element={<MyEventsPage/>}/><Route path="chats" element={<ChatsPage/>}/><Route path="profile" element={<ProfilePage/>}/><Route path="api-test" element={<ApiTesterPage/>}/><Route path="login" element={<LoginPage/>}/><Route path="register" element={<RegisterPage/>}/><Route path="*" element={<NotFoundPage/>}/></Route></Routes>}
+
+export function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<AppLayout />}>
+        <Route index element={<LandingPage />} />
+        <Route path="discover" element={<DiscoverPage />} />
+        <Route path="map" element={<MapPage />} />
+        <Route path="events/new" element={<CreateEventPage />} />
+        <Route path="events/:eventId" element={<EventDetailsPage />} />
+        <Route path="events/:eventId/edit" element={<EditEventPage />} />
+        <Route path="my-events" element={<MyEventsPage />} />
+        <Route path="chats" element={<ChatsPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="api-test" element={<ApiTesterPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
+  );
+}
