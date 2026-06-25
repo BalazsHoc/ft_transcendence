@@ -294,9 +294,8 @@ pre {
    4. Store only the user's explicit override; otherwise respect system preference.
    5. If theme is part of the profile, save it in the backend and hydrate it after login. 
 	
-   For the example of this approach, see the "global-test.css" file in this directory. 
-   It is a working prototype of the preferred approach, but it is not yet wired up to the app. */
-   */
+   For an example of this approach, see global-test.css in this directory.
+   It is a reference file for useful tokens and experiments, not app wiring yet. */
 
 body.dark {
 	background: #0b0f19;
