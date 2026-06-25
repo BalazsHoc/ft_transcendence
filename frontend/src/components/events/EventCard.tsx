@@ -19,14 +19,14 @@ export function EventCard({
 
   return (
     <article className={styles.eventCard}>
-      <img
-        className={styles.image}
-        src={event.image || DEFAULT_EVENT_IMAGE_SRC}
-        alt={event.title}
-        onError={(eventNode) => {
-          eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
-        }}
-      />
+        <img
+          className={styles.image}
+          src={event.image || DEFAULT_EVENT_IMAGE_SRC}
+          alt={event.title}
+          onError={(eventNode: any) => {
+            eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
+          }}
+        />
       <h3>
         <Link to={`/events/${event.id}`}>{event.title}</Link>
       </h3>

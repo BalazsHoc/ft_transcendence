@@ -1,3 +1,4 @@
+import { type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { supportedLanguages, SupportedLanguage } from "../../i18n/i18n";
 
@@ -10,7 +11,7 @@ export function LanguageSwitcher() {
 
       <select
         value={i18n.language}
-        onChange={(e) =>
+        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
           i18n.changeLanguage(e.target.value as SupportedLanguage)
         }
       >

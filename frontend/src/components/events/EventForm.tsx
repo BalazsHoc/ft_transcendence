@@ -149,16 +149,16 @@ export function EventForm({
         />
       </label>
 
-      <img
-        src={imagePreview}
-        alt="Event preview"
-        style={{
-          width: "100%",
-          maxHeight: "240px",
-          objectFit: "cover",
-          borderRadius: "12px",
-        }}
-        onError={(event) => {
+        <img
+          src={imagePreview}
+          alt="Event preview"
+          style={{
+            width: "100%",
+            maxHeight: "240px",
+            objectFit: "cover",
+            borderRadius: "12px",
+          }}
+        onError={(event: any) => {
           event.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
         }}
       />

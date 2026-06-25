@@ -13,6 +13,7 @@ import { MyEventsPage } from "../pages/MyEventsPage";
 import { ChatsPage } from "../pages/ChatsPage";
 import { ProfilePage } from "../pages/ProfilePage";
 import { ApiTesterPage } from "../pages/ApiTesterPage";
+import { UiElementsTest } from "../pages/UiElementsTest";
 import { NotFoundPage } from "../pages/NotFoundPage";
 
 export function App() {
@@ -29,6 +30,7 @@ export function App() {
         <Route path="chats" element={<ChatsPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="api-test" element={<ApiTesterPage />} />
+        <Route path="ui-elements-test" element={<UiElementsTest />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
