@@ -10,14 +10,17 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "typescript": "latest",
+    "autoprefixer": "^10.5.2",
+    "i18next": "latest",
+    "i18next-browser-languagedetector": "latest",
+    "lucide-react": "^1.21.0",
+    "postcss": "^8.5.15",
     "react": "latest",
     "react-dom": "latest",
-    "react-router-dom": "latest",
-    "i18next": "latest",
     "react-i18next": "latest",
-    "i18next-browser-languagedetector": "latest"
-  },
-  "devDependencies": {}
+    "react-router-dom": "latest",
+    "tailwindcss": "^3.4.19",
+    "typescript": "latest",
+    "vite": "latest"
+  }
 }

@@ -63,7 +63,7 @@ export function EventDetailsPage() {
             borderRadius: "12px",
             marginBottom: "16px",
           }}
-          onError={(eventNode) => {
+          onError={(eventNode: any) => {
             eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
           }}
         />

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { getAccessToken } from "../../api/client";
 import { getEventMessages } from "../../api/eventsApi";
 import { MessageItem } from "../../types/api";
@@ -94,7 +94,7 @@ export function EventChat({ eventId }: { eventId: string }) {
       <div className={styles.inputRow}>
         <input
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setText(e.target.value)}
           placeholder={t("chats.placeholder")}
         />
 

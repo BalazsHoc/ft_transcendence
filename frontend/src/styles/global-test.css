@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Brand Core Colors */
+  --brand-midnight: #0A1424;
+  --brand-teal: #007670;
+  --brand-teal-light: #E0F2F1;
+  --brand-amber: #F2994A;
+  --brand-bg: #FAFAFA;
+  
+  /* Layout & Card Colors */
+  --card-bg: #FFFFFF;
+  --card-border: rgba(226, 232, 240, 0.8);
+  --section-bg: #FFFFFF;
+  
+  /* Text Selection/Hierarchies */
+  --text-primary: #0A1424;
+  --text-muted: rgba(10, 20, 36, 0.65);
+  --text-subtle: rgba(10, 20, 36, 0.45);
+  --text-white-fixed: #FFFFFF;
+  
+  /* Form Inputs */
+  --input-bg: #FFFFFF;
+  --input-border: #E2E8F0;
+  --input-text: #0A1424;
+  
+  /* Glassmorphism settings */
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(226, 232, 240, 0.6);
+  --glass-text: #0A1424;
+  
+  /* Scrollbars & Map styles */
+  --scrollbar-thumb: rgba(10, 20, 36, 0.1);
+  --scrollbar-thumb-hover: rgba(10, 20, 36, 0.2);
+  --map-bg: #EBF1F7;
+  --map-grid-color: rgba(190, 205, 220, 0.25);
+  --map-gradient-overlay: rgba(255, 255, 255, 0.8);
+  
+  /* Buttons Specific */
+  --btn-primary-bg: #0A1424;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover: #007670;
+  
+  --btn-secondary-bg: rgba(255, 255, 255, 0.8);
+  --btn-secondary-text: #0A1424;
+  --btn-secondary-border: rgba(226, 232, 240, 0.8);
+  --btn-secondary-hover: #FFFFFF;
+  
+  --btn-outline-bg: transparent;
+  --btn-outline-text: #0A1424;
+  --btn-outline-border: #E2E8F0;
+  --btn-outline-hover-border: #007670;
+  --btn-outline-hover-text: #007670;
+  
+  /* Badge variants */
+  --badge-gray-bg: #F1F5F9;
+  --badge-gray-text: #475569;
+  --badge-gray-border: #E2E8F0;
+  
+  --badge-teal-bg: #F0FDFA;
+  --badge-teal-text: #007670;
+  --badge-teal-border: #CCFBF1;
+  
+  --badge-amber-bg: #FFF7ED;
+  --badge-amber-text: #F2994A;
+  --badge-amber-border: #FFEDD5;
+  
+  --badge-indigo-bg: #EEF2FF;
+  --badge-indigo-text: #4F46E5;
+  --badge-indigo-border: #E0E7FF;
+
+  --badge-emerald-bg: #ECFDF5;
+  --badge-emerald-text: #059669;
+  --badge-emerald-border: #D1FAE5;
+  
+  /* Nav Header & Footer specific */
+  --footer-bg: #FFFFFF;
+  --footer-border: #F1F5F9;
+  --footer-text: #64748B;
+  
+  /* Font Families */
+  --font-sans-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono-family: "Geist", ui-monospace, SFMono-Regular, monospace;
+  --font-display-family: "Hanken Grotesk", sans-serif;
+}
+
+.dark {
+  /* Brand Core Colors */
+  --brand-midnight: #F1F5F9;
+  --brand-teal: #14B8A6; /* High-vibrant teal for dark design contrast */
+  --brand-teal-light: #115E59;
+  --brand-amber: #FB923C;
+  --brand-bg: #131e36;
+  
+  /* Layout & Card Colors */
+  --card-bg: #0F172A;
+  --card-border: rgba(51, 65, 85, 0.4);
+  --section-bg: #0F172A;
+  
+  /* Text Selection/Hierarchies */
+  --text-primary: #F1F5F9;
+  --text-muted: rgba(241, 245, 249, 0.65);
+  --text-subtle: rgba(241, 245, 249, 0.45);
+  --text-white-fixed: #FFFFFF;
+  
+  /* Form Inputs */
+  --input-bg: #1E293B;
+  --input-border: #334155;
+  --input-text: #F1F5F9;
+  
+  /* Glassmorphism settings */
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(51, 65, 85, 0.5);
+  --glass-text: #F1F5F9;
+  
+  /* Scrollbars & Map styles */
+  --scrollbar-thumb: rgba(241, 245, 249, 0.15);
+  --scrollbar-thumb-hover: rgba(241, 245, 249, 0.25);
+  --map-bg: #0E1626;
+  --map-grid-color: rgba(51, 65, 85, 0.25);
+  --map-gradient-overlay: rgba(15, 23, 42, 0.85);
+  
+  /* Buttons Specific */
+  --btn-primary-bg: #14B8A6;
+  --btn-primary-text: #090F1C;
+  --btn-primary-hover: #0EA5E9;
+  
+  --btn-secondary-bg: rgba(30, 41, 59, 0.8);
+  --btn-secondary-text: #F1F5F9;
+  --btn-secondary-border: rgba(51, 65, 85, 0.8);
+  --btn-secondary-hover: #1E293B;
+  
+  --btn-outline-bg: transparent;
+  --btn-outline-text: #F1F5F9;
+  --btn-outline-border: #334155;
+  --btn-outline-hover-border: #14B8A6;
+  --btn-outline-hover-text: #14B8A6;
+  
+  /* Badge variants */
+  --badge-gray-bg: #1E293B;
+  --badge-gray-text: #94A3B8;
+  --badge-gray-border: #334155;
+  
+  --badge-teal-bg: rgba(20, 184, 166, 0.1);
+  --badge-teal-text: #14B8A6;
+  --badge-teal-border: rgba(20, 184, 166, 0.25);
+  
+  --badge-amber-bg: rgba(251, 146, 60, 0.1);
+  --badge-amber-text: #FB923C;
+  --badge-amber-border: rgba(251, 146, 60, 0.25);
+  
+  --badge-indigo-bg: rgba(99, 102, 241, 0.15);
+  --badge-indigo-text: #818CF8;
+  --badge-indigo-border: rgba(99, 102, 241, 0.25);
+
+  --badge-emerald-bg: rgba(16, 185, 129, 0.1);
+  --badge-emerald-text: #10B981;
+  --badge-emerald-border: rgba(16, 185, 129, 0.25);
+  
+  /* Nav Header & Footer specific */
+  --footer-bg: #0E1626;
+  --footer-border: #1E293B;
+  --footer-text: #94A3B8;
+}
+
+@theme {
+  --font-sans: var(--font-sans-family);
+  --font-mono: var(--font-mono-family);
+  --font-display: var(--font-display-family);
+  
+  --color-brand-midnight: var(--brand-midnight);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-amber: var(--brand-amber);
+  --color-brand-bg: var(--brand-bg);
+
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-input-bg: var(--input-bg);
+  --color-input-border: var(--input-border);
+  --color-input-text: var(--input-text);
+  --color-footer-bg: var(--footer-bg);
+  --color-footer-border: var(--footer-border);
+  --color-footer-text: var(--footer-text);
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-panel-dark {
+  background: rgba(10, 20, 36, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+/* Smooth Scrolling & iOS Navigation Styles */
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+body {
+  background-color: var(--brand-bg);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 9999px;
+  transition: background 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Map backgrounds */
+.vienna-map-container {
+  background-color: var(--map-bg);
+  background-image: 
+    radial-gradient(circle at 40% 30%, var(--map-gradient-overlay) 0%, var(--map-bg) 100%),
+    url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="g" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(190, 205, 220, 0.25)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23g)" /></svg>');
+  transition: background-color 0.3s ease;
+}
+

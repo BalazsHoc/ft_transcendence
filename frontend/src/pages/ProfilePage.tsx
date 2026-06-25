@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../features/auth/AuthContext";
 import { updateMe } from "../api/authApi";
@@ -60,7 +60,7 @@ export function ProfilePage() {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setAvatarFile(e.target.files?.[0] || null)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setAvatarFile(e.target.files?.[0] || null)}
           />
         </label>
         <img
@@ -72,21 +72,21 @@ export function ProfilePage() {
             borderRadius: "999px",
             objectFit: "cover",
           }}
-          onError={(event) => {
+          onError={(event: any) => {
             event.currentTarget.src = DEFAULT_AVATAR_SRC;
           }}
         />
         <label>
           District
-          <input value={district} onChange={(e) => setDistrict(e.target.value)} />
+          <input value={district} onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)} />
         </label>
         <label>
           Languages
-          <input value={languages} onChange={(e) => setLanguages(e.target.value)} />
+          <input value={languages} onChange={(e: ChangeEvent<HTMLInputElement>) => setLanguages(e.target.value)} />
         </label>
         <label>
           Interests
-          <input value={interests} onChange={(e) => setInterests(e.target.value)} />
+          <input value={interests} onChange={(e: ChangeEvent<HTMLInputElement>) => setInterests(e.target.value)} />
         </label>
         <button onClick={save}>{t("profile.update")}</button>
       </section>

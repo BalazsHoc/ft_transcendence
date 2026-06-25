@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { useAuth } from "../../features/auth/AuthContext";
@@ -26,12 +27,18 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
         <NavLink to="/chats">{t("nav.chats")}</NavLink>
         <NavLink to="/profile">{t("nav.profile")}</NavLink>
         <NavLink to="/api-test">{t("nav.apiTest")}</NavLink>
+        <NavLink to="/ui-elements-test">UI Elements</NavLink>
       </nav>
 
       <div className="header-actions">
         <LanguageSwitcher />
-        <button onClick={onToggleDarkMode} className="button secondary">
-          {darkMode ? "🌙" : "☀️"}
+        <button
+          onClick={onToggleDarkMode}
+          className="button secondary"
+          aria-label={darkMode ? "Switch to light theme" : "Switch to dark theme"}
+          title={darkMode ? "Switch to light theme" : "Switch to dark theme"}
+        >
+          {darkMode ? <Moon size={18} /> : <Sun size={18} />}
         </button>
 
         {user ? (
@@ -46,7 +53,7 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
                   borderRadius: "999px",
                   objectFit: "cover",
                 }}
-                onError={(event) => {
+                onError={(event: any) => {
                   event.currentTarget.src = DEFAULT_AVATAR_SRC;
                 }}
               />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { EventCard } from "../components/events/EventCard";
 import { ApiLog } from "../components/shared/ApiLog";
@@ -62,9 +62,9 @@ export function DiscoverPage() {
         <input
           placeholder={t("discover.sport")}
           value={sport}
-          onChange={(e) => setSport(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setSport(e.target.value)}
         />
-        <select value={level} onChange={(e) => setLevel(e.target.value)}>
+        <select value={level} onChange={(e: ChangeEvent<HTMLSelectElement>) => setLevel(e.target.value)}>
           <option value="">all levels</option>
           <option value="all">all</option>
           <option value="beginner">beginner</option>
