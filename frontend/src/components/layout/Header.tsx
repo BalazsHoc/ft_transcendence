@@ -3,7 +3,7 @@ import { Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { useAuth } from "../../features/auth/AuthContext";
-import { DEFAULT_AVATAR_SRC } from "../../utils/media";
+import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
 
 type HeaderProps = {
   darkMode: boolean;
@@ -45,7 +45,7 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
           <>
             <span className="user-chip">
               <img
-                src={user.avatar || DEFAULT_AVATAR_SRC}
+                src={resolveMediaUrl(user.avatar, DEFAULT_AVATAR_SRC)}
                 alt={user.username}
                 style={{
                   width: "24px",
