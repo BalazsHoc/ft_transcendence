@@ -18,7 +18,6 @@
 # Ignore log files and databases
 /logs
 *.log
-*.sqlite
 *.db
 
 # Ignore node_modules and build artifacts
