@@ -1,4 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
+from django.conf import settings
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -67,3 +68,62 @@ class GeoRememberView(APIView):
         except ImproperlyConfigured as exc:
             return Response({"detail": str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
         return Response(data, status=status.HTTP_201_CREATED)
+
+
+class GeoMapStyleView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        maptiler_key = getattr(settings, "MAPTILER_API_KEY", "")
+        if maptiler_key:
+            light_map_id = getattr(settings, "MAPTILER_LIGHT_MAP_ID", "dataviz-v4-light")
+            dark_map_id = getattr(settings, "MAPTILER_DARK_MAP_ID", "dataviz-dark")
+            return Response(
+                {
+                    "provider": "maptiler",
+                    "styles": {
+                        "light": {
+                            "url": (
+                                f"https://api.maptiler.com/maps/{light_map_id}/"
+                                f"{{z}}/{{x}}/{{y}}.png?key={maptiler_key}"
+                            ),
+                            "attribution": (
+                                '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> '
+                                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            ),
+                        },
+                        "dark": {
+                            "url": (
+                                f"https://api.maptiler.com/maps/{dark_map_id}/"
+                                f"{{z}}/{{x}}/{{y}}.png?key={maptiler_key}"
+                            ),
+                            "attribution": (
+                                '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> '
+                                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            ),
+                        },
+                    },
+                }
+            )
+
+        return Response(
+            {
+                "provider": "carto",
+                "styles": {
+                    "light": {
+                        "url": "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+                        "attribution": (
+                            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors '
+                            '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+                        ),
+                    },
+                    "dark": {
+                        "url": "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                        "attribution": (
+                            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors '
+                            '&copy; <a href="https://carto.com/attributions">CARTO</a>'
+                        ),
+                    },
+                },
+            }
+        )

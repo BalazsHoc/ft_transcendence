@@ -53,6 +53,8 @@ SIMPLE_JWT={'ACCESS_TOKEN_LIFETIME':timedelta(hours=2),'REFRESH_TOKEN_LIFETIME':
 SPECTACULAR_SETTINGS={'TITLE':'Transcendence Sports MVP API','DESCRIPTION':'Sports events, RSVPs and event chat backend for Transcendence MVP.','VERSION':'0.1.0'}
 GEO_PROVIDER=os.getenv('GEO_PROVIDER','auto')
 MAPTILER_API_KEY=os.getenv('MAPTILER_API_KEY','')
+MAPTILER_LIGHT_MAP_ID=os.getenv('MAPTILER_LIGHT_MAP_ID','dataviz-v4-light')
+MAPTILER_DARK_MAP_ID=os.getenv('MAPTILER_DARK_MAP_ID','dataviz-dark')
 GEOAPIFY_API_KEY=os.getenv('GEOAPIFY_API_KEY','')
 NOMINATIM_USER_AGENT=os.getenv('NOMINATIM_USER_AGENT','ft-transcendence/1.0')
 GEO_CACHE_TTL_DAYS=int(os.getenv('GEO_CACHE_TTL_DAYS','30'))
