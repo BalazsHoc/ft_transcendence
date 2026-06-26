@@ -4,7 +4,7 @@ import { useAuth } from "../features/auth/AuthContext";
 import { updateMe } from "../api/authApi";
 import { ApiLog } from "../components/shared/ApiLog";
 import styles from "../components/shared/FormCard.module.css";
-import { DEFAULT_AVATAR_SRC } from "../utils/media";
+import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../utils/media";
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -13,7 +13,9 @@ export function ProfilePage() {
   const [languages, setLanguages] = useState("");
   const [interests, setInterests] = useState("");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || DEFAULT_AVATAR_SRC);
+  const [avatarPreview, setAvatarPreview] = useState(
+    resolveMediaUrl(user?.avatar, DEFAULT_AVATAR_SRC),
+  );
   const [log, setLog] = useState("");
 
   useEffect(() => {
@@ -24,7 +26,7 @@ export function ProfilePage() {
 
   useEffect(() => {
     if (!avatarFile) {
-      setAvatarPreview(user?.avatar || DEFAULT_AVATAR_SRC);
+      setAvatarPreview(resolveMediaUrl(user?.avatar, DEFAULT_AVATAR_SRC));
       return;
     }
 

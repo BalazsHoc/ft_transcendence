@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { EventItem } from "../../types/api";
 import { useTranslation } from "react-i18next";
 import styles from "./EventCard.module.css";
-import { DEFAULT_EVENT_IMAGE_SRC } from "../../utils/media";
+import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
 
 export function EventCard({
   event,
@@ -21,7 +21,7 @@ export function EventCard({
     <article className={styles.eventCard}>
         <img
           className={styles.image}
-          src={event.image || DEFAULT_EVENT_IMAGE_SRC}
+          src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
           alt={event.title}
           onError={(eventNode: any) => {
             eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;

@@ -6,7 +6,7 @@ import { ApiLog } from "../components/shared/ApiLog";
 import { EventItem } from "../types/api";
 import { getEvent, joinEvent, leaveEvent } from "../api/eventsApi";
 import eventStyles from "../components/events/EventCard.module.css";
-import { DEFAULT_EVENT_IMAGE_SRC } from "../utils/media";
+import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../utils/media";
 
 export function EventDetailsPage() {
   const { t } = useTranslation();
@@ -54,7 +54,7 @@ export function EventDetailsPage() {
       <h1>{event.title}</h1>
       <section className="card">
         <img
-          src={event.image || DEFAULT_EVENT_IMAGE_SRC}
+          src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
           alt={event.title}
           style={{
             width: "100%",

@@ -5,7 +5,7 @@ import { EventPayload } from "../../api/eventsApi";
 import { rememberSearch } from "../../api/geoApi";
 import { LocationAutocomplete } from "../geo/LocationAutocomplete";
 import styles from "../shared/FormCard.module.css";
-import { DEFAULT_EVENT_IMAGE_SRC } from "../../utils/media";
+import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
 
 function toLocalInputValue(value?: string) {
   if (!value) return "";
@@ -55,12 +55,12 @@ export function EventForm({
   );
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState(
-    initialEvent?.image || DEFAULT_EVENT_IMAGE_SRC,
+    resolveMediaUrl(initialEvent?.image, DEFAULT_EVENT_IMAGE_SRC),
   );
 
   useEffect(() => {
     if (!imageFile) {
-      setImagePreview(initialEvent?.image || DEFAULT_EVENT_IMAGE_SRC);
+      setImagePreview(resolveMediaUrl(initialEvent?.image, DEFAULT_EVENT_IMAGE_SRC));
       return;
     }
 
