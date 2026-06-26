@@ -13,16 +13,24 @@
 
 .mapCanvasCard {
   min-height: 620px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.18), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.16), transparent 30%),
+    #f8fafc;
 }
 
 .mapCanvas {
   width: 100%;
   height: 560px;
-  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  border-radius: var(--radius-card);
   overflow: hidden;
   background:
-    linear-gradient(135deg, rgba(15, 23, 42, 0.05), rgba(15, 23, 42, 0.02)),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.08), rgba(20, 184, 166, 0.08)),
     #dbeafe;
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.14);
 }
 
 .mapStatus,
@@ -35,4 +43,43 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.eventMarker {
+  width: 28px;
+  height: 28px;
+}
+
+.eventMarker span {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 2px auto 0;
+  border: 3px solid #ffffff;
+  border-radius: 999px 999px 999px 4px;
+  background: linear-gradient(135deg, #0f766e, #f59e0b);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.32);
+  transform: rotate(-45deg);
+}
+
+.eventMarker span::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 5px;
+  margin: 3.5px auto;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+:global(body.dark) .mapCanvasCard {
+  background:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.2), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.12), transparent 30%),
+    #0f172a;
+}
+
+:global(body.dark) .mapCanvas {
+  border-color: rgba(148, 163, 184, 0.24);
+  box-shadow: 0 24px 65px rgba(0, 0, 0, 0.36);
 }

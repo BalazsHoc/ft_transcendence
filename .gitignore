@@ -4,6 +4,8 @@
 /backend/.env.development
 /backend/.env.production
 /backend/.venv
+/backend/core/__pycache__
+/backend/core/migrations/__pycache__
 *__pycache__*
 
 

@@ -17,6 +17,23 @@ export type GeoResponse = {
   results: GeoSuggestion[];
 };
 
+export type MapTileStyle = {
+  url: string;
+  attribution: string;
+};
+
+export type MapStyleResponse = {
+  provider: string;
+  styles: {
+    light: MapTileStyle;
+    dark: MapTileStyle;
+  };
+};
+
+export function getMapStyle() {
+  return apiRequest<MapStyleResponse>("/api/geo/map-style/");
+}
+
 export function rememberSearch(
   payload: {
     query: string;

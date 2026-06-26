@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getEvents } from "../api/eventsApi";
+import { getMapStyle, MapStyleResponse } from "../api/geoApi";
 import { GeoSuggestion, EventItem } from "../types/api";
 import { LocationAutocomplete } from "../components/geo/LocationAutocomplete";
 import eventStyles from "../components/events/EventCard.module.css";
@@ -14,6 +15,26 @@ declare global {
 }
 
 let leafletLoader: Promise<void> | null = null;
+
+const FALLBACK_MAP_STYLE: MapStyleResponse = {
+  provider: "carto",
+  styles: {
+    light: {
+      url: "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    },
+    dark: {
+      url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    },
+  },
+};
+
+function getCurrentMapTheme() {
+  return document.body.classList.contains("dark") ? "dark" : "light";
+}
 
 function ensureLeaflet() {
   if (typeof window === "undefined") return Promise.resolve();
@@ -69,8 +90,14 @@ export function MapPage() {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [focusPoint, setFocusPoint] = useState<GeoSuggestion | null>(null);
   const [status, setStatus] = useState("Loading map...");
+  const [mapStyle, setMapStyle] = useState<MapStyleResponse>(FALLBACK_MAP_STYLE);
+  const [mapTheme, setMapTheme] = useState<"light" | "dark">(() =>
+    typeof document === "undefined" ? "light" : getCurrentMapTheme(),
+  );
+  const [mapReady, setMapReady] = useState(false);
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<any>(null);
+  const tileLayerRef = useRef<any>(null);
   const layerRef = useRef<any>(null);
 
   useEffect(() => {
@@ -83,6 +110,25 @@ export function MapPage() {
   }, []);
 
   useEffect(() => {
+    getMapStyle()
+      .then(setMapStyle)
+      .catch(() => setMapStyle(FALLBACK_MAP_STYLE));
+  }, []);
+
+  useEffect(() => {
+    const updateTheme = () => setMapTheme(getCurrentMapTheme());
+    updateTheme();
+
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     let disposed = false;
     ensureLeaflet()
       .then(() => {
@@ -91,15 +137,9 @@ export function MapPage() {
           zoomControl: true,
         }).setView([48.2082, 16.3738], 12);
 
-        window.L
-          .tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-          })
-          .addTo(map);
-
         mapRef.current = map;
         layerRef.current = window.L.layerGroup().addTo(map);
+        setMapReady(true);
       })
       .catch((error) => setStatus(error.message));
 
@@ -108,10 +148,29 @@ export function MapPage() {
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
+        tileLayerRef.current = null;
         layerRef.current = null;
+        setMapReady(false);
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!mapReady || !mapRef.current || !window.L) return;
+
+    const selectedStyle = mapStyle.styles[mapTheme];
+    if (tileLayerRef.current) {
+      mapRef.current.removeLayer(tileLayerRef.current);
+    }
+
+    tileLayerRef.current = window.L
+      .tileLayer(selectedStyle.url, {
+        attribution: selectedStyle.attribution,
+        maxZoom: 19,
+        detectRetina: true,
+      })
+      .addTo(mapRef.current);
+  }, [mapReady, mapStyle, mapTheme]);
 
   const visibleEvents = useMemo(() => {
     if (!focusPoint) return events;
@@ -138,9 +197,18 @@ export function MapPage() {
     layer.clearLayers();
 
     const bounds: [number, number][] = [];
+    const eventIcon = window.L.divIcon({
+      className: styles.eventMarker,
+      html: '<span></span>',
+      iconSize: [28, 28],
+      iconAnchor: [14, 28],
+      popupAnchor: [0, -26],
+    });
 
     visibleEvents.forEach((event: EventItem) => {
-      const marker = window.L.marker([event.latitude, event.longitude]).addTo(layer);
+      const marker = window.L
+        .marker([event.latitude, event.longitude], { icon: eventIcon })
+        .addTo(layer);
       marker.bindPopup(
         `<strong>${event.title}</strong><br/>${event.location_name}<br/>${new Date(event.start_at).toLocaleString()}`,
       );
@@ -152,9 +220,10 @@ export function MapPage() {
       const focusMarker = window.L
         .circleMarker([focusPoint.latitude, focusPoint.longitude], {
           radius: 10,
-          color: "#0f172a",
-          fillColor: "#f59e0b",
+          color: mapTheme === "dark" ? "#f8fafc" : "#0f172a",
+          fillColor: mapTheme === "dark" ? "#14b8a6" : "#f59e0b",
           fillOpacity: 0.9,
+          weight: 3,
         })
         .addTo(layer);
       focusMarker.bindPopup(`<strong>${focusPoint.label}</strong>`);
@@ -167,7 +236,7 @@ export function MapPage() {
     } else if (!focusPoint && bounds.length > 1) {
       map.fitBounds(bounds as any, { padding: [40, 40] });
     }
-  }, [focusPoint, visibleEvents]);
+  }, [focusPoint, visibleEvents, mapTheme]);
 
   return (
     <div className={styles.mapPage}>
