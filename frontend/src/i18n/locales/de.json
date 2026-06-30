@@ -69,7 +69,7 @@
     "searchPlaceholder": "Straße, Stadt oder Location eingeben",
     "reset": "Karte zurücksetzen",
     "focusedOn": "Fokus auf",
-    "eventsNear": "Events in der Nähe ({count})",
+    "eventsNear": "Events in der Nähe ({{count}})",
     "noEvents": "Keine Events in dieser Umgebung gefunden.",
     "focusEvent": "Event fokussieren"
   },

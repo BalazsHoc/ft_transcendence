@@ -3,6 +3,8 @@ import { EventItem } from "../../types/api";
 import { useTranslation } from "react-i18next";
 import styles from "./EventCard.module.css";
 import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
+import Button from "../test_ui/TestButton";
+import Badge from "../test_ui/TestBadge";
 
 export function EventCard({
   event,
@@ -18,7 +20,7 @@ export function EventCard({
   const { t } = useTranslation();
 
   return (
-    <article className={styles.eventCard}>
+    <article className={`${styles.eventCard} p-4 rounded-lg border border-[var(--card-border)]`} >
         <img
           className={styles.image}
           src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
@@ -31,9 +33,11 @@ export function EventCard({
         <Link to={`/events/${event.id}`}>{event.title}</Link>
       </h3>
 
-      <p>
-        {event.sport} / {event.level}
-      </p>
+      <div className={styles.badges}>
+        <Badge variant="primary">{event.sport}</Badge>
+        <Badge variant="indigo">{event.level}</Badge>
+      </div>
+
 
       <p className={styles.eventLocation}>{event.location_name}</p>
 
@@ -55,11 +59,15 @@ export function EventCard({
 
       <div className="row">
         {onJoin && (
-          <button onClick={() => onJoin(event.id)}>{t("common.join")}</button>
+          <Button variant="primary" size="md" onClick={() => onJoin(event.id)}>
+            {t("common.join")}
+          </Button>
         )}
 
         {onLeave && (
-          <button onClick={() => onLeave(event.id)}>{t("common.leave")}</button>
+          <Button variant="secondary" size="md" onClick={() => onLeave(event.id)}>
+            {t("common.leave")}
+          </Button>
         )}
 
         <Link className="button secondary" to={`/events/${event.id}/edit`}>
@@ -67,9 +75,9 @@ export function EventCard({
         </Link>
 
         {onDelete && (
-          <button className="danger" onClick={() => onDelete(event.id)}>
+          <Button variant="danger" size="md" onClick={() => onDelete(event.id)}>
             {t("common.delete")}
-          </button>
+          </Button>
         )}
       </div>
     </article>

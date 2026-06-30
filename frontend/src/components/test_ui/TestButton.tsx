@@ -41,7 +41,7 @@ export default function Button({
       "border border-[var(--btn-secondary-border)] bg-[var(--btn-secondary-bg)] text-[var(--btn-secondary-text)] backdrop-blur-md hover:bg-[var(--btn-secondary-hover)]",
     outline:
       "border border-[var(--btn-outline-border)] bg-[var(--btn-outline-bg)] text-[var(--btn-outline-text)] hover:border-[var(--btn-outline-hover-border)] hover:text-[var(--btn-outline-hover-text)]",
-    danger: "bg-red-600 text-white shadow-sm hover:bg-red-700",
+    danger: "bg-red-300 text-white shadow-sm <hover:bg-red-7></hover:bg-red-7>00",
     indigo:
       "border border-[var(--badge-indigo-border)] bg-[var(--badge-indigo-bg)] text-[var(--badge-indigo-text)] hover:brightness-95",
     glass:

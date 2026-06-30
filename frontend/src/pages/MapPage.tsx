@@ -239,7 +239,7 @@ export function MapPage() {
   }, [focusPoint, visibleEvents, mapTheme]);
 
   return (
-    <div className={styles.mapPage}>
+    <div className={'${styles.mapPage}'}>
       <section className={`card ${styles.mapControls}`}>
         <h1>{t("map.title")}</h1>
         <p>{t("map.subtitle")}</p>
@@ -272,7 +272,7 @@ export function MapPage() {
             <p>{t("map.noEvents")}</p>
           ) : (
             visibleEvents.map((event: EventItem) => (
-              <article key={event.id} className={`${eventStyles.eventCard} ${eventStyles.compact}`}>
+              <article key={event.id} className={`${eventStyles.eventCard} ${eventStyles.compact} p-4 rounded-lg border border-[var(--card-border)]`}>
                 <h3>
                   <Link to={`/events/${event.id}`}>{event.title}</Link>
                 </h3>

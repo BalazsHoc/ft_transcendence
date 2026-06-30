@@ -13,7 +13,7 @@
      Keep these generic so new components can reuse the same palette. */
 
   /* Button tokens */
-  --btn-primary-bg: #0A1424;
+  --btn-primary-bg: #0e4142;
   --btn-primary-text: #FFFFFF;
   --btn-primary-hover: #007670;
   
@@ -48,6 +48,11 @@
   --badge-emerald-bg: #ECFDF5;
   --badge-emerald-text: #059669;
   --badge-emerald-border: #D1FAE5;
+
+  /* Card tokens */
+  --card-bg: #FFFFFF;
+  --card-border: #b3bcce;
+  --card-shadow: rgba(0, 0, 0, 0.1);
 
   /* Radius tokens
      Use these instead of hard-coded rounded-* values when building shared components.
