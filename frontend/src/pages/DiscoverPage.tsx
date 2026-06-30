@@ -5,6 +5,7 @@ import { ApiLog } from "../components/shared/ApiLog";
 import { EventItem } from "../types/api";
 import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
 import styles from "./DiscoverPage.module.css";
+import Button  from "../components/test_ui/TestButton";
 
 export function DiscoverPage() {
   const { t } = useTranslation();
@@ -71,7 +72,9 @@ export function DiscoverPage() {
           <option value="intermediate">intermediate</option>
           <option value="advanced">advanced</option>
         </select>
-        <button onClick={load}>{t("discover.load")}</button>
+        <Button variant="primary" onClick={load}>
+          {t("discover.load")}
+        </Button  >
       </section>
       <div className="event-list">
         {events.map((event) => (

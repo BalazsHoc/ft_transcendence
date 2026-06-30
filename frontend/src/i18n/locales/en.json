@@ -69,7 +69,7 @@
     "searchPlaceholder": "Type a street, city, or venue",
     "reset": "Reset map",
     "focusedOn": "Focused on",
-    "eventsNear": "Events nearby ({count})",
+    "eventsNear": "Events nearby ({{count}})",
     "noEvents": "No events found near this location.",
     "focusEvent": "Focus event"
   },

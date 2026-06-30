@@ -69,7 +69,7 @@
     "searchPlaceholder": "Введіть вулицю, місто або місце",
     "reset": "Скинути карту",
     "focusedOn": "Фокус на",
-    "eventsNear": "Події поруч ({count})",
+    "eventsNear": "Події поруч ({{count}})",
     "noEvents": "Поблизу не знайдено подій.",
     "focusEvent": "Сфокусувати подію"
   },
