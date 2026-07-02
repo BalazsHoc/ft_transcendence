@@ -20,7 +20,7 @@ export function EventCard({
   const { t } = useTranslation();
 
   return (
-    <article className={`${styles.eventCard} p-4 rounded-lg border border-[var(--card-border)]`} >
+    <article className={`${styles.eventCard} mb-2 p-4 rounded-lg border border-[var(--card-border)]`} >
         <img
           className={styles.image}
           src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
