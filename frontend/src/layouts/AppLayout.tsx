@@ -4,13 +4,10 @@ import { Header } from "../components/layout/Header";
 import { Footer } from "../components/layout/Footer";
 
 export function AppLayout() {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
   return (
