@@ -9,73 +9,87 @@
 }
 
 :root {
-  /* Design tokens for shared UI components and Tailwind-based examples.
-     Keep these generic so new components can reuse the same palette. */
+	--bg: #f4f5f4;
+	--text: #111827;
+	--surface: #ffffff;
+	--surface-border: #e5e7eb;
+	--surface-strong: #42290e;
+	--surface-shadow: rgba(0, 0, 0, 0.1);
 
-  /* Button tokens */
-  --btn-primary-bg: #0e4142;
-  --btn-primary-text: #FFFFFF;
-  --btn-primary-hover: #007670;
-  
-  --btn-secondary-bg: rgba(255, 255, 255, 0.8);
-  --btn-secondary-text: #0A1424;
-  --btn-secondary-border: rgba(226, 232, 240, 0.8);
-  --btn-secondary-hover: #FFFFFF;
-  
-  --btn-outline-bg: transparent;
-  --btn-outline-text: #0A1424;
-  --btn-outline-border: #E2E8F0;
-  --btn-outline-hover-border: #007670;
-  --btn-outline-hover-text: #007670;
-  
-  /* Badge tokens */
-  --badge-gray-bg: #F1F5F9;
-  --badge-gray-text: #475569;
-  --badge-gray-border: #E2E8F0;
-  
-  --badge-teal-bg: #F0FDFA;
-  --badge-teal-text: #007670;
-  --badge-teal-border: #CCFBF1;
-  
-  --badge-amber-bg: #FFF7ED;
-  --badge-amber-text: #F2994A;
-  --badge-amber-border: #FFEDD5;
-  
-  --badge-indigo-bg: #EEF2FF;
-  --badge-indigo-text: #4F46E5;
-  --badge-indigo-border: #E0E7FF;
+	--control-bg: #ffffff;
+	--control-border: #cbd5e1;
+	--control-text: #111827;
 
-  --badge-emerald-bg: #ECFDF5;
-  --badge-emerald-text: #059669;
-  --badge-emerald-border: #D1FAE5;
+	--button-bg: #111827;
+	--button-border: #111827;
+	--button-text: #ffffff;
 
-  /* Card tokens */
-  --card-bg: #FFFFFF;
-  --card-border: #323f58;
-  --card-shadow: rgba(0, 0, 0, 0.1);
+	--button-secondary-bg: rgba(255, 255, 255, 0.8);
+	--button-secondary-text: #0a1424;
+	--button-secondary-border: rgba(226, 232, 240, 0.8);
 
-  /* Radius tokens
-     Use these instead of hard-coded rounded-* values when building shared components.
-     Cards are calmer and slightly larger, buttons are touch-friendly, badges stay pill-like. */
-  --radius-card: 5px;
-  --radius-button: 12px;
-  --radius-badge: 999px;
+	--button-outline-bg: transparent;
+	--button-outline-text: #0a1424;
+	--button-outline-border: #E2E8F0;
+
+	--badge-gray-bg: #F1F5F9;
+	--badge-gray-text: #475569;
+	--badge-gray-border: #E2E8F0;
+
+	--badge-teal-bg: #F0FDFA;
+	--badge-teal-text: #007670;
+	--badge-teal-border: #CCFBF1;
+
+	--badge-amber-bg: #FFF7ED;
+	--badge-amber-text: #F2994A;
+	--badge-amber-border: #FFEDD5;
+
+	--badge-indigo-bg: #EEF2FF;
+	--badge-indigo-text: #4F46E5;
+	--badge-indigo-border: #E0E7FF;
+
+	--badge-emerald-bg: #ECFDF5;
+	--badge-emerald-text: #059669;
+	--badge-emerald-border: #D1FAE5;
+
+	--user-chip-bg: #eef2ff;
+	--user-chip-text: #111827;
+	--nav-active-color: inherit;
+
+	--card-radius: 5px;
+	--button-radius: 12px;
+	--badge-radius: 999px;
 }
+
 body {
 	margin: 0;
-	font-family:
-		system-ui,
-		-apple-system,
-		BlinkMacSystemFont,
-		"Segoe UI",
-		sans-serif;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	background: var(--bg);
+	color: var(--text);
+}
 
-	background: #f4f4f5;
-	color: #111827;
+body.dark {
+	--bg: #0b0f19;
+	--text: #e5e7eb;
+	--surface: #111827;
+	--surface-border: #1f2937;
+	--control-bg: #0f172a;
+	--control-border: #334155;
+	--control-text: #e5e7eb;
+	--button-bg: #1f2937;
+	--button-border: #374151;
+	--button-text: #e5e7eb;
+	--button-secondary-bg: transparent;
+	--button-secondary-text: #e5e7eb;
+	--button-secondary-border: #6b7280;
+	--user-chip-bg: #1e293b;
+	--user-chip-text: #e5e7eb;
+	--nav-active-color: #ffffff;
 }
 
 a {
 	color: inherit;
+	text-decoration: none;
 }
 
 button,
@@ -83,68 +97,46 @@ button,
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-
-	border: 1px solid #111827;
-	border-radius: var(--radius-button);
-
+	border: 1px solid var(--button-border);
+	border-radius: var(--button-radius);
 	padding: 9px 13px;
-
-	background: #111827;
-	color: white;
-
-	text-decoration: none;
+	background: var(--button-bg);
+	color: var(--button-text);
 	cursor: pointer;
 	font: inherit;
-
-	transition:
-		transform 0.08s ease,
-		background 0.15s ease,
-		border-color 0.15s ease,
-		opacity 0.15s ease;
+	text-decoration: none;
+	transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
 }
 
-/* Legacy global button styles.
-   This block exists for old pages that still render raw <button> elements.
-   It is not the preferred pattern for new UI work because global selectors:
-   - affect every button in the app, including third-party or form buttons;
-   - make variants hard to reason about;
-   - compete with Tailwind classes and component-level styles.
-   For new UI, use components/test_ui/TestButton.tsx and add variants there.
-   Example: <Button variant="primary" size="md" onClick={handleSave}>Save</Button> */
 button:active,
 .button:active {
 	transform: scale(0.97);
 	opacity: 0.85;
 }
 
-/* Legacy global variant.
-   Prefer <Button variant="secondary">...</Button> for new code so behavior,
-   states, icons, radius, and disabled styling live in one reusable component. */
 button.secondary,
 .button.secondary {
-	background: white;
-	color: #111827;
-}
-
-button.secondary:active,
-.button.secondary:active {
-	transform: scale(0.97);
-	opacity: 0.85;
+	background: var(--button-secondary-bg);
+	border-color: var(--button-secondary-border);
+	color: var(--button-secondary-text);
 }
 
 button.danger {
 	background: #991b1b;
 	border-color: #991b1b;
+	color: #ffffff;
 }
 
 input,
 select,
 textarea {
 	width: 100%;
-	border: 1px solid #cbd5e1;
-	border-radius: var(--radius-button);
+	border: 1px solid var(--control-border);
+	border-radius: var(--button-radius);
 	padding: 10px;
 	font: inherit;
+	background: var(--control-bg);
+	color: var(--control-text);
 }
 
 textarea {
@@ -164,13 +156,12 @@ textarea {
 	justify-content: space-between;
 	gap: 16px;
 	padding: 14px 22px;
-
-	background: white;
-	border-bottom: 1px solid #e5e7eb;
+	background: var(--surface);
+	border-bottom: 1px solid var(--surface-border);
 }
 
 .footer {
-	border-top: 1px solid #e5e7eb;
+	border-top: 1px solid var(--surface-border);
 	border-bottom: 0;
 }
 
@@ -190,17 +181,17 @@ textarea {
 .nav a.active {
 	font-weight: 800;
 	text-decoration: underline;
+	color: var(--nav-active-color);
 }
 
 .user-chip {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-
 	padding: 8px 10px;
-	border-radius: var(--radius-badge);
-
-	background: #eef2ff;
+	border-radius: var(--badge-radius);
+	background: var(--user-chip-bg);
+	color: var(--user-chip-text);
 }
 
 .language-switcher {
@@ -222,9 +213,9 @@ textarea {
 
 .hero,
 .card {
-	background: white;
-	border: 1px solid #e5e7eb;
-	border-radius: var(--radius-card);
+	background: var(--surface);
+	border: 1px solid var(--surface-border);
+	border-radius: var(--card-radius);
 	padding: 18px;
 	margin-bottom: 18px;
 }
@@ -282,73 +273,3 @@ pre {
 		font-size: 30px;
 	}
 }
-
-/* Current theme prototype.
-   The app currently toggles body.dark from React and stores the choice in
-   localStorage. This is okay for a quick prototype, but it is not ideal because:
-   - the first paint can flash in the wrong theme before React runs;
-   - body classes are broad and easy to conflict with;
-   - localStorage is browser-only, so SSR/tests/native shells need extra guards;
-   - user preference is local to one browser unless we sync it to the backend.
-
-   Preferred production approach:
-   1. Put theme tokens in :root and [data-theme="dark"].
-   2. Add a tiny inline script in index.html before the app loads:
-      read saved theme, fallback to prefers-color-scheme, set document.documentElement.dataset.theme.
-   3. In React, update document.documentElement.dataset.theme instead of body.classList.
-   4. Store only the user's explicit override; otherwise respect system preference.
-   5. If theme is part of the profile, save it in the backend and hydrate it after login. 
-	
-   For an example of this approach, see global-test.css in this directory.
-   It is a reference file for useful tokens and experiments, not app wiring yet. */
-
-body.dark {
-	background: #0b0f19;
-	color: #e5e7eb;
-}
-
-body.dark .header,
-body.dark .footer {
-	background: #0f172a;
-	border-color: #1f2937;
-}
-
-body.dark .hero,
-body.dark .card {
-	background: #111827;
-	border-color: #1f2937;
-}
-
-body.dark .button {
-	background: #1f2937;
-	border-color: #374151;
-	color: #e5e7eb;
-}
-
-body.dark button.secondary,
-body.dark .button.secondary {
-	background: transparent;
-	border-color: #6b7280;
-	color: #e5e7eb;
-}
-
-body.dark input,
-body.dark select,
-body.dark textarea {
-	background: #0f172a;
-	border-color: #334155;
-	color: #e5e7eb;
-}
-
-/* user chip */
-body.dark .user-chip {
-	background: #1e293b;
-	color: #e5e7eb;
-}
-
-/* nav active */
-body.dark .nav a.active {
-	color: #ffffff;
-}
-
-
