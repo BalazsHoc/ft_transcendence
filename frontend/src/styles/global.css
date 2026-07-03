@@ -4,61 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* -------------------------
+   BASE RESET
+--------------------------*/
 * {
 	box-sizing: border-box;
-}
-
-:root {
-	--bg: #f4f5f4;
-	--text: #111827;
-	--surface: #ffffff;
-	--surface-border: #e5e7eb;
-	--surface-strong: #42290e;
-	--surface-shadow: rgba(0, 0, 0, 0.1);
-
-	--control-bg: #ffffff;
-	--control-border: #cbd5e1;
-	--control-text: #111827;
-
-	--button-bg: #111827;
-	--button-border: #111827;
-	--button-text: #ffffff;
-
-	--button-secondary-bg: rgba(255, 255, 255, 0.8);
-	--button-secondary-text: #0a1424;
-	--button-secondary-border: rgba(226, 232, 240, 0.8);
-
-	--button-outline-bg: transparent;
-	--button-outline-text: #0a1424;
-	--button-outline-border: #E2E8F0;
-
-	--badge-gray-bg: #F1F5F9;
-	--badge-gray-text: #475569;
-	--badge-gray-border: #E2E8F0;
-
-	--badge-teal-bg: #F0FDFA;
-	--badge-teal-text: #007670;
-	--badge-teal-border: #CCFBF1;
-
-	--badge-amber-bg: #FFF7ED;
-	--badge-amber-text: #F2994A;
-	--badge-amber-border: #FFEDD5;
-
-	--badge-indigo-bg: #EEF2FF;
-	--badge-indigo-text: #4F46E5;
-	--badge-indigo-border: #E0E7FF;
-
-	--badge-emerald-bg: #ECFDF5;
-	--badge-emerald-text: #059669;
-	--badge-emerald-border: #D1FAE5;
-
-	--user-chip-bg: #eef2ff;
-	--user-chip-text: #111827;
-	--nav-active-color: inherit;
-
-	--card-radius: 5px;
-	--button-radius: 12px;
-	--badge-radius: 999px;
 }
 
 body {
@@ -68,63 +18,116 @@ body {
 	color: var(--text);
 }
 
+/* -------------------------
+   DESIGN TOKENS (LIGHT)
+--------------------------*/
+:root {
+	/* Base */
+	--bg: #f4f5f4;
+	--text: #111827;
+
+	/* Surfaces */
+	--surface: #ffffff;
+	--surface-border: #e5e7eb;
+	--surface-shadow: rgba(0, 0, 0, 0.1);
+
+	/* Controls */
+	--control-bg: #ffffff;
+	--control-border: #cbd5e1;
+	--control-text: #111827;
+
+	/* Buttons */
+	--button-bg: #111827;
+	--button-text: #ffffff;
+	--button-border: #111827;
+
+	--button-secondary-bg: rgba(255, 255, 255, 0.8);
+	--button-secondary-text: #0a1424;
+	--button-secondary-border: rgba(226, 232, 240, 0.8);
+
+	--button-outline-bg: transparent;
+	--button-outline-text: #0a1424;
+	--button-outline-border: #e2e8f0;
+
+	/* Header */
+	--header-link: #374151;
+	--header-link-hover: #111827;
+	--header-link-hover-bg: #e5e7eb;
+	--header-link-active: #ffffff;
+	--header-link-active-bg: #4f46e5;
+
+	--header-action: #ffffff;
+	--header-action-hover: #111827;
+	--header-action-hover-bg: #e5e7eb;
+
+	/* Badges */
+	--badge-gray-bg: #f1f5f9;
+	--badge-gray-text: #475569;
+
+	--badge-teal-bg: #f0fdfa;
+	--badge-teal-text: #007670;
+
+	--badge-amber-bg: #fff7ed;
+	--badge-amber-text: #f2994a;
+
+	--badge-indigo-bg: #eef2ff;
+	--badge-indigo-text: #4f46e5;
+
+	--badge-emerald-bg: #ecfdf5;
+	--badge-emerald-text: #059669;
+
+	/* User chip */
+	--user-chip-bg: #eef2ff;
+	--user-chip-text: #111827;
+
+	/* Radius */
+	--card-radius: 6px;
+	--button-radius: 12px;
+	--badge-radius: 999px;
+}
+
+/* -------------------------
+   DARK MODE OVERRIDES
+--------------------------*/
 body.dark {
 	--bg: #0b0f19;
 	--text: #e5e7eb;
+
 	--surface: #111827;
 	--surface-border: #1f2937;
+
 	--control-bg: #0f172a;
 	--control-border: #334155;
 	--control-text: #e5e7eb;
+
 	--button-bg: #1f2937;
 	--button-border: #374151;
 	--button-text: #e5e7eb;
+
 	--button-secondary-bg: transparent;
 	--button-secondary-text: #e5e7eb;
 	--button-secondary-border: #6b7280;
+
+	--header-link: #d1d5db;
+	--header-link-hover: #ffffff;
+	--header-link-hover-bg: #1f2937;
+	--header-link-active: #ffffff;
+	--header-link-active-bg: #2563eb;
+
+	--header-action: #d1d5db;
+	--header-action-hover: #ffffff;
+	--header-action-hover-bg: #1f2937;
+
 	--user-chip-bg: #1e293b;
 	--user-chip-text: #e5e7eb;
-	--nav-active-color: #ffffff;
 }
 
+/* -------------------------
+   GLOBAL ELEMENTS
+--------------------------*/
 a {
 	color: inherit;
 	text-decoration: none;
-}
-
-button,
-.button {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	border: 1px solid var(--button-border);
-	border-radius: var(--button-radius);
-	padding: 9px 13px;
-	background: var(--button-bg);
-	color: var(--button-text);
-	cursor: pointer;
-	font: inherit;
-	text-decoration: none;
-	transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
-}
-
-button:active,
-.button:active {
-	transform: scale(0.97);
-	opacity: 0.85;
-}
-
-button.secondary,
-.button.secondary {
-	background: var(--button-secondary-bg);
-	border-color: var(--button-secondary-border);
-	color: var(--button-secondary-text);
-}
-
-button.danger {
-	background: #991b1b;
-	border-color: #991b1b;
-	color: #ffffff;
 }
 
 input,
@@ -143,6 +146,9 @@ textarea {
 	min-height: 100px;
 }
 
+/* -------------------------
+   LAYOUT
+--------------------------*/
 .app-shell {
 	min-height: 100vh;
 	display: grid;
@@ -169,6 +175,68 @@ textarea {
 	font-weight: 800;
 }
 
+/* -------------------------
+   HEADER COMPONENTS
+--------------------------*/
+.header-nav-link {
+	color: var(--header-link);
+	transition: all 0.2s ease;
+}
+
+.header-nav-link:hover {
+	color: var(--header-link-hover);
+	background: var(--header-link-hover-bg);
+}
+
+.header-nav-link.active {
+	color: var(--header-link-active);
+	background: var(--header-link-active-bg);
+}
+
+.header-action {
+	color: var(--header-action);
+	transition: all 0.2s ease;
+}
+
+.header-action:hover {
+	color: var(--header-action-hover);
+	background: var(--header-action-hover-bg);
+}
+
+/* -------------------------
+   BUTTONS
+--------------------------*/
+button,
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--button-border);
+	border-radius: var(--button-radius);
+	padding: 9px 13px;
+	background: var(--button-bg);
+	color: var(--button-text);
+	cursor: pointer;
+	font: inherit;
+	transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+button:active,
+.button:active {
+	transform: scale(0.97);
+	opacity: 0.85;
+}
+
+button.secondary,
+.button.secondary {
+	background: var(--button-secondary-bg);
+	border-color: var(--button-secondary-border);
+	color: var(--button-secondary-text);
+}
+
+/* -------------------------
+   UTILITIES
+--------------------------*/
 .nav,
 .header-actions,
 .row {
@@ -176,12 +244,6 @@ textarea {
 	align-items: center;
 	gap: 10px;
 	flex-wrap: wrap;
-}
-
-.nav a.active {
-	font-weight: 800;
-	text-decoration: underline;
-	color: var(--nav-active-color);
 }
 
 .user-chip {
@@ -204,6 +266,9 @@ textarea {
 	width: auto;
 }
 
+/* -------------------------
+   PAGE LAYOUT
+--------------------------*/
 .page-container {
 	max-width: 1100px;
 	width: 100%;
@@ -242,6 +307,9 @@ textarea {
 	gap: 8px;
 }
 
+/* -------------------------
+   CODE BLOCKS
+--------------------------*/
 pre {
 	white-space: pre-wrap;
 	background: #111827;
@@ -251,6 +319,9 @@ pre {
 	overflow: auto;
 }
 
+/* -------------------------
+   STATUS COLORS
+--------------------------*/
 .ok {
 	color: #047857;
 	font-weight: 800;
@@ -261,6 +332,9 @@ pre {
 	font-weight: 800;
 }
 
+/* -------------------------
+   RESPONSIVE
+--------------------------*/
 @media (max-width: 800px) {
 	.header,
 	.footer,
