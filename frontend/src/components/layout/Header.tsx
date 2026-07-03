@@ -66,7 +66,9 @@ export function Header({ onToggleDarkMode }: HeaderProps) {
 
   return (
     <header className="header flex items-center justify-between">
-      <div className="logo">Active Vienna</div>
+      <a className="logo" href="/">
+        Active Vienna
+      </a>
 
       <nav className="flex items-center gap-2 flex-wrap">
         <HeaderNavLink to="/">{t("nav.home")}</HeaderNavLink>
