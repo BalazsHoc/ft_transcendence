@@ -20,6 +20,7 @@ export function LandingPage() {
         </Button>
 
         <Button
+          size="sm"
           variant="primary"
           onClick={() => navigate("/events/new")}
         >

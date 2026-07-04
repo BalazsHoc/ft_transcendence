@@ -20,7 +20,7 @@ function HeaderNavLink({
   children: React.ReactNode;
 }) {
   const baseClasses =
-    "px-3 py-2 text-sm font-medium rounded-[var(--radius-button)] transition-colors text-[var(--header-link)] hover:text-[var(--header-link-hover)] hover:bg-[var(--header-link-hover-bg)]";
+    "px-3 py-2 text-sm font-medium rounded-[var(--header-radius)] transition-colors text-[var(--header-link)] hover:text-[var(--header-link-hover)] shadow-sm hover:bg-[var(--header-link-hover-bg)] active:scale-95";
 
   const activeClasses =
     "bg-[var(--header-link-active-bg)] text-[var(--header-link-active)]";

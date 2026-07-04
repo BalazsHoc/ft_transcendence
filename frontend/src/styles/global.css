@@ -55,6 +55,7 @@ body {
 	--button-secondary-border: rgba(226, 232, 240, 0.9);
 
 	/* Header */
+	--header-radius: 12px;
 	--header-link: #374151;
 	--header-link-hover: #111827;
 	--header-link-hover-bg: #cbb0fd;
