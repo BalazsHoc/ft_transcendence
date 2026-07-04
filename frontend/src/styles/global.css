@@ -57,9 +57,9 @@ body {
 	/* Header */
 	--header-link: #374151;
 	--header-link-hover: #111827;
-	--header-link-hover-bg: #e5e7eb;
+	--header-link-hover-bg: #cbb0fd;
 	--header-link-active: #ffffff;
-	--header-link-active-bg: #111827;
+	--header-link-active-bg: #7355aa;
 
 	--header-action: #ffffff;
 	--header-action-hover: #374151;
@@ -101,9 +101,9 @@ body.dark {
 
 	--header-link: #d1d5db;
 	--header-link-hover: #ffffff;
-	--header-link-hover-bg: #1f2937;
+	--header-link-hover-bg: #452f6f;
 	--header-link-active: #ffffff;
-	--header-link-active-bg: #2563eb;
+	--header-link-active-bg: #7b54c5;
 
 	--header-action: #d1d5db;
 	--header-action-hover: #ffffff;
