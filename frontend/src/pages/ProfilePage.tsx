@@ -5,6 +5,7 @@ import { updateMe } from "../api/authApi";
 import { ApiLog } from "../components/shared/ApiLog";
 import styles from "../components/shared/FormCard.module.css";
 import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../utils/media";
+import Button from "../components/shared/Button";
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -90,7 +91,7 @@ export function ProfilePage() {
           Interests
           <input value={interests} onChange={(e: ChangeEvent<HTMLInputElement>) => setInterests(e.target.value)} />
         </label>
-        <button onClick={save}>{t("profile.update")}</button>
+        <Button variant="primary" onClick={save}>{t("profile.update")}</Button>
       </section>
       <ApiLog log={log} />
     </>
