@@ -5,6 +5,7 @@ import { getEvents } from "../api/eventsApi";
 import { getMapStyle, MapStyleResponse } from "../api/geoApi";
 import { GeoSuggestion, EventItem } from "../types/api";
 import { LocationAutocomplete } from "../components/geo/LocationAutocomplete";
+import Button from "../components/shared/Button";
 import eventStyles from "../components/events/EventCard.module.css";
 import styles from "./MapPage.module.css";
 
@@ -249,9 +250,9 @@ export function MapPage() {
           onSelect={(suggestion) => setFocusPoint(suggestion)}
         />
         <div className="row">
-          <button type="button" onClick={() => setFocusPoint(null)}>
+          <Button variant="primary" onClick={() => setFocusPoint(null)}>
             {t("map.reset")}
-          </button>
+          </Button>
         </div>
         {focusPoint && (
           <p className={styles.mapFocus}>
