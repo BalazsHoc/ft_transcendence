@@ -31,9 +31,7 @@ function HeaderNavLink({
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `${navBase} header-nav-link ${
-          isActive ? "active" : ""
-        }`
+        `${navBase} header-nav-link ${isActive ? "active" : ""}`
       }
     >
       {children}
@@ -60,7 +58,10 @@ function HeaderAction({
   );
 }
 
-export function Header({ onToggleDarkMode }: HeaderProps) {
+export function Header({
+  darkMode,
+  onToggleDarkMode,
+}: HeaderProps) {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
 
@@ -75,7 +76,9 @@ export function Header({ onToggleDarkMode }: HeaderProps) {
         <HeaderNavLink to="/discover">{t("nav.discover")}</HeaderNavLink>
         <HeaderNavLink to="/map">{t("nav.map")}</HeaderNavLink>
         <HeaderNavLink to="/my-events">{t("nav.myEvents")}</HeaderNavLink>
-        <HeaderNavLink to="/events/new">{t("nav.createEvent")}</HeaderNavLink>
+        <HeaderNavLink to="/events/new">
+          {t("nav.createEvent")}
+        </HeaderNavLink>
         <HeaderNavLink to="/chats">{t("nav.chats")}</HeaderNavLink>
         <HeaderNavLink to="/profile">{t("nav.profile")}</HeaderNavLink>
         <HeaderNavLink to="/api-test">{t("nav.apiTest")}</HeaderNavLink>
@@ -88,11 +91,7 @@ export function Header({ onToggleDarkMode }: HeaderProps) {
         <LanguageSwitcher />
 
         <HeaderAction onClick={onToggleDarkMode}>
-          {document.body.classList.contains("dark") ? (
-            <Sun size={18} />
-          ) : (
-            <Moon size={18} />
-          )}
+          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
         </HeaderAction>
 
         {user ? (
@@ -116,7 +115,9 @@ export function Header({ onToggleDarkMode }: HeaderProps) {
         ) : (
           <>
             <HeaderNavLink to="/login">{t("nav.login")}</HeaderNavLink>
-            <HeaderNavLink to="/register">{t("nav.register")}</HeaderNavLink>
+            <HeaderNavLink to="/register">
+              {t("nav.register")}
+            </HeaderNavLink>
           </>
         )}
       </div>
