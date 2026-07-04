@@ -11,15 +11,6 @@ type HeaderProps = {
   onToggleDarkMode: () => void;
 };
 
-type HeaderActionProps = {
-  onClick?: () => void;
-  children: React.ReactNode;
-  as?: "button" | "span";
-};
-
-const navBase =
-  "px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 active:scale-95";
-
 function HeaderNavLink({
   to,
   children,
@@ -31,7 +22,13 @@ function HeaderNavLink({
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `${navBase} header-nav-link ${isActive ? "active" : ""}`
+        [
+          "px-3 py-2 text-sm font-medium rounded-[var(--radius-button)] transition-colors",
+          "text-[var(--header-link)] hover:bg-[var(--header-link-hover-bg)]",
+          isActive
+            ? "bg-[var(--header-link-active-bg)] text-[var(--header-link-active)]"
+            : "",
+        ].join(" ")
       }
     >
       {children}
@@ -39,35 +36,36 @@ function HeaderNavLink({
   );
 }
 
-const actionBase =
-  "inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer header-action";
-
 function HeaderAction({
   onClick,
   children,
   as = "button",
-}: HeaderActionProps) {
+}: {
+  onClick?: () => void;
+  children: React.ReactNode;
+  as?: "button" | "span";
+}) {
+  const className =
+    "inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-[var(--radius-button)] transition-colors text-[var(--header-action)] hover:bg-[var(--header-action-hover-bg)]";
+
   if (as === "span") {
-    return <span className={actionBase}>{children}</span>;
+    return <span className={className}>{children}</span>;
   }
 
   return (
-    <button type="button" onClick={onClick} className={actionBase}>
+    <button type="button" onClick={onClick} className={className}>
       {children}
     </button>
   );
 }
 
-export function Header({
-  darkMode,
-  onToggleDarkMode,
-}: HeaderProps) {
+export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
 
   return (
-    <header className="header flex items-center justify-between">
-      <a className="logo" href="/">
+    <header className="sticky top-0 z-50 flex items-center justify-between gap-4 px-6 py-3 bg-[var(--surface)] border-b border-[var(--surface-border)] shadow-sm">
+      <a className="font-extrabold" href="/">
         Active Vienna
       </a>
 
@@ -76,15 +74,10 @@ export function Header({
         <HeaderNavLink to="/discover">{t("nav.discover")}</HeaderNavLink>
         <HeaderNavLink to="/map">{t("nav.map")}</HeaderNavLink>
         <HeaderNavLink to="/my-events">{t("nav.myEvents")}</HeaderNavLink>
-        <HeaderNavLink to="/events/new">
-          {t("nav.createEvent")}
-        </HeaderNavLink>
+        <HeaderNavLink to="/events/new">{t("nav.createEvent")}</HeaderNavLink>
         <HeaderNavLink to="/chats">{t("nav.chats")}</HeaderNavLink>
         <HeaderNavLink to="/profile">{t("nav.profile")}</HeaderNavLink>
-        <HeaderNavLink to="/api-test">{t("nav.apiTest")}</HeaderNavLink>
-        <HeaderNavLink to="/ui-elements-test">
-          UI Elements
-        </HeaderNavLink>
+        <HeaderNavLink to="/ui-elements-test">UI Elements</HeaderNavLink>
       </nav>
 
       <div className="flex items-center gap-2 flex-wrap">
@@ -101,9 +94,6 @@ export function Header({
                 src={resolveMediaUrl(user.avatar, DEFAULT_AVATAR_SRC)}
                 alt={user.username}
                 className="h-6 w-6 rounded-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = DEFAULT_AVATAR_SRC;
-                }}
               />
               <span>{user.username}</span>
             </HeaderAction>
@@ -115,9 +105,7 @@ export function Header({
         ) : (
           <>
             <HeaderNavLink to="/login">{t("nav.login")}</HeaderNavLink>
-            <HeaderNavLink to="/register">
-              {t("nav.register")}
-            </HeaderNavLink>
+            <HeaderNavLink to="/register">{t("nav.register")}</HeaderNavLink>
           </>
         )}
       </div>
