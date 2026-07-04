@@ -5,7 +5,7 @@ import { ApiLog } from "../components/shared/ApiLog";
 import { EventItem } from "../types/api";
 import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
 import styles from "./DiscoverPage.module.css";
-import Button  from "../components/test_ui/TestButton";
+import Button  from "../components/shared/Button";
 
 export function DiscoverPage() {
   const { t } = useTranslation();

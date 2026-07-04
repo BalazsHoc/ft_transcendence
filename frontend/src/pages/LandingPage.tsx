@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import Button from "../components/shared/Button";
 
 export function LandingPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <section className="hero">
@@ -10,13 +12,19 @@ export function LandingPage() {
       <p>{t("landing.subtitle")}</p>
 
       <div className="row">
-        <Link className="button" to="/discover">
+        <Button
+          variant="primary"
+          onClick={() => navigate("/discover")}
+        >
           {t("landing.ctaDiscover")}
-        </Link>
+        </Button>
 
-        <Link className="button secondary" to="/events/new">
+        <Button
+          variant="primary"
+          onClick={() => navigate("/events/new")}
+        >
           {t("landing.ctaCreate")}
-        </Link>
+        </Button>
       </div>
     </section>
   );
