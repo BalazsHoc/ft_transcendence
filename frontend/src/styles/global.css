@@ -11,46 +11,45 @@
 	box-sizing: border-box;
 }
 
+html,
+body {
+	height: 100%;
+}
+
 body {
 	margin: 0;
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	background: var(--bg);
 	color: var(--text);
 	overflow-y: scroll;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 /* -------------------------
    DESIGN TOKENS (LIGHT)
 --------------------------*/
 :root {
-	/* Base */
 	--bg: #f4f5f4;
 	--text: #111827;
+	--muted: #6b7280;
 
-	/* Surfaces */
 	--surface: #ffffff;
 	--surface-border: #e5e7eb;
-	--surface-shadow: rgba(0, 0, 0, 0.1);
+	--surface-shadow: rgba(0, 0, 0, 0.08);
 
-	/* Controls */
 	--control-bg: #ffffff;
 	--control-border: #cbd5e1;
 	--control-text: #111827;
 
-	/* Buttons */
 	--button-bg: #111827;
 	--button-text: #ffffff;
 	--button-border: #111827;
 
 	--button-secondary-bg: rgba(255, 255, 255, 0.8);
 	--button-secondary-text: #0a1424;
-	--button-secondary-border: rgba(226, 232, 240, 0.8);
+	--button-secondary-border: rgba(226, 232, 240, 0.9);
 
-	--button-outline-bg: transparent;
-	--button-outline-text: #0a1424;
-	--button-outline-border: #e2e8f0;
-
-	/* Header */
 	--header-link: #374151;
 	--header-link-hover: #111827;
 	--header-link-hover-bg: #e5e7eb;
@@ -61,41 +60,26 @@ body {
 	--header-action-hover: #374151;
 	--header-action-hover-bg: #e5e7eb;
 
-	/* Badges */
-	--badge-gray-bg: #f1f5f9;
-	--badge-gray-text: #475569;
-
-	--badge-teal-bg: #f0fdfa;
-	--badge-teal-text: #007670;
-
-	--badge-amber-bg: #fff7ed;
-	--badge-amber-text: #f2994a;
-
-	--badge-indigo-bg: #eef2ff;
-	--badge-indigo-text: #4f46e5;
-
-	--badge-emerald-bg: #ecfdf5;
-	--badge-emerald-text: #059669;
-
-	/* User chip */
 	--user-chip-bg: #eef2ff;
 	--user-chip-text: #111827;
 
-	/* Radius */
-	--card-radius: 6px;
-	--button-radius: 12px;
-	--badge-radius: 999px;
+	/* Radius system */
+	--radius-card: 8px;
+	--radius-button: 12px;
+	--radius-badge: 999px;
 }
 
 /* -------------------------
-   DARK MODE OVERRIDES
+   DARK MODE
 --------------------------*/
 body.dark {
 	--bg: #0b0f19;
 	--text: #e5e7eb;
+	--muted: #9ca3af;
 
 	--surface: #111827;
 	--surface-border: #1f2937;
+	--surface-shadow: rgba(0, 0, 0, 0.35);
 
 	--control-bg: #0f172a;
 	--control-border: #334155;
@@ -136,15 +120,11 @@ select,
 textarea {
 	width: 100%;
 	border: 1px solid var(--control-border);
-	border-radius: var(--button-radius);
+	border-radius: var(--radius-button);
 	padding: 10px;
 	font: inherit;
 	background: var(--control-bg);
 	color: var(--control-text);
-}
-
-textarea {
-	min-height: 100px;
 }
 
 /* -------------------------
@@ -179,16 +159,14 @@ textarea {
 	border-bottom: 0;
 }
 
-.logo {
-	font-weight: 800;
-}
-
 /* -------------------------
    HEADER COMPONENTS
 --------------------------*/
 .header-nav-link {
 	color: var(--header-link);
 	transition: all 0.2s ease;
+	padding: 6px 10px;
+	border-radius: 6px;
 }
 
 .header-nav-link:hover {
@@ -204,6 +182,8 @@ textarea {
 .header-action {
 	color: var(--header-action);
 	transition: all 0.2s ease;
+	padding: 6px 10px;
+	border-radius: 6px;
 }
 
 .header-action:hover {
@@ -220,26 +200,19 @@ button,
 	align-items: center;
 	justify-content: center;
 	border: 1px solid var(--button-border);
-	border-radius: var(--button-radius);
+	border-radius: var(--radius-button);
 	padding: 9px 13px;
 	background: var(--button-bg);
 	color: var(--button-text);
 	cursor: pointer;
 	font: inherit;
-	transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+	transition: transform 0.08s ease, background 0.15s ease, opacity 0.15s ease;
 }
 
 button:active,
 .button:active {
 	transform: scale(0.97);
 	opacity: 0.85;
-}
-
-button.secondary,
-.button.secondary {
-	background: var(--button-secondary-bg);
-	border-color: var(--button-secondary-border);
-	color: var(--button-secondary-text);
 }
 
 /* -------------------------
@@ -254,24 +227,33 @@ button.secondary,
 	flex-wrap: wrap;
 }
 
-.user-chip {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 8px 10px;
-	border-radius: var(--badge-radius);
-	background: var(--user-chip-bg);
-	color: var(--user-chip-text);
-}
-
+/* -------------------------
+   LANGUAGE SWITCHER (FIXED ALIGNMENT)
+--------------------------*/
 .language-switcher {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 }
 
+/* KEY FIX: label was inline text before, causing baseline misalignment */
+.language-switcher label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	line-height: 1;
+	font-size: 14px;
+	color: var(--text);
+}
+
+/* KEY FIX: normalize select box alignment with flex row */
 .language-switcher select {
 	width: auto;
+	height: 34px;
+	padding: 6px 10px;
+	display: inline-flex;
+	align-items: center;
+	vertical-align: middle;
 }
 
 /* -------------------------
@@ -288,31 +270,18 @@ button.secondary,
 .card {
 	background: var(--surface);
 	border: 1px solid var(--surface-border);
-	border-radius: var(--card-radius);
+	border-radius: var(--radius-card);
 	padding: 18px;
 	margin-bottom: 18px;
 }
 
+/* -------------------------
+   TYPOGRAPHY
+--------------------------*/
 .hero h1 {
 	margin-top: 0;
 	font-size: 42px;
-}
-
-.two-column {
-	display: grid;
-	grid-template-columns: 2fr 1fr;
-	gap: 18px;
-}
-
-.event-list {
-	display: grid;
-	gap: 12px;
-}
-
-.sidebar-list {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+	font-family: "Hanken Grotesk", Inter, system-ui, sans-serif;
 }
 
 /* -------------------------
@@ -320,7 +289,7 @@ button.secondary,
 --------------------------*/
 pre {
 	white-space: pre-wrap;
-	background: #111827;
+	background: #0f172a;
 	color: #e5e7eb;
 	padding: 14px;
 	border-radius: 10px;
@@ -328,16 +297,16 @@ pre {
 }
 
 /* -------------------------
-   STATUS COLORS
+   STATUS
 --------------------------*/
 .ok {
-	color: #047857;
-	font-weight: 800;
+	color: #059669;
+	font-weight: 700;
 }
 
 .bad {
-	color: #b91c1c;
-	font-weight: 800;
+	color: #dc2626;
+	font-weight: 700;
 }
 
 /* -------------------------
@@ -345,8 +314,7 @@ pre {
 --------------------------*/
 @media (max-width: 800px) {
 	.header,
-	.footer,
-	.two-column {
+	.footer {
 		display: grid;
 		grid-template-columns: 1fr;
 	}
