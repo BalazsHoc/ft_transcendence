@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Home, Compass, Map } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import { useAuth } from "../../features/auth/AuthContext";
@@ -57,9 +57,21 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
       {/* Navigation */}
       <nav className={navClasses}>
-        <HeaderNavLink to="/">{t("nav.home")}</HeaderNavLink>
-        <HeaderNavLink to="/discover">{t("nav.discover")}</HeaderNavLink>
-        <HeaderNavLink to="/map">{t("nav.map")}</HeaderNavLink>
+        <HeaderNavLink to="/">
+          <span className="inline-flex items-center gap-1">
+            <Home size={16} />{t("nav.home")}
+          </span>
+        </HeaderNavLink>
+        <HeaderNavLink to="/discover">
+          <span className="inline-flex items-center gap-1">
+            <Compass size={16} />{t("nav.discover")}
+          </span>
+        </HeaderNavLink>
+        <HeaderNavLink to="/map">
+          <span className="inline-flex items-center gap-1">
+            <Map size={16} />{t("nav.map")}
+          </span>
+        </HeaderNavLink>
         <HeaderNavLink to="/my-events">{t("nav.myEvents")}</HeaderNavLink>
         <HeaderNavLink to="/events/new">
           {t("nav.createEvent")}
