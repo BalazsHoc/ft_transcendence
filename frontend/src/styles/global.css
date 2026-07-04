@@ -30,18 +30,22 @@ body {
    DESIGN TOKENS (LIGHT)
 --------------------------*/
 :root {
+	/* Core */
 	--bg: #f4f5f4;
 	--text: #111827;
 	--muted: #6b7280;
 
+	/* Surfaces */
 	--surface: #ffffff;
 	--surface-border: #e5e7eb;
 	--surface-shadow: rgba(0, 0, 0, 0.08);
 
+	/* Inputs / Controls */
 	--control-bg: #ffffff;
 	--control-border: #cbd5e1;
 	--control-text: #111827;
 
+	/* Buttons (primary system) */
 	--button-bg: #111827;
 	--button-text: #ffffff;
 	--button-border: #111827;
@@ -50,6 +54,7 @@ body {
 	--button-secondary-text: #0a1424;
 	--button-secondary-border: rgba(226, 232, 240, 0.9);
 
+	/* Header */
 	--header-link: #374151;
 	--header-link-hover: #111827;
 	--header-link-hover-bg: #e5e7eb;
@@ -60,10 +65,11 @@ body {
 	--header-action-hover: #374151;
 	--header-action-hover-bg: #e5e7eb;
 
+	/* Chips / user tags */
 	--user-chip-bg: #eef2ff;
 	--user-chip-text: #111827;
 
-	/* Radius system */
+	/* Radius system (design rules) */
 	--radius-card: 8px;
 	--radius-button: 12px;
 	--radius-badge: 999px;
@@ -192,7 +198,8 @@ textarea {
 }
 
 /* -------------------------
-   BUTTONS
+   BUTTONS (LEGACY SUPPORT ONLY)
+   NOTE: New UI should use Button.tsx component.
 --------------------------*/
 button,
 .button {
@@ -228,7 +235,7 @@ button:active,
 }
 
 /* -------------------------
-   LANGUAGE SWITCHER (FIXED ALIGNMENT)
+   LANGUAGE SWITCHER
 --------------------------*/
 .language-switcher {
 	display: flex;
@@ -236,7 +243,6 @@ button:active,
 	gap: 8px;
 }
 
-/* KEY FIX: label was inline text before, causing baseline misalignment */
 .language-switcher label {
 	display: flex;
 	align-items: center;
@@ -246,7 +252,6 @@ button:active,
 	color: var(--text);
 }
 
-/* KEY FIX: normalize select box alignment with flex row */
 .language-switcher select {
 	width: auto;
 	height: 34px;

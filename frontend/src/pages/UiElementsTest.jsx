@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowRight, Plus, Save, Star, Trash2 } from "lucide-react";
-import Button from "../components/test_ui/TestButton";
+import Button from "../components/shared/Button";
 import Badge from "../components/test_ui/TestBadge";
 
 const buttonVariants = [
@@ -85,7 +85,7 @@ const buttonSnippet = `<Button variant="primary" size="md">
   Create event
 </Button>`;
 
-const componentApiSnippet = `import Button from "../components/test_ui/TestButton";
+const componentApiSnippet = `import Button from "../components/shared/Button";
 import Badge from "../components/test_ui/TestBadge";
 import { Save } from "lucide-react";
 
@@ -164,7 +164,7 @@ const cardComponentSnippet = `function EventPreviewCard({ event, onJoin }) {
 
 const cardWithApiSnippet = `import { useEffect, useState } from "react";
 import { getEvents, joinEvent } from "../api/eventsApi";
-import Button from "../components/test_ui/TestButton";
+import Button from "../components/shared/Button";
 import Badge from "../components/test_ui/TestBadge";
 
 function EventsPreviewList() {
