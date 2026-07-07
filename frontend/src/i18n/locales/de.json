@@ -10,7 +10,13 @@
     "apiTest": "API-Test",
     "login": "Login",
     "register": "Registrieren",
-    "logout": "Logout"
+    "logout": "Logout",
+    "discovery": "Entdecken",
+    "clubs": "Vereine",
+    "community": "Community",
+    "joinClub": "Verein beitreten",
+    "search": "Aktivitäten, Vereine suchen...",
+    "appName": "VIENNA ATHLETIC"
   },
   "common": {
     "join": "Teilnehmen",
@@ -41,7 +47,23 @@
     "title": "Events entdecken",
     "sport": "Sport",
     "level": "Niveau",
-    "load": "Events laden"
+    "load": "Events laden",
+    "happeningNow": "Jetzt los",
+    "curatedForYou": "Für dich kuratiert",
+    "joinGroup": "Gruppe beitreten",
+    "members": "{{count}} Mitglieder",
+    "categories": "Kategorien",
+    "time": "Zeit",
+    "all": "Alle",
+    "beginner": "Anfänger",
+    "intermediate": "Fortgeschritten",
+    "advanced": "Profi",
+    "anytime": "Jederzeit",
+    "morning": "Morgen",
+    "evening": "Abend",
+    "liveMatch": "Live-Match",
+    "sessionStarted": "Session gestartet",
+    "featuredClub": "Ausgewählter Verein"
   },
   "event": {
     "details": "Eventdetails",
