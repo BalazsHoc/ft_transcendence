@@ -6,6 +6,7 @@ import { EventItem } from "../types/api";
 import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
 import styles from "./DiscoverPage.module.css";
 import Button  from "../components/shared/Button";
+import { Sidebar } from "../components/layout/Sidebar";
 
 export function DiscoverPage() {
   const { t } = useTranslation();
@@ -57,7 +58,15 @@ export function DiscoverPage() {
   }, []);
 
   return (
-    <>
+    <div className="discover-layout">
+      <Sidebar
+        sport={sport}
+        onSportChange={setSport}
+        level={level}
+        onLevelChange={setLevel}
+        // time={time}
+        // onTimeChange={setTime}
+      />
       <h1>{t("discover.title")}</h1>
       <section className={styles.filters}>
         <input
@@ -74,7 +83,7 @@ export function DiscoverPage() {
         </select>
         <Button variant="primary" onClick={load}>
           {t("discover.load")}
-        </Button  >
+        </Button>
       </section>
       <div className="event-list">
         {events.map((event) => (
@@ -88,6 +97,6 @@ export function DiscoverPage() {
         ))}
       </div>
       <ApiLog log={log} />
-    </>
+    </div>
   );
 }
