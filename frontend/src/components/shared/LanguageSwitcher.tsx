@@ -6,21 +6,19 @@ export function LanguageSwitcher() {
   const { i18n, t } = useTranslation();
 
   return (
-    <label className="language-switcher">
-      <span>{t("common.language")}</span>
-
-      <select
-        value={i18n.language}
-        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          i18n.changeLanguage(e.target.value as SupportedLanguage)
-        }
-      >
-        {supportedLanguages.map((lng) => (
-          <option key={lng} value={lng}>
-            {lng.toUpperCase()}
-          </option>
-        ))}
-      </select>
-    </label>
+    <select
+      className="language-switcher"
+      aria-label={t("common.language")}
+      value={i18n.language}
+      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+        i18n.changeLanguage(e.target.value as SupportedLanguage)
+      }
+    >
+      {supportedLanguages.map((lng) => (
+        <option key={lng} value={lng}>
+          {lng.toUpperCase()}
+        </option>
+      ))}
+    </select>
   );
 }
