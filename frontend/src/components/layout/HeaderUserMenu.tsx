@@ -11,7 +11,11 @@ export function HeaderUserMenu() {
 
   if (!user) {
     return (
-      <IconButton icon={<UserCircle size={20} />} aria-label={t("nav.profile")} />
+      <IconButton
+        variant="outline"
+        icon={<UserCircle size={20} />}
+        aria-label={t("nav.profile")}
+      />
     );
   }
 
