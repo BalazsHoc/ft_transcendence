@@ -257,6 +257,16 @@ button:active,
 	padding: 30px 22px;
 }
 
+/* The Discover page's sidebar layout needs the full viewport width,
+   not the narrow centered column used by regular pages (forms, hero
+   sections, etc.) — let it break out of .page-container's constraint. */
+.page-container:has(.discover-layout) {
+	max-width: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 .hero,
 .card {
 	background: var(--surface);
@@ -313,21 +323,18 @@ pre {
 	.hero h1 {
 		font-size: 30px;
 	}
+}
 
-	
-	/* -------------------------
+/* -------------------------
    SIDEBAR
 --------------------------*/
 .sidebar {
   display: none;
   flex-direction: column;
-  width: 288px;
+  width: 260px;
   flex-shrink: 0;
   position: sticky;
-  top: 72px;
-  height: calc(100vh - 72px);
-  overflow-y: auto;
-  padding-right: 16px;
+  top: 88px;
 }
 
 @media (min-width: 1280px) {
@@ -348,7 +355,7 @@ pre {
 .sidebar__filters {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 32px;
 }
 
 /* -------------------------
@@ -483,14 +490,12 @@ pre {
 --------------------------*/
 .discover-layout {
   display: flex;
+  align-items: flex-start;
   gap: 40px;
-  max-width: 1440px;
-  margin: 0 auto;
   padding: 24px 22px;
 }
 
 .discover-main {
   flex: 1;
   min-width: 0;
-}
 }
