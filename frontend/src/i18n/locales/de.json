@@ -16,7 +16,8 @@
     "community": "Community",
     "joinClub": "Verein beitreten",
     "search": "Aktivitäten, Vereine suchen...",
-    "appName": "VIENNA ATHLETIC"
+    "appName": "VIENNA ATHLETIC",
+    "notifications": "Benachrichtigungen"
   },
   "common": {
     "join": "Teilnehmen",
@@ -25,7 +26,8 @@
     "edit": "Bearbeiten",
     "send": "Senden",
     "language": "Sprache",
-    "refresh": "Aktualisieren"
+    "refresh": "Aktualisieren",
+    "toggleDarkMode": "Dunkelmodus umschalten"
   },
   "landing": {
     "title": "Sport finden. Menschen treffen. In Wien ankommen.",
