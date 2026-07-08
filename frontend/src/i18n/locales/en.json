@@ -16,7 +16,8 @@
     "community": "Community",
     "joinClub": "Join Club",
     "search": "Search activities, clubs...",
-    "appName": "VIENNA ATHLETIC"
+    "appName": "VIENNA ATHLETIC",
+    "notifications": "Notifications"
   },
   "common": {
     "join": "Join",
@@ -25,7 +26,8 @@
     "edit": "Edit",
     "send": "Send",
     "language": "Language",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "toggleDarkMode": "Toggle dark mode"
   },
   "landing": {
     "title": "Find sports. Meet people. Belong to Vienna.",
