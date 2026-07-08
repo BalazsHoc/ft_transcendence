@@ -8,6 +8,7 @@ type IconButtonProps = {
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
+  "aria-expanded"?: boolean;
 };
 
 const sizeClasses: Record<NonNullable<IconButtonProps["size"]>, string> = {
