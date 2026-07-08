@@ -10,7 +10,14 @@
     "apiTest": "API тест",
     "login": "Вхід",
     "register": "Реєстрація",
-    "logout": "Вийти"
+    "logout": "Вийти",
+    "discovery": "Discovery",
+    "clubs": "Clubs",
+    "community": "Community",
+    "joinClub": "Join Club",
+    "search": "Search activities, clubs...",
+    "appName": "VIENNA ATHLETIC",
+    "notifications": "Notifications"
   },
   "common": {
     "join": "Приєднатися",
@@ -19,7 +26,8 @@
     "edit": "Змінити",
     "send": "Надіслати",
     "language": "Мова",
-    "refresh": "Оновити"
+    "refresh": "Оновити",
+    "toggleDarkMode": "Toggle dark mode"
   },
   "landing": {
     "title": "Знайди спорт. Познайомся з людьми. Стань частиною Відня.",
