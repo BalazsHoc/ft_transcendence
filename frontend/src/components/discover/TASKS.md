@@ -236,14 +236,22 @@ this task split.
 
 One thing worth knowing before either dev reads that code: `FilterGroup`
 uses a raw `<button>` for its filter chips, which looks like it breaks
-"Rule #1" above. It doesn't — it's a deliberate exception. `Button` and
-`IconButton` are for **actions** (something happens when you click:
-join a group, log out, toggle dark mode). A filter chip is a **toggle /
-selection** control — it just marks which option is currently picked from a
-list, it doesn't perform an action. That's a different UI pattern, so it
-doesn't route through `Button`. Don't copy the raw-`<button>` pattern for
-anything in `HappeningNowSection` or `CuratedForYouSection` — those are all
-actions or static display, so they still follow Rule #1 normally.
+"Rule #1" above. It doesn't — it's a deliberate exception, but not because
+filter chips are "just display with no action." They do have an action:
+selecting one filters the events shown on the page (that filtering logic
+is being wired up as a separate task).
+
+The real reason it doesn't reuse `Button`: `Button`'s variants
+(`primary`/`secondary`/`outline`/...) describe how important an action
+looks, not "is this the one currently chosen out of a set of options."
+A filter chip has to keep showing which option is active even after the
+click is over — a persistent selected/unselected state that `Button` has
+no prop for today. That's a different requirement than what `Button` was
+built for, so `FilterGroup` owns its own small styling for it instead of
+forcing it through `Button`. Don't copy the raw-`<button>` pattern for
+anything in `HappeningNowSection` or `CuratedForYouSection` — those cards
+don't need persistent selected state, so they should use `Button` /
+`IconButton` normally.
 
 ---
 
