@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { FilterGroup } from "../discover/FilterGroup";
 
 type SidebarProps = {
@@ -37,26 +38,28 @@ export function Sidebar({
   time,
   onTimeChange,
 }: SidebarProps) {
+  const { t } = useTranslation();
+
   return (
     <aside className="sidebar">
-      <h2 className="sidebar__title">Discover</h2>
+      <h2 className="sidebar__title">{t("nav.discover")}</h2>
       <div className="sidebar__filters">
         <FilterGroup
-          title="Categories"
+          title={t("discover.categories")}
           options={SPORT_OPTIONS}
           selected={sport}
           onChange={onSportChange}
           type="chips"
         />
         <FilterGroup
-          title="Level"
+          title={t("discover.level")}
           options={LEVEL_OPTIONS}
           selected={level}
           onChange={onLevelChange}
           type="checkbox"
         />
         <FilterGroup
-          title="Time"
+          title={t("discover.time")}
           options={TIME_OPTIONS}
           selected={time}
           onChange={onTimeChange}
