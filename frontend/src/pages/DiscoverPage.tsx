@@ -4,7 +4,6 @@ import { EventCard } from "../components/events/EventCard";
 import { ApiLog } from "../components/shared/ApiLog";
 import { EventItem } from "../types/api";
 import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
-import styles from "./DiscoverPage.module.css";
 import Button  from "../components/shared/Button";
 import { Sidebar } from "../components/layout/Sidebar";
 
@@ -13,6 +12,7 @@ export function DiscoverPage() {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [sport, setSport] = useState("");
   const [level, setLevel] = useState("");
+  const [time, setTime] = useState("");
   const [log, setLog] = useState("");
 
   async function load() {
@@ -64,39 +64,33 @@ export function DiscoverPage() {
         onSportChange={setSport}
         level={level}
         onLevelChange={setLevel}
-        // time={time}
-        // onTimeChange={setTime}
+        time={time}
+        onTimeChange={setTime}
       />
-      <h1>{t("discover.title")}</h1>
-      <section className={styles.filters}>
-        <input
-          placeholder={t("discover.sport")}
-          value={sport}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setSport(e.target.value)}
-        />
-        <select value={level} onChange={(e: ChangeEvent<HTMLSelectElement>) => setLevel(e.target.value)}>
-          <option value="">all levels</option>
-          <option value="all">all</option>
-          <option value="beginner">beginner</option>
-          <option value="intermediate">intermediate</option>
-          <option value="advanced">advanced</option>
-        </select>
-        <Button variant="primary" onClick={load}>
-          {t("discover.load")}
-        </Button>
-      </section>
-      <div className="event-list">
-        {events.map((event) => (
-          <EventCard
-            key={event.id}
-            event={event}
-            onJoin={doJoin}
-            onLeave={doLeave}
-            onDelete={doDelete}
-          />
-        ))}
+      <div className="discover-main">
+        <div className="card">
+          <p>Same Button component, two different variants:</p>
+          <div className="row">
+            <Button variant="primary" onClick={load}>
+              {t("discover.load")}
+            </Button>
+            <Button variant="outline" onClick={load}>
+              {t("discover.load")}
+            </Button>
+          </div>
+
+          <p style={{ marginTop: "24px" }}>
+            Same Button component, rendered once per item in a list:
+          </p>
+          <div className="row">
+            {["Tennis", "Running", "Cycling"].map((sport) => (
+              <Button key={sport} variant="secondary">
+                {sport}
+              </Button>
+            ))}
+          </div>
+        </div>
       </div>
-      <ApiLog log={log} />
     </div>
   );
 }
