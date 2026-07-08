@@ -39,7 +39,11 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
         <LanguageSwitcher />
 
-        <IconButton aria-label={t("nav.notifications")} icon={<Bell size={20} />} />
+        <IconButton
+          variant="outline"
+          aria-label={t("nav.notifications")}
+          icon={<Bell size={20} />}
+        />
 
         <HeaderUserMenu />
       </div>
