@@ -20,7 +20,7 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
   return (
     <header className="sticky top-0 w-full z-50 flex items-center justify-between gap-4 px-5 py-4 bg-[var(--surface)]/80 backdrop-blur-xl border-b border-[var(--surface-border)] shadow-sm">
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-20">
         <HeaderBrand />
         <HeaderNav />
       </div>
