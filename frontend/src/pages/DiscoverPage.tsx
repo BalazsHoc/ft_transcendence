@@ -8,7 +8,7 @@ import Button  from "../components/shared/Button";
 import { Sidebar } from "../components/layout/Sidebar";
 
 export function DiscoverPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [events, setEvents] = useState<EventItem[]>([]);
   const [sport, setSport] = useState("");
   const [level, setLevel] = useState("");
@@ -69,13 +69,21 @@ export function DiscoverPage() {
       />
       <div className="discover-main">
         <div className="card">
-          <p>Same Button component, two different variants:</p>
-          <div className="row">
+          <h1 style={{ marginTop: "24px" }}>
+            Same Button component, two different variants:
+          </h1>
+          <p>check change language feature in these two buttons</p>
+          <p>1-color</p>
+          <p>2-translate page feature</p>
+          <p>3-dark/light mode — click the moon icon in the header</p>
+
+
+          <div className="row" style={{ marginTop: "20px" }}>
             <Button variant="primary" onClick={load}>
               {t("discover.load")}
             </Button>
             <Button variant="outline" onClick={load}>
-              {t("discover.load")}
+              load events
             </Button>
           </div>
 
