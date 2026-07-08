@@ -239,12 +239,48 @@ button:active,
    LANGUAGE SWITCHER
 --------------------------*/
 .language-switcher {
-	width: auto;
-	height: 34px;
-	padding: 6px 10px;
+	position: relative;
 	display: inline-flex;
 	align-items: center;
-	vertical-align: middle;
+}
+
+.language-switcher__list {
+	position: absolute;
+	top: calc(100% + 6px);
+	right: 0;
+	min-width: 100px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background: var(--surface);
+	border: 1px solid var(--surface-border);
+	border-radius: var(--radius-button);
+	box-shadow: 0 8px 24px var(--surface-shadow);
+	overflow: hidden;
+	z-index: 60;
+}
+
+.language-switcher__option {
+	display: block;
+	width: 100%;
+	text-align: left;
+	padding: 10px 14px;
+	border: none;
+	background: transparent;
+	color: var(--text);
+	font: inherit;
+	font-size: 13px;
+	cursor: pointer;
+	transition: background 0.15s ease;
+}
+
+.language-switcher__option:hover {
+	background: var(--surface-border);
+}
+
+.language-switcher__option--active {
+	background: var(--surface-border);
+	font-weight: 600;
 }
 
 /* -------------------------
