@@ -1,5 +1,5 @@
 import React from "react";
-import { Moon, Sun, Bell } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import Button from "../shared/Button";
@@ -7,6 +7,7 @@ import { IconButton } from "../shared/IconButton";
 import { HeaderBrand } from "./HeaderBrand";
 import { HeaderNav } from "./HeaderNav";
 import { HeaderSearch } from "./HeaderSearch";
+import { HeaderNotifications } from "./HeaderNotifications";
 import { HeaderUserMenu } from "./HeaderUserMenu";
 
 type HeaderProps = {
@@ -41,11 +42,7 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
         <LanguageSwitcher />
 
-        <IconButton
-          variant="outline"
-          aria-label={t("nav.notifications")}
-          icon={<Bell size={20} />}
-        />
+        <HeaderNotifications />
 
         <HeaderUserMenu />
       </div>

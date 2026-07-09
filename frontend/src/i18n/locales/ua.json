@@ -17,7 +17,8 @@
     "joinClub": "Приєднатися до клубу",
     "search": "Пошук занять і гуртків...",
     "appName": "VIENNA ATHLETIC",
-    "notifications": "Notifications"
+    "notifications": "Сповіщення",
+    "noNotifications": "У вас поки немає сповіщень."
   },
   "common": {
     "join": "Приєднатися",
