@@ -20,15 +20,17 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
   return (
     <header className="sticky top-0 w-full z-50 flex items-center justify-between gap-4 px-5 py-4 bg-[var(--surface)]/80 backdrop-blur-xl border-b border-[var(--surface-border)] shadow-sm">
-      <div className="flex items-center gap-20">
+      <div className="flex items-center gap-4 lg:gap-12 xl:gap-20 min-w-0">
         <HeaderBrand />
         <HeaderNav />
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 shrink-0">
         <HeaderSearch value={search} onChange={setSearch} />
 
-        <Button variant="primary">{t("nav.joinClub")}</Button>
+        <Button variant="primary" className="hidden xl:inline-flex">
+          {t("nav.joinClub")}
+        </Button>
 
         <IconButton
           variant="outline"

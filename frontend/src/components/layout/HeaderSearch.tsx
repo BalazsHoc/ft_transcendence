@@ -10,7 +10,7 @@ export function HeaderSearch({ value, onChange }: HeaderSearchProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="relative hidden lg:block">
+    <div className="relative hidden xl:block">
       <Search
         size={16}
         className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"

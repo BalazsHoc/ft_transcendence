@@ -28,7 +28,7 @@ export function HeaderNav() {
   const { t } = useTranslation();
 
   return (
-    <nav className="hidden md:flex items-center gap-6">
+    <nav className="hidden md:flex items-center gap-3 lg:gap-6 shrink-0">
       <HeaderNavLink to="/discover">
         <span className="inline-flex items-center gap-1">
           <Compass size={16} /> {t("nav.discover")}
