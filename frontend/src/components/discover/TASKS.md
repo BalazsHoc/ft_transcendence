@@ -42,6 +42,53 @@ different props" — never "write new markup for it."**
 
 ---
 
+## Also new: landing page cards you can copy from
+
+The welcome/landing page (`src/components/landing/`) was just built and
+has a card component that looks a lot like some of the cards in this
+mockup. You don't have to use it, but look at it first — copying and
+adjusting is much faster than starting from a blank file.
+
+### If you're Developer B ("Curated for You")
+
+Open `src/components/landing/BentoImageCard.tsx` before you write
+`FeaturedEventCard.tsx` or `CuratedEventCard.tsx`. It's the same visual
+idea: a background photo with a see-through ("glass") panel of text
+sitting on top of it — which is exactly what "Vienna River Run Collective"
+and the two small cards next to it look like.
+
+- `BentoImageCard` with `size="lg"` ≈ your `FeaturedEventCard`. Same
+  layout (photo, tag, title, description, button in the corner). It's not
+  a perfect match yet — you'll need to add: a second badge (right now it
+  only takes one `tag`, but the mockup needs "Featured Club" *and*
+  "Intermediate"), a real "Join Group" text button (right now it shows an
+  arrow icon, not a button), and a members count.
+- `BentoImageCard` with `size="sm"` ≈ your `CuratedEventCard`. Same idea,
+  smaller. Right now it only shows a title + arrow icon — you'll need to
+  add a small badge and a time/date line under the title.
+
+Easiest path: copy `BentoImageCard.tsx` into your own new file and adjust
+it (don't edit the original — the landing page uses it too). Once `Badge`
+exists, swap its plain tag `<span>` for `<Badge>` so both pages end up
+using the same pill styling.
+
+### If you're Developer A ("Happening Now")
+
+Nothing in the landing page matches your cards. "Stadtpark Open" and
+"Velodrome Sprint" put the text *below* the photo in a plain box, not
+overlaid on top of it like the landing cards. Build `LiveEventCard` from
+scratch as described below, using `Badge` for the pills.
+
+One small thing you can still borrow: `src/components/events/EventCard.tsx`
+already knows how to show an event photo with a fallback picture when
+there isn't a real one yet — see `resolveMediaUrl` and
+`DEFAULT_EVENT_IMAGE_SRC`, imported from `src/utils/media.ts`. You don't
+need `EventCard` itself (it's wired to real join/leave buttons you don't
+need here) — just reuse those two image-fallback helpers so a missing
+photo doesn't break your card.
+
+---
+
 ## Rule #1: reuse what already exists — do not build a new button
 
 We already have two button components in the codebase. **Nobody should
