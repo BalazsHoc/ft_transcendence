@@ -385,6 +385,15 @@ button:active,
 	padding: 0;
 }
 
+/* The logged-out landing page's hero needs to bleed edge-to-edge too;
+   its sections re-introduce their own centered max-width wrappers. */
+.page-container:has(.landing-page) {
+	max-width: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 .hero,
 .card {
 	background: var(--surface);

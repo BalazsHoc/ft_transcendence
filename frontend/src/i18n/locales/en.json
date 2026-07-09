@@ -30,10 +30,32 @@
     "toggleDarkMode": "Toggle dark mode"
   },
   "landing": {
-    "title": "Find sports. Meet people. Belong to Vienna.",
-    "subtitle": "API-connected MVP frontend for testing backend routes.",
-    "ctaDiscover": "Explore events",
-    "ctaCreate": "Create event"
+    "hero": {
+      "title": "Move. Connect. Belong.",
+      "subtitle": "Discover sports, clubs and communities across Vienna. An elevated approach to urban athleticism.",
+      "ctaExplore": "Explore Activities",
+      "ctaLearnMore": "Learn More"
+    },
+    "curated": {
+      "title": "Curated Experiences",
+      "subtitle": "Find your next passion in the heart of the city.",
+      "attending": "Attending",
+      "cards": {
+        "tennis": {
+          "tag": "Tennis Club",
+          "title": "Prater Evening Sessions",
+          "description": "Join the competitive ladder or casual rallies."
+        },
+        "running": {
+          "tag": "Running",
+          "title": "Danube Morning Run",
+          "description": "Start your day with a scenic 10k along the river with pace groups for all levels."
+        },
+        "cycling": {
+          "title": "Studio Cycling"
+        }
+      }
+    }
   },
   "auth": {
     "loginTitle": "Login",

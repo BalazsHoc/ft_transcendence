@@ -30,10 +30,32 @@
     "toggleDarkMode": "Dunkelmodus umschalten"
   },
   "landing": {
-    "title": "Sport finden. Menschen treffen. In Wien ankommen.",
-    "subtitle": "API-verbundenes MVP-Frontend zum Testen der Backend-Routen.",
-    "ctaDiscover": "Events entdecken",
-    "ctaCreate": "Event erstellen"
+    "hero": {
+      "title": "Bewegen. Verbinden. Dazugehören.",
+      "subtitle": "Entdecke Sportarten, Vereine und Communities in ganz Wien. Ein gehobener Ansatz für urbanen Sport.",
+      "ctaExplore": "Aktivitäten entdecken",
+      "ctaLearnMore": "Mehr erfahren"
+    },
+    "curated": {
+      "title": "Ausgewählte Erlebnisse",
+      "subtitle": "Finde deine nächste Leidenschaft im Herzen der Stadt.",
+      "attending": "Nehmen teil",
+      "cards": {
+        "tennis": {
+          "tag": "Tennisverein",
+          "title": "Prater Abendsessions",
+          "description": "Nimm an der Ranglisten-Konkurrenz oder lockeren Ballwechseln teil."
+        },
+        "running": {
+          "tag": "Laufen",
+          "title": "Donau-Morgenlauf",
+          "description": "Starte den Tag mit einem malerischen 10-km-Lauf entlang der Donau mit Tempogruppen für alle Levels."
+        },
+        "cycling": {
+          "title": "Studio Cycling"
+        }
+      }
+    }
   },
   "auth": {
     "loginTitle": "Login",
