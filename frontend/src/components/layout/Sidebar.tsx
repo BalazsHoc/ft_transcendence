@@ -10,26 +10,6 @@ type SidebarProps = {
   onTimeChange: (value: string) => void;
 };
 
-const SPORT_OPTIONS = [
-  { label: "All", value: "" },
-  { label: "Tennis", value: "tennis" },
-  { label: "Running", value: "running" },
-  { label: "Cycling", value: "cycling" },
-  { label: "Yoga", value: "yoga" },
-];
-
-const LEVEL_OPTIONS = [
-  { label: "Beginner", value: "beginner" },
-  { label: "Intermediate", value: "intermediate" },
-  { label: "Advanced", value: "advanced" },
-];
-
-const TIME_OPTIONS = [
-  { label: "Anytime", value: "" },
-  { label: "Morning", value: "morning" },
-  { label: "Evening", value: "evening" },
-];
-
 export function Sidebar({
   sport,
   onSportChange,
@@ -40,27 +20,47 @@ export function Sidebar({
 }: SidebarProps) {
   const { t } = useTranslation();
 
+  const sportOptions = [
+    { label: t("discover.all"), value: "" },
+    { label: t("discover.tennis"), value: "tennis" },
+    { label: t("discover.running"), value: "running" },
+    { label: t("discover.cycling"), value: "cycling" },
+    { label: t("discover.yoga"), value: "yoga" },
+  ];
+
+  const levelOptions = [
+    { label: t("discover.beginner"), value: "beginner" },
+    { label: t("discover.intermediate"), value: "intermediate" },
+    { label: t("discover.advanced"), value: "advanced" },
+  ];
+
+  const timeOptions = [
+    { label: t("discover.anytime"), value: "" },
+    { label: t("discover.morning"), value: "morning" },
+    { label: t("discover.evening"), value: "evening" },
+  ];
+
   return (
     <aside className="sidebar">
       <h2 className="sidebar__title">{t("nav.discover")}</h2>
       <div className="sidebar__filters">
         <FilterGroup
           title={t("discover.categories")}
-          options={SPORT_OPTIONS}
+          options={sportOptions}
           selected={sport}
           onChange={onSportChange}
           type="chips"
         />
         <FilterGroup
           title={t("discover.level")}
-          options={LEVEL_OPTIONS}
+          options={levelOptions}
           selected={level}
           onChange={onLevelChange}
           type="checkbox"
         />
         <FilterGroup
           title={t("discover.time")}
-          options={TIME_OPTIONS}
+          options={timeOptions}
           selected={time}
           onChange={onTimeChange}
           type="radio"
