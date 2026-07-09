@@ -17,7 +17,8 @@
     "joinClub": "Verein beitreten",
     "search": "Aktivitäten, Vereine suchen...",
     "appName": "VIENNA ATHLETIC",
-    "notifications": "Benachrichtigungen"
+    "notifications": "Benachrichtigungen",
+    "noNotifications": "Du hast noch keine Benachrichtigungen."
   },
   "common": {
     "join": "Teilnehmen",

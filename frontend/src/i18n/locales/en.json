@@ -17,7 +17,8 @@
     "joinClub": "Join Club",
     "search": "Search activities, clubs...",
     "appName": "VIENNA ATHLETIC",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "noNotifications": "You have no notifications yet."
   },
   "common": {
     "join": "Join",
