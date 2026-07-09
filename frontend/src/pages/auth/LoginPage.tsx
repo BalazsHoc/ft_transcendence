@@ -51,7 +51,9 @@ export function LoginPage() {
           </label>
           <button>{t("auth.submitLogin")}</button>
         </form>
-        <ApiLog log={log} />
+        <div className="mt-6">
+          <ApiLog log={log} />
+        </div>
       </div>
     </div>
   );
