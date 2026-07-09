@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Compass, Map } from "lucide-react";
+import { Map } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 function HeaderNavLink({
@@ -29,12 +29,8 @@ export function HeaderNav() {
 
   return (
     <nav className="hidden md:flex items-center gap-3 lg:gap-6 shrink-0">
-      <HeaderNavLink to="/discover">
-        <span className="inline-flex items-center gap-1">
-          <Compass size={16} /> {t("nav.discover")}
-        </span>
-      </HeaderNavLink>
-      <HeaderNavLink to="/clubs">{t("nav.clubs")}</HeaderNavLink>
+      <HeaderNavLink to="/discover">{t("nav.discover")}</HeaderNavLink>
+        <HeaderNavLink to="/clubs">{t("nav.clubs")}</HeaderNavLink>
       <HeaderNavLink to="/map">
         <span className="inline-flex items-center gap-1">
           <Map size={16} /> {t("nav.map")}
