@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Button from "../shared/Button";
+import { VIENNA_SKYLINE_IMAGE } from "../shared/backgroundImages";
 
 export function WelcomeHero() {
   const { t } = useTranslation();
@@ -17,10 +18,7 @@ export function WelcomeHero() {
       <div className="absolute inset-0">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBOXWmfEumbEvOGRGNU7AdhHe6nQe0AG4ljK7eOfAA7VTvd_Fet511r8w-5q2bRldOVFzVgx8j1UjYPxkYBfZxha384H_RvHkDnr-pPC-DO-QALBsvAmsxSor4LVgnfkE-jDuTq5TGVEqNuMNmTMMwh4VU25z_vRXBoLGwPcjUVPLo98sZ07RUfH8W53VZBxjXaF8Jv4S9FqPsVOE22yUE3-zkklL7UUcom-SR_WxkJLiaox1ayRGxR2uUDMXy_Y1UvOyfLqzLs6NA')",
-          }}
+          style={{ backgroundImage: `url('${VIENNA_SKYLINE_IMAGE}')` }}
         />
         <div className="absolute inset-0 bg-[var(--bg)]/30 backdrop-blur-[2px]" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--bg)]" />

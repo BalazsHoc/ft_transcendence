@@ -143,7 +143,9 @@ textarea {
 	grid-template-rows: auto 1fr auto;
 }
 
-.header,
+/* .header selector removed below — Header.tsx was rebuilt with Tailwind
+   classes directly (see components/layout/Header.tsx) and no longer uses
+   this class. .footer still uses this rule (Footer.tsx does). */
 .footer {
 	display: flex;
 	align-items: center;
@@ -154,12 +156,8 @@ textarea {
 	border-bottom: 1px solid var(--surface-border);
 }
 
-.header {
-	position: sticky;
-	top: 0;
-	z-index: 1000;
-	box-shadow: 0 2px 10px var(--surface-shadow);
-}
+/* Old .header { position: sticky; ... } block removed — Header.tsx sets
+   its own sticky/shadow styles with Tailwind classes now. */
 
 .footer {
 	border-top: 1px solid var(--surface-border);
@@ -167,8 +165,14 @@ textarea {
 }
 
 /* -------------------------
-   HEADER COMPONENTS
+   HEADER COMPONENTS (UNUSED)
+   .header-nav-link and .header-action were the old Header's link/icon
+   styles, from before it was rebuilt as HeaderNav.tsx / IconButton.tsx
+   with Tailwind classes. Nothing references these anymore — commented
+   out instead of deleted in case the pre-Tailwind styling is wanted
+   back for reference.
 --------------------------*/
+/*
 .header-nav-link {
 	color: var(--header-link);
 	transition: all 0.2s ease;
@@ -197,6 +201,7 @@ textarea {
 	color: var(--header-action-hover);
 	background: var(--header-action-hover-bg);
 }
+*/
 
 /* -------------------------
    BUTTONS (LEGACY SUPPORT ONLY)
@@ -226,8 +231,9 @@ button:active,
 /* -------------------------
    UTILITIES
 --------------------------*/
-.nav,
-.header-actions,
+/* .nav and .header-actions removed below — leftover from the old Header
+   markup; HeaderNav.tsx and Header.tsx use Tailwind classes now. .row is
+   still used throughout (EventCard, DiscoverPage, EventDetailsPage, ...). */
 .row {
 	display: flex;
 	align-items: center;
@@ -394,7 +400,18 @@ button:active,
 	padding: 0;
 }
 
-.hero,
+/* The login page's photo backdrop should bleed edge-to-edge too; the form
+   card inside it stays centered via its own max-width. */
+.page-container:has(.login-page-full) {
+	max-width: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+/* .hero removed below — LandingPage.tsx no longer uses it (rewritten to
+   use WelcomeHero.tsx with its own Tailwind classes). .card is still used
+   (DiscoverPage, MyEventsPage, EventDetailsPage). */
 .card {
 	background: var(--surface);
 	border: 1px solid var(--surface-border);
@@ -406,11 +423,7 @@ button:active,
 /* -------------------------
    TYPOGRAPHY
 --------------------------*/
-.hero h1 {
-	margin-top: 0;
-	font-size: 42px;
-	font-family: "Hanken Grotesk", Inter, system-ui, sans-serif;
-}
+/* .hero h1 removed — unused now that .hero itself is unused. */
 
 /* -------------------------
    CODE BLOCKS
@@ -441,15 +454,13 @@ pre {
    RESPONSIVE
 --------------------------*/
 @media (max-width: 800px) {
-	.header,
+	/* .header removed — unused, see note above */
 	.footer {
 		display: grid;
 		grid-template-columns: 1fr;
 	}
 
-	.hero h1 {
-		font-size: 30px;
-	}
+	/* .hero h1 removed — unused, see note above */
 }
 
 /* -------------------------
@@ -628,14 +639,15 @@ pre {
 }
 
 /* -------------------------
-   DISCOVER PAGE — FILTERS BAR
+   DISCOVER PAGE — FILTERS BAR (UNUSED)
    Moved from pages/DiscoverPage.module.css, which was a CSS Module that
-   DiscoverPage.tsx never actually imported — so `.filters` was dead,
-   unused CSS before this move. Kept it (converting the CSS-Modules-only
-   `:global(body.dark)` wrapper to plain `body.dark`) in case a future
-   filter bar on the Discover page reuses it; wire it up with
-   className="filters" if/when that bar gets built.
+   DiscoverPage.tsx never actually imported — so `.filters` was already
+   dead, unused CSS before this move, and still nothing uses it. Left
+   commented out (instead of deleted) in case a future filter bar on the
+   Discover page wants to reuse it; wire it up with className="filters"
+   if/when that bar gets built.
 --------------------------*/
+/*
 .filters {
   display: flex;
   gap: 10px;
@@ -651,6 +663,7 @@ body.dark .filters {
   background: #111827;
   border-color: #1f2937;
 }
+*/
 
 /* -------------------------
    MAP PAGE
