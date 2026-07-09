@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { getEvents } from "../api/eventsApi";
+import { getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
 import { getMapStyle, MapStyleResponse } from "../api/geoApi";
 import { GeoSuggestion, EventItem } from "../types/api";
-import { LocationAutocomplete } from "../components/geo/LocationAutocomplete";
-import Button from "../components/shared/Button";
-import eventStyles from "../components/events/EventCard.module.css";
-import styles from "./MapPage.module.css";
+import { MapEventPanel } from "../components/map/MapEventPanel";
+import { MapFilterBar } from "../components/map/MapFilterBar";
+import { MapZoomControls } from "../components/map/MapZoomControls";
+// Map page layout classes (.mapPage, .mapCanvas, .eventMarker, ...) now
+// live in styles/global.css — see the "MAP PAGE" section there.
 
 declare global {
   interface Window {
@@ -32,6 +31,19 @@ const FALLBACK_MAP_STYLE: MapStyleResponse = {
     },
   },
 };
+
+const SPORT_COLORS: Record<string, string> = {
+  swimming: "#0ea5a5",
+  tennis: "#6366f1",
+  running: "#f59e0b",
+  cycling: "#10b981",
+  yoga: "#8b5cf6",
+};
+const DEFAULT_SPORT_COLOR = "#475569";
+
+function sportColor(sport: string) {
+  return SPORT_COLORS[(sport || "").toLowerCase()] || DEFAULT_SPORT_COLOR;
+}
 
 function getCurrentMapTheme() {
   return document.body.classList.contains("dark") ? "dark" : "light";
@@ -86,10 +98,28 @@ function distanceKm(
   return 2 * radius * Math.asin(Math.sqrt(h));
 }
 
+function isToday(dateString: string) {
+  const date = new Date(dateString);
+  const now = new Date();
+  return (
+    date.getFullYear() === now.getFullYear() &&
+    date.getMonth() === now.getMonth() &&
+    date.getDate() === now.getDate()
+  );
+}
+
 export function MapPage() {
-  const { t } = useTranslation();
   const [events, setEvents] = useState<EventItem[]>([]);
   const [focusPoint, setFocusPoint] = useState<GeoSuggestion | null>(null);
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(
+    null,
+  );
+  const [locating, setLocating] = useState(false);
+  const [sportFilter, setSportFilter] = useState("");
+  const [levelFilter, setLevelFilter] = useState("");
+  const [todayOnly, setTodayOnly] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [actionBusy, setActionBusy] = useState(false);
   const [status, setStatus] = useState("Loading map...");
   const [mapStyle, setMapStyle] = useState<MapStyleResponse>(FALLBACK_MAP_STYLE);
   const [mapTheme, setMapTheme] = useState<"light" | "dark">(() =>
@@ -101,13 +131,18 @@ export function MapPage() {
   const tileLayerRef = useRef<any>(null);
   const layerRef = useRef<any>(null);
 
+  async function loadEvents() {
+    try {
+      const data = await getEvents();
+      setEvents(Array.isArray(data) ? data : []);
+      setStatus("");
+    } catch (error: any) {
+      setStatus(error.message);
+    }
+  }
+
   useEffect(() => {
-    getEvents()
-      .then((data) => {
-        setEvents(Array.isArray(data) ? data : []);
-        setStatus("");
-      })
-      .catch((error: any) => setStatus(error.message));
+    loadEvents();
   }, []);
 
   useEffect(() => {
@@ -135,7 +170,7 @@ export function MapPage() {
       .then(() => {
         if (disposed || !mapContainerRef.current || !window.L) return;
         const map = window.L.map(mapContainerRef.current, {
-          zoomControl: true,
+          zoomControl: false,
         }).setView([48.2082, 16.3738], 12);
 
         mapRef.current = map;
@@ -157,6 +192,16 @@ export function MapPage() {
   }, []);
 
   useEffect(() => {
+    if (!mapReady || !mapRef.current || !mapContainerRef.current) return;
+
+    const map = mapRef.current;
+    const resizeObserver = new ResizeObserver(() => map.invalidateSize());
+    resizeObserver.observe(mapContainerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [mapReady]);
+
+  useEffect(() => {
     if (!mapReady || !mapRef.current || !window.L) return;
 
     const selectedStyle = mapStyle.styles[mapTheme];
@@ -174,21 +219,37 @@ export function MapPage() {
   }, [mapReady, mapStyle, mapTheme]);
 
   const visibleEvents = useMemo(() => {
-    if (!focusPoint) return events;
-    return events
-      .map((event: EventItem) => ({
-        event,
-        distance: distanceKm(focusPoint, event),
-      }))
-      .filter((item: { event: EventItem; distance: number }) => item.distance <= 20)
-      .sort(
-        (
-          a: { event: EventItem; distance: number },
-          b: { event: EventItem; distance: number },
-        ) => a.distance - b.distance,
-      )
-      .map((item: { event: EventItem; distance: number }) => item.event);
-  }, [events, focusPoint]);
+    let list = events;
+
+    if (sportFilter) list = list.filter((event) => event.sport === sportFilter);
+    if (levelFilter) list = list.filter((event) => event.level === levelFilter);
+    if (todayOnly) list = list.filter((event) => isToday(event.start_at));
+
+    if (focusPoint) {
+      list = list
+        .map((event) => ({ event, distance: distanceKm(focusPoint, event) }))
+        .filter((item) => item.distance <= 20)
+        .sort((a, b) => a.distance - b.distance)
+        .map((item) => item.event);
+    }
+
+    return list;
+  }, [events, sportFilter, levelFilter, todayOnly, focusPoint]);
+
+  useEffect(() => {
+    if (visibleEvents.length === 0) {
+      setSelectedEventId(null);
+      return;
+    }
+    if (!selectedEventId || !visibleEvents.some((event) => event.id === selectedEventId)) {
+      setSelectedEventId(visibleEvents[0].id);
+    }
+  }, [visibleEvents, selectedEventId]);
+
+  const selectedEvent = useMemo(
+    () => events.find((event) => event.id === selectedEventId) || null,
+    [events, selectedEventId],
+  );
 
   useEffect(() => {
     if (!mapRef.current || !layerRef.current || !window.L) return;
@@ -198,22 +259,23 @@ export function MapPage() {
     layer.clearLayers();
 
     const bounds: [number, number][] = [];
-    const eventIcon = window.L.divIcon({
-      className: styles.eventMarker,
-      html: '<span></span>',
-      iconSize: [28, 28],
-      iconAnchor: [14, 28],
-      popupAnchor: [0, -26],
-    });
 
     visibleEvents.forEach((event: EventItem) => {
-      const marker = window.L
-        .marker([event.latitude, event.longitude], { icon: eventIcon })
-        .addTo(layer);
-      marker.bindPopup(
-        `<strong>${event.title}</strong><br/>${event.location_name}<br/>${new Date(event.start_at).toLocaleString()}`,
-      );
-      marker.on("click", () => map.setView([event.latitude, event.longitude], 14));
+      const isSelected = event.id === selectedEventId;
+      const color = sportColor(event.sport);
+      const icon = window.L.divIcon({
+        className: isSelected ? "eventMarkerSelected" : "eventMarker",
+        html: `<span style="background:${color}"></span>`,
+        iconSize: isSelected ? [34, 34] : [26, 26],
+        iconAnchor: isSelected ? [17, 34] : [13, 26],
+        popupAnchor: [0, -26],
+      });
+
+      const marker = window.L.marker([event.latitude, event.longitude], { icon }).addTo(layer);
+      marker.on("click", () => {
+        setSelectedEventId(event.id);
+        map.setView([event.latitude, event.longitude], Math.max(map.getZoom(), 14));
+      });
       bounds.push([event.latitude, event.longitude]);
     });
 
@@ -232,70 +294,111 @@ export function MapPage() {
       bounds.push([focusPoint.latitude, focusPoint.longitude]);
     }
 
+    if (userLocation) {
+      window.L
+        .circleMarker([userLocation.latitude, userLocation.longitude], {
+          radius: 8,
+          color: "#ffffff",
+          fillColor: "#2563eb",
+          fillOpacity: 1,
+          weight: 3,
+        })
+        .addTo(layer);
+    }
+
     if (!focusPoint && bounds.length === 1) {
       map.setView(bounds[0], 13);
     } else if (!focusPoint && bounds.length > 1) {
-      map.fitBounds(bounds as any, { padding: [40, 40] });
+      map.fitBounds(bounds as any, { padding: [60, 60] });
     }
-  }, [focusPoint, visibleEvents, mapTheme]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleEvents, selectedEventId, focusPoint, userLocation, mapTheme]);
+
+  async function handleJoin(id: string) {
+    setActionBusy(true);
+    try {
+      await joinEvent(id);
+      await loadEvents();
+    } catch (error: any) {
+      setStatus(error.message);
+    } finally {
+      setActionBusy(false);
+    }
+  }
+
+  async function handleLeave(id: string) {
+    setActionBusy(true);
+    try {
+      await leaveEvent(id);
+      await loadEvents();
+    } catch (error: any) {
+      setStatus(error.message);
+    } finally {
+      setActionBusy(false);
+    }
+  }
+
+  function handleZoomIn() {
+    mapRef.current?.zoomIn();
+  }
+
+  function handleZoomOut() {
+    mapRef.current?.zoomOut();
+  }
+
+  function handleLocate() {
+    if (typeof navigator === "undefined" || !navigator.geolocation) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        setUserLocation(location);
+        mapRef.current?.setView([location.latitude, location.longitude], 14);
+        setLocating(false);
+      },
+      () => setLocating(false),
+      { enableHighAccuracy: true, timeout: 8000 },
+    );
+  }
 
   return (
-    <div className={'${styles.mapPage}'}>
-      <section className={`card ${styles.mapControls}`}>
-        <h1>{t("map.title")}</h1>
-        <p>{t("map.subtitle")}</p>
-        <LocationAutocomplete
-          label={t("map.search")}
-          placeholder={t("map.searchPlaceholder")}
-          onSelect={(suggestion) => setFocusPoint(suggestion)}
+    <div className="mapPage map-page-full">
+      <div ref={mapContainerRef} className="mapCanvas" />
+
+      <div className="panelOverlay">
+        <MapEventPanel
+          event={selectedEvent}
+          busy={actionBusy}
+          onJoin={handleJoin}
+          onLeave={handleLeave}
         />
-        <div className="row">
-          <Button variant="primary" onClick={() => setFocusPoint(null)}>
-            {t("map.reset")}
-          </Button>
-        </div>
-        {focusPoint && (
-          <p className={styles.mapFocus}>
-            {t("map.focusedOn")} {focusPoint.label}
-          </p>
-        )}
-      </section>
-
-      <div className={`two-column ${styles.mapLayout}`}>
-        <section className={`card ${styles.mapCanvasCard}`}>
-          <div ref={mapContainerRef} className={styles.mapCanvas} />
-          {status && <p className={styles.mapStatus}>{status}</p>}
-        </section>
-
-        <aside className={styles.sidebarList}>
-          <h2>{t("map.eventsNear", { count: visibleEvents.length })}</h2>
-          {visibleEvents.length === 0 ? (
-            <p>{t("map.noEvents")}</p>
-          ) : (
-            visibleEvents.map((event: EventItem) => (
-              <article key={event.id} className={`${eventStyles.eventCard} ${eventStyles.compact} p-4 rounded-lg border border-[var(--card-border)]`}>
-                <h3>
-                  <Link to={`/events/${event.id}`}>{event.title}</Link>
-                </h3>
-                <p className={eventStyles.eventLocation}>{event.location_name}</p>
-                {event.location_address && event.location_address !== event.location_name && (
-                  <p className={eventStyles.eventAddress}>{event.location_address}</p>
-                )}
-                <p>{new Date(event.start_at).toLocaleString()}</p>
-                <button
-                  type="button"
-                  className="secondary"
-                  onClick={() =>
-                    mapRef.current?.setView([event.latitude, event.longitude], 14)
-                  }
-                >
-                  {t("map.focusEvent")}
-                </button>
-              </article>
-            ))
-          )}
-        </aside>
       </div>
+
+      <div className="topBarOverlay">
+        <MapFilterBar
+          sport={sportFilter}
+          onSportChange={setSportFilter}
+          level={levelFilter}
+          onLevelChange={setLevelFilter}
+          todayOnly={todayOnly}
+          onToggleToday={() => setTodayOnly((value) => !value)}
+          onLocationSelect={setFocusPoint}
+        />
+      </div>
+
+      <div className="zoomOverlay">
+        <MapZoomControls
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+          onLocate={handleLocate}
+          locating={locating}
+        />
+      </div>
+
+      {status && <p className="mapStatus">{status}</p>}
     </div>
   );
 }

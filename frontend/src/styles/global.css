@@ -303,6 +303,15 @@ button:active,
 	padding: 0;
 }
 
+/* The Map page needs an edge-to-edge canvas below the header instead of
+   the centered column, same escape hatch as the Discover layout above. */
+.page-container:has(.map-page-full) {
+	max-width: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 .hero,
 .card {
 	background: var(--surface);
@@ -534,4 +543,196 @@ pre {
 .discover-main {
   flex: 1;
   min-width: 0;
+}
+
+/* -------------------------
+   DISCOVER PAGE — FILTERS BAR
+   Moved from pages/DiscoverPage.module.css, which was a CSS Module that
+   DiscoverPage.tsx never actually imported — so `.filters` was dead,
+   unused CSS before this move. Kept it (converting the CSS-Modules-only
+   `:global(body.dark)` wrapper to plain `body.dark`) in case a future
+   filter bar on the Discover page reuses it; wire it up with
+   className="filters" if/when that bar gets built.
+--------------------------*/
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+body.dark .filters {
+  background: #111827;
+  border-color: #1f2937;
+}
+
+/* -------------------------
+   MAP PAGE
+   Used by: pages/MapPage.tsx — the full-bleed Leaflet map view.
+
+   These rules used to live in pages/MapPage.module.css as a CSS Module.
+   Moved here so MapPage.tsx can reference them as plain global class name
+   strings (e.g. className="mapPage") instead of importing a `styles`
+   object — the same way "discover-layout"/"sidebar" above are plain
+   global classes rather than CSS Modules.
+
+   What each class is for:
+   - .mapPage / .mapCanvas        the full-bleed page wrapper and the
+                                   empty <div> that Leaflet takes over to
+                                   draw the actual map into
+   - .panelOverlay                positions the floating MapEventPanel
+                                   (the event detail card, left side)
+   - .topBarOverlay                positions the floating MapFilterBar
+                                   (location search + Today + Filters)
+   - .zoomOverlay                 positions the floating MapZoomControls
+                                   (+/- zoom buttons, "use my location")
+   - .mapStatus                   the "Loading map..." / error message
+                                   line shown when something goes wrong
+   - .eventMarker / .eventMarkerSelected
+                                   the colored dot markers Leaflet draws
+                                   per event; "Selected" is the bigger
+                                   version for whichever event is
+                                   currently shown in the detail panel
+--------------------------*/
+.mapPage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mapCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--map-bg, #dbeafe);
+}
+
+.panelOverlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
+  z-index: 20;
+  display: flex;
+  pointer-events: none;
+}
+
+.panelOverlay > * {
+  pointer-events: auto;
+}
+
+.topBarOverlay {
+  position: absolute;
+  top: 20px;
+  left: 380px;
+  right: 20px;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+}
+
+.zoomOverlay {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 20;
+}
+
+.mapStatus {
+  position: absolute;
+  bottom: 20px;
+  left: 380px;
+  z-index: 20;
+  margin: 0;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.eventMarker,
+.eventMarkerSelected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eventMarker span,
+.eventMarkerSelected span {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.35);
+}
+
+.eventMarkerSelected span {
+  width: 20px;
+  height: 20px;
+  border-width: 4px;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.45);
+}
+
+@media (max-width: 900px) {
+  .mapPage {
+    height: auto;
+    min-height: auto;
+    overflow-x: hidden;
+    overflow-y: visible;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mapCanvas {
+    position: relative;
+    inset: auto;
+    height: 60vh;
+    min-height: 360px;
+    order: 1;
+  }
+
+  .panelOverlay {
+    position: relative;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    padding: 16px 16px 0;
+    order: 0;
+  }
+
+  .panelOverlay > * {
+    width: 100%;
+    max-width: none;
+    max-height: 320px;
+  }
+
+  .topBarOverlay {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    padding: 16px;
+    order: -1;
+  }
+
+  .zoomOverlay {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .mapStatus {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin: 12px 16px;
+  }
 }
