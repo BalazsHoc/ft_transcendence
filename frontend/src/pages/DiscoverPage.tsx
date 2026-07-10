@@ -11,13 +11,19 @@ export function DiscoverPage() {
   const { t, i18n } = useTranslation();
   const [events, setEvents] = useState<EventItem[]>([]);
   const [sport, setSport] = useState("");
-  const [level, setLevel] = useState("");
+  const [levels, setLevels] = useState<string[]>([]);
   const [time, setTime] = useState("");
   const [log, setLog] = useState("");
 
+  function toggleLevel(value: string) {
+    setLevels((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+    );
+  }
+
   async function load() {
     try {
-      const data = await getEvents({ sport, level });
+      const data = await getEvents({ sport, level: levels.join(",") });
       setEvents(Array.isArray(data) ? data : []);
       setLog(`Loaded ${data.length} events.`);
     } catch (e: any) {
@@ -62,8 +68,8 @@ export function DiscoverPage() {
       <Sidebar
         sport={sport}
         onSportChange={setSport}
-        level={level}
-        onLevelChange={setLevel}
+        level={levels}
+        onLevelChange={toggleLevel}
         time={time}
         onTimeChange={setTime}
       />

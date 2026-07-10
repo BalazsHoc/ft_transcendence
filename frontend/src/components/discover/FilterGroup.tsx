@@ -6,7 +6,9 @@ type Option = {
 type FilterGroupProps = {
   title: string;
   options: Option[];
-  selected: string;
+  // "checkbox" is multi-select, so it takes an array; "chips" and "radio"
+  // are single-select, so they take one value.
+  selected: string | string[];
   onChange: (value: string) => void;
   type?: "chips" | "radio" | "checkbox";
 };
@@ -38,38 +40,44 @@ export function FilterGroup({
 
       {type === "checkbox" && (
         <div className="filter-group__list">
-          {options.map((opt) => (
-            <label
-              key={opt.value}
-              className="filter-option"
-              onClick={() => onChange(opt.value)}
-            >
-              <div
-                className={`filter-checkbox ${selected === opt.value ? "filter-checkbox--active" : ""}`}
+          {options.map((opt) => {
+            const isActive = Array.isArray(selected)
+              ? selected.includes(opt.value)
+              : selected === opt.value;
+
+            return (
+              <label
+                key={opt.value}
+                className="filter-option"
+                onClick={() => onChange(opt.value)}
               >
-                {selected === opt.value && (
-                  <svg
-                    className="filter-checkbox__icon"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={3}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                )}
-              </div>
-              <span
-                className={`filter-option__label ${selected === opt.value ? "filter-option__label--active" : ""}`}
-              >
-                {opt.label}
-              </span>
-            </label>
-          ))}
+                <div
+                  className={`filter-checkbox ${isActive ? "filter-checkbox--active" : ""}`}
+                >
+                  {isActive && (
+                    <svg
+                      className="filter-checkbox__icon"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  )}
+                </div>
+                <span
+                  className={`filter-option__label ${isActive ? "filter-option__label--active" : ""}`}
+                >
+                  {opt.label}
+                </span>
+              </label>
+            );
+          })}
         </div>
       )}
 
