@@ -79,6 +79,7 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
         <HeaderNavLink to="/chats">{t("nav.chats")}</HeaderNavLink>
         <HeaderNavLink to="/profile">{t("nav.profile")}</HeaderNavLink>
         <HeaderNavLink to="/ui-elements-test">UI Elements</HeaderNavLink>
+        <HeaderNavLink to="/api-test">API Tester</HeaderNavLink>
       </nav>
 
       {/* Actions */}
