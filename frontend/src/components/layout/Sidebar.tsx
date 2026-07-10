@@ -4,7 +4,7 @@ import { FilterGroup } from "../discover/FilterGroup";
 type SidebarProps = {
   sport: string;
   onSportChange: (value: string) => void;
-  level: string;
+  level: string[];
   onLevelChange: (value: string) => void;
   time: string;
   onTimeChange: (value: string) => void;
