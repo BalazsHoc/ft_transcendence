@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 type ProfileScoreCardProps = {
   score?: number;
   title?: string;
@@ -6,11 +8,8 @@ type ProfileScoreCardProps = {
 
 // The backend has no "community score" field yet — this renders whatever
 // score is passed in (default 0) so it's a one-line swap once that data exists.
-export function ProfileScoreCard({
-  score = 0,
-  title = "Community Score",
-  description = "Join events and stay active to build up your community score.",
-}: ProfileScoreCardProps) {
+export function ProfileScoreCard({ score = 0, title, description }: ProfileScoreCardProps) {
+  const { t } = useTranslation();
   const radius = 45;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (circumference * Math.min(score, 100)) / 100;
@@ -43,12 +42,16 @@ export function ProfileScoreCard({
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-display text-3xl font-bold text-[var(--text)]">{score}</span>
-          <span className="text-xs text-[var(--muted)]">Score</span>
+          <span className="text-xs text-[var(--muted)]">{t("profile.score")}</span>
         </div>
       </div>
       <div>
-        <h3 className="font-display text-xl font-semibold text-[var(--text)]">{title}</h3>
-        <p className="mt-2 text-sm text-[var(--muted)]">{description}</p>
+        <h3 className="font-display text-xl font-semibold text-[var(--text)]">
+          {title ?? t("profile.communityScore")}
+        </h3>
+        <p className="mt-2 text-sm text-[var(--muted)]">
+          {description ?? t("profile.communityScoreDescription")}
+        </p>
       </div>
     </div>
   );

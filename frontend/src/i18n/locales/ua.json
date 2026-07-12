@@ -156,7 +156,30 @@
   },
   "profile": {
     "title": "Профіль",
-    "update": "Оновити профіль"
+    "update": "Оновити профіль",
+    "editProfile": "Редагувати профіль",
+    "memberSince": "Учасник з {{year}}",
+    "noDistrict": "Район не вказано",
+    "guest": "Гість",
+    "communityScore": "Рейтинг спільноти",
+    "communityScoreDescription": "Приєднуйся до подій і залишайся активним, щоб підвищити свій рейтинг спільноти.",
+    "score": "Рейтинг",
+    "activityHistory": "Історія активності",
+    "noActivity": "Активності ще немає. Приєднайся до події, щоб почати.",
+    "about": "Про мене",
+    "languages": "Мови",
+    "focusAreas": "Напрямки",
+    "notSet": "Не вказано",
+    "achievements": "Досягнення",
+    "avatar": "Аватар",
+    "district": "Район",
+    "languagesCsv": "Мови (через кому)",
+    "interestsCsv": "Інтереси (через кому)",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "achievementWorkouts": "100 тренувань",
+    "achievementStreak": "Серія 30 днів",
+    "achievementCourtMaster": "Майстер корту"
   },
   "apiTest": {
     "title": "Тест API роутів"

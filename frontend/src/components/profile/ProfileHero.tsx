@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { MapPin, Pencil } from "lucide-react";
 import { User } from "../../types/api";
 import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
@@ -10,6 +11,7 @@ type ProfileHeroProps = {
 };
 
 export function ProfileHero({ user, onEditClick }: ProfileHeroProps) {
+  const { t } = useTranslation();
   const memberSince = user?.created_at ? new Date(user.created_at).getFullYear() : null;
   const tags = user?.interests?.length ? user.interests : [];
 
@@ -38,18 +40,18 @@ export function ProfileHero({ user, onEditClick }: ProfileHeroProps) {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <h1 className="font-display text-3xl font-bold text-[var(--text)]">
-                {user?.username || "Guest"}
+                {user?.username || t("profile.guest")}
               </h1>
               <p className="mt-2 flex items-center gap-2 text-[var(--muted)]">
                 <MapPin size={18} />
-                {user?.district || "No district set"}
-                {memberSince && <> • Member since {memberSince}</>}
+                {user?.district || t("profile.noDistrict")}
+                {memberSince && <> • {t("profile.memberSince", { year: memberSince })}</>}
               </p>
             </div>
 
             {user && (
               <Button variant="primary" icon={<Pencil size={16} />} onClick={onEditClick}>
-                Edit profile
+                {t("profile.editProfile")}
               </Button>
             )}
           </div>
