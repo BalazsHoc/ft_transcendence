@@ -2,10 +2,10 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { User } from "../../types/api";
 import { updateMe } from "../../api/authApi";
-import { ApiLog } from "../shared/ApiLog";
 import Button from "../shared/Button";
-import styles from "../shared/FormCard.module.css";
 import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
+
+const fieldLabelClasses = "mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--muted)]";
 
 type ProfileEditFormProps = {
   user: User | null;
@@ -22,7 +22,7 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
   const [avatarPreview, setAvatarPreview] = useState(
     resolveMediaUrl(user?.avatar, DEFAULT_AVATAR_SRC),
   );
-  const [log, setLog] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setDistrict(user?.district || "");
@@ -50,48 +50,57 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
       });
       onSaved();
     } catch (e: any) {
-      setLog(e.message);
+      setError(e.message);
     }
   }
 
   return (
     <div className="mx-auto mt-6 max-w-6xl rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-8 shadow-sm">
-      <h2 className="mb-4 font-display text-xl font-semibold text-[var(--text)]">{t("profile.editProfile")}</h2>
-      <div className={styles.formCard}>
-        <label>
-          {t("profile.avatar")}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setAvatarFile(e.target.files?.[0] || null)}
+      <h2 className="mb-6 font-display text-xl font-semibold text-[var(--text)]">{t("profile.editProfile")}</h2>
+
+      <div className="flex flex-col gap-8 md:flex-row md:items-start">
+        <div className="flex shrink-0 flex-col items-center gap-3">
+          <img
+            src={avatarPreview}
+            alt="Avatar preview"
+            className="h-24 w-24 rounded-full border-4 border-[var(--surface)] object-cover shadow-lg"
+            onError={(e: any) => {
+              e.currentTarget.src = DEFAULT_AVATAR_SRC;
+            }}
           />
-        </label>
-        <img
-          src={avatarPreview}
-          alt="Avatar preview"
-          className="h-24 w-24 rounded-full object-cover"
-          onError={(e: any) => {
-            e.currentTarget.src = DEFAULT_AVATAR_SRC;
-          }}
-        />
-        <label>
-          {t("profile.district")}
-          <input value={district} onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)} />
-        </label>
-        <label>
-          {t("profile.languagesCsv")}
-          <input value={languages} onChange={(e: ChangeEvent<HTMLInputElement>) => setLanguages(e.target.value)} />
-        </label>
-        <label>
-          {t("profile.interestsCsv")}
-          <input value={interests} onChange={(e: ChangeEvent<HTMLInputElement>) => setInterests(e.target.value)} />
-        </label>
-        <div className="row">
-          <Button variant="primary" onClick={save}>{t("profile.save")}</Button>
-          <Button variant="outline" onClick={onCancel}>{t("profile.cancel")}</Button>
+          <label className="cursor-pointer text-xs font-medium uppercase tracking-wider text-[var(--muted)] hover:text-[var(--text)]">
+            {t("profile.avatar")}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setAvatarFile(e.target.files?.[0] || null)}
+            />
+          </label>
+        </div>
+
+        <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2">
+          <label className="sm:col-span-2">
+            <span className={fieldLabelClasses}>{t("profile.district")}</span>
+            <input value={district} onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)} />
+          </label>
+          <label>
+            <span className={fieldLabelClasses}>{t("profile.languagesCsv")}</span>
+            <input value={languages} onChange={(e: ChangeEvent<HTMLInputElement>) => setLanguages(e.target.value)} />
+          </label>
+          <label>
+            <span className={fieldLabelClasses}>{t("profile.interestsCsv")}</span>
+            <input value={interests} onChange={(e: ChangeEvent<HTMLInputElement>) => setInterests(e.target.value)} />
+          </label>
         </div>
       </div>
-      <ApiLog log={log} />
+
+      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+
+      <div className="mt-6 flex justify-end gap-3">
+        <Button variant="outline" onClick={onCancel}>{t("profile.cancel")}</Button>
+        <Button variant="primary" onClick={save}>{t("profile.save")}</Button>
+      </div>
     </div>
   );
 }
