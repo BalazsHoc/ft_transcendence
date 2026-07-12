@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { CalendarDays } from "lucide-react";
 
 export type ActivityItem = {
@@ -16,15 +17,19 @@ const DEFAULT_ITEMS: ActivityItem[] = [];
 // No activity-feed endpoint exists yet, so this renders an empty-state by
 // default. Pass `items` once the backend exposes a per-user activity log.
 export function ProfileActivityTimeline({ items = DEFAULT_ITEMS }: ProfileActivityTimelineProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-8 shadow-sm">
       <h3 className="mb-6 flex items-center gap-2 font-display text-xl font-semibold text-[var(--text)]">
         <CalendarDays size={20} />
-        Activity History
+        {t("profile.activityHistory")}
       </h3>
 
       {items.length === 0 ? (
-        <p className="text-sm text-[var(--muted)]">No activity yet. Join an event to get started.</p>
+        <div className="flex min-h-16 items-center">
+          <p className="text-sm text-[var(--muted)]">{t("profile.noActivity")}</p>
+        </div>
       ) : (
         <div className="relative ml-4 space-y-8 border-l-2 border-[var(--surface-border)] pb-4">
           {items.map((item) => (

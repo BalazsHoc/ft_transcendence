@@ -1,4 +1,5 @@
 import { useEffect, useState, type ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { User } from "../../types/api";
 import { updateMe } from "../../api/authApi";
 import { ApiLog } from "../shared/ApiLog";
@@ -13,6 +14,7 @@ type ProfileEditFormProps = {
 };
 
 export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProps) {
+  const { t } = useTranslation();
   const [district, setDistrict] = useState("");
   const [languages, setLanguages] = useState("");
   const [interests, setInterests] = useState("");
@@ -54,10 +56,10 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
 
   return (
     <div className="mx-auto mt-6 max-w-6xl rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-8 shadow-sm">
-      <h2 className="mb-4 font-display text-xl font-semibold text-[var(--text)]">Edit profile</h2>
+      <h2 className="mb-4 font-display text-xl font-semibold text-[var(--text)]">{t("profile.editProfile")}</h2>
       <div className={styles.formCard}>
         <label>
-          Avatar
+          {t("profile.avatar")}
           <input
             type="file"
             accept="image/*"
@@ -73,20 +75,20 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
           }}
         />
         <label>
-          District
+          {t("profile.district")}
           <input value={district} onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)} />
         </label>
         <label>
-          Languages (comma separated)
+          {t("profile.languagesCsv")}
           <input value={languages} onChange={(e: ChangeEvent<HTMLInputElement>) => setLanguages(e.target.value)} />
         </label>
         <label>
-          Interests (comma separated)
+          {t("profile.interestsCsv")}
           <input value={interests} onChange={(e: ChangeEvent<HTMLInputElement>) => setInterests(e.target.value)} />
         </label>
         <div className="row">
-          <Button variant="primary" onClick={save}>Save</Button>
-          <Button variant="outline" onClick={onCancel}>Cancel</Button>
+          <Button variant="primary" onClick={save}>{t("profile.save")}</Button>
+          <Button variant="outline" onClick={onCancel}>{t("profile.cancel")}</Button>
         </div>
       </div>
       <ApiLog log={log} />

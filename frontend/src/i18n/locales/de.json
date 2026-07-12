@@ -163,7 +163,30 @@
   },
   "profile": {
     "title": "Profil",
-    "update": "Profil aktualisieren"
+    "update": "Profil aktualisieren",
+    "editProfile": "Profil bearbeiten",
+    "memberSince": "Mitglied seit {{year}}",
+    "noDistrict": "Kein Bezirk angegeben",
+    "guest": "Gast",
+    "communityScore": "Community-Score",
+    "communityScoreDescription": "Nimm an Events teil und bleib aktiv, um deinen Community-Score aufzubauen.",
+    "score": "Score",
+    "activityHistory": "Aktivitätsverlauf",
+    "noActivity": "Noch keine Aktivität. Tritt einem Event bei, um loszulegen.",
+    "about": "Über mich",
+    "languages": "Sprachen",
+    "focusAreas": "Schwerpunkte",
+    "notSet": "Nicht angegeben",
+    "achievements": "Erfolge",
+    "avatar": "Avatar",
+    "district": "Bezirk",
+    "languagesCsv": "Sprachen (kommagetrennt)",
+    "interestsCsv": "Interessen (kommagetrennt)",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "achievementWorkouts": "100 Workouts",
+    "achievementStreak": "30-Tage-Serie",
+    "achievementCourtMaster": "Platzmeister"
   },
   "apiTest": {
     "title": "API-Routen testen"

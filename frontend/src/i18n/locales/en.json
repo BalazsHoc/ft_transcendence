@@ -163,7 +163,30 @@
   },
   "profile": {
     "title": "Profile",
-    "update": "Update profile"
+    "update": "Update profile",
+    "editProfile": "Edit profile",
+    "memberSince": "Member since {{year}}",
+    "noDistrict": "No district set",
+    "guest": "Guest",
+    "communityScore": "Community Score",
+    "communityScoreDescription": "Join events and stay active to build up your community score.",
+    "score": "Score",
+    "activityHistory": "Activity History",
+    "noActivity": "No activity yet. Join an event to get started.",
+    "about": "About",
+    "languages": "Languages",
+    "focusAreas": "Focus Areas",
+    "notSet": "Not set",
+    "achievements": "Achievements",
+    "avatar": "Avatar",
+    "district": "District",
+    "languagesCsv": "Languages (comma separated)",
+    "interestsCsv": "Interests (comma separated)",
+    "save": "Save",
+    "cancel": "Cancel",
+    "achievementWorkouts": "100 Workouts",
+    "achievementStreak": "30 Day Streak",
+    "achievementCourtMaster": "Court Master"
   },
   "apiTest": {
     "title": "API route tester"
