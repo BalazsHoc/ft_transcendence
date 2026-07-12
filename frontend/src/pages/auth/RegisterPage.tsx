@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../features/auth/AuthContext";
 import { ApiLog } from "../../components/shared/ApiLog";
 import { PhotoBackdrop } from "../../components/shared/PhotoBackdrop";
+import Button from "../../components/shared/Button";
 import styles from "../../components/shared/FormCard.module.css";
 
 export function RegisterPage() {
@@ -65,11 +66,16 @@ export function RegisterPage() {
               onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)}
             />
           </label>
-          <button>{t("auth.submitRegister")}</button>
+          <Button type="submit" variant="primary">
+            {t("auth.submitRegister")}
+          </Button>
         </form>
         <p className="mt-4 text-center text-sm text-[var(--text-muted)]">
           {t("auth.haveAccount")}{" "}
-          <Link to="/login" className="font-medium text-[var(--text)] underline">
+          <Link
+            to="/login"
+            className="font-medium text-[var(--text)] underline hover:font-bold"
+          >
             {t("auth.loginLink")}
           </Link>
         </p>

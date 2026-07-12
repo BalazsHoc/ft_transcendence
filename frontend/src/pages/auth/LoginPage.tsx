@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../features/auth/AuthContext";
 import { ApiLog } from "../../components/shared/ApiLog";
 import { PhotoBackdrop } from "../../components/shared/PhotoBackdrop";
+import Button from "../../components/shared/Button";
 import styles from "../../components/shared/FormCard.module.css";
 
 export function LoginPage() {
@@ -49,11 +50,16 @@ export function LoginPage() {
               onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
           </label>
-          <button>{t("auth.submitLogin")}</button>
+          <Button type="submit" variant="primary">
+            {t("auth.submitLogin")}
+          </Button>
         </form>
         <p className="mt-4 text-center text-sm text-[var(--text-muted)]">
           {t("auth.noAccount")}{" "}
-          <Link to="/register" className="font-medium text-[var(--text)] underline">
+          <Link
+            to="/register"
+            className="font-medium text-[var(--text)] underline hover:font-bold"
+          >
             {t("auth.registerLink")}
           </Link>
         </p>
