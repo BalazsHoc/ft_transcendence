@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
@@ -17,7 +18,10 @@ type HeaderProps = {
 
 export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
   const [search, setSearch] = React.useState("");
+  //to remove the search bar and join club button on the landing page, login page, and register page
+  const isMinimalHeaderPage = ["/", "/login", "/register"].includes(pathname);
 
   return (
     <header className="sticky top-0 w-full z-50 flex items-center justify-between gap-4 px-5 py-4 bg-[var(--surface)]/80 backdrop-blur-xl border-b border-[var(--surface-border)] shadow-sm">
@@ -27,11 +31,13 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-3 shrink-0">
-        <HeaderSearch value={search} onChange={setSearch} />
+        {!isMinimalHeaderPage && <HeaderSearch value={search} onChange={setSearch} />}
 
-        <Button variant="primary" className="hidden xl:inline-flex">
-          {t("nav.joinClub")}
-        </Button>
+        {!isMinimalHeaderPage && (
+          <Button variant="primary" className="hidden xl:inline-flex">
+            {t("nav.joinClub")}
+          </Button>
+        )}
 
         <IconButton
           variant="outline"
@@ -42,7 +48,7 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
         <LanguageSwitcher />
 
-        <HeaderNotifications />
+        {!isMinimalHeaderPage && <HeaderNotifications />}
 
         <HeaderUserMenu />
       </div>
