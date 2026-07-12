@@ -67,10 +67,10 @@
     "district": "Район",
     "submitLogin": "Увійти",
     "submitRegister": "Створити акаунт",
-    "noAccount": "New here?",
-    "registerLink": "Create an account",
-    "haveAccount": "Already have an account?",
-    "loginLink": "Log in"
+    "noAccount": "Вперше тут?",
+    "registerLink": "Створити акаунт",
+    "haveAccount": "Вже є акаунт?",
+    "loginLink": "Увійти"
   },
   "discover": {
     "title": "Пошук подій",
