@@ -80,6 +80,7 @@ export function HeaderUserMenu() {
               onClick={() => {
                 setOpen(false);
                 logout();
+                navigate("/login");
               }}
             >
               {t("nav.logout")}
