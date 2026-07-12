@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../features/auth/AuthContext";
 import { ApiLog } from "../../components/shared/ApiLog";
@@ -51,6 +51,12 @@ export function LoginPage() {
           </label>
           <button>{t("auth.submitLogin")}</button>
         </form>
+        <p className="mt-4 text-center text-sm text-[var(--text-muted)]">
+          {t("auth.noAccount")}{" "}
+          <Link to="/register" className="font-medium text-[var(--text)] underline">
+            {t("auth.registerLink")}
+          </Link>
+        </p>
         <div className="mt-6">
           <ApiLog log={log} />
         </div>
