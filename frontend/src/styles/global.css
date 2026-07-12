@@ -462,6 +462,15 @@ button:active,
 	padding: 0;
 }
 
+/* The profile page's cover photo should bleed edge-to-edge too; the
+   sections below it stay centered via their own max-width. */
+.page-container:has(.profile-page-full) {
+	max-width: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 /* .hero removed below — LandingPage.tsx no longer uses it (rewritten to
    use WelcomeHero.tsx with its own Tailwind classes). .card is still used
    (DiscoverPage, MyEventsPage, EventDetailsPage). */
