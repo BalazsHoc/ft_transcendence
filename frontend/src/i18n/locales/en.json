@@ -96,7 +96,14 @@
     "evening": "Evening",
     "liveMatch": "Live Match",
     "sessionStarted": "Session Started",
-    "featuredClub": "Featured Club"
+    "featuredClub": "Featured Club",
+    "strength": "Strength",
+    "featuredEventTitle": "Vienna River Run Collective",
+    "featuredEventDescription": "Casual group runs along the Danube every weekend.",
+    "curatedEventOneTitle": "Morning Flow & Focus",
+    "curatedEventOneTime": "Sat, 8:00 AM",
+    "curatedEventTwoTitle": "Strength & Conditioning",
+    "curatedEventTwoTime": "Sun, 6:00 PM"
   },
   "event": {
     "details": "Event details",

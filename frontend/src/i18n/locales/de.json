@@ -96,7 +96,14 @@
     "evening": "Abend",
     "liveMatch": "Live-Match",
     "sessionStarted": "Session gestartet",
-    "featuredClub": "Ausgewählter Verein"
+    "featuredClub": "Ausgewählter Verein",
+    "strength": "Krafttraining",
+    "featuredEventTitle": "Vienna River Run Collective",
+    "featuredEventDescription": "Lockere Gruppenläufe entlang der Donau jedes Wochenende.",
+    "curatedEventOneTitle": "Morning Flow & Focus",
+    "curatedEventOneTime": "Sa, 8:00 Uhr",
+    "curatedEventTwoTitle": "Strength & Conditioning",
+    "curatedEventTwoTime": "So, 18:00 Uhr"
   },
   "event": {
     "details": "Eventdetails",

@@ -700,6 +700,35 @@ pre {
   min-width: 0;
 }
 
+.curated-for-you {
+  margin-top: 40px;
+}
+
+.curated-for-you__title {
+  margin: 0 0 20px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.curated-for-you__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .curated-for-you__grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.curated-for-you__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 /* -------------------------
    DISCOVER PAGE — FILTERS BAR (UNUSED)
    Moved from pages/DiscoverPage.module.css, which was a CSS Module that
