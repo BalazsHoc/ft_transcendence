@@ -1,39 +1,53 @@
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EventCard } from "../components/events/EventCard";
-import { ApiLog } from "../components/shared/ApiLog";
-import { EventItem } from "../types/api";
-import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
-import Button  from "../components/shared/Button";
+import { useNavigate } from "react-router-dom";
+
 import { Sidebar } from "../components/layout/Sidebar";
+import { getEvents, joinEvent, leaveEvent, deleteEvent } from "../api/eventsApi";
+import { EventItem } from "../types/api";
+import { HappeningNowSection } from "../components/discover/HappeningNowSection";
+import Button from "../components/shared/Button";
 
 export function DiscoverPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const [events, setEvents] = useState<EventItem[]>([]);
+
   const [sport, setSport] = useState("");
   const [levels, setLevels] = useState<string[]>([]);
   const [time, setTime] = useState("");
+
   const [log, setLog] = useState("");
+
+  const levelParam = levels.join(",");
 
   function toggleLevel(value: string) {
     setLevels((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+      prev.includes(value)
+        ? prev.filter((v) => v !== value)
+        : [...prev, value],
     );
   }
 
-  async function load() {
+  const load = useCallback(async () => {
     try {
-      const data = await getEvents({ sport, level: levels.join(",") });
-      setEvents(Array.isArray(data) ? data : []);
-      setLog(`Loaded ${data.length} events.`);
+      const data = await getEvents({
+        sport,
+        level: levelParam,
+      });
+
+      const nextEvents = Array.isArray(data) ? data : [];
+      setEvents(nextEvents);
+      setLog(`Loaded ${nextEvents.length} events.`);
     } catch (e: any) {
       setLog(e.message);
     }
-  }
+  }, [levelParam, sport, time]);
 
   async function doJoin(id: string) {
     try {
-      setLog(JSON.stringify(await joinEvent(id), null, 2));
+      await joinEvent(id);
       await load();
     } catch (e: any) {
       setLog(e.message);
@@ -42,7 +56,7 @@ export function DiscoverPage() {
 
   async function doLeave(id: string) {
     try {
-      setLog(JSON.stringify(await leaveEvent(id), null, 2));
+      await leaveEvent(id);
       await load();
     } catch (e: any) {
       setLog(e.message);
@@ -52,16 +66,19 @@ export function DiscoverPage() {
   async function doDelete(id: string) {
     try {
       await deleteEvent(id);
-      setLog("Event deleted.");
       await load();
     } catch (e: any) {
       setLog(e.message);
     }
   }
 
+  function openEventPage(id: string) {
+    navigate(`/events/${id}`);
+  }
+
   useEffect(() => {
-    load();
-  }, []);
+    void load();
+  }, [load]);
 
   return (
     <div className="discover-layout">
@@ -73,38 +90,32 @@ export function DiscoverPage() {
         time={time}
         onTimeChange={setTime}
       />
-      <div className="discover-main">
+
+      <main className="discover-main">
+        <HappeningNowSection
+          events={events}
+          onCardClick={openEventPage}
+        />
+
         <div className="card">
-          <h1 style={{ marginTop: "24px" }}>
-            Same Button component, two different variants:
+          <h1>
+            Discover
           </h1>
-          <p>check change language feature in these two buttons</p>
-          <p>1-color</p>
-          <p>2-translate page feature</p>
-          <p>3-dark/light mode — click the moon icon in the header</p>
 
-
-          <div className="row" style={{ marginTop: "20px" }}>
-            <Button variant="primary" onClick={load}>
+          <div className="row">
+            <Button
+              variant="primary"
+              onClick={load}
+            >
               {t("discover.load")}
             </Button>
-            <Button variant="outline" onClick={load}>
-              load events
-            </Button>
           </div>
 
-          <p style={{ marginTop: "24px" }}>
-            Same Button component, rendered once per item in a list:
+          <p>
+            {log}
           </p>
-          <div className="row">
-            {["Tennis", "Running", "Cycling"].map((sport) => (
-              <Button key={sport} variant="secondary">
-                {sport}
-              </Button>
-            ))}
-          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
