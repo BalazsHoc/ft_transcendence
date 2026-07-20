@@ -14,6 +14,15 @@ export function HappeningNowSection({
 }: HappeningNowSectionProps) {
   const { t } = useTranslation();
 
+  
+  const liveEvents = events.filter((event) => {
+    const now = new Date(event.start_at);     //new Date(); FOR TESTING PURPOSES
+    const start = new Date(event.start_at);
+    const end = new Date(event.end_at);
+
+    return start <= now && now <= end;
+  });
+
   return (
     <section className="space-y-6">
       <div className="flex items-center gap-2">
@@ -23,15 +32,11 @@ export function HappeningNowSection({
       </div>
 
       <div className="grid gap-6 md:grid-cols-4">
-        {events.slice(0, 2).map((event, index) => (
+        {liveEvents.slice(0, 2).map((event) => (
           <LiveEventCard
             key={event.id}
             image={event.image}
-            status={
-              index === 0
-                ? t("discover.sessionStarted")
-                : t("discover.liveMatch")
-            }
+            status={t("discover.liveMatch")}
             sport={t(`discover.${event.sport.toLowerCase()}`, {
               defaultValue: event.sport,
             })}
