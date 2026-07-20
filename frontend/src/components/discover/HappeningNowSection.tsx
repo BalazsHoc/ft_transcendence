@@ -17,24 +17,24 @@ export function HappeningNowSection({
   return (
     <section className="space-y-6">
       <div className="flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full bg-red-600" />
-
         <h2 className="text-2xl font-bold text-[var(--text)]">
           {t("discover.happeningNow")}
         </h2>
       </div>
 
       <div className="grid gap-6 md:grid-cols-4">
-        {events.slice(0, 2).map((event) => (
+        {events.slice(0, 2).map((event, index) => (
           <LiveEventCard
             key={event.id}
             image={event.image}
             status={
-              event.status === "started"
+              index === 0
                 ? t("discover.sessionStarted")
                 : t("discover.liveMatch")
             }
-            sport={event.sport}
+            sport={t(`discover.${event.sport.toLowerCase()}`, {
+              defaultValue: event.sport,
+            })}
             title={event.title}
             location={event.location_name}
             onClick={() => onCardClick(event.id)}

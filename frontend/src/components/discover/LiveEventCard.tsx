@@ -43,8 +43,9 @@ export function LiveEventCard({
           className="h-48 w-full object-cover"
           src={resolveMediaUrl(image, DEFAULT_EVENT_IMAGE_SRC)}
           alt={title}
-          onError={(e) => {
-            e.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
+          onError={(e: { currentTarget: HTMLImageElement }) => {
+            const target = e.currentTarget;
+            target.src = DEFAULT_EVENT_IMAGE_SRC;
           }}
         />
 
@@ -66,7 +67,7 @@ export function LiveEventCard({
         </div>
 
         <p className="text-sm text-[var(--muted)]">
-          📍 {location}
+          📍{location}
         </p>
       </div>
     </article>
