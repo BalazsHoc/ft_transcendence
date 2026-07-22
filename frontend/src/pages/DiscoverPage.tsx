@@ -1,39 +1,49 @@
-import { useEffect, useState, type ChangeEvent } from "react";
-import { useTranslation } from "react-i18next";
-import { EventCard } from "../components/events/EventCard";
-import { ApiLog } from "../components/shared/ApiLog";
-import { EventItem } from "../types/api";
-import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Sidebar } from "../components/layout/Sidebar";
 import { DiscoverMain } from "../components/discover/DiscoverMain";
+import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
+import { EventItem } from "../types/api";
 
 export function DiscoverPage() {
-  const { i18n } = useTranslation();
+  const navigate = useNavigate();
   const [events, setEvents] = useState<EventItem[]>([]);
+
   const [sport, setSport] = useState("");
   const [levels, setLevels] = useState<string[]>([]);
   const [time, setTime] = useState("");
+
   const [log, setLog] = useState("");
+
+  const levelParam = levels.join(",");
 
   function toggleLevel(value: string) {
     setLevels((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+      prev.includes(value)
+        ? prev.filter((v) => v !== value)
+        : [...prev, value],
     );
   }
 
-  async function load() {
+  const load = useCallback(async () => {
     try {
-      const data = await getEvents({ sport, level: levels.join(",") });
-      setEvents(Array.isArray(data) ? data : []);
-      setLog(`Loaded ${data.length} events.`);
+      const data = await getEvents({
+        sport,
+        level: levelParam,
+      });
+
+      const nextEvents = Array.isArray(data) ? data : [];
+      setEvents(nextEvents);
+      setLog(`Loaded ${nextEvents.length} events.`);
     } catch (e: any) {
       setLog(e.message);
     }
-  }
+  }, [levelParam, sport, time]);
 
   async function doJoin(id: string) {
     try {
-      setLog(JSON.stringify(await joinEvent(id), null, 2));
+      await joinEvent(id);
       await load();
     } catch (e: any) {
       setLog(e.message);
@@ -42,7 +52,7 @@ export function DiscoverPage() {
 
   async function doLeave(id: string) {
     try {
-      setLog(JSON.stringify(await leaveEvent(id), null, 2));
+      await leaveEvent(id);
       await load();
     } catch (e: any) {
       setLog(e.message);
@@ -52,16 +62,19 @@ export function DiscoverPage() {
   async function doDelete(id: string) {
     try {
       await deleteEvent(id);
-      setLog("Event deleted.");
       await load();
     } catch (e: any) {
       setLog(e.message);
     }
   }
 
+  function openEventPage(id: string) {
+    navigate(`/events/${id}`);
+  }
+
   useEffect(() => {
-    load();
-  }, []);
+    void load();
+  }, [load]);
 
   return (
     <div className="discover-layout">
@@ -73,7 +86,7 @@ export function DiscoverPage() {
         time={time}
         onTimeChange={setTime}
       />
-      <DiscoverMain />
+      <DiscoverMain events={events} onCardClick={openEventPage} />
     </div>
   );
 }
