@@ -3,6 +3,14 @@ import { useTranslation } from "react-i18next";
 import { EventItem } from "../../types/api";
 import { LiveEventCard } from "./LiveEventCard";
 
+const SPORT_FALLBACK_IMAGES: Record<string, string> = {
+  tennis: "/tennis.jpg",
+  running: "/running.jpeg",
+  cycling: "/cycling.jpeg",
+  chess: "/chess.jpeg",
+  football: "/football-prater.jpg",
+};
+
 interface HappeningNowSectionProps {
   events: EventItem[];
   onCardClick: (id: string) => void;
@@ -35,7 +43,7 @@ export function HappeningNowSection({
         {liveEvents.slice(0, 2).map((event) => (
           <LiveEventCard
             key={event.id}
-            image={event.image}
+            image={event.image || SPORT_FALLBACK_IMAGES[event.sport.toLowerCase()]}
             status={t("discover.liveMatch")}
             sport={t(`discover.${event.sport.toLowerCase()}`, {
               defaultValue: event.sport,
