@@ -40,20 +40,20 @@ export function FeaturedEventCard({
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-      <div className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-white/10 p-8 backdrop-blur-xl">
-        <div className="mb-4 flex flex-wrap gap-2">
+      <div className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-white/5 p-5 backdrop-blur-[5px]">
+        <div className="mb-2 flex flex-wrap gap-2">
           <Badge>{t("discover.featuredClub")}</Badge>
           <Badge>{levelLabel}</Badge>
         </div>
 
-        <h3 className="mb-2 font-display text-2xl font-semibold text-white">
+        <h3 className="mb-1 font-display text-2xl font-semibold text-white">
           {title}
         </h3>
 
-        <p className="mb-6 text-sm text-white/80">{description}</p>
+        <p className="mb-3 text-sm text-white/80">{description}</p>
 
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <Button variant="secondary" onClick={onJoin}>
+          <Button variant="primary" onClick={onJoin}>
             {t("discover.joinGroup")}
           </Button>
 

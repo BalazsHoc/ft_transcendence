@@ -23,7 +23,7 @@ export function CuratedEventCard({
 
   return (
     <article
-      className={`relative min-h-[200px] overflow-hidden rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] ${className}`}
+      className={`relative min-h-[300px] overflow-hidden rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.04)] ${className}`}
     >
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -32,8 +32,8 @@ export function CuratedEventCard({
 
       <div className="absolute inset-0 bg-black/20" />
 
-      <div className="absolute inset-x-4 bottom-4 rounded-xl border border-white/10 bg-white/10 p-4 backdrop-blur-xl">
-        <Badge className="mb-3">{categoryLabel}</Badge>
+      <div className="absolute inset-x-4 bottom-4 rounded-xl border border-white/10 bg-white/5 p-3 backdrop-blur-[20px]">
+        <Badge className="mb-2">{categoryLabel}</Badge>
 
         <h3 className="font-display text-lg font-semibold text-white">
           {title}
