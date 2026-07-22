@@ -1,4 +1,5 @@
 import * as React from "react";
+import { MapPin } from "lucide-react";
 
 import { Badge } from "../shared/Badge";
 import {
@@ -63,11 +64,17 @@ export function LiveEventCard({
             {title}
           </h3>
 
-          <Badge variant="solid">{sport}</Badge>
+          <Badge
+            variant="solid"
+            className="!rounded-[var(--radius-button)] px-3.5 py-2"
+          >
+            {sport}
+          </Badge>
         </div>
 
-        <p className="text-sm text-[var(--muted)]">
-          📍{location}
+        <p className="flex items-center gap-1 text-sm text-[var(--muted)]">
+          <MapPin size={15} />
+          <span>{location}</span>
         </p>
       </div>
     </article>
