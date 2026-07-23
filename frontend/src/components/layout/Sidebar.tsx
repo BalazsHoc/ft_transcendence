@@ -26,6 +26,7 @@ export function Sidebar({
     { label: t("discover.running"), value: "running" },
     { label: t("discover.cycling"), value: "cycling" },
     { label: t("discover.yoga"), value: "yoga" },
+    { label: t("discover.football"), value: "football" },
   ];
 
   const levelOptions = [

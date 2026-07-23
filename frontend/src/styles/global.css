@@ -572,13 +572,13 @@ pre {
 
 /* Chips */
 .filter-group__chips {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
 }
 
 .filter-chip {
-  padding: 6px 16px;
+  padding: 6px 12px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
@@ -586,6 +586,7 @@ pre {
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
+  text-align: center;
   transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
