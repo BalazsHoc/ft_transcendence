@@ -27,7 +27,7 @@ export function CuratedExperiences() {
           <BentoImageCard
             size="lg"
             className="md:col-span-2 md:row-span-2"
-            image="https://lh3.googleusercontent.com/aida-public/AB6AXuCqCTFWzGBB_HNE3c2owEFxoqVqY_5sSx_urWQNpL2YpsUv0hwAbIpcByOkxYszHrr_P8tPD3z2fKu-NjCZMZERlXDULqRebDz8Nt80FIDMzLguVoUf7dv1aYqAKCO7KN-fglDCM4ircsvWcYNF7TgfUosdjyUyZOwaUwhgP5WWs62GTbsjYVXNWLmyMwExAx1gEUOIs8ZEIuIX-b5OnATeskJbVMbLs1J62Sskqlv7s381ARfr2hiBXosEV9r4BGkKNhFee0RssAw"
+            image="/tennis.jpg"
             tag={t("landing.curated.cards.tennis.tag")}
             title={t("landing.curated.cards.tennis.title")}
             description={t("landing.curated.cards.tennis.description")}
@@ -35,6 +35,7 @@ export function CuratedExperiences() {
           />
 
           <BentoInfoCard
+            image="/vienna-river-run.jpeg"
             tag={t("landing.curated.cards.running.tag")}
             title={t("landing.curated.cards.running.title")}
             description={t("landing.curated.cards.running.description")}
@@ -44,7 +45,7 @@ export function CuratedExperiences() {
 
           <BentoImageCard
             size="sm"
-            image="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"
+            image="/cycling.jpeg"
             title={t("landing.curated.cards.cycling.title")}
             onClick={goToDiscover}
           />
