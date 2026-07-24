@@ -1,6 +1,6 @@
 type BadgeProps = {
   children: React.ReactNode;
-  variant?: "default" | "live" | "solid";
+  variant?: "default" | "live" | "green" | "yellow" | "solid";
   className?: string;
 };
 
@@ -9,6 +9,8 @@ export function Badge({ children, variant = "default", className = "" }: BadgePr
     default:
       "bg-[var(--surface)] text-[var(--text)] border border-[var(--surface-border)]",
     live: "bg-red-600 text-white",
+    green: "bg-green-600 text-white",
+    yellow: "bg-yellow-500 text-white",
     solid: "bg-[var(--text)] text-[var(--surface)]",
   };
 

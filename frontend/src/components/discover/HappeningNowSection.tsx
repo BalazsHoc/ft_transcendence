@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { EventItem } from "../../types/api";
 import { LiveEventCard } from "./LiveEventCard";
+// import { LiveEventCard } from "../events/EventCard";
 
 const SPORT_FALLBACK_IMAGES: Record<string, string> = {
   tennis: "/tennis.jpg",
