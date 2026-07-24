@@ -120,7 +120,11 @@
     "searchAddress": "Search address",
     "start": "Start",
     "end": "End",
-    "maxSlots": "Max slots"
+    "maxSlots": "Max slots",
+    "slots": "Slots",
+    "waiting": "Waiting",
+    "attending": "Attending",
+    "notJoined": "Not Joined"
   },
   "createEvent": {
     "title": "Create event",
