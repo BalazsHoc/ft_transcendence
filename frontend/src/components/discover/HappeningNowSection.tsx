@@ -41,7 +41,7 @@ export function HappeningNowSection({
       </div>
 
       <div className="grid gap-6 md:grid-cols-4">
-        {liveEvents.slice(0, 2).map((event) => (
+        {liveEvents.map((event) => (
           <LiveEventCard
             key={event.id}
             image={event.image || SPORT_FALLBACK_IMAGES[event.sport.toLowerCase()]}

@@ -6,10 +6,12 @@ import {
   DEFAULT_EVENT_IMAGE_SRC,
   resolveMediaUrl,
 } from "../../utils/media";
+import { joinEvent } from "../../api/eventsApi";
 
 interface LiveEventCardProps {
   image?: string | null;
   status: string;
+
   sport: string;
   title: string;
   location: string;
@@ -31,7 +33,7 @@ export function LiveEventCard({
       e.preventDefault();
       onClick();
     }
-  };
+  }
 
   return (
     <article
@@ -50,12 +52,15 @@ export function LiveEventCard({
           }}
         />
 
-        <Badge
-          variant="live"
-          className="absolute left-3 top-3"
-        >
-          {status}
-        </Badge>
+        <div className="absolute left-3 top-3 flex gap-2">
+          <Badge variant="live">
+            {status}
+          </Badge>
+
+          <Badge variant="green">
+            implement ? attending : not joined ?
+          </Badge>
+        </div>
       </div>
 
       <div className="space-y-3 p-4">
