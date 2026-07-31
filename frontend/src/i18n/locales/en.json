@@ -10,7 +10,15 @@
     "apiTest": "API test",
     "login": "Login",
     "register": "Register",
-    "logout": "Logout"
+    "logout": "Logout",
+    "discovery": "Discovery",
+    "clubs": "Clubs",
+    "community": "Community",
+    "joinClub": "Join Club",
+    "search": "Search activities, clubs...",
+    "appName": "VIENNA ATHLETIC",
+    "notifications": "Notifications",
+    "noNotifications": "You have no notifications yet."
   },
   "common": {
     "join": "Join",
@@ -19,13 +27,36 @@
     "edit": "Edit",
     "send": "Send",
     "language": "Language",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "toggleDarkMode": "Toggle dark mode"
   },
   "landing": {
-    "title": "Find sports. Meet people. Belong to Vienna.",
-    "subtitle": "API-connected MVP frontend for testing backend routes.",
-    "ctaDiscover": "Explore events",
-    "ctaCreate": "Create event"
+    "hero": {
+      "title": "Move. Connect. Belong.",
+      "subtitle": "Discover sports, clubs and communities across Vienna. An elevated approach to urban athleticism.",
+      "ctaExplore": "Explore Activities",
+      "ctaLearnMore": "Learn More"
+    },
+    "curated": {
+      "title": "Curated Experiences",
+      "subtitle": "Find your next passion in the heart of the city.",
+      "attending": "Attending",
+      "cards": {
+        "tennis": {
+          "tag": "Tennis Club",
+          "title": "Prater Evening Sessions",
+          "description": "Join the competitive ladder or casual rallies."
+        },
+        "running": {
+          "tag": "Running",
+          "title": "Danube Morning Run",
+          "description": "Start your day with a scenic 10k along the river with pace groups for all levels."
+        },
+        "cycling": {
+          "title": "Studio Cycling"
+        }
+      }
+    }
   },
   "auth": {
     "loginTitle": "Login",
@@ -35,13 +66,90 @@
     "password": "Password",
     "district": "District",
     "submitLogin": "Login",
-    "submitRegister": "Create account"
+    "submitRegister": "Create account",
+    "noAccount": "New here?",
+    "registerLink": "Create an account",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Log in"
   },
   "discover": {
     "title": "Discover events",
     "sport": "Sport",
     "level": "Level",
-    "load": "Load events"
+    "load": "Load events",
+    "happeningNow": "Happening Now",
+    "curatedForYou": "Curated for You",
+    "joinGroup": "Join Group",
+    "members": "{{count}} Members",
+    "categories": "Categories",
+    "time": "Time",
+    "all": "All",
+    "tennis": "Tennis",
+    "running": "Running",
+    "cycling": "Cycling",
+    "yoga": "Yoga",
+    "football": "Football",
+    "chess": "Chess",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "anytime": "Anytime",
+    "morning": "Morning",
+    "evening": "Evening",
+    "liveMatch": "Live Match",
+    "sessionStarted": "Session Started",
+    "featuredClub": "Featured Club",
+    "strength": "Strength",
+    "featuredEventTitle": "Vienna River Run Collective",
+    "featuredEventDescription": "Casual group runs along the Danube every weekend.",
+    "curatedEventOneTitle": "Morning Flow & Focus",
+    "curatedEventOneTime": "Sat, 8:00 AM",
+    "curatedEventTwoTitle": "Strength & Conditioning",
+    "curatedEventTwoTime": "Sun, 6:00 PM"
+  },
+  "club": {
+    "hero": {
+      "name": "Velo Vienna",
+      "description": "A modern syndicate for the urban cyclist. Blending Vienna's rich heritage with high-performance pursuit and a meticulously curated community experience.",
+      "sport": "Cycling",
+      "city": "Vienna, AT",
+      "applyToJoin": "Apply to Join",
+      "viewSchedule": "View Schedule"
+    },
+    "stats": {
+      "activeMembers": "Active Members",
+      "clubScore": "Club Score",
+      "established": "Established",
+      "membersValue": "342",
+      "scoreValue": "94.5",
+      "establishedValue": "2018"
+    },
+    "rides": {
+      "title": "Upcoming Rides",
+      "seeAll": "See All",
+      "rsvp": "RSVP",
+      "loading": "Loading rides…",
+      "empty": "No upcoming rides yet.",
+      "demoOneTitle": "Morning Coffee Spin: Kahlenberg",
+      "demoOneMonth": "Oct",
+      "demoOneTime": "06:30 AM",
+      "demoOneIntensity": "Moderate (25km/h)",
+      "demoTwoTitle": "Donauinsel Sprint Intervals",
+      "demoTwoMonth": "Oct",
+      "demoTwoTime": "06:00 PM",
+      "demoTwoIntensity": "High Intensity"
+    },
+    "recruiting": {
+      "title": "Recruiting",
+      "description": "We are currently looking for experienced ride leaders to guide our weekend long routes.",
+      "apply": "Apply as Ride Leader"
+    },
+    "spotlight": {
+      "title": "Member Spotlight",
+      "name": "Sarah M.",
+      "subtitle": "Top Climber • 240km this week",
+      "quote": "The Tuesday morning Kahlenberg ascents have completely transformed my climbing mechanics. Incredible group energy."
+    }
   },
   "event": {
     "details": "Event details",
@@ -71,7 +179,25 @@
     "focusedOn": "Focused on",
     "eventsNear": "Events nearby ({{count}})",
     "noEvents": "No events found near this location.",
-    "focusEvent": "Focus event"
+    "focusEvent": "Focus event",
+    "today": "Today",
+    "filters": "Filters",
+    "statTime": "Time",
+    "statLevel": "Level",
+    "statSport": "Sport",
+    "statSpots": "Spots",
+    "spotsAvailable": "{{count}} / {{max}} available",
+    "aboutSession": "About this session",
+    "leadCoach": "Lead coach",
+    "reserveSpot": "Reserve Spot",
+    "leaveSpot": "Leave",
+    "joined": "You're in",
+    "waiting": "On waitlist",
+    "selectEvent": "Select a pin on the map to see details.",
+    "noEventsFilter": "No events match these filters.",
+    "locateMe": "Use my location",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out"
   },
   "editEvent": {
     "title": "Edit event",
@@ -90,7 +216,30 @@
   },
   "profile": {
     "title": "Profile",
-    "update": "Update profile"
+    "update": "Update profile",
+    "editProfile": "Edit profile",
+    "memberSince": "Member since {{year}}",
+    "noDistrict": "No district set",
+    "guest": "Guest",
+    "communityScore": "Community Score",
+    "communityScoreDescription": "Join events and stay active to build up your community score.",
+    "score": "Score",
+    "activityHistory": "Activity History",
+    "noActivity": "No activity yet. Join an event to get started.",
+    "about": "About",
+    "languages": "Languages",
+    "focusAreas": "Focus Areas",
+    "notSet": "Not set",
+    "achievements": "Achievements",
+    "avatar": "Avatar",
+    "district": "District",
+    "languagesCsv": "Languages (comma separated)",
+    "interestsCsv": "Interests (comma separated)",
+    "save": "Save",
+    "cancel": "Cancel",
+    "achievementWorkouts": "100 Workouts",
+    "achievementStreak": "30 Day Streak",
+    "achievementCourtMaster": "Court Master"
   },
   "apiTest": {
     "title": "API route tester"

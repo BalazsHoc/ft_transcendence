@@ -1,32 +1,49 @@
-import { useEffect, useState, type ChangeEvent } from "react";
-import { useTranslation } from "react-i18next";
-import { EventCard } from "../components/events/EventCard";
-import { ApiLog } from "../components/shared/ApiLog";
-import { EventItem } from "../types/api";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Sidebar } from "../components/layout/Sidebar";
+import { DiscoverMain } from "../components/discover/DiscoverMain";
 import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
-import styles from "./DiscoverPage.module.css";
-import Button  from "../components/shared/Button";
+import { EventItem } from "../types/api";
 
 export function DiscoverPage() {
-  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [events, setEvents] = useState<EventItem[]>([]);
+
   const [sport, setSport] = useState("");
-  const [level, setLevel] = useState("");
+  const [levels, setLevels] = useState<string[]>([]);
+  const [time, setTime] = useState("");
+
   const [log, setLog] = useState("");
 
-  async function load() {
+  const levelParam = levels.join(",");
+
+  function toggleLevel(value: string) {
+    setLevels((prev) =>
+      prev.includes(value)
+        ? prev.filter((v) => v !== value)
+        : [...prev, value],
+    );
+  }
+
+  const load = useCallback(async () => {
     try {
-      const data = await getEvents({ sport, level });
-      setEvents(Array.isArray(data) ? data : []);
-      setLog(`Loaded ${data.length} events.`);
+      const data = await getEvents({
+        sport,
+        level: levelParam,
+      });
+
+      const nextEvents = Array.isArray(data) ? data : [];
+      setEvents(nextEvents);
+      setLog(`Loaded ${nextEvents.length} events.`);
     } catch (e: any) {
       setLog(e.message);
     }
-  }
+  }, [levelParam, sport, time]);
 
   async function doJoin(id: string) {
     try {
-      setLog(JSON.stringify(await joinEvent(id), null, 2));
+      await joinEvent(id);
       await load();
     } catch (e: any) {
       setLog(e.message);
@@ -35,7 +52,7 @@ export function DiscoverPage() {
 
   async function doLeave(id: string) {
     try {
-      setLog(JSON.stringify(await leaveEvent(id), null, 2));
+      await leaveEvent(id);
       await load();
     } catch (e: any) {
       setLog(e.message);
@@ -45,49 +62,31 @@ export function DiscoverPage() {
   async function doDelete(id: string) {
     try {
       await deleteEvent(id);
-      setLog("Event deleted.");
       await load();
     } catch (e: any) {
       setLog(e.message);
     }
   }
 
+  function openEventPage(id: string) {
+    navigate(`/events/${id}`);
+  }
+
   useEffect(() => {
-    load();
-  }, []);
+    void load();
+  }, [load]);
 
   return (
-    <>
-      <h1>{t("discover.title")}</h1>
-      <section className={styles.filters}>
-        <input
-          placeholder={t("discover.sport")}
-          value={sport}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setSport(e.target.value)}
-        />
-        <select value={level} onChange={(e: ChangeEvent<HTMLSelectElement>) => setLevel(e.target.value)}>
-          <option value="">all levels</option>
-          <option value="all">all</option>
-          <option value="beginner">beginner</option>
-          <option value="intermediate">intermediate</option>
-          <option value="advanced">advanced</option>
-        </select>
-        <Button variant="primary" onClick={load}>
-          {t("discover.load")}
-        </Button  >
-      </section>
-      <div className="event-list">
-        {events.map((event) => (
-          <EventCard
-            key={event.id}
-            event={event}
-            onJoin={doJoin}
-            onLeave={doLeave}
-            onDelete={doDelete}
-          />
-        ))}
-      </div>
-      <ApiLog log={log} />
-    </>
+    <div className="discover-layout">
+      <Sidebar
+        sport={sport}
+        onSportChange={setSport}
+        level={levels}
+        onLevelChange={toggleLevel}
+        time={time}
+        onTimeChange={setTime}
+      />
+      <DiscoverMain events={events} onCardClick={openEventPage} />
+    </div>
   );
 }
