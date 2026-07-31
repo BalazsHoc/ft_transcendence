@@ -107,6 +107,50 @@
     "curatedEventTwoTitle": "Strength & Conditioning",
     "curatedEventTwoTime": "Sun, 6:00 PM"
   },
+  "club": {
+    "hero": {
+      "name": "Velo Vienna",
+      "description": "A modern syndicate for the urban cyclist. Blending Vienna's rich heritage with high-performance pursuit and a meticulously curated community experience.",
+      "sport": "Cycling",
+      "city": "Vienna, AT",
+      "applyToJoin": "Apply to Join",
+      "viewSchedule": "View Schedule"
+    },
+    "stats": {
+      "activeMembers": "Active Members",
+      "clubScore": "Club Score",
+      "established": "Established",
+      "membersValue": "342",
+      "scoreValue": "94.5",
+      "establishedValue": "2018"
+    },
+    "rides": {
+      "title": "Upcoming Rides",
+      "seeAll": "See All",
+      "rsvp": "RSVP",
+      "loading": "Loading rides…",
+      "empty": "No upcoming rides yet.",
+      "demoOneTitle": "Morning Coffee Spin: Kahlenberg",
+      "demoOneMonth": "Oct",
+      "demoOneTime": "06:30 AM",
+      "demoOneIntensity": "Moderate (25km/h)",
+      "demoTwoTitle": "Donauinsel Sprint Intervals",
+      "demoTwoMonth": "Oct",
+      "demoTwoTime": "06:00 PM",
+      "demoTwoIntensity": "High Intensity"
+    },
+    "recruiting": {
+      "title": "Recruiting",
+      "description": "We are currently looking for experienced ride leaders to guide our weekend long routes.",
+      "apply": "Apply as Ride Leader"
+    },
+    "spotlight": {
+      "title": "Member Spotlight",
+      "name": "Sarah M.",
+      "subtitle": "Top Climber • 240km this week",
+      "quote": "The Tuesday morning Kahlenberg ascents have completely transformed my climbing mechanics. Incredible group energy."
+    }
+  },
   "event": {
     "details": "Event details",
     "participants": "Participants",

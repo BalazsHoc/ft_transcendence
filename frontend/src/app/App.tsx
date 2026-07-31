@@ -12,6 +12,7 @@ import { EditEventPage } from "../pages/EditEventPage";
 import { MyEventsPage } from "../pages/MyEventsPage";
 import { ChatsPage } from "../pages/ChatsPage";
 import { ProfilePage } from "../pages/ProfilePage";
+import { ClubPage } from "../pages/ClubPage";
 import { ApiTesterPage } from "../pages/ApiTesterPage";
 import { UiElementsTest } from "../pages/UiElementsTest";
 import { NotFoundPage } from "../pages/NotFoundPage";
@@ -22,6 +23,7 @@ export function App() {
       <Route path="/" element={<AppLayout />}>
         <Route index element={<LandingPage />} />
         <Route path="discover" element={<DiscoverPage />} />
+        <Route path="clubs" element={<ClubPage />} />
         <Route path="map" element={<MapPage />} />
         <Route path="events/new" element={<CreateEventPage />} />
         <Route path="events/:eventId" element={<EventDetailsPage />} />
