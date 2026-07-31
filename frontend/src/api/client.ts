@@ -1,4 +1,16 @@
 export const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
+// DRF validation errors look like { field: ["message"] } or { detail: "message" }.
+// Pull out the first message instead of showing the caller the raw JSON blob.
+function formatErrorMessage(data: unknown): string {
+  if (typeof data === "string") return data;
+  if (data && typeof data === "object") {
+    const first = Object.values(data as Record<string, unknown>)[0];
+    if (Array.isArray(first) && typeof first[0] === "string") return first[0];
+    if (typeof first === "string") return first;
+  }
+  return JSON.stringify(data, null, 2);
+}
 export function getAccessToken() {
   return localStorage.getItem("access") || "";
 }
@@ -30,9 +42,6 @@ export async function apiRequest<T>(
   } catch {
     data = text;
   }
-  if (!response.ok)
-    throw new Error(
-      typeof data === "string" ? data : JSON.stringify(data, null, 2),
-    );
+  if (!response.ok) throw new Error(formatErrorMessage(data));
   return data as T;
 }

@@ -1,8 +1,9 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../features/auth/AuthContext";
-import { ApiLog } from "../../components/shared/ApiLog";
+import { PhotoBackdrop } from "../../components/shared/PhotoBackdrop";
+import Button from "../../components/shared/Button";
 import styles from "../../components/shared/FormCard.module.css";
 
 export function RegisterPage() {
@@ -13,55 +14,73 @@ export function RegisterPage() {
   const [email, setEmail] = useState("alex@example.com");
   const [password, setPassword] = useState("testpass123");
   const [district, setDistrict] = useState("1030");
-  const [log, setLog] = useState("");
+  const [error, setError] = useState("");
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     try {
       await register({ username, email, password, district });
-      setLog("Registration successful.");
       navigate("/discover");
     } catch (e: any) {
-      setLog(e.message);
+      setError(e.message);
     }
   }
 
   return (
-    <>
-      <h1>{t("auth.registerTitle")}</h1>
-      <form className={styles.formCard} onSubmit={submit}>
-        <label>
-          {t("auth.username")}
-          <input
-            value={username}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
-          />
-        </label>
-        <label>
-          {t("auth.email")}
-          <input
-            value={email}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-          />
-        </label>
-        <label>
-          {t("auth.password")}
-          <input
-            type="password"
-            value={password}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-          />
-        </label>
-        <label>
-          {t("auth.district")}
-          <input
-            value={district}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)}
-          />
-        </label>
-        <button>{t("auth.submitRegister")}</button>
-      </form>
-      <ApiLog log={log} />
-    </>
+    <div className="login-page-full relative flex h-full items-center justify-center overflow-hidden px-5">
+      <PhotoBackdrop />
+
+      <div className="relative z-10 w-full max-w-md rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)]/95 p-8 shadow-[0_10px_30px_rgba(0,0,0,0.15)] backdrop-blur-xl">
+        <h1 className="mb-6 font-display text-2xl font-bold text-[var(--text)]">
+          {t("auth.registerTitle")}
+        </h1>
+        <form className={styles.formCard} onSubmit={submit}>
+          <label>
+            {t("auth.username")}
+            <input
+              value={username}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+            />
+          </label>
+          <label>
+            {t("auth.email")}
+            <input
+              value={email}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            />
+          </label>
+          <label>
+            {t("auth.password")}
+            <input
+              type="password"
+              value={password}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            />
+          </label>
+          <label>
+            {t("auth.district")}
+            <input
+              value={district}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)}
+            />
+          </label>
+          <Button type="submit" variant="primary">
+            {t("auth.submitRegister")}
+          </Button>
+        </form>
+        {error && (
+          <p className="mt-4 text-center text-sm text-white">{error}</p>
+        )}
+        <p className="mt-4 text-center text-sm text-sky-200">
+          {t("auth.haveAccount")}{" "}
+          <Link
+            to="/login"
+            className="font-medium text-sky-100 underline hover:font-bold"
+          >
+            {t("auth.loginLink")}
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 }

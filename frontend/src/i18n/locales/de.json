@@ -10,7 +10,15 @@
     "apiTest": "API-Test",
     "login": "Login",
     "register": "Registrieren",
-    "logout": "Logout"
+    "logout": "Logout",
+    "discovery": "Entdecken",
+    "clubs": "Vereine",
+    "community": "Gemeinschaft",
+    "joinClub": "Verein beitreten",
+    "search": "Aktivitäten, Vereine suchen...",
+    "appName": "VIENNA ATHLETIC",
+    "notifications": "Benachrichtigungen",
+    "noNotifications": "Du hast noch keine Benachrichtigungen."
   },
   "common": {
     "join": "Teilnehmen",
@@ -19,13 +27,36 @@
     "edit": "Bearbeiten",
     "send": "Senden",
     "language": "Sprache",
-    "refresh": "Aktualisieren"
+    "refresh": "Aktualisieren",
+    "toggleDarkMode": "Dunkelmodus umschalten"
   },
   "landing": {
-    "title": "Sport finden. Menschen treffen. In Wien ankommen.",
-    "subtitle": "API-verbundenes MVP-Frontend zum Testen der Backend-Routen.",
-    "ctaDiscover": "Events entdecken",
-    "ctaCreate": "Event erstellen"
+    "hero": {
+      "title": "Bewegen. Verbinden. Dazugehören.",
+      "subtitle": "Entdecke Sportarten, Vereine und Communities in ganz Wien. Ein gehobener Ansatz für urbanen Sport.",
+      "ctaExplore": "Aktivitäten entdecken",
+      "ctaLearnMore": "Mehr erfahren"
+    },
+    "curated": {
+      "title": "Ausgewählte Erlebnisse",
+      "subtitle": "Finde deine nächste Leidenschaft im Herzen der Stadt.",
+      "attending": "Nehmen teil",
+      "cards": {
+        "tennis": {
+          "tag": "Tennisverein",
+          "title": "Prater Abendsessions",
+          "description": "Nimm an der Ranglisten-Konkurrenz oder lockeren Ballwechseln teil."
+        },
+        "running": {
+          "tag": "Laufen",
+          "title": "Donau-Morgenlauf",
+          "description": "Starte den Tag mit einem malerischen 10-km-Lauf entlang der Donau mit Tempogruppen für alle Levels."
+        },
+        "cycling": {
+          "title": "Studio Cycling"
+        }
+      }
+    }
   },
   "auth": {
     "loginTitle": "Login",
@@ -35,13 +66,90 @@
     "password": "Passwort",
     "district": "Bezirk",
     "submitLogin": "Login",
-    "submitRegister": "Konto erstellen"
+    "submitRegister": "Konto erstellen",
+    "noAccount": "Neu hier?",
+    "registerLink": "Konto erstellen",
+    "haveAccount": "Schon ein Konto?",
+    "loginLink": "Login"
   },
   "discover": {
     "title": "Events entdecken",
     "sport": "Sport",
     "level": "Niveau",
-    "load": "Events laden"
+    "load": "Events laden",
+    "happeningNow": "Jetzt los",
+    "curatedForYou": "Für dich kuratiert",
+    "joinGroup": "Gruppe beitreten",
+    "members": "{{count}} Mitglieder",
+    "categories": "Kategorien",
+    "time": "Zeit",
+    "all": "Alle",
+    "tennis": "Tennis",
+    "running": "Laufen",
+    "cycling": "Radfahren",
+    "yoga": "Yoga",
+    "football": "Fußball",
+    "chess": "Schach",
+    "beginner": "Anfänger",
+    "intermediate": "Fortgeschritten",
+    "advanced": "Profi",
+    "anytime": "Jederzeit",
+    "morning": "Morgen",
+    "evening": "Abend",
+    "liveMatch": "Live-Match",
+    "sessionStarted": "Session gestartet",
+    "featuredClub": "Ausgewählter Verein",
+    "strength": "Krafttraining",
+    "featuredEventTitle": "Vienna River Run Collective",
+    "featuredEventDescription": "Lockere Gruppenläufe entlang der Donau jedes Wochenende.",
+    "curatedEventOneTitle": "Morning Flow & Focus",
+    "curatedEventOneTime": "Sa, 8:00 Uhr",
+    "curatedEventTwoTitle": "Strength & Conditioning",
+    "curatedEventTwoTime": "So, 18:00 Uhr"
+  },
+  "club": {
+    "hero": {
+      "name": "Velo Vienna",
+      "description": "Eine moderne Gemeinschaft für urbane Radfahrer. Wiens Erbe trifft auf leistungsorientiertes Training und eine sorgfältig kuratierte Community.",
+      "sport": "Radfahren",
+      "city": "Wien, AT",
+      "applyToJoin": "Beitritt beantragen",
+      "viewSchedule": "Zeitplan ansehen"
+    },
+    "stats": {
+      "activeMembers": "Aktive Mitglieder",
+      "clubScore": "Club-Score",
+      "established": "Gegründet",
+      "membersValue": "342",
+      "scoreValue": "94.5",
+      "establishedValue": "2018"
+    },
+    "rides": {
+      "title": "Kommende Fahrten",
+      "seeAll": "Alle ansehen",
+      "rsvp": "Zusagen",
+      "loading": "Fahrten werden geladen…",
+      "empty": "Noch keine kommenden Fahrten.",
+      "demoOneTitle": "Morning Coffee Spin: Kahlenberg",
+      "demoOneMonth": "Okt",
+      "demoOneTime": "06:30 Uhr",
+      "demoOneIntensity": "Moderat (25km/h)",
+      "demoTwoTitle": "Donauinsel Sprint Intervalle",
+      "demoTwoMonth": "Okt",
+      "demoTwoTime": "18:00 Uhr",
+      "demoTwoIntensity": "Hohe Intensität"
+    },
+    "recruiting": {
+      "title": "Suche Verstärkung",
+      "description": "Wir suchen erfahrene Ride Leader für unsere langen Wochenendtouren.",
+      "apply": "Als Ride Leader bewerben"
+    },
+    "spotlight": {
+      "title": "Mitglied im Fokus",
+      "name": "Sarah M.",
+      "subtitle": "Top Climber • 240km diese Woche",
+      "quote": "Die Dienstagmorgen-Auffahrten am Kahlenberg haben meine Klettertechnik völlig verändert. Unglaubliche Gruppenenergie."
+    }
   },
   "event": {
     "details": "Eventdetails",
@@ -71,7 +179,25 @@
     "focusedOn": "Fokus auf",
     "eventsNear": "Events in der Nähe ({{count}})",
     "noEvents": "Keine Events in dieser Umgebung gefunden.",
-    "focusEvent": "Event fokussieren"
+    "focusEvent": "Event fokussieren",
+    "today": "Heute",
+    "filters": "Filter",
+    "statTime": "Zeit",
+    "statLevel": "Niveau",
+    "statSport": "Sportart",
+    "statSpots": "Plätze",
+    "spotsAvailable": "{{count}} / {{max}} verfügbar",
+    "aboutSession": "Über diese Einheit",
+    "leadCoach": "Leitender Trainer",
+    "reserveSpot": "Platz reservieren",
+    "leaveSpot": "Verlassen",
+    "joined": "Du bist dabei",
+    "waiting": "Auf der Warteliste",
+    "selectEvent": "Wähle einen Punkt auf der Karte, um Details zu sehen.",
+    "noEventsFilter": "Keine Events entsprechen diesen Filtern.",
+    "locateMe": "Meinen Standort verwenden",
+    "zoomIn": "Vergrößern",
+    "zoomOut": "Verkleinern"
   },
   "editEvent": {
     "title": "Event bearbeiten",
@@ -90,7 +216,30 @@
   },
   "profile": {
     "title": "Profil",
-    "update": "Profil aktualisieren"
+    "update": "Profil aktualisieren",
+    "editProfile": "Profil bearbeiten",
+    "memberSince": "Mitglied seit {{year}}",
+    "noDistrict": "Kein Bezirk angegeben",
+    "guest": "Gast",
+    "communityScore": "Community-Score",
+    "communityScoreDescription": "Nimm an Events teil und bleib aktiv, um deinen Community-Score aufzubauen.",
+    "score": "Score",
+    "activityHistory": "Aktivitätsverlauf",
+    "noActivity": "Noch keine Aktivität. Tritt einem Event bei, um loszulegen.",
+    "about": "Über mich",
+    "languages": "Sprachen",
+    "focusAreas": "Schwerpunkte",
+    "notSet": "Nicht angegeben",
+    "achievements": "Erfolge",
+    "avatar": "Avatar",
+    "district": "Bezirk",
+    "languagesCsv": "Sprachen (kommagetrennt)",
+    "interestsCsv": "Interessen (kommagetrennt)",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "achievementWorkouts": "100 Workouts",
+    "achievementStreak": "30-Tage-Serie",
+    "achievementCourtMaster": "Platzmeister"
   },
   "apiTest": {
     "title": "API-Routen testen"

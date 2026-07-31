@@ -1,0 +1,32 @@
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.zoomGroup {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 12px 32px var(--surface-shadow);
+  overflow: hidden;
+}
+
+.zoomButton {
+  border-radius: 0;
+  border: none !important;
+}
+
+.divider {
+  height: 1px;
+  background: var(--surface-border);
+}
+
+.locateButton {
+  background: var(--surface);
+  box-shadow: 0 12px 32px var(--surface-shadow);
+}

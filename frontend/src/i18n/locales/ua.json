@@ -10,7 +10,15 @@
     "apiTest": "API тест",
     "login": "Вхід",
     "register": "Реєстрація",
-    "logout": "Вийти"
+    "logout": "Вийти",
+    "discovery": "Відкриття",
+    "clubs": "Клуби",
+    "community": "Спільнота",
+    "joinClub": "Приєднатися до клубу",
+    "search": "Пошук занять і гуртків...",
+    "appName": "VIENNA ATHLETIC",
+    "notifications": "Сповіщення",
+    "noNotifications": "У вас поки немає сповіщень."
   },
   "common": {
     "join": "Приєднатися",
@@ -19,29 +27,129 @@
     "edit": "Змінити",
     "send": "Надіслати",
     "language": "Мова",
-    "refresh": "Оновити"
+    "refresh": "Оновити",
+    "toggleDarkMode": "Перемкнути темний режим"
   },
   "landing": {
-    "title": "Знайди спорт. Познайомся з людьми. Стань частиною Відня.",
-    "subtitle": "MVP frontend, підключений до API backend для тестування роутів.",
-    "ctaDiscover": "Дивитися події",
-    "ctaCreate": "Створити подію"
+    "hero": {
+      "title": "Рухайся. Спілкуйся. Будь своїм.",
+      "subtitle": "Відкривай для себе спорт, клуби та спільноти у Відні. Вишуканий підхід до міської активності.",
+      "ctaExplore": "Переглянути заходи",
+      "ctaLearnMore": "Дізнатися більше"
+    },
+    "curated": {
+      "title": "Добірка вражень",
+      "subtitle": "Знайди своє наступне захоплення в самому серці міста.",
+      "attending": "Беруть участь",
+      "cards": {
+        "tennis": {
+          "tag": "Тенісний клуб",
+          "title": "Вечірні сесії в Пратері",
+          "description": "Приєднуйся до змагального рейтингу або дружніх матчів."
+        },
+        "running": {
+          "tag": "Біг",
+          "title": "Ранкова пробіжка Дунаєм",
+          "description": "Почни день зі мальовничого забігу на 10 км вздовж річки з групами для будь-якого рівня."
+        },
+        "cycling": {
+          "title": "Студія велотренувань"
+        }
+      }
+    }
   },
   "auth": {
     "loginTitle": "Вхід",
     "registerTitle": "Реєстрація",
     "username": "Ім'я користувача",
-    "email": "Email",
+    "email": "Електронна пошта",
     "password": "Пароль",
     "district": "Район",
     "submitLogin": "Увійти",
-    "submitRegister": "Створити акаунт"
+    "submitRegister": "Створити акаунт",
+    "noAccount": "Вперше тут?",
+    "registerLink": "Створити акаунт",
+    "haveAccount": "Вже є акаунт?",
+    "loginLink": "Увійти"
   },
   "discover": {
     "title": "Пошук подій",
     "sport": "Спорт",
     "level": "Рівень",
-    "load": "Завантажити події"
+    "load": "Завантажити події",
+    "categories": "Категорії",
+    "time": "Час",
+    "all": "Всі",
+    "tennis": "Теніс",
+    "running": "Біг",
+    "cycling": "Велоспорт",
+    "yoga": "Йога",
+    "football": "Футбол",
+    "chess": "Шахи",
+    "beginner": "Початківець",
+    "intermediate": "Середній",
+    "advanced": "Просунутий",
+    "anytime": "Будь-коли",
+    "morning": "Ранок",
+    "evening": "Вечір",
+    "happeningNow": "Відбувається зараз",
+    "curatedForYou": "Добірка для вас",
+    "joinGroup": "Приєднатися до групи",
+    "members": "{{count}} учасників",
+    "liveMatch": "Матч наживо",
+    "sessionStarted": "Сесія розпочалася",
+    "featuredClub": "Обраний клуб",
+    "strength": "Сила",
+    "featuredEventTitle": "Vienna River Run Collective",
+    "featuredEventDescription": "Невимушені групові пробіжки вздовж Дунаю щовихідних.",
+    "curatedEventOneTitle": "Morning Flow & Focus",
+    "curatedEventOneTime": "Сб, 8:00",
+    "curatedEventTwoTitle": "Strength & Conditioning",
+    "curatedEventTwoTime": "Нд, 18:00"
+  },
+  "club": {
+    "hero": {
+      "name": "Velo Vienna",
+      "description": "A modern syndicate for the urban cyclist. Blending Vienna's rich heritage with high-performance pursuit and a meticulously curated community experience.",
+      "sport": "Cycling",
+      "city": "Vienna, AT",
+      "applyToJoin": "Apply to Join",
+      "viewSchedule": "View Schedule"
+    },
+    "stats": {
+      "activeMembers": "Active Members",
+      "clubScore": "Club Score",
+      "established": "Established",
+      "membersValue": "342",
+      "scoreValue": "94.5",
+      "establishedValue": "2018"
+    },
+    "rides": {
+      "title": "Upcoming Rides",
+      "seeAll": "See All",
+      "rsvp": "RSVP",
+      "loading": "Loading rides…",
+      "empty": "No upcoming rides yet.",
+      "demoOneTitle": "Morning Coffee Spin: Kahlenberg",
+      "demoOneMonth": "Oct",
+      "demoOneTime": "06:30 AM",
+      "demoOneIntensity": "Moderate (25km/h)",
+      "demoTwoTitle": "Donauinsel Sprint Intervals",
+      "demoTwoMonth": "Oct",
+      "demoTwoTime": "06:00 PM",
+      "demoTwoIntensity": "High Intensity"
+    },
+    "recruiting": {
+      "title": "Recruiting",
+      "description": "We are currently looking for experienced ride leaders to guide our weekend long routes.",
+      "apply": "Apply as Ride Leader"
+    },
+    "spotlight": {
+      "title": "Member Spotlight",
+      "name": "Sarah M.",
+      "subtitle": "Top Climber • 240km this week",
+      "quote": "The Tuesday morning Kahlenberg ascents have completely transformed my climbing mechanics. Incredible group energy."
+    }
   },
   "event": {
     "details": "Деталі події",
@@ -71,7 +179,25 @@
     "focusedOn": "Фокус на",
     "eventsNear": "Події поруч ({{count}})",
     "noEvents": "Поблизу не знайдено подій.",
-    "focusEvent": "Сфокусувати подію"
+    "focusEvent": "Сфокусувати подію",
+    "today": "Сьогодні",
+    "filters": "Фільтри",
+    "statTime": "Час",
+    "statLevel": "Рівень",
+    "statSport": "Вид спорту",
+    "statSpots": "Місця",
+    "spotsAvailable": "{{count}} / {{max}} доступно",
+    "aboutSession": "Про це заняття",
+    "leadCoach": "Головний тренер",
+    "reserveSpot": "Забронювати місце",
+    "leaveSpot": "Покинути",
+    "joined": "Ви приєдналися",
+    "waiting": "У списку очікування",
+    "selectEvent": "Виберіть точку на карті, щоб побачити деталі.",
+    "noEventsFilter": "Немає подій за цими фільтрами.",
+    "locateMe": "Використати моє місцезнаходження",
+    "zoomIn": "Збільшити",
+    "zoomOut": "Зменшити"
   },
   "editEvent": {
     "title": "Редагувати подію",
@@ -90,7 +216,30 @@
   },
   "profile": {
     "title": "Профіль",
-    "update": "Оновити профіль"
+    "update": "Оновити профіль",
+    "editProfile": "Редагувати профіль",
+    "memberSince": "Учасник з {{year}}",
+    "noDistrict": "Район не вказано",
+    "guest": "Гість",
+    "communityScore": "Рейтинг спільноти",
+    "communityScoreDescription": "Приєднуйся до подій і залишайся активним, щоб підвищити свій рейтинг спільноти.",
+    "score": "Рейтинг",
+    "activityHistory": "Історія активності",
+    "noActivity": "Активності ще немає. Приєднайся до події, щоб почати.",
+    "about": "Про мене",
+    "languages": "Мови",
+    "focusAreas": "Напрямки",
+    "notSet": "Не вказано",
+    "achievements": "Досягнення",
+    "avatar": "Аватар",
+    "district": "Район",
+    "languagesCsv": "Мови (через кому)",
+    "interestsCsv": "Інтереси (через кому)",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "achievementWorkouts": "100 тренувань",
+    "achievementStreak": "Серія 30 днів",
+    "achievementCourtMaster": "Майстер корту"
   },
   "apiTest": {
     "title": "Тест API роутів"
