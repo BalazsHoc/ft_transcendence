@@ -164,7 +164,11 @@
     "searchAddress": "Adresse suchen",
     "start": "Start",
     "end": "Ende",
-    "maxSlots": "Max. Plätze"
+    "maxSlots": "Max. Plätze",
+    "slots": "Slots",
+    "waiting": "Warten",
+    "attending": "Teilnehmend",
+    "notJoined": "Nicht beigetreten"
   },
   "createEvent": {
     "title": "Event erstellen",
