@@ -21,10 +21,10 @@ export function MyEventsPage() {
 
   return (
     <>
-      <h1>{t("myEvents.title")}</h1>
+      <h1 className="text-3xl font-bold">{t("myEvents.title")}</h1>
 
       <section className="card">
-        <h2>{t("myEvents.created")}</h2>
+        <h2 className="text-xl font-bold">{t("myEvents.created")}</h2>
         <div className="event-list">
           {created.map((e) => (
             <EventCard key={e.id} event={e} />
@@ -33,7 +33,7 @@ export function MyEventsPage() {
       </section>
 
       <section className="card">
-        <h2>{t("myEvents.joined")}</h2>
+        <h2 className="text-xl font-bold">{t("myEvents.joined")}</h2>
         <div className="event-list">
           {joined.map((e) => (
             <EventCard key={e.id} event={e} />

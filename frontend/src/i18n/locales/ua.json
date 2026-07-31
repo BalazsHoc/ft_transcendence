@@ -164,7 +164,11 @@
     "searchAddress": "Пошук адреси",
     "start": "Початок",
     "end": "Кінець",
-    "maxSlots": "Макс. місць"
+    "maxSlots": "Макс. місць",
+    "slots": "???",
+    "waiting": "???",
+    "attending": "???",
+    "notJoined": "???"
   },
   "createEvent": {
     "title": "Створити подію",
