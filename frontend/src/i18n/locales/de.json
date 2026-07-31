@@ -107,6 +107,50 @@
     "curatedEventTwoTitle": "Strength & Conditioning",
     "curatedEventTwoTime": "So, 18:00 Uhr"
   },
+  "club": {
+    "hero": {
+      "name": "Velo Vienna",
+      "description": "Eine moderne Gemeinschaft für urbane Radfahrer. Wiens Erbe trifft auf leistungsorientiertes Training und eine sorgfältig kuratierte Community.",
+      "sport": "Radfahren",
+      "city": "Wien, AT",
+      "applyToJoin": "Beitritt beantragen",
+      "viewSchedule": "Zeitplan ansehen"
+    },
+    "stats": {
+      "activeMembers": "Aktive Mitglieder",
+      "clubScore": "Club-Score",
+      "established": "Gegründet",
+      "membersValue": "342",
+      "scoreValue": "94.5",
+      "establishedValue": "2018"
+    },
+    "rides": {
+      "title": "Kommende Fahrten",
+      "seeAll": "Alle ansehen",
+      "rsvp": "Zusagen",
+      "loading": "Fahrten werden geladen…",
+      "empty": "Noch keine kommenden Fahrten.",
+      "demoOneTitle": "Morning Coffee Spin: Kahlenberg",
+      "demoOneMonth": "Okt",
+      "demoOneTime": "06:30 Uhr",
+      "demoOneIntensity": "Moderat (25km/h)",
+      "demoTwoTitle": "Donauinsel Sprint Intervalle",
+      "demoTwoMonth": "Okt",
+      "demoTwoTime": "18:00 Uhr",
+      "demoTwoIntensity": "Hohe Intensität"
+    },
+    "recruiting": {
+      "title": "Suche Verstärkung",
+      "description": "Wir suchen erfahrene Ride Leader für unsere langen Wochenendtouren.",
+      "apply": "Als Ride Leader bewerben"
+    },
+    "spotlight": {
+      "title": "Mitglied im Fokus",
+      "name": "Sarah M.",
+      "subtitle": "Top Climber • 240km diese Woche",
+      "quote": "Die Dienstagmorgen-Auffahrten am Kahlenberg haben meine Klettertechnik völlig verändert. Unglaubliche Gruppenenergie."
+    }
+  },
   "event": {
     "details": "Eventdetails",
     "participants": "Teilnehmer",
