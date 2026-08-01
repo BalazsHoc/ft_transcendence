@@ -14,6 +14,7 @@ import { ChatsPage } from "../pages/ChatsPage";
 import { ProfilePage } from "../pages/ProfilePage";
 import { ClubPage } from "../pages/ClubPage";
 import { GroupsTestPage } from "../pages/GroupsTestPage";
+import { GroupDetailsPage } from "../pages/GroupDetailsPage";
 import { ApiTesterPage } from "../pages/ApiTesterPage";
 import { UiElementsTest } from "../pages/UiElementsTest";
 import { NotFoundPage } from "../pages/NotFoundPage";
@@ -26,6 +27,7 @@ export function App() {
         <Route path="discover" element={<DiscoverPage />} />
         <Route path="clubs" element={<ClubPage />} />
         <Route path="groups" element={<GroupsTestPage />} />
+        <Route path="groups/:groupId" element={<GroupDetailsPage />} />
         <Route path="map" element={<MapPage />} />
         <Route path="events/new" element={<CreateEventPage />} />
         <Route path="events/:eventId" element={<EventDetailsPage />} />

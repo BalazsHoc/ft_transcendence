@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { createGroup, getGroups } from "../api/groupsApi";
 import type { GroupItem, GroupPayload } from "../types/api";
 import { useSports } from "../hooks/useSports";
+import { GroupCard } from "../components/groups/GroupCard";
 
 type GroupFormState = {
   name: string;
@@ -37,6 +38,7 @@ export function GroupsTestPage() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const loadGroups = useCallback(async () => {
@@ -81,8 +83,10 @@ export function GroupsTestPage() {
         join_policy: form.joinPolicy,
         max_members: Number.isFinite(maxMembers) ? maxMembers : 0,
         location_name: form.locationName,
+        coverImageFile,
       });
       setForm(initialForm);
+      setCoverImageFile(null);
       setShowForm(false);
       await loadGroups();
     } catch (submitError) {
@@ -113,6 +117,14 @@ export function GroupsTestPage() {
           <label>
             {t("groupsTest.descriptionLabel")}
             <textarea name="description" value={form.description} onChange={updateForm} />
+          </label>
+          <label>
+            {t("groups.image")}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setCoverImageFile(event.target.files?.[0] || null)}
+            />
           </label>
           <label>
             {t("groupsTest.sport")}
@@ -173,13 +185,9 @@ export function GroupsTestPage() {
       ) : groups.length === 0 ? (
         <p>{t("groupsTest.empty")}</p>
       ) : (
-        <ul>
-          {groups.map((group) => (
-            <li key={group.id}>
-              <strong>{group.name}</strong> — {group.sport} — {group.levels.join(", ")} — {group.member_count} {t("groupsTest.members")}
-            </li>
-          ))}
-        </ul>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {groups.map((group) => <GroupCard key={group.id} group={group} />)}
+        </div>
       )}
     </main>
   );

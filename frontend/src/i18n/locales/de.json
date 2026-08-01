@@ -277,6 +277,17 @@
   "apiTest": {
     "title": "API-Routen testen"
   },
+  "groups": {
+    "image": "Gruppenbild",
+    "details": "Details",
+    "members": "Mitglieder",
+    "loading": "Gruppe wird geladen...",
+    "loadError": "Gruppe konnte nicht geladen werden.",
+    "back": "Zurück zu Gruppen",
+    "noDescription": "Noch keine Beschreibung.",
+    "levels": "Niveaus",
+    "location": "Ort"
+  },
   "groupsTest": {
     "selectSport": "Sportart auswählen",
     "title": "Gruppen-API-Tester",
