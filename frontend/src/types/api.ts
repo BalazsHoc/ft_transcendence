@@ -63,6 +63,10 @@ export type GeoSuggestion = {
   source: string;
   raw: Record<string, unknown>;
 };
+
+export type SportOption = {
+  code: string;
+};
 export type GeoResponse = {
   provider: string;
   query: string;

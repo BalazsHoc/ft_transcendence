@@ -2,19 +2,11 @@ import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { GeoSuggestion } from "../../types/api";
+import type { SportOption } from "../../types/api";
 import { LocationAutocomplete } from "../geo/LocationAutocomplete";
 import { FilterGroup } from "../discover/FilterGroup";
 import Button from "../shared/Button";
 import styles from "./MapFilterBar.module.css";
-
-const SPORT_OPTIONS = [
-  { label: "All", value: "" },
-  { label: "Tennis", value: "tennis" },
-  { label: "Running", value: "running" },
-  { label: "Cycling", value: "cycling" },
-  { label: "Swimming", value: "swimming" },
-  { label: "Yoga", value: "yoga" },
-];
 
 const LEVEL_OPTIONS = [
   { label: "All", value: "" },
@@ -31,6 +23,7 @@ type Props = {
   todayOnly: boolean;
   onToggleToday: () => void;
   onLocationSelect: (suggestion: GeoSuggestion) => void;
+  sports: SportOption[];
 };
 
 export function MapFilterBar({
@@ -41,10 +34,18 @@ export function MapFilterBar({
   todayOnly,
   onToggleToday,
   onLocationSelect,
+  sports,
 }: Props) {
   const { t } = useTranslation();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const activeFilterCount = (sport ? 1 : 0) + (level ? 1 : 0);
+  const sportOptions = [
+    { label: t("discover.all"), value: "" },
+    ...sports.map((sportOption) => ({
+      label: t(`sports.${sportOption.code}`),
+      value: sportOption.code,
+    })),
+  ];
 
   return (
     <div className={styles.bar}>
@@ -79,7 +80,7 @@ export function MapFilterBar({
           <div className={styles.filtersPanel}>
             <FilterGroup
               title={t("discover.categories")}
-              options={SPORT_OPTIONS}
+              options={sportOptions}
               selected={sport}
               onChange={onSportChange}
               type="chips"

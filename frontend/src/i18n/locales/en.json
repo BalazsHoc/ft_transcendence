@@ -75,6 +75,28 @@
     "haveAccount": "Already have an account?",
     "loginLink": "Log in"
   },
+  "sports": {
+    "badminton": "Badminton",
+    "basketball": "Basketball",
+    "boxing": "Boxing",
+    "chess": "Chess",
+    "climbing": "Climbing",
+    "cycling": "Cycling",
+    "dance": "Dance",
+    "football": "Football",
+    "hiking": "Hiking",
+    "martial_arts": "Martial arts",
+    "rowing": "Rowing",
+    "running": "Running",
+    "skiing": "Skiing",
+    "snowboarding": "Snowboarding",
+    "strength": "Strength training",
+    "swimming": "Swimming",
+    "table_tennis": "Table tennis",
+    "tennis": "Tennis",
+    "volleyball": "Volleyball",
+    "yoga": "Yoga"
+  },
   "discover": {
     "title": "Discover events",
     "sport": "Sport",
