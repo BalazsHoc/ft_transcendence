@@ -31,11 +31,11 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-3 shrink-0">
-        {!isMinimalHeaderPage && <HeaderSearch value={search} onChange={setSearch} />}
+        {/* {!isMinimalHeaderPage && <HeaderSearch value={search} onChange={setSearch} />} */}
 
         {!isMinimalHeaderPage && (
           <Button variant="primary" className="hidden xl:inline-flex">
-            {t("nav.joinClub")}
+            {t("nav.createEvent")}
           </Button>
         )}
 

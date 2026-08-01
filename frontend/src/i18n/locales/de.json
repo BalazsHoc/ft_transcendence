@@ -16,9 +16,12 @@
     "community": "Gemeinschaft",
     "joinClub": "Verein beitreten",
     "search": "Aktivitäten, Vereine suchen...",
-    "appName": "VIENNA ATHLETIC",
+    "appName": "VIENNA ACTIVE",
     "notifications": "Benachrichtigungen",
-    "noNotifications": "Du hast noch keine Benachrichtigungen."
+    "noNotifications": "Du hast noch keine Benachrichtigungen.",
+    "messages": "Nachrichten",
+    "groups": "Gruppen",
+    "events": "Events"
   },
   "common": {
     "join": "Teilnehmen",
@@ -247,6 +250,37 @@
   },
   "apiTest": {
     "title": "API-Routen testen"
+  },
+  "groupsTest": {
+    "title": "Gruppen-API-Tester",
+    "description": "Gruppen vom Backend laden und eine Testgruppe erstellen.",
+    "create": "Gruppe erstellen",
+    "cancel": "Abbrechen",
+    "name": "Name",
+    "descriptionLabel": "Beschreibung",
+    "sport": "Sportart",
+    "levels": "Niveaus (durch Komma getrennt)",
+    "kind": "Gruppentyp",
+    "kindTraining": "Training",
+    "kindSocial": "Sozial",
+    "kindCompetitive": "Wettkampf",
+    "kindTeam": "Team",
+    "visibility": "Sichtbarkeit",
+    "public": "Öffentlich",
+    "private": "Privat",
+    "joinPolicy": "Beitrittsregel",
+    "open": "Offen",
+    "approval": "Genehmigung erforderlich",
+    "inviteOnly": "Nur auf Einladung",
+    "maxMembers": "Maximale Mitglieder (0 = unbegrenzt)",
+    "location": "Ort",
+    "submit": "Testgruppe erstellen",
+    "creating": "Wird erstellt...",
+    "loading": "Gruppen werden geladen...",
+    "empty": "Keine Gruppen gefunden.",
+    "members": "Mitglieder",
+    "loadError": "Gruppen konnten nicht geladen werden.",
+    "createError": "Gruppe konnte nicht erstellt werden."
   },
   "notFound": {
     "title": "Seite nicht gefunden"
