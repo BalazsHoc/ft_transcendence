@@ -16,6 +16,7 @@ type ProfileEditFormProps = {
 export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProps) {
   const { t } = useTranslation();
   const [district, setDistrict] = useState("");
+  const [bio, setBio] = useState("");
   const [languages, setLanguages] = useState("");
   const [interests, setInterests] = useState("");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -26,6 +27,7 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
 
   useEffect(() => {
     setDistrict(user?.district || "");
+    setBio(user?.bio || "");
     setLanguages((user?.languages || []).join(","));
     setInterests((user?.interests || []).join(","));
   }, [user]);
@@ -44,6 +46,7 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
     try {
       await updateMe({
         district,
+        bio,
         languages: languages.split(",").map((x) => x.trim()).filter(Boolean),
         interests: interests.split(",").map((x) => x.trim()).filter(Boolean),
         avatarFile,
@@ -69,7 +72,7 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
             }}
           />
           <label className="cursor-pointer text-xs font-medium uppercase tracking-wider text-[var(--muted)] hover:text-[var(--text)]">
-            {t("profile.avatar")}
+            {t("profile.logo")}
             <input
               type="file"
               accept="image/*"
@@ -83,6 +86,10 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
           <label className="sm:col-span-2">
             <span className={fieldLabelClasses}>{t("profile.district")}</span>
             <input value={district} onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)} />
+          </label>
+          <label className="sm:col-span-2">
+            <span className={fieldLabelClasses}>{t("profile.bio")}</span>
+            <textarea value={bio} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBio(e.target.value)} rows={4} />
           </label>
           <label>
             <span className={fieldLabelClasses}>{t("profile.languagesCsv")}</span>

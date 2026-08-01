@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
@@ -18,6 +18,7 @@ type HeaderProps = {
 
 export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [search, setSearch] = React.useState("");
   //to remove the search bar and join club button on the landing page, login page, and register page
@@ -34,7 +35,11 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
         {/* {!isMinimalHeaderPage && <HeaderSearch value={search} onChange={setSearch} />} */}
 
         {!isMinimalHeaderPage && (
-          <Button variant="primary" className="hidden xl:inline-flex">
+          <Button
+            variant="primary"
+            className="hidden xl:inline-flex"
+            onClick={() => navigate("/events/new")}
+          >
             {t("nav.createEvent")}
           </Button>
         )}

@@ -17,6 +17,14 @@ export function ProfileAbout({ user }: ProfileAboutProps) {
       <div className="space-y-4">
         <div>
           <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
+            {t("profile.bio")}
+          </h4>
+          <p className="whitespace-pre-wrap text-sm text-[var(--text)]">
+            {user?.bio || t("profile.noBio")}
+          </p>
+        </div>
+        <div>
+          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
             {t("profile.languages")}
           </h4>
           <p className="text-sm text-[var(--text)]">{languages}</p>

@@ -11,6 +11,7 @@ export type User = {
   first_name?: string;
   last_name?: string;
   district?: string;
+  bio?: string;
   languages?: string[];
   interests?: string[];
   avatar?: string | null;
