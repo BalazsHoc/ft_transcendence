@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.core.validators import FileExtensionValidator
+from core.sports import SPORT_CHOICES
 
 class Event(models.Model):
     LEVEL_CHOICES=(('beginner','Beginner'),('intermediate','Intermediate'),('advanced','Advanced'),('all','All levels'))
@@ -18,7 +19,7 @@ class Event(models.Model):
         null=True,
         validators=[FileExtensionValidator(['jpg','jpeg','png','gif','webp'])],
     )
-    sport=models.CharField(max_length=50)
+    sport=models.CharField(max_length=50, choices=SPORT_CHOICES)
     level=models.CharField(max_length=20, choices=LEVEL_CHOICES, default='all')
     languages=models.JSONField(default=list, blank=True)
     location_name=models.CharField(max_length=255)
