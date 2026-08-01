@@ -29,14 +29,14 @@ export function HeaderNav() {
 
   return (
     <nav className="hidden md:flex items-center gap-3 lg:gap-6 shrink-0">
-      <HeaderNavLink to="/discover">{t("nav.discover")}</HeaderNavLink>
-      <HeaderNavLink to="/clubs">{t("nav.clubs")}</HeaderNavLink>
+      <HeaderNavLink to="/discover">{t("nav.events")}</HeaderNavLink>
+      <HeaderNavLink to="/groups">{t("nav.groups")}</HeaderNavLink>
       <HeaderNavLink to="/map">
         <span className="inline-flex items-center gap-1">
           <Map size={16} /> {t("nav.map")}
         </span>
       </HeaderNavLink>
-      <HeaderNavLink to="/community">{t("nav.community")}</HeaderNavLink>
+      <HeaderNavLink to="/chats">{t("nav.messages")}</HeaderNavLink>
       <HeaderNavLink to="/api-test">API Tester</HeaderNavLink>
     </nav>
   );

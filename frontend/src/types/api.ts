@@ -68,3 +68,51 @@ export type GeoResponse = {
   language: string;
   results: GeoSuggestion[];
 };
+
+export type GroupMembership = {
+  id: number;
+  user: User;
+  role: "owner" | "admin" | "member";
+  status: "active" | "pending";
+  joined_at: string;
+};
+
+export type GroupItem = {
+  id: string;
+  name: string;
+  description: string;
+  sport: string;
+  levels: Array<"beginner" | "intermediate" | "advanced" | "all">;
+  kind: "training" | "social" | "competitive" | "team";
+  visibility: "public" | "private";
+  join_policy: "open" | "approval" | "invite_only";
+  max_members: number;
+  languages: string[];
+  location_name: string;
+  location_address: string;
+  cover_image: string | null;
+  owner: User;
+  is_active: boolean;
+  member_count: number;
+  current_user_membership: {
+    role: "owner" | "admin" | "member";
+    status: "active" | "pending";
+  } | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type GroupPayload = {
+  name: string;
+  description?: string;
+  sport: string;
+  levels: Array<"beginner" | "intermediate" | "advanced" | "all">;
+  kind?: "training" | "social" | "competitive" | "team";
+  visibility?: "public" | "private";
+  join_policy?: "open" | "approval" | "invite_only";
+  max_members?: number;
+  languages?: string[];
+  location_name?: string;
+  location_address?: string;
+  coverImageFile?: File | null;
+};
