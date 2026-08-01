@@ -177,6 +177,7 @@
     }
   },
   "event": {
+    "selectSport": "Select a sport",
     "details": "Event details",
     "participants": "Participants",
     "messages": "Messages",
@@ -277,6 +278,7 @@
     "title": "API route tester"
   },
   "groupsTest": {
+    "selectSport": "Select a sport",
     "title": "Groups API tester",
     "description": "Fetch groups from the backend and create a test group.",
     "create": "Create group",

@@ -177,6 +177,7 @@
     }
   },
   "event": {
+    "selectSport": "Sportart auswählen",
     "details": "Eventdetails",
     "participants": "Teilnehmer",
     "messages": "Nachrichten",
@@ -277,6 +278,7 @@
     "title": "API-Routen testen"
   },
   "groupsTest": {
+    "selectSport": "Sportart auswählen",
     "title": "Gruppen-API-Tester",
     "description": "Gruppen vom Backend laden und eine Testgruppe erstellen.",
     "create": "Gruppe erstellen",
