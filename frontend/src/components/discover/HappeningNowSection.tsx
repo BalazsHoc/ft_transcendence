@@ -23,7 +23,6 @@ export function HappeningNowSection({
 }: HappeningNowSectionProps) {
   const { t } = useTranslation();
 
-  
   const liveEvents = events.filter((event) => {
     const now = new Date(event.start_at);     //new Date(); FOR TESTING PURPOSES
     const start = new Date(event.start_at);
