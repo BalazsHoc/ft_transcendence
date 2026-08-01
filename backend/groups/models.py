@@ -3,6 +3,7 @@ import uuid
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from core.sports import SPORT_CHOICES
 
 
 class Group(models.Model):
@@ -38,7 +39,7 @@ class Group(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=150)
     description = models.TextField(blank=True)
-    sport = models.CharField(max_length=50)
+    sport = models.CharField(max_length=50, choices=SPORT_CHOICES)
     levels = models.JSONField(default=list, blank=True)
     kind = models.CharField(max_length=20, choices=KIND_CHOICES, default=KIND_TRAINING)
     visibility = models.CharField(

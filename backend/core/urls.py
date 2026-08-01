@@ -5,10 +5,16 @@ from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from .sports import sport_catalog
 
 @api_view(['GET'])
 def health(request):
     return Response({'status':'ok'})
+
+
+@api_view(['GET'])
+def sports(request):
+    return Response(sport_catalog())
 
 urlpatterns=[
     path('', health),
@@ -16,6 +22,7 @@ urlpatterns=[
     path('api/auth/', include('accounts.urls')),
     path('api/events/', include('events.urls')),
     path('api/groups/', include('groups.urls')),
+    path('api/meta/sports/', sports, name='sports-catalog'),
     path('api/geo/', include('geo.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
