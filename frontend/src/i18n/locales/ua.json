@@ -277,6 +277,17 @@
   "apiTest": {
     "title": "Тест API роутів"
   },
+  "groups": {
+    "image": "Group image",
+    "details": "Details",
+    "members": "members",
+    "loading": "Loading group...",
+    "loadError": "Unable to load the group.",
+    "back": "Back to groups",
+    "noDescription": "No description yet.",
+    "levels": "Levels",
+    "location": "Location"
+  },
   "groupsTest": {
     "selectSport": "Select a sport",
     "title": "Groups API tester",
