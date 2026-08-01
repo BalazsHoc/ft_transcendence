@@ -10,13 +10,25 @@ from chat.serializers import MessageSerializer
 class IsCreatorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS: return True
-        return obj.creator == request.user
+        if obj.creator == request.user:
+            return True
+        if not obj.group:
+            return False
+        return obj.group.memberships.filter(
+            user=request.user,
+            status='active',
+            role__in=['owner', 'admin'],
+        ).exists()
 
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class=EventSerializer
     permission_classes=[permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly]
     def get_queryset(self):
-        qs=Event.objects.select_related('creator').prefetch_related('participants','participants__user').annotate(attending_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_ATTENDING)), waiting_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_WAITING)))
+        qs=Event.objects.select_related('creator','group').prefetch_related('participants','participants__user').annotate(attending_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_ATTENDING)), waiting_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_WAITING)))
+        if self.request.user.is_authenticated:
+            qs=qs.filter(Q(visibility=Event.VISIBILITY_PUBLIC) | Q(creator=self.request.user) | Q(group__memberships__user=self.request.user, group__memberships__status='active')).distinct()
+        else:
+            qs=qs.filter(visibility=Event.VISIBILITY_PUBLIC)
         sport=self.request.query_params.get('sport'); level=self.request.query_params.get('level'); language=self.request.query_params.get('language')
         if sport: qs=qs.filter(sport__iexact=sport)
         if level: qs=qs.filter(level=level)
@@ -26,6 +38,8 @@ class EventViewSet(viewsets.ModelViewSet):
     @decorators.action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def join(self, request, pk=None):
         event=self.get_object()
+        if event.visibility == Event.VISIBILITY_PRIVATE and event.group and not event.group.memberships.filter(user=request.user, status='active').exists():
+            return response.Response({'detail':'Join the group before joining this private event.'}, status=status.HTTP_403_FORBIDDEN)
         with transaction.atomic():
             event=Event.objects.select_for_update().get(pk=event.pk)
             existing=EventParticipant.objects.filter(user=request.user,event=event).first()

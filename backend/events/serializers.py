@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from accounts.serializers import UserPublicSerializer
+from groups.serializers import GroupSummarySerializer
 from .models import Event, EventParticipant
 
 class EventParticipantSerializer(serializers.ModelSerializer):
@@ -10,13 +11,14 @@ class EventParticipantSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     creator=UserPublicSerializer(read_only=True)
+    group=GroupSummarySerializer(read_only=True)
     participants=EventParticipantSerializer(many=True, read_only=True)
     attending_count=serializers.IntegerField(read_only=True)
     waiting_count=serializers.IntegerField(read_only=True)
     user_status=serializers.SerializerMethodField()
     class Meta:
         model=Event
-        fields=['id','title','description','image','sport','level','languages','location_name','location_address','latitude','longitude','start_at','end_at','max_slots','creator','participants','attending_count','waiting_count','user_status','created_at','updated_at']
+        fields=['id','title','description','image','sport','level','languages','location_name','location_address','latitude','longitude','start_at','end_at','max_slots','creator','group','visibility','participants','attending_count','waiting_count','user_status','created_at','updated_at']
         read_only_fields=['id','creator','created_at','updated_at']
     def get_user_status(self,obj):
         request=self.context.get('request')
