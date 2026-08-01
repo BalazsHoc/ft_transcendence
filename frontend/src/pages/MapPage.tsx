@@ -5,6 +5,7 @@ import { GeoSuggestion, EventItem } from "../types/api";
 import { MapEventPanel } from "../components/map/MapEventPanel";
 import { MapFilterBar } from "../components/map/MapFilterBar";
 import { MapZoomControls } from "../components/map/MapZoomControls";
+import { useSports } from "../hooks/useSports";
 // Map page layout classes (.mapPage, .mapCanvas, .eventMarker, ...) now
 // live in styles/global.css — see the "MAP PAGE" section there.
 
@@ -110,6 +111,7 @@ function isToday(dateString: string) {
 
 export function MapPage() {
   const [events, setEvents] = useState<EventItem[]>([]);
+  const sports = useSports();
   const [focusPoint, setFocusPoint] = useState<GeoSuggestion | null>(null);
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(
     null,
@@ -386,6 +388,7 @@ export function MapPage() {
           todayOnly={todayOnly}
           onToggleToday={() => setTodayOnly((value) => !value)}
           onLocationSelect={setFocusPoint}
+          sports={sports}
         />
       </div>
 

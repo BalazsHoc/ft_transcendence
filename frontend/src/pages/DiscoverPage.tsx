@@ -5,10 +5,12 @@ import { Sidebar } from "../components/layout/Sidebar";
 import { DiscoverMain } from "../components/discover/DiscoverMain";
 import { deleteEvent, getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
 import { EventItem } from "../types/api";
+import { useSports } from "../hooks/useSports";
 
 export function DiscoverPage() {
   const navigate = useNavigate();
   const [events, setEvents] = useState<EventItem[]>([]);
+  const sports = useSports();
 
   const [sport, setSport] = useState("");
   const [levels, setLevels] = useState<string[]>([]);
@@ -85,6 +87,7 @@ export function DiscoverPage() {
         onLevelChange={toggleLevel}
         time={time}
         onTimeChange={setTime}
+        sports={sports}
       />
       <DiscoverMain events={events} onCardClick={openEventPage} />
     </div>

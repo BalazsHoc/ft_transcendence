@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { FilterGroup } from "../discover/FilterGroup";
+import type { SportOption } from "../../types/api";
 
 type SidebarProps = {
   sport: string;
@@ -8,6 +9,7 @@ type SidebarProps = {
   onLevelChange: (value: string) => void;
   time: string;
   onTimeChange: (value: string) => void;
+  sports: SportOption[];
 };
 
 export function Sidebar({
@@ -17,16 +19,16 @@ export function Sidebar({
   onLevelChange,
   time,
   onTimeChange,
+  sports,
 }: SidebarProps) {
   const { t } = useTranslation();
 
   const sportOptions = [
     { label: t("discover.all"), value: "" },
-    { label: t("discover.tennis"), value: "tennis" },
-    { label: t("discover.running"), value: "running" },
-    { label: t("discover.cycling"), value: "cycling" },
-    { label: t("discover.yoga"), value: "yoga" },
-    { label: t("discover.football"), value: "football" },
+    ...sports.map((sportOption) => ({
+      label: t(`sports.${sportOption.code}`),
+      value: sportOption.code,
+    })),
   ];
 
   const levelOptions = [
