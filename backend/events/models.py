@@ -6,6 +6,9 @@ from django.core.validators import FileExtensionValidator
 
 class Event(models.Model):
     LEVEL_CHOICES=(('beginner','Beginner'),('intermediate','Intermediate'),('advanced','Advanced'),('all','All levels'))
+    VISIBILITY_PUBLIC='public'
+    VISIBILITY_PRIVATE='private'
+    VISIBILITY_CHOICES=((VISIBILITY_PUBLIC,'Public'),(VISIBILITY_PRIVATE,'Private'))
     id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title=models.CharField(max_length=200)
     description=models.TextField(blank=True)
@@ -26,11 +29,13 @@ class Event(models.Model):
     end_at=models.DateTimeField()
     max_slots=models.PositiveIntegerField(default=0)
     creator=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='created_events')
+    group=models.ForeignKey('groups.Group',on_delete=models.SET_NULL,related_name='events',blank=True,null=True)
+    visibility=models.CharField(max_length=20,choices=VISIBILITY_CHOICES,default=VISIBILITY_PUBLIC)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     class Meta:
         ordering=['start_at']
-        indexes=[models.Index(fields=['sport']),models.Index(fields=['start_at']),models.Index(fields=['level'])]
+        indexes=[models.Index(fields=['sport']),models.Index(fields=['start_at']),models.Index(fields=['level']),models.Index(fields=['group','visibility'], name='events_even_group_i_0cae1b_idx')]
     def __str__(self): return self.title
     # @property
     # def attending_count(self): return self.participants.filter(status=EventParticipant.STATUS_ATTENDING).count()
