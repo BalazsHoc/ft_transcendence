@@ -10,6 +10,10 @@ import Button from "../shared/Button";
 
 import styles from "./EventCard.module.css";
 
+type ImageErrorEvent = {
+  currentTarget: HTMLImageElement;
+};
+
 export function EventCard({
 	event,
 	onJoin,
@@ -40,7 +44,7 @@ export function EventCard({
 						className={styles.image}
 						src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
 						alt={event.title}
-						onError={(eventNode) => {
+						onError={(eventNode: ImageErrorEvent) => {
 							eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
 						}}
 					/>

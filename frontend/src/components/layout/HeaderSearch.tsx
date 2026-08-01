@@ -1,3 +1,4 @@
+import { type ChangeEvent } from "react";
 import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -19,7 +20,7 @@ export function HeaderSearch({ value, onChange }: HeaderSearchProps) {
         type="text"
         placeholder={t("nav.search")}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
         className="pl-9 pr-4 py-2 bg-[var(--surface)] border border-[var(--surface-border)] rounded-full text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all w-60 placeholder:text-[var(--text-muted)] text-[var(--text)]"
       />
     </div>

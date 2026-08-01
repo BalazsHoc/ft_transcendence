@@ -13,7 +13,7 @@ function HeaderNavLink({
   return (
     <NavLink
       to={to}
-      className={({ isActive }) =>
+      className={({ isActive }: { isActive: boolean }) =>
         isActive
           ? "text-[var(--text)] border-b-2 border-[var(--text)] pb-1 opacity-80 transition-opacity text-[18px]"
           : "text-[var(--text-muted)] hover:text-[var(--text)] transition-colors text-[18px]"
