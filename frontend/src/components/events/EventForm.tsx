@@ -6,6 +6,7 @@ import { rememberSearch } from "../../api/geoApi";
 import { LocationAutocomplete } from "../geo/LocationAutocomplete";
 import styles from "../shared/FormCard.module.css";
 import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
+import { useSports } from "../../hooks/useSports";
 
 function toLocalInputValue(value?: string) {
   if (!value) return "";
@@ -28,12 +29,13 @@ export function EventForm({
   onSubmit: (payload: EventPayload, imageFile?: File | null) => Promise<void>;
 }) {
   const { t } = useTranslation();
+  const sports = useSports();
 
   const [title, setTitle] = useState(initialEvent?.title || "Football in Prater");
   const [description, setDescription] = useState(
     initialEvent?.description || "Casual test event.",
   );
-  const [sport, setSport] = useState(initialEvent?.sport || "football");
+  const [sport, setSport] = useState(initialEvent?.sport || "");
   const [level, setLevel] = useState(initialEvent?.level || "all");
   const [locationName, setLocationName] = useState(
     initialEvent?.location_name || "Prater",
@@ -132,10 +134,18 @@ export function EventForm({
 
       <label>
         {t("event.sport")}
-        <input
+        <select
           value={sport}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setSport(e.target.value)}
-        />
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => setSport(e.target.value)}
+          required
+        >
+          <option value="" disabled>{t("event.selectSport")}</option>
+          {sports.map((sportOption) => (
+            <option key={sportOption.code} value={sportOption.code}>
+              {t(`sports.${sportOption.code}`)}
+            </option>
+          ))}
+        </select>
       </label>
 
       <label>
@@ -263,7 +273,7 @@ export function EventForm({
         />
       </label>
 
-      <button type="submit">
+      <button type="submit" disabled={!sport || sports.length === 0}>
         {initialEvent ? t("editEvent.submit") : t("createEvent.submit")}
       </button>
     </form>

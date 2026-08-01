@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { createGroup, getGroups } from "../api/groupsApi";
 import type { GroupItem, GroupPayload } from "../types/api";
+import { useSports } from "../hooks/useSports";
 
 type GroupFormState = {
   name: string;
@@ -30,6 +31,7 @@ const initialForm: GroupFormState = {
 
 export function GroupsTestPage() {
   const { t } = useTranslation();
+  const sports = useSports();
   const [groups, setGroups] = useState<GroupItem[]>([]);
   const [form, setForm] = useState<GroupFormState>(initialForm);
   const [showForm, setShowForm] = useState(false);
@@ -114,7 +116,14 @@ export function GroupsTestPage() {
           </label>
           <label>
             {t("groupsTest.sport")}
-            <input name="sport" value={form.sport} onChange={updateForm} required />
+            <select name="sport" value={form.sport} onChange={updateForm} required>
+              <option value="" disabled>{t("groupsTest.selectSport")}</option>
+              {sports.map((sportOption) => (
+                <option key={sportOption.code} value={sportOption.code}>
+                  {t(`sports.${sportOption.code}`)}
+                </option>
+              ))}
+            </select>
           </label>
           <label>
             {t("groupsTest.levels")}
@@ -152,7 +161,7 @@ export function GroupsTestPage() {
             {t("groupsTest.location")}
             <input name="locationName" value={form.locationName} onChange={updateForm} />
           </label>
-          <button type="submit" disabled={submitting}>
+          <button type="submit" disabled={submitting || !form.sport || sports.length === 0}>
             {submitting ? t("groupsTest.creating") : t("groupsTest.submit")}
           </button>
         </form>
