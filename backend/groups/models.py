@@ -76,9 +76,9 @@ class Group(models.Model):
     class Meta:
         ordering = ["name"]
         indexes = [
-            models.Index(fields=["sport"]),
-            models.Index(fields=["visibility"]),
-            models.Index(fields=["is_active"]),
+            models.Index(fields=["sport"], name="groups_grou_sport_8b55b4_idx"),
+            models.Index(fields=["visibility"], name="groups_grou_visibil_7d5444_idx"),
+            models.Index(fields=["is_active"], name="groups_grou_is_acti_04bc24_idx"),
         ]
 
     def __str__(self):
