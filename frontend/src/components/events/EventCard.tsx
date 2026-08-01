@@ -81,7 +81,7 @@ export function EventCard({
 				<div className="space-y-2">
 					<p className="m-0 flex items-start gap-1">
 						<MapPin size={15}/>
- 						<span>{event.location_name}</span>
+						<span>{event.location_name}</span>
 					</p>
 
 					{/* {event.location_address &&
@@ -95,7 +95,7 @@ export function EventCard({
 						{startDate.toLocaleString()} – {endDate.toLocaleString()}
 					</p>
 
-         			 {/* <p className="m-0">
+					{/* <p className="m-0">
 						<Badge className="children:uppercase" variant={event.user_status?.status === "attending" ? "green" : "solid"}>
 							{event.user_status?.status === "attending" ? t("event.attending") : t("event.notJoined")}
 						</Badge>

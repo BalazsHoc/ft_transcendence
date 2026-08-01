@@ -1,7 +1,7 @@
 # Landing (Welcome) Page
 
 This is the page a **logged-out** visitor sees at `/` — for example after
-clicking the "VIENNA ATHLETIC" logo in the header. 
+clicking the "VIENNA ATHLETIC" logo in the header.
 
 If the visitor **is** logged in, they never see this page: `/` redirects
 them straight to `/discover` instead.
