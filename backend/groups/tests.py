@@ -55,3 +55,44 @@ class GroupApiTests(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, [])
+
+    def test_owner_can_create_private_group_event_hidden_from_non_members(self):
+        group = Group.objects.create(
+            name="Private Climbers",
+            sport="climbing",
+            levels=["advanced"],
+            visibility=Group.VISIBILITY_PRIVATE,
+            join_policy=Group.JOIN_INVITE_ONLY,
+            owner=self.user,
+        )
+        GroupMembership.objects.create(
+            group=group, user=self.user, role=GroupMembership.ROLE_OWNER
+        )
+        self.client.force_authenticate(self.user)
+
+        created = self.client.post(
+            f"/api/groups/{group.id}/events/",
+            {
+                "title": "Private bouldering session",
+                "description": "Members only",
+                "sport": "climbing",
+                "level": "advanced",
+                "languages": ["en"],
+                "location_name": "Climbing hall",
+                "location_address": "Vienna",
+                "latitude": 48.2082,
+                "longitude": 16.3738,
+                "start_at": "2026-08-02T18:00:00Z",
+                "end_at": "2026-08-02T20:00:00Z",
+                "max_slots": 12,
+                "visibility": "private",
+            },
+            format="json",
+        )
+
+        self.assertEqual(created.status_code, 201)
+        self.assertEqual(created.data["group"]["id"], str(group.id))
+        self.client.force_authenticate(None)
+        hidden = self.client.get("/api/events/")
+        self.assertEqual(hidden.status_code, 200)
+        self.assertEqual(hidden.data, [])
