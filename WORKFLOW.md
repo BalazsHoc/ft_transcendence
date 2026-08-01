@@ -9,3 +9,4 @@ Here we will share our thoughts on our project workflow.
 | Joined chats only | Chats page now shows only events the current user has joined, so private chat access stays scoped to memberships | DONE | Alex |
 | Media uploads | Added avatar upload for user profiles and image upload for events with backend media storage and multipart form submissions | DONE | Alex |
 | Groups and group events API | Added sport groups with levels, visibility, join policies, roles, membership limits and locations; groups can create public or private events | DONE | Alex |
+| Shared sports catalog | Added 20 backend-validated sport codes, a public sports metadata endpoint, and frontend filters that load their options from the API | DONE | Alex |
