@@ -222,6 +222,9 @@
     "connect": "Підключити чат"
   },
   "profile": {
+    "logo": "Profile logo",
+    "bio": "Bio",
+    "noBio": "No bio yet.",
     "title": "Профіль",
     "update": "Оновити профіль",
     "editProfile": "Редагувати профіль",

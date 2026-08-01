@@ -38,6 +38,7 @@ export function updateMe(
 ) {
   const form = new FormData();
   appendFormValue(form, "district", payload.district);
+  appendFormValue(form, "bio", payload.bio);
   appendFormValue(form, "languages", payload.languages);
   appendFormValue(form, "interests", payload.interests);
   if (payload.avatarFile) form.append("avatar", payload.avatarFile);
