@@ -6,7 +6,7 @@ import { IconButton } from "./IconButton";
 export function LanguageSwitcher() {
   const { i18n, t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

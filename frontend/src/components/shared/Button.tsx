@@ -1,5 +1,11 @@
 import React from "react";
 
+type ButtonClickEvent = {
+  currentTarget: HTMLButtonElement;
+  preventDefault: () => void;
+  stopPropagation: () => void;
+};
+
 interface ButtonProps {
   variant?: "primary" | "secondary" | "danger" | "outline" | "glass" | "indigo";
   size?: "xs" | "sm" | "md" | "lg";
@@ -8,7 +14,7 @@ interface ButtonProps {
   iconOnly?: boolean;
   children?: React.ReactNode;
   className?: string;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: ButtonClickEvent) => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   "aria-label"?: string;
@@ -25,6 +31,7 @@ export default function Button({
   className = "",
   type = "button",
   disabled,
+  "aria-label": ariaLabel,
   ...props
 }: ButtonProps) {
   /**
@@ -79,7 +86,7 @@ export default function Button({
     <button
       type={type}
       disabled={disabled}
-      aria-label={props["aria-label"]}
+      aria-label={ariaLabel}
       className={[
         baseClasses,
         variantClasses[variant],

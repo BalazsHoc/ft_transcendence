@@ -1,12 +1,18 @@
 import React from "react";
 
+type ButtonClickEvent = {
+  currentTarget: HTMLButtonElement;
+  preventDefault: () => void;
+  stopPropagation: () => void;
+};
+
 type IconButtonProps = {
   icon: React.ReactNode;
   "aria-label": string;
   variant?: "ghost" | "outline";
   size?: "sm" | "md" | "lg";
   className?: string;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: ButtonClickEvent) => void;
   disabled?: boolean;
   "aria-expanded"?: boolean;
 };
@@ -29,12 +35,13 @@ export function IconButton({
   variant = "ghost",
   size = "md",
   className = "",
+  "aria-label": ariaLabel,
   ...props
 }: IconButtonProps) {
   return (
     <button
       type="button"
-      aria-label={props["aria-label"]}
+      aria-label={ariaLabel}
       className={[
         "inline-flex items-center justify-center rounded-[var(--radius-button)] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 disabled:cursor-not-allowed disabled:opacity-50 shrink-0",
         variantClasses[variant],
