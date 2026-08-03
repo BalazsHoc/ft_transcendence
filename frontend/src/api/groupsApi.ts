@@ -52,7 +52,12 @@ export function createGroup(payload: GroupPayload) {
 }
 
 export function joinGroup(id: string) {
-  return apiRequest(`/api/groups/${id}/join/`, { method: "POST" });
+  return apiRequest<{
+    id: string;
+    role: string;
+    status: "active" | "pending";
+    joined_at: string;
+  }>(`/api/groups/${id}/join/`, { method: "POST" });
 }
 
 export function leaveGroup(id: string) {
