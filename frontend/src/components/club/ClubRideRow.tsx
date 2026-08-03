@@ -14,6 +14,8 @@ export type ClubRideItem = {
   intensityLabel: string;
   eventId?: string;
   userStatus?: "attending" | "waiting" | null;
+  attendingCount?: number;
+  maxSlots?: number;
 };
 
 type ClubRideRowProps = {
@@ -34,6 +36,11 @@ export function ClubRideRow({
   const isGoing = ride.userStatus === "attending";
   const isWaiting = ride.userStatus === "waiting";
   const alreadyJoined = isGoing || isWaiting;
+  const isEventFull =
+    typeof ride.maxSlots === "number" &&
+    typeof ride.attendingCount === "number" &&
+    ride.maxSlots > 0 &&
+    ride.attendingCount >= ride.maxSlots;
 
   let label = t("club.rides.join");
   if (rsvpBusy) {
@@ -42,6 +49,8 @@ export function ClubRideRow({
       : t("club.rides.joining");
   } else if (alreadyJoined) {
     label = t("club.rides.leave");
+  } else if (isEventFull) {
+    label = t("club.rides.joinWaitlist");
   }
 
   function handleClick() {
@@ -79,16 +88,19 @@ export function ClubRideRow({
                 {ride.timeLabel}
               </span>
               <Badge className="!normal-case">{ride.intensityLabel}</Badge>
-              {isGoing ? (
-                <Badge variant="solid" className="!normal-case">
-                  {t("club.rides.statusGoing")}
-                </Badge>
-              ) : null}
-              {isWaiting ? (
-                <Badge variant="solid" className="!normal-case">
-                  {t("club.rides.statusWaiting")}
-                </Badge>
-              ) : null}
+            {isGoing ? (
+              <Badge variant="solid" className="!normal-case">
+                {t("club.rides.statusGoing")}
+              </Badge>
+            ) : null}
+            {isWaiting ? (
+              <Badge variant="solid" className="!normal-case">
+                {t("club.rides.statusWaiting")}
+              </Badge>
+            ) : null}
+            {!alreadyJoined && isEventFull ? (
+              <Badge className="!normal-case">{t("club.rides.eventFull")}</Badge>
+            ) : null}
             </div>
           </div>
         </div>
