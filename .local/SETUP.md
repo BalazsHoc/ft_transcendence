@@ -1,18 +1,16 @@
-# Local setup guide (personal — not pushed to git)
+# Local setup guide (personal)
 
-Use this file every time you clone the repo, set up on a new machine, or **switch branches**.
+Use this every day to start the app, and after `git pull` / branch switches.
 
 ---
 
-## Prerequisites
-
-Install once on your machine:
+## Prerequisites (once per machine)
 
 - **Python** 3.10+ (you have 3.12)
 - **Node.js** 18+ and **npm**
 - **Git**
 
-No Docker or PostgreSQL needed for local dev (SQLite is used by default).
+No Docker or PostgreSQL for local dev (SQLite by default).
 
 ---
 
@@ -22,19 +20,10 @@ No Docker or PostgreSQL needed for local dev (SQLite is used by default).
 
 ```bash
 cd backend
-
-# Create virtual environment
 python3 -m venv .venv
-source .venv/bin/activate          # macOS/Linux
-# .\.venv\Scripts\Activate.ps1     # Windows PowerShell
-
-# Install dependencies
+source .venv/bin/activate
 pip install -r requirements.txt
-
-# Create local env file (only if .env does not exist)
-cp .env.example .env
-
-# Apply database migrations
+cp .env.example .env          # only if .env does not exist
 python manage.py migrate
 ```
 
@@ -42,33 +31,29 @@ python manage.py migrate
 
 ```bash
 cd frontend
-
-# Install dependencies
 npm install
-
-# Create local env file (only if .env does not exist)
-cp .env.example .env
+cp .env.example .env          # only if .env does not exist
 ```
 
-### 3. Optional
+### 3. Optional admin user
 
 ```bash
-# Django admin user
 cd backend && source .venv/bin/activate
 python manage.py createsuperuser
 ```
 
 ---
 
-## Run the project (every day)
+## Daily start (do this every day)
 
-Open **two terminals**:
+Always migrate **before** starting the backend. New tables (like Groups) break the UI if you skip this.
 
-### Terminal 1 — Backend (use Daphne for WebSocket chat)
+### Terminal 1 — Backend
 
 ```bash
 cd backend
 source .venv/bin/activate
+python manage.py migrate
 daphne -b 127.0.0.1 -p 8000 core.asgi:application
 ```
 
@@ -79,85 +64,95 @@ cd frontend
 npm run dev
 ```
 
-### URLs
+### Open
 
-| Service        | URL                              |
-|----------------|----------------------------------|
-| Frontend       | http://localhost:5173            |
-| Backend API    | http://127.0.0.1:8000            |
-| Swagger docs   | http://127.0.0.1:8000/api/docs/  |
-| Django admin   | http://127.0.0.1:8000/admin/     |
+| Service       | URL                             |
+|---------------|---------------------------------|
+| Frontend      | http://localhost:5173           |
+| Backend API   | http://127.0.0.1:8000           |
+| Swagger docs  | http://127.0.0.1:8000/api/docs/ |
+| Django admin  | http://127.0.0.1:8000/admin/    |
 
-> Use port **5173** for the frontend — CORS is configured for that port.
+> Frontend must stay on port **5173** (CORS).
 
 ---
 
-## After switching git branches
+## Daily checklist
 
-Do this **every time** you change branch (`git checkout`, `git switch`, etc.).
+- [ ] `cd backend && source .venv/bin/activate`
+- [ ] `python manage.py migrate`
+- [ ] Start Daphne: `daphne -b 127.0.0.1 -p 8000 core.asgi:application`
+- [ ] Start frontend: `cd frontend && npm run dev`
+- [ ] Open http://localhost:5173
+- [ ] Hard refresh if UI looks stale: `Cmd+Shift+R`
 
-### Step 1 — Stop running servers
+---
 
-Press `Ctrl+C` in both terminal windows (backend + frontend).
+## After `git pull` or switching branches
 
-Or kill processes on the ports:
+Do this whenever you update code (`git pull`, `git switch`, merge, etc.).
+
+### 1. Stop servers
+
+`Ctrl+C` in both terminals, or:
 
 ```bash
 lsof -ti:8000 | xargs kill -9 2>/dev/null
 lsof -ti:5173 | xargs kill -9 2>/dev/null
 ```
 
-### Step 2 — Switch branch
+### 2. Update code
 
 ```bash
 git fetch origin
-git switch <branch-name>
-# example: git switch feature/discover-page
+git switch main          # or another branch
+git pull
 ```
 
-### Step 3 — Update dependencies (only if files changed)
-
-Check if `requirements.txt` or `package.json` changed on the new branch:
+### 3. Refresh deps (if needed)
 
 ```bash
-# Backend — run if requirements.txt changed
+# Backend — if requirements.txt changed
 cd backend && source .venv/bin/activate
 pip install -r requirements.txt
 
-# Frontend — run if package.json changed
+# Frontend — if package.json changed
 cd frontend
 npm install
 ```
 
-### Step 4 — Update database (only if backend migrations changed)
+### 4. Migrate DB (always safe to run)
 
 ```bash
 cd backend && source .venv/bin/activate
 python manage.py migrate
 ```
 
-> Note: `db.sqlite3` is tracked in git. Switching branches may replace it with that branch's database.
+### 5. Restart servers
 
-### Step 5 — Restart servers
+Use **Daily start** above.
 
-Start backend and frontend again (see **Run the project** above).
+### 6. Hard refresh browser
 
-### Step 6 — Hard refresh browser
-
-Press `Cmd+Shift+R` (macOS) or `Ctrl+Shift+R` (Windows/Linux) to avoid stale frontend cache.
+`Cmd+Shift+R` (macOS) / `Ctrl+Shift+R` (Windows/Linux).
 
 ---
 
-## Quick checklist (branch switch)
+## Quick “I just pulled main” recipe
 
-- [ ] Stop backend and frontend
-- [ ] `git switch <branch>`
-- [ ] `pip install -r requirements.txt` (if backend deps changed)
-- [ ] `npm install` (if frontend deps changed)
-- [ ] `python manage.py migrate` (if migrations changed)
-- [ ] Start Daphne backend
-- [ ] Start Vite frontend
-- [ ] Open http://localhost:5173
+```bash
+# stop old servers first (Ctrl+C), then:
+cd backend
+source .venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate
+daphne -b 127.0.0.1 -p 8000 core.asgi:application
+
+# other terminal:
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
@@ -165,23 +160,31 @@ Press `Cmd+Shift+R` (macOS) or `Ctrl+Shift+R` (Windows/Linux) to avoid stale fro
 
 | Problem | Fix |
 |---------|-----|
+| Groups page shows raw HTML / `OperationalError` / `no such table: groups_group` | Run `python manage.py migrate` then reload |
 | `Port 8000 already in use` | `lsof -ti:8000 \| xargs kill -9` |
 | `Port 5173 already in use` | `lsof -ti:5173 \| xargs kill -9` |
-| Frontend can't reach API | Check `frontend/.env` has `VITE_API_URL=http://127.0.0.1:8000` |
-| WebSocket chat not working | Use **Daphne**, not `runserver` |
-| CORS errors | Frontend must run on port **5173** |
-| Module not found (Python) | `source .venv/bin/activate` then `pip install -r requirements.txt` |
-| Module not found (Node) | `cd frontend && npm install` |
+| Frontend can't reach API | Check `frontend/.env` → `VITE_API_URL=http://127.0.0.1:8000` |
+| WebSocket chat broken | Use **Daphne**, not `runserver` |
+| CORS errors | Frontend must be on port **5173** |
+| Python module missing | `source .venv/bin/activate` then `pip install -r requirements.txt` |
+| Node module missing | `cd frontend && npm install` |
+| UI looks old after branch/pull | Hard refresh `Cmd+Shift+R` |
+
+Check pending migrations anytime:
+
+```bash
+cd backend && source .venv/bin/activate
+python manage.py showmigrations
+```
+
+`[ ]` = not applied yet → run `migrate`.
 
 ---
 
-## What stays local (never pushed)
+## What stays local (never commit)
 
-These files/folders are only on your machine:
-
-- `.local/` — this guide and your personal notes
-- `backend/.env` — secrets and local config
-- `frontend/.env` — API URLs
-- `backend/.venv/` — Python packages
-- `frontend/node_modules/` — npm packages
-- `frontend/.vite/` — Vite cache
+- `.local/` — this guide and personal notes (backed up on `pouyas-stuff`)
+- `backend/.env` / `frontend/.env`
+- `backend/.venv/`
+- `frontend/node_modules/`
+- `frontend/.vite/`
