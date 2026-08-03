@@ -69,6 +69,7 @@ export function GroupDetailsPage() {
   const [joining, setJoining] = useState(false);
   const [rsvpBusyId, setRsvpBusyId] = useState<string | null>(null);
   const [rsvpError, setRsvpError] = useState<string | null>(null);
+  const [rsvpNeedsAuth, setRsvpNeedsAuth] = useState(false);
 
   useEffect(() => {
     if (!groupId) return;
@@ -103,6 +104,7 @@ export function GroupDetailsPage() {
     let cancelled = false;
     setLoadingEvents(true);
     setRsvpError(null);
+    setRsvpNeedsAuth(false);
     setRsvpBusyId(null);
 
     getGroupEvents(groupId)
@@ -142,18 +144,18 @@ export function GroupDetailsPage() {
   async function handleRsvp(ride: ClubRideItem) {
     if (!ride.eventId || rsvpBusyId) return;
 
+    if (!user) {
+      setRsvpError(null);
+      setRsvpNeedsAuth(true);
+      return;
+    }
+
     const isLeaving =
       ride.userStatus === "attending" || ride.userStatus === "waiting";
 
-    if (isLeaving) {
-      const confirmed = window.confirm(
-        t("club.rides.leaveConfirm", { title: ride.title }),
-      );
-      if (!confirmed) return;
-    }
-
     setRsvpBusyId(ride.id);
     setRsvpError(null);
+    setRsvpNeedsAuth(false);
     try {
       if (isLeaving) {
         await leaveEvent(ride.eventId);
@@ -175,11 +177,19 @@ export function GroupDetailsPage() {
         );
       }
     } catch (err) {
-      const message =
+      const raw =
         err instanceof Error && err.message
           ? err.message
           : t("club.rides.rsvpError");
-      setRsvpError(message);
+      const isAuthError =
+        /authenticat|credentials|unauthorized|not provided/i.test(raw);
+      if (isAuthError) {
+        setRsvpNeedsAuth(true);
+        setRsvpError(null);
+      } else {
+        setRsvpNeedsAuth(false);
+        setRsvpError(raw);
+      }
     } finally {
       setRsvpBusyId(null);
     }
@@ -261,6 +271,7 @@ export function GroupDetailsPage() {
               title={t("groups.upcomingEvents")}
               rsvpBusyId={rsvpBusyId}
               rsvpError={rsvpError}
+              rsvpNeedsAuth={rsvpNeedsAuth}
             />
           </div>
         </div>
