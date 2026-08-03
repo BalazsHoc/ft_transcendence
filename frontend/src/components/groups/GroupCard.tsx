@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import type { GroupItem } from "../../types/api";
-import { resolveMediaUrl } from "../../utils/media";
+import { DEFAULT_GROUP_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
 
 type GroupCardProps = {
   group: GroupItem;
@@ -10,16 +10,18 @@ type GroupCardProps = {
 
 export function GroupCard({ group }: GroupCardProps) {
   const { t } = useTranslation();
+  const coverSrc = resolveMediaUrl(group.cover_image, DEFAULT_GROUP_IMAGE_SRC);
 
   return (
     <article className="overflow-hidden rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] shadow-sm">
-      {group.cover_image && (
-        <img
-          src={resolveMediaUrl(group.cover_image, "")}
-          alt={group.name}
-          className="h-40 w-full object-cover"
-        />
-      )}
+      <img
+        src={coverSrc}
+        alt={group.name}
+        className="h-40 w-full object-cover"
+        onError={(event: { currentTarget: HTMLImageElement }) => {
+          event.currentTarget.src = DEFAULT_GROUP_IMAGE_SRC;
+        }}
+      />
       <div className="space-y-3 p-5">
         <div>
           <h2 className="text-xl font-semibold text-[var(--text)]">{group.name}</h2>

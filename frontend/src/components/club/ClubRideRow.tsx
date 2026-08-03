@@ -11,16 +11,35 @@ export type ClubRideItem = {
   timeLabel: string;
   intensityLabel: string;
   eventId?: string;
+  userStatus?: "attending" | "waiting" | null;
 };
 
 type ClubRideRowProps = {
   ride: ClubRideItem;
   onRsvp?: (ride: ClubRideItem) => void;
   rsvpDisabled?: boolean;
+  rsvpBusy?: boolean;
 };
 
-export function ClubRideRow({ ride, onRsvp, rsvpDisabled }: ClubRideRowProps) {
+export function ClubRideRow({
+  ride,
+  onRsvp,
+  rsvpDisabled,
+  rsvpBusy,
+}: ClubRideRowProps) {
   const { t } = useTranslation();
+  const isGoing = ride.userStatus === "attending";
+  const isWaiting = ride.userStatus === "waiting";
+  const alreadyJoined = isGoing || isWaiting;
+
+  let label = t("club.rides.join");
+  if (rsvpBusy) {
+    label = alreadyJoined
+      ? t("club.rides.leaving")
+      : t("club.rides.joining");
+  } else if (alreadyJoined) {
+    label = t("club.rides.leave");
+  }
 
   return (
     <div className="flex flex-col gap-4 border-b border-[var(--surface-border)] py-5 last:border-b-0 sm:flex-row sm:items-center">
@@ -42,18 +61,32 @@ export function ClubRideRow({ ride, onRsvp, rsvpDisabled }: ClubRideRowProps) {
               {ride.timeLabel}
             </span>
             <Badge className="!normal-case">{ride.intensityLabel}</Badge>
+            {isGoing ? (
+              <Badge variant="solid" className="!normal-case">
+                {t("club.rides.statusGoing")}
+              </Badge>
+            ) : null}
+            {isWaiting ? (
+              <Badge variant="solid" className="!normal-case">
+                {t("club.rides.statusWaiting")}
+              </Badge>
+            ) : null}
           </div>
         </div>
       </div>
 
       <Button
-        variant="outline"
+        variant={alreadyJoined ? "outline" : "primary"}
         size="sm"
-        disabled={rsvpDisabled}
+        disabled={rsvpDisabled || rsvpBusy}
         onClick={() => onRsvp?.(ride)}
-        className="self-start sm:self-center"
+        className={`self-start sm:self-center ${
+          alreadyJoined
+            ? "!border-[var(--surface-border)] !text-[var(--text)]"
+            : ""
+        }`}
       >
-        {t("club.rides.rsvp")}
+        {label}
       </Button>
     </div>
   );

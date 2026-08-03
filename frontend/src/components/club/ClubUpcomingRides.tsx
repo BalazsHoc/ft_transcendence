@@ -7,12 +7,18 @@ type ClubUpcomingRidesProps = {
   rides: ClubRideItem[];
   onRsvp?: (ride: ClubRideItem) => void;
   loading?: boolean;
+  title?: string;
+  rsvpBusyId?: string | null;
+  rsvpError?: string | null;
 };
 
 export function ClubUpcomingRides({
   rides,
   onRsvp,
   loading = false,
+  title,
+  rsvpBusyId = null,
+  rsvpError = null,
 }: ClubUpcomingRidesProps) {
   const { t } = useTranslation();
 
@@ -20,7 +26,7 @@ export function ClubUpcomingRides({
     <section className="rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-6 shadow-sm md:p-8">
       <div className="mb-2 flex items-center justify-between gap-4 border-b border-[var(--surface-border)] pb-4">
         <h2 className="font-display text-xl font-semibold text-[var(--text)]">
-          {t("club.rides.title")}
+          {title || t("club.rides.title")}
         </h2>
         <Link
           to="/discover"
@@ -31,6 +37,12 @@ export function ClubUpcomingRides({
         </Link>
       </div>
 
+      {rsvpError ? (
+        <p role="alert" className="mb-3 text-sm text-red-600">
+          {rsvpError}
+        </p>
+      ) : null}
+
       {loading ? (
         <p className="py-6 text-sm text-[var(--muted)]">{t("club.rides.loading")}</p>
       ) : rides.length === 0 ? (
@@ -38,7 +50,12 @@ export function ClubUpcomingRides({
       ) : (
         <div>
           {rides.map((ride) => (
-            <ClubRideRow key={ride.id} ride={ride} onRsvp={onRsvp} />
+            <ClubRideRow
+              key={ride.id}
+              ride={ride}
+              onRsvp={onRsvp}
+              rsvpBusy={rsvpBusyId === ride.id}
+            />
           ))}
         </div>
       )}

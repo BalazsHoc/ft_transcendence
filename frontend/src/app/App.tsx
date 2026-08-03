@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { AppLayout } from "../layouts/AppLayout";
 
 import { LandingPage } from "../pages/LandingPage";
@@ -12,8 +12,7 @@ import { EditEventPage } from "../pages/EditEventPage";
 import { MyEventsPage } from "../pages/MyEventsPage";
 import { ChatsPage } from "../pages/ChatsPage";
 import { ProfilePage } from "../pages/ProfilePage";
-import { ClubPage } from "../pages/ClubPage";
-import { GroupsTestPage } from "../pages/GroupsTestPage";
+import { GroupsPage } from "../pages/GroupsPage";
 import { GroupDetailsPage } from "../pages/GroupDetailsPage";
 import { ApiTesterPage } from "../pages/ApiTesterPage";
 import { UiElementsTest } from "../pages/UiElementsTest";
@@ -25,8 +24,8 @@ export function App() {
       <Route path="/" element={<AppLayout />}>
         <Route index element={<LandingPage />} />
         <Route path="discover" element={<DiscoverPage />} />
-        <Route path="clubs" element={<ClubPage />} />
-        <Route path="groups" element={<GroupsTestPage />} />
+        <Route path="clubs" element={<Navigate to="/groups" replace />} />
+        <Route path="groups" element={<GroupsPage />} />
         <Route path="groups/:groupId" element={<GroupDetailsPage />} />
         <Route path="map" element={<MapPage />} />
         <Route path="events/new" element={<CreateEventPage />} />
