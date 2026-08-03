@@ -67,6 +67,9 @@ export function GroupDetailsPage() {
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [joining, setJoining] = useState(false);
+  const [applyError, setApplyError] = useState<string | null>(null);
+  const [applyNeedsAuth, setApplyNeedsAuth] = useState(false);
+  const [applySuccess, setApplySuccess] = useState<string | null>(null);
   const [rsvpBusyId, setRsvpBusyId] = useState<string | null>(null);
   const [rsvpError, setRsvpError] = useState<string | null>(null);
   const [rsvpNeedsAuth, setRsvpNeedsAuth] = useState(false);
@@ -129,13 +132,58 @@ export function GroupDetailsPage() {
 
   async function handleApply() {
     if (!groupId || joining) return;
+
+    if (!user) {
+      setApplyError(null);
+      setApplySuccess(null);
+      setApplyNeedsAuth(true);
+      return;
+    }
+
+    if (
+      group?.max_members &&
+      group.member_count >= group.max_members
+    ) {
+      setApplyNeedsAuth(false);
+      setApplySuccess(null);
+      setApplyError(t("groups.applyFull"));
+      return;
+    }
+
     setJoining(true);
+    setApplyError(null);
+    setApplyNeedsAuth(false);
+    setApplySuccess(null);
     try {
-      await joinGroup(groupId);
+      const membership = await joinGroup(groupId);
       const refreshed = await getGroup(groupId);
       setGroup(refreshed);
-    } catch {
-      // Auth / policy errors — quiet for MVP
+      if (membership?.status === "pending") {
+        setApplySuccess(t("groups.applyPending"));
+      } else {
+        setApplySuccess(t("groups.applyJoined"));
+      }
+    } catch (err) {
+      const raw =
+        err instanceof Error && err.message
+          ? err.message
+          : t("groups.applyError");
+      const isAuthError =
+        /authenticat|credentials|unauthorized|not provided/i.test(raw);
+      if (isAuthError) {
+        setApplyNeedsAuth(true);
+        setApplyError(null);
+        return;
+      }
+      if (/member limit|reached its member/i.test(raw)) {
+        setApplyError(t("groups.applyFull"));
+        return;
+      }
+      if (/invite only/i.test(raw)) {
+        setApplyError(t("groups.applyInviteOnly"));
+        return;
+      }
+      setApplyError(raw);
     } finally {
       setJoining(false);
     }
@@ -226,6 +274,14 @@ export function GroupDetailsPage() {
     group.owner.username;
   const isOwnProfile = Boolean(user && user.id === group.owner.id);
   const alreadyMember = Boolean(group.current_user_membership);
+  const isPending =
+    group.current_user_membership?.status === "pending";
+  const isFull =
+    Boolean(group.max_members) && group.member_count >= group.max_members;
+  const membersLabel =
+    group.max_members > 0
+      ? `${group.member_count}/${group.max_members}`
+      : String(group.member_count);
 
   return (
     <div className="club-page relative">
@@ -251,8 +307,47 @@ export function GroupDetailsPage() {
       />
 
       <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-8">
+        {(applyNeedsAuth || applyError || applySuccess || isFull || isPending) && (
+          <div className="rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-3 text-sm">
+            {applyNeedsAuth ? (
+              <p role="alert" className="text-[var(--text)]">
+                {t("groups.applySignInRequired")}{" "}
+                <button
+                  type="button"
+                  className="font-medium underline underline-offset-2"
+                  onClick={() => navigate("/login")}
+                >
+                  {t("nav.login")}
+                </button>
+                {" · "}
+                <button
+                  type="button"
+                  className="font-medium underline underline-offset-2"
+                  onClick={() => navigate("/register")}
+                >
+                  {t("nav.register")}
+                </button>
+              </p>
+            ) : null}
+            {applyError ? (
+              <p role="alert" className="text-red-600">
+                {applyError}
+              </p>
+            ) : null}
+            {applySuccess ? (
+              <p className="text-[var(--text)]">{applySuccess}</p>
+            ) : null}
+            {!applyNeedsAuth && !applyError && !applySuccess && isPending ? (
+              <p className="text-[var(--muted)]">{t("groups.applyPending")}</p>
+            ) : null}
+            {!applyNeedsAuth && !applyError && !applySuccess && !isPending && isFull ? (
+              <p className="text-[var(--muted)]">{t("groups.applyFull")}</p>
+            ) : null}
+          </div>
+        )}
+
         <ClubStatsRow
-          members={String(group.member_count)}
+          members={membersLabel}
           middleValue={kindLabel(group.kind, t)}
           middleLabel={t("groups.kind")}
           owner={{

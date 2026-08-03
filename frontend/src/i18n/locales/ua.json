@@ -305,7 +305,13 @@
     "kind": "Group type",
     "title": "Groups",
     "description": "Find communities and join groups across Vienna.",
-    "upcomingEvents": "Upcoming events"
+    "upcomingEvents": "Upcoming events",
+    "applyFull": "This group is full — no more spots right now.",
+    "applyInviteOnly": "This group is invite only.",
+    "applyPending": "Request sent — waiting for approval.",
+    "applyJoined": "You’re in the group.",
+    "applyError": "Couldn’t join this group. Try again.",
+    "applySignInRequired": "Please sign in or create an account to join this group."
   },
   "groupsTest": {
     "selectSport": "Select a sport",

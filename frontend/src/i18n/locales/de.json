@@ -305,7 +305,13 @@
     "kind": "Gruppentyp",
     "title": "Gruppen",
     "description": "Finde Communities und tritt Gruppen in Wien bei.",
-    "upcomingEvents": "Kommende Events"
+    "upcomingEvents": "Kommende Events",
+    "applyFull": "Diese Gruppe ist voll — aktuell keine Plätze mehr.",
+    "applyInviteOnly": "Diese Gruppe ist nur auf Einladung.",
+    "applyPending": "Anfrage gesendet — warte auf Freigabe.",
+    "applyJoined": "Du bist in der Gruppe.",
+    "applyError": "Beitritt fehlgeschlagen. Bitte erneut versuchen.",
+    "applySignInRequired": "Bitte melde dich an oder erstelle ein Konto, um beizutreten."
   },
   "groupsTest": {
     "selectSport": "Sportart auswählen",
