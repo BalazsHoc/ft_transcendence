@@ -10,6 +10,7 @@ type ClubUpcomingRidesProps = {
   title?: string;
   rsvpBusyId?: string | null;
   rsvpError?: string | null;
+  rsvpInfo?: string | null;
   rsvpNeedsAuth?: boolean;
 };
 
@@ -20,6 +21,7 @@ export function ClubUpcomingRides({
   title,
   rsvpBusyId = null,
   rsvpError = null,
+  rsvpInfo = null,
   rsvpNeedsAuth = false,
 }: ClubUpcomingRidesProps) {
   const { t } = useTranslation();
@@ -59,6 +61,10 @@ export function ClubUpcomingRides({
       ) : rsvpError ? (
         <p role="alert" className="mb-3 text-sm text-red-600">
           {rsvpError}
+        </p>
+      ) : rsvpInfo ? (
+        <p role="status" className="mb-3 text-sm text-[var(--text)]">
+          {rsvpInfo}
         </p>
       ) : null}
 

@@ -36,6 +36,7 @@ class GroupViewSet(viewsets.ModelViewSet):
             member_count=Count(
                 "memberships",
                 filter=Q(memberships__status=GroupMembership.STATUS_ACTIVE),
+                distinct=True,
             )
         )
         if self.request.user.is_authenticated:

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 
-import { getGroup, getGroupEvents, joinGroup } from "../api/groupsApi";
+import { getGroup, getGroupEvents, joinGroup, leaveGroup } from "../api/groupsApi";
 import { joinEvent, leaveEvent } from "../api/eventsApi";
 import type { EventItem, GroupItem } from "../types/api";
 import { useAuth } from "../features/auth/AuthContext";
@@ -12,6 +12,7 @@ import { ClubStatsRow } from "../components/club/ClubStatsRow";
 import { ClubUpcomingRides } from "../components/club/ClubUpcomingRides";
 import type { ClubRideItem } from "../components/club/ClubRideRow";
 import Button from "../components/shared/Button";
+import { ConfirmDialog } from "../components/shared/ConfirmDialog";
 import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
 
 function levelLabel(level: EventItem["level"], t: (key: string) => string) {
@@ -40,6 +41,13 @@ function eventToRide(
 ): ClubRideItem {
   const start = new Date(event.start_at);
   const status = event.user_status?.status;
+  const attendingFromParticipants = Array.isArray(event.participants)
+    ? event.participants.filter((p) => p.status === "attending").length
+    : 0;
+  const attendingCount =
+    typeof event.attending_count === "number"
+      ? event.attending_count
+      : attendingFromParticipants;
   return {
     id: event.id,
     eventId: event.id,
@@ -53,6 +61,8 @@ function eventToRide(
     intensityLabel: levelLabel(event.level, t),
     userStatus:
       status === "attending" || status === "waiting" ? status : null,
+    attendingCount,
+    maxSlots: event.max_slots,
   };
 }
 
@@ -67,12 +77,30 @@ export function GroupDetailsPage() {
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [joining, setJoining] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const [applyError, setApplyError] = useState<string | null>(null);
   const [applyNeedsAuth, setApplyNeedsAuth] = useState(false);
   const [applySuccess, setApplySuccess] = useState<string | null>(null);
   const [rsvpBusyId, setRsvpBusyId] = useState<string | null>(null);
   const [rsvpError, setRsvpError] = useState<string | null>(null);
+  const [rsvpInfo, setRsvpInfo] = useState<string | null>(null);
   const [rsvpNeedsAuth, setRsvpNeedsAuth] = useState(false);
+  const applyErrorTimer = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (applyErrorTimer.current) window.clearTimeout(applyErrorTimer.current);
+    };
+  }, []);
+
+  function showApplyError(message: string) {
+    setApplyError(message);
+    if (applyErrorTimer.current) window.clearTimeout(applyErrorTimer.current);
+    applyErrorTimer.current = window.setTimeout(() => {
+      setApplyError(null);
+    }, 3500);
+  }
 
   useEffect(() => {
     if (!groupId) return;
@@ -107,6 +135,7 @@ export function GroupDetailsPage() {
     let cancelled = false;
     setLoadingEvents(true);
     setRsvpError(null);
+    setRsvpInfo(null);
     setRsvpNeedsAuth(false);
     setRsvpBusyId(null);
 
@@ -146,7 +175,7 @@ export function GroupDetailsPage() {
     ) {
       setApplyNeedsAuth(false);
       setApplySuccess(null);
-      setApplyError(t("groups.applyFull"));
+      showApplyError(t("groups.applyFull"));
       return;
     }
 
@@ -176,16 +205,38 @@ export function GroupDetailsPage() {
         return;
       }
       if (/member limit|reached its member/i.test(raw)) {
-        setApplyError(t("groups.applyFull"));
+        showApplyError(t("groups.applyFull"));
         return;
       }
       if (/invite only/i.test(raw)) {
-        setApplyError(t("groups.applyInviteOnly"));
+        showApplyError(t("groups.applyInviteOnly"));
         return;
       }
-      setApplyError(raw);
+      showApplyError(raw);
     } finally {
       setJoining(false);
+    }
+  }
+
+  async function handleLeaveGroup() {
+    if (!groupId || leaving) return;
+    setLeaveConfirmOpen(false);
+    setLeaving(true);
+    setApplyError(null);
+    setApplySuccess(null);
+    try {
+      await leaveGroup(groupId);
+      const refreshed = await getGroup(groupId);
+      setGroup(refreshed);
+      setApplySuccess(t("groups.leaveSuccess"));
+    } catch (err) {
+      const raw =
+        err instanceof Error && err.message
+          ? err.message
+          : t("groups.leaveError");
+      showApplyError(raw);
+    } finally {
+      setLeaving(false);
     }
   }
 
@@ -194,6 +245,7 @@ export function GroupDetailsPage() {
 
     if (!user) {
       setRsvpError(null);
+      setRsvpInfo(null);
       setRsvpNeedsAuth(true);
       return;
     }
@@ -203,14 +255,23 @@ export function GroupDetailsPage() {
 
     setRsvpBusyId(ride.id);
     setRsvpError(null);
+    setRsvpInfo(null);
     setRsvpNeedsAuth(false);
     try {
       if (isLeaving) {
         await leaveEvent(ride.eventId);
         setRides((current) =>
-          current.map((item) =>
-            item.id === ride.id ? { ...item, userStatus: null } : item,
-          ),
+          current.map((item) => {
+            if (item.id !== ride.id) return item;
+            const wasAttending = item.userStatus === "attending";
+            return {
+              ...item,
+              userStatus: null,
+              attendingCount: wasAttending
+                ? Math.max(0, (item.attendingCount ?? 1) - 1)
+                : item.attendingCount,
+            };
+          }),
         );
       } else {
         const result = await joinEvent(ride.eventId);
@@ -219,10 +280,21 @@ export function GroupDetailsPage() {
             ? result.status
             : "attending";
         setRides((current) =>
-          current.map((item) =>
-            item.id === ride.id ? { ...item, userStatus: nextStatus } : item,
-          ),
+          current.map((item) => {
+            if (item.id !== ride.id) return item;
+            return {
+              ...item,
+              userStatus: nextStatus,
+              attendingCount:
+                nextStatus === "attending"
+                  ? (item.attendingCount ?? 0) + 1
+                  : item.attendingCount,
+            };
+          }),
         );
+        if (nextStatus === "waiting") {
+          setRsvpInfo(t("club.rides.waitlistJoined"));
+        }
       }
     } catch (err) {
       const raw =
@@ -234,8 +306,10 @@ export function GroupDetailsPage() {
       if (isAuthError) {
         setRsvpNeedsAuth(true);
         setRsvpError(null);
+        setRsvpInfo(null);
       } else {
         setRsvpNeedsAuth(false);
+        setRsvpInfo(null);
         setRsvpError(raw);
       }
     } finally {
@@ -274,6 +348,9 @@ export function GroupDetailsPage() {
     group.owner.username;
   const isOwnProfile = Boolean(user && user.id === group.owner.id);
   const alreadyMember = Boolean(group.current_user_membership);
+  const isGroupOwner =
+    group.current_user_membership?.role === "owner";
+  const canLeaveGroup = alreadyMember && !isGroupOwner;
   const isPending =
     group.current_user_membership?.status === "pending";
   const isFull =
@@ -281,7 +358,7 @@ export function GroupDetailsPage() {
   const membersLabel =
     group.max_members > 0
       ? `${group.member_count}/${group.max_members}`
-      : String(group.member_count);
+      : `${group.member_count}/∞`;
 
   return (
     <div className="club-page relative">
@@ -303,11 +380,35 @@ export function GroupDetailsPage() {
         sportLabel={t(`sports.${group.sport}`)}
         cityLabel={group.location_name || t("groups.location")}
         showApply={!alreadyMember}
-        onApply={alreadyMember || joining ? undefined : handleApply}
+        showLeave={canLeaveGroup}
+        applyDisabled={isFull}
+        applyLabel={isFull ? t("groups.groupFull") : undefined}
+        leaveLabel={leaving ? t("groups.leaving") : t("groups.leave")}
+        onLeave={
+          canLeaveGroup && !leaving
+            ? () => setLeaveConfirmOpen(true)
+            : undefined
+        }
+        onApply={
+          alreadyMember || joining
+            ? undefined
+            : isFull
+              ? () => showApplyError(t("groups.applyFull"))
+              : handleApply
+        }
+      />
+
+      <ConfirmDialog
+        open={leaveConfirmOpen}
+        title={t("groups.leaveConfirmTitle")}
+        message={t("groups.leaveConfirm", { title: group.name })}
+        confirmLabel={t("groups.leave")}
+        onConfirm={handleLeaveGroup}
+        onCancel={() => setLeaveConfirmOpen(false)}
       />
 
       <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-8">
-        {(applyNeedsAuth || applyError || applySuccess || isFull || isPending) && (
+        {(applyNeedsAuth || applyError || applySuccess || isPending) && (
           <div className="rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-3 text-sm">
             {applyNeedsAuth ? (
               <p role="alert" className="text-[var(--text)]">
@@ -340,9 +441,6 @@ export function GroupDetailsPage() {
             {!applyNeedsAuth && !applyError && !applySuccess && isPending ? (
               <p className="text-[var(--muted)]">{t("groups.applyPending")}</p>
             ) : null}
-            {!applyNeedsAuth && !applyError && !applySuccess && !isPending && isFull ? (
-              <p className="text-[var(--muted)]">{t("groups.applyFull")}</p>
-            ) : null}
           </div>
         )}
 
@@ -366,6 +464,7 @@ export function GroupDetailsPage() {
               title={t("groups.upcomingEvents")}
               rsvpBusyId={rsvpBusyId}
               rsvpError={rsvpError}
+              rsvpInfo={rsvpInfo}
               rsvpNeedsAuth={rsvpNeedsAuth}
             />
           </div>

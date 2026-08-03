@@ -14,8 +14,13 @@ type ClubHeroProps = {
   sportLabel: string;
   cityLabel: string;
   onApply?: () => void;
+  onLeave?: () => void;
   onViewSchedule?: () => void;
   showApply?: boolean;
+  showLeave?: boolean;
+  applyDisabled?: boolean;
+  applyLabel?: string;
+  leaveLabel?: string;
 };
 
 export function ClubHero({
@@ -25,8 +30,13 @@ export function ClubHero({
   sportLabel,
   cityLabel,
   onApply,
+  onLeave,
   onViewSchedule,
   showApply = true,
+  showLeave = false,
+  applyDisabled = false,
+  applyLabel,
+  leaveLabel,
 }: ClubHeroProps) {
   const { t } = useTranslation();
   const imageUrl = resolveMediaUrl(coverImage, DEFAULT_EVENT_IMAGE_SRC);
@@ -65,8 +75,17 @@ export function ClubHero({
 
         <div className="flex shrink-0 flex-wrap gap-3">
           {showApply ? (
-            <Button variant="primary" onClick={onApply}>
-              {t("club.hero.applyToJoin")}
+            <Button
+              variant={applyDisabled ? "outline" : "primary"}
+              disabled={applyDisabled || !onApply}
+              onClick={onApply}
+            >
+              {applyLabel || t("club.hero.applyToJoin")}
+            </Button>
+          ) : null}
+          {showLeave ? (
+            <Button variant="outline" onClick={onLeave} disabled={!onLeave}>
+              {leaveLabel || t("groups.leave")}
             </Button>
           ) : null}
           {onViewSchedule ? (
