@@ -1,5 +1,5 @@
 import { apiRequest } from "./client";
-import type { GroupItem, GroupPayload } from "../types/api";
+import type { EventItem, GroupItem, GroupPayload } from "../types/api";
 
 function appendFormValue(form: FormData, key: string, value: unknown) {
   if (value === undefined || value === null) return;
@@ -57,4 +57,8 @@ export function joinGroup(id: string) {
 
 export function leaveGroup(id: string) {
   return apiRequest<void>(`/api/groups/${id}/leave/`, { method: "POST" });
+}
+
+export function getGroupEvents(id: string) {
+  return apiRequest<EventItem[]>(`/api/groups/${id}/events/`);
 }

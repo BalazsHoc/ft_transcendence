@@ -15,6 +15,7 @@ type ClubHeroProps = {
   cityLabel: string;
   onApply?: () => void;
   onViewSchedule?: () => void;
+  showApply?: boolean;
 };
 
 export function ClubHero({
@@ -25,6 +26,7 @@ export function ClubHero({
   cityLabel,
   onApply,
   onViewSchedule,
+  showApply = true,
 }: ClubHeroProps) {
   const { t } = useTranslation();
   const imageUrl = resolveMediaUrl(coverImage, DEFAULT_EVENT_IMAGE_SRC);
@@ -62,12 +64,16 @@ export function ClubHero({
         </div>
 
         <div className="flex shrink-0 flex-wrap gap-3">
-          <Button variant="primary" onClick={onApply}>
-            {t("club.hero.applyToJoin")}
-          </Button>
-          <Button variant="outline" onClick={onViewSchedule}>
-            {t("club.hero.viewSchedule")}
-          </Button>
+          {showApply ? (
+            <Button variant="primary" onClick={onApply}>
+              {t("club.hero.applyToJoin")}
+            </Button>
+          ) : null}
+          {onViewSchedule ? (
+            <Button variant="outline" onClick={onViewSchedule}>
+              {t("club.hero.viewSchedule")}
+            </Button>
+          ) : null}
         </div>
       </div>
     </div>
