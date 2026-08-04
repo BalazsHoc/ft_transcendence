@@ -83,7 +83,9 @@ class FriendRequestActionView(generics.GenericAPIView):
 
     def get_object(self):
         return get_object_or_404(
-            Friendship.objects.select_related("user_low", "user_high", "requested_by"),
+            Friendship.objects.filter(
+                Q(user_low=self.request.user) | Q(user_high=self.request.user)
+            ).select_related("user_low", "user_high", "requested_by"),
             pk=self.kwargs["pk"],
         )
 

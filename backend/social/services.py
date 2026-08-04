@@ -63,14 +63,14 @@ def accept_friend_request(*, friendship, actor):
         friendship = Friendship.objects.select_for_update().select_related(
             "user_low", "user_high", "requested_by"
         ).get(pk=friendship.pk)
+        if actor.pk not in {friendship.user_low_id, friendship.user_high_id}:
+            raise FriendshipError("You cannot access this friend request.")
         if friendship.status == Friendship.STATUS_ACCEPTED:
             return friendship
         if friendship.status != Friendship.STATUS_PENDING:
             raise FriendshipError("This friend request is no longer pending.")
         if friendship.requested_by_id == actor.pk:
             raise FriendshipError("Only the recipient can accept this request.")
-        if actor.pk not in {friendship.user_low_id, friendship.user_high_id}:
-            raise FriendshipError("You cannot access this friend request.")
 
         friendship.status = Friendship.STATUS_ACCEPTED
         friendship.save(update_fields=["status", "updated_at"])
@@ -88,14 +88,14 @@ def accept_friend_request(*, friendship, actor):
 def reject_friend_request(*, friendship, actor):
     with transaction.atomic():
         friendship = Friendship.objects.select_for_update().get(pk=friendship.pk)
+        if actor.pk not in {friendship.user_low_id, friendship.user_high_id}:
+            raise FriendshipError("You cannot access this friend request.")
         if friendship.status == Friendship.STATUS_REJECTED:
             return friendship
         if friendship.status != Friendship.STATUS_PENDING:
             raise FriendshipError("This friend request is no longer pending.")
         if friendship.requested_by_id == actor.pk:
             raise FriendshipError("Only the recipient can reject this request.")
-        if actor.pk not in {friendship.user_low_id, friendship.user_high_id}:
-            raise FriendshipError("You cannot access this friend request.")
         friendship.status = Friendship.STATUS_REJECTED
         friendship.save(update_fields=["status", "updated_at"])
     return friendship
