@@ -53,6 +53,10 @@ class Friendship(models.Model):
                 name="social_friendship_users_differ",
             ),
             models.CheckConstraint(
+                condition=models.Q(user_low_id__lt=models.F("user_high_id")),
+                name="social_friendship_pair_is_canonical",
+            ),
+            models.CheckConstraint(
                 condition=(
                     models.Q(requested_by=models.F("user_low"))
                     | models.Q(requested_by=models.F("user_high"))
