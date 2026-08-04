@@ -38,7 +38,7 @@ body {
 	/* Surfaces */
 	--surface: #ffffff;
 	--surface-border: #e5e7eb;
-	--surface-shadow: rgba(0, 0, 0, 0.08);
+	--surface-shadow: rgba(22, 23, 31, 0.08);
 
 	/* Inputs / Controls */
 	--control-bg: #ffffff;
@@ -46,9 +46,9 @@ body {
 	--control-text: #111827;
 
 	/* Buttons (primary system) */
-	--button-bg: #111827;
+	--button-bg: #174b69;
 	--button-text: #ffffff;
-	--button-border: #111827;
+	--button-border: #1a4c69;
 
 	--button-secondary-bg: rgba(255, 255, 255, 0.8);
 	--button-secondary-text: #0a1424;
