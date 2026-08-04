@@ -77,7 +77,8 @@ export function CuratedGroupCard({
 
         <div className="absolute inset-0 bg-black/20" />
 
-        <div className="absolute inset-x-4 bottom-4 rounded-xl border border-white/5 bg-transparent p-3 backdrop-blur-[6px]">
+        {/* <div className="absolute inset-x-0 bottom-0 rounded-xl border border-white/5 bg-transparent p-3 backdrop-blur-[6px]"> */}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-transparent to-black px-5 py-5">
           <Badge className="mb-2">{categoryLabel}</Badge>
 
           <h3 className="font-display text-lg font-semibold text-white">
@@ -105,7 +106,8 @@ export function CuratedGroupCard({
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-      <div className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-white/[0.02] p-5 backdrop-blur-[5px]">
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-b from-transparent to-black px-5 py-5">
+      {/* <div className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-white/[0.02] p-5 backdrop-blur-[5px]"> */}
         <div className="mb-2 flex flex-wrap gap-2">
           <Badge>{categoryLabel}</Badge>
           {levelLabel ? <Badge>{levelLabel}</Badge> : null}
