@@ -73,7 +73,7 @@ class FriendshipApiTests(APITestCase):
 
         self.client.force_authenticate(self.carol)
         outsider_accept = self.client.post(f"/api/friends/requests/{friendship_id}/accept/")
-        self.assertEqual(outsider_accept.status_code, 400)
+        self.assertEqual(outsider_accept.status_code, 404)
         self.assertEqual(self.client.get("/api/friends/").data, [])
 
         self.client.force_authenticate(self.bob)
@@ -96,6 +96,37 @@ class FriendshipApiTests(APITestCase):
         self.assertEqual(friends.status_code, 200)
         self.assertEqual(friends.data[0]["friend"]["username"], "bob")
         self.assertEqual(self.client.get("/api/friends/requests/outgoing/").data, [])
+
+    def test_outsider_cannot_action_accepted_or_rejected_friendships(self):
+        accepted = self.request_friendship(self.alex, self.bob)
+        accepted_id = accepted.data["id"]
+        self.client.force_authenticate(self.bob)
+        self.client.post(f"/api/friends/requests/{accepted_id}/accept/")
+
+        self.client.force_authenticate(self.carol)
+        self.assertEqual(
+            self.client.post(f"/api/friends/requests/{accepted_id}/accept/").status_code,
+            404,
+        )
+        self.assertEqual(
+            self.client.post(f"/api/friends/requests/{accepted_id}/reject/").status_code,
+            404,
+        )
+
+        rejected = self.request_friendship(self.alex, self.carol)
+        rejected_id = rejected.data["id"]
+        self.client.force_authenticate(self.carol)
+        self.client.post(f"/api/friends/requests/{rejected_id}/reject/")
+
+        self.client.force_authenticate(self.bob)
+        self.assertEqual(
+            self.client.post(f"/api/friends/requests/{rejected_id}/accept/").status_code,
+            404,
+        )
+        self.assertEqual(
+            self.client.post(f"/api/friends/requests/{rejected_id}/reject/").status_code,
+            404,
+        )
 
     def test_user_search_excludes_self_and_email_and_reports_relationship(self):
         self.request_friendship(self.alex, self.bob)
