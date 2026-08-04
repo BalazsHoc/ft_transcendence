@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, response, status
 from rest_framework.exceptions import ValidationError
@@ -90,9 +91,12 @@ class FriendRequestActionView(generics.GenericAPIView):
         )
 
     def post(self, request, *args, **kwargs):
+        action = kwargs["action"]
+        if action not in {"accept", "reject"}:
+            raise Http404("Unknown friendship request action.")
         friendship = self.get_object()
         try:
-            if kwargs["action"] == "accept":
+            if action == "accept":
                 friendship = accept_friend_request(friendship=friendship, actor=request.user)
             else:
                 friendship = reject_friend_request(friendship=friendship, actor=request.user)
