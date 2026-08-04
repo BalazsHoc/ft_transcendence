@@ -128,6 +128,19 @@ class FriendshipApiTests(APITestCase):
             404,
         )
 
+    def test_unknown_request_action_does_not_mutate_pending_request(self):
+        created = self.request_friendship(self.alex, self.bob)
+        friendship_id = created.data["id"]
+
+        self.client.force_authenticate(self.bob)
+        response = self.client.post(f"/api/friends/requests/{friendship_id}/archive/")
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            Friendship.objects.get(pk=friendship_id).status,
+            Friendship.STATUS_PENDING,
+        )
+
     def test_user_search_excludes_self_and_email_and_reports_relationship(self):
         self.request_friendship(self.alex, self.bob)
         self.client.force_authenticate(self.alex)
