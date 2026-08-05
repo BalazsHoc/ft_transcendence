@@ -50,6 +50,13 @@ class FriendshipApiTests(APITestCase):
             Notification.objects.filter(
                 recipient=self.bob,
                 type=Notification.TYPE_FRIEND_REQUEST,
+            ).values_list("target_url", flat=True).get(),
+            "/profile#friends-incoming",
+        )
+        self.assertEqual(
+            Notification.objects.filter(
+                recipient=self.bob,
+                type=Notification.TYPE_FRIEND_REQUEST,
             ).count(),
             1,
         )
@@ -206,14 +213,14 @@ class NotificationApiTests(APITestCase):
             actor=self.bob,
             type=Notification.TYPE_FRIEND_REQUEST,
             payload={"friendship_id": "1"},
-            target_url="/friends/requests",
+            target_url="/profile#friends-incoming",
         )
         Notification.objects.create(
             recipient=self.alex,
             actor=self.carol,
             type=Notification.TYPE_FRIEND_ACCEPTED,
             payload={},
-            target_url="/friends",
+            target_url="/profile",
         )
 
     def test_notifications_are_recipient_only_and_can_be_filtered(self):
