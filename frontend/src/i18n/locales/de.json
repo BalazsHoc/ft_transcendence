@@ -259,7 +259,21 @@
     "title": "Chats",
     "selectEvent": "Event auswählen",
     "placeholder": "Nachricht eingeben...",
-    "connect": "Chat verbinden"
+    "connect": "Chat verbinden",
+    "personal": "Private Nachrichten",
+    "eventChats": "Event-Chats",
+    "loading": "Unterhaltungen werden geladen...",
+    "loadingEvents": "Event-Chats werden geladen...",
+    "noPersonal": "Noch keine privaten Unterhaltungen.",
+    "noEventChats": "Du hast noch an keinem Event-Chat teilgenommen.",
+    "empty": "Wähle eine Unterhaltung aus.",
+    "noMessages": "Noch keine Nachrichten.",
+    "connected": "Verbunden",
+    "disconnected": "Nicht verbunden",
+    "authRequired": "Melde dich an, um private Nachrichten zu nutzen.",
+    "loadError": "Unterhaltungen konnten nicht geladen werden.",
+    "sendError": "Nachricht konnte nicht gesendet werden.",
+    "wsError": "Fehler bei der Echtzeitverbindung."
   },
   "profile": {
     "title": "Profil",
