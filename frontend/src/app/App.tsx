@@ -12,6 +12,7 @@ import { EditEventPage } from "../pages/EditEventPage";
 import { MyEventsPage } from "../pages/MyEventsPage";
 import { ChatsPage } from "../pages/ChatsPage";
 import { ProfilePage } from "../pages/ProfilePage";
+import { UserProfilePage } from "../pages/UserProfilePage";
 import { GroupsPage } from "../pages/GroupsPage";
 import { GroupDetailsPage } from "../pages/GroupDetailsPage";
 import { ApiTesterPage } from "../pages/ApiTesterPage";
@@ -34,6 +35,7 @@ export function App() {
         <Route path="my-events" element={<MyEventsPage />} />
         <Route path="chats" element={<ChatsPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="users/:userId" element={<UserProfilePage />} />
         <Route path="api-test" element={<ApiTesterPage />} />
         <Route path="ui-elements-test" element={<UiElementsTest />} />
         <Route path="login" element={<LoginPage />} />

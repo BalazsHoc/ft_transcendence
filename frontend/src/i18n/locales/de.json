@@ -291,6 +291,20 @@
     "achievementStreak": "30-Tage-Serie",
     "achievementCourtMaster": "Platzmeister"
   },
+  "userProfile": {
+    "loading": "Profil wird geladen...",
+    "loadError": "Dieses Profil konnte nicht geladen werden.",
+    "notFound": "Profil nicht gefunden.",
+    "back": "Zurück",
+    "signInToConnect": "Anmelden, um Kontakt aufzunehmen",
+    "message": "Nachricht",
+    "acceptRequest": "Anfrage annehmen",
+    "rejectRequest": "Anfrage ablehnen",
+    "requestSent": "Anfrage gesendet",
+    "blocked": "Blockiert",
+    "addFriend": "Freund hinzufügen",
+    "friendshipError": "Freundschaft konnte nicht aktualisiert werden."
+  },
   "apiTest": {
     "title": "API-Routen testen"
   },
