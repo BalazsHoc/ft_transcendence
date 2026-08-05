@@ -21,7 +21,8 @@
     "noNotifications": "У вас поки немає сповіщень.",
     "messages": "Повідомлення",
     "groups": "Групи",
-    "events": "Події"
+    "events": "Події",
+    "friends": "Friends"
   },
   "common": {
     "join": "Приєднатися",
@@ -274,6 +275,32 @@
     "loadError": "Unable to load conversations.",
     "sendError": "Unable to send the message.",
     "wsError": "Real-time connection error."
+  },
+  "friends": {
+    "title": "Friends",
+    "description": "Find people, manage friend requests, and start private conversations.",
+    "searchPlaceholder": "Search users by name or username",
+    "search": "Search",
+    "searching": "Searching...",
+    "searchResults": "Search results",
+    "incoming": "Incoming requests",
+    "outgoing": "Outgoing requests",
+    "list": "Your friends",
+    "add": "Add friend",
+    "accept": "Accept",
+    "reject": "Decline",
+    "respond": "Respond",
+    "message": "Message",
+    "remove": "Remove",
+    "requestSent": "Request sent",
+    "noIncoming": "No incoming friend requests.",
+    "noOutgoing": "No outgoing friend requests.",
+    "noFriends": "You do not have any friends yet.",
+    "loading": "Loading friends...",
+    "signIn": "Sign in to manage your friends.",
+    "loadError": "Unable to load your friends.",
+    "searchError": "Unable to search users.",
+    "actionError": "Unable to update the friendship."
   },
   "profile": {
     "logo": "Profile logo",

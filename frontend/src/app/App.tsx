@@ -11,6 +11,7 @@ import { CreateEventPage } from "../pages/CreateEventPage";
 import { EditEventPage } from "../pages/EditEventPage";
 import { MyEventsPage } from "../pages/MyEventsPage";
 import { ChatsPage } from "../pages/ChatsPage";
+import { FriendsPage } from "../pages/FriendsPage";
 import { ProfilePage } from "../pages/ProfilePage";
 import { UserProfilePage } from "../pages/UserProfilePage";
 import { GroupsPage } from "../pages/GroupsPage";
@@ -34,6 +35,7 @@ export function App() {
         <Route path="events/:eventId/edit" element={<EditEventPage />} />
         <Route path="my-events" element={<MyEventsPage />} />
         <Route path="chats" element={<ChatsPage />} />
+        <Route path="friends" element={<FriendsPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="users/:userId" element={<UserProfilePage />} />
         <Route path="api-test" element={<ApiTesterPage />} />

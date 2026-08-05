@@ -39,6 +39,7 @@ export function HeaderUserMenu() {
     { to: "/profile", label: t("nav.profile") },
     { to: "/my-events", label: t("nav.myEvents") },
     { to: "/chats", label: t("nav.chats") },
+    { to: "/friends", label: t("nav.friends") },
   ];
 
   return (
