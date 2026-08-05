@@ -51,7 +51,7 @@ def send_friend_request(*, actor, target):
                 actor=actor,
                 notification_type="friend_request",
                 payload={"friendship_id": str(friendship.pk)},
-                target_url="/friends/requests",
+                target_url="/profile#friends-incoming",
             )
     except IntegrityError as exc:
         raise FriendshipError("A friend request already exists for this user pair.") from exc
@@ -79,7 +79,7 @@ def accept_friend_request(*, friendship, actor):
             actor=actor,
             notification_type="friend_accepted",
             payload={"friendship_id": str(friendship.pk)},
-            target_url="/friends",
+            target_url="/profile",
             dedupe_key=f"friend-accepted:{friendship.pk}",
         )
     return friendship
