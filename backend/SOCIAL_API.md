@@ -7,11 +7,16 @@ header. User search never returns email addresses.
 
 ```text
 GET /api/users/?search=<username-or-name>
+GET /api/users/<uuid>/
 ```
 
 Returns up to 50 public users, excluding the authenticated user. Each result
 includes `friendship_status`: `none`, `outgoing_pending`,
-`incoming_pending`, `accepted`, `rejected`, or `blocked`.
+`incoming_pending`, `accepted`, `rejected`, or `blocked`, plus `friendship_id`
+when a relationship exists. The detail endpoint is also available without
+authentication and returns one public profile; anonymous requests receive
+`friendship_status: none` and `friendship_id: null`. Neither endpoint exposes
+email or authentication fields.
 
 ## Friendships
 
