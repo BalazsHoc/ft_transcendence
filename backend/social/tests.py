@@ -155,6 +155,31 @@ class FriendshipApiTests(APITestCase):
         self.assertNotIn("email", result)
         self.assertNotIn(str(self.alex.pk), {item["id"] for item in response.data})
 
+    def test_public_profile_returns_profile_and_friendship_metadata_without_email(self):
+        self.request_friendship(self.alex, self.bob)
+        self.client.force_authenticate(self.alex)
+
+        response = self.client.get(f"/api/users/{self.bob.pk}/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["username"], "bob")
+        self.assertEqual(response.data["friendship_status"], "outgoing_pending")
+        self.assertEqual(response.data["friendship_id"], Friendship.objects.get().pk)
+        self.assertIn("created_at", response.data)
+        self.assertIn("languages", response.data)
+        self.assertNotIn("email", response.data)
+
+    def test_public_profile_is_available_without_authentication(self):
+        self.client.force_authenticate(None)
+
+        response = self.client.get(f"/api/users/{self.bob.pk}/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["username"], "bob")
+        self.assertEqual(response.data["friendship_status"], "none")
+        self.assertIsNone(response.data["friendship_id"])
+        self.assertNotIn("email", response.data)
+
     def test_remove_friend_is_limited_to_participants(self):
         created = self.request_friendship(self.alex, self.bob)
         friendship_id = created.data["id"]
