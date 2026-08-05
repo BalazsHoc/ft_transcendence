@@ -23,6 +23,7 @@ urlpatterns=[
     path('api/users/', include('social.urls')),
     path('api/friends/', include('social.friend_urls')),
     path('api/notifications/', include('notifications.urls')),
+    path('api/messages/', include('chat.direct_urls')),
     path('api/events/', include('events.urls')),
     path('api/groups/', include('groups.urls')),
     path('api/meta/sports/', sports, name='sports-catalog'),
