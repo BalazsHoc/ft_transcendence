@@ -39,3 +39,32 @@ class UserSearchView(generics.ListAPIView):
             for relation in relations
         }
         return context
+
+
+class UserProfileView(generics.RetrieveAPIView):
+    """Return one public profile without exposing email or auth fields."""
+
+    queryset = User.objects.all()
+    serializer_class = UserSearchSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        request = self.request
+        if not request.user.is_authenticated:
+            context["friendship_by_user"] = {}
+            return context
+
+        relations = Friendship.objects.filter(
+            Q(user_low=request.user) | Q(user_high=request.user)
+        )
+        context["friendship_by_user"] = {
+            (
+                relation.user_high_id
+                if relation.user_low_id == request.user.pk
+                else relation.user_low_id
+            ): relation
+            for relation in relations
+            if relation.user_low_id != relation.user_high_id
+        }
+        return context

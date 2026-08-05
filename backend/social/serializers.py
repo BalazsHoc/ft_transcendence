@@ -8,9 +8,10 @@ User = get_user_model()
 
 
 class UserSearchSerializer(serializers.ModelSerializer):
-    """Public user search payload; deliberately omits email and auth fields."""
+    """Public user payload; deliberately omits email and auth fields."""
 
     friendship_status = serializers.SerializerMethodField()
+    friendship_id = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -21,8 +22,12 @@ class UserSearchSerializer(serializers.ModelSerializer):
             "last_name",
             "district",
             "bio",
+            "languages",
+            "interests",
             "avatar",
+            "created_at",
             "friendship_status",
+            "friendship_id",
         ]
         read_only_fields = fields
 
@@ -37,6 +42,10 @@ class UserSearchSerializer(serializers.ModelSerializer):
                 return "outgoing_pending"
             return "incoming_pending"
         return friendship.status
+
+    def get_friendship_id(self, obj):
+        friendship = self.context.get("friendship_by_user", {}).get(obj.pk)
+        return friendship.pk if friendship else None
 
 
 class FriendshipSerializer(serializers.ModelSerializer):
