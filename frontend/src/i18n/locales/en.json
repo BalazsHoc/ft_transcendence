@@ -291,6 +291,20 @@
     "achievementStreak": "30 Day Streak",
     "achievementCourtMaster": "Court Master"
   },
+  "userProfile": {
+    "loading": "Loading profile...",
+    "loadError": "Unable to load this profile.",
+    "notFound": "Profile not found.",
+    "back": "Back",
+    "signInToConnect": "Sign in to connect",
+    "message": "Message",
+    "acceptRequest": "Accept request",
+    "rejectRequest": "Decline request",
+    "requestSent": "Friend request sent",
+    "blocked": "Blocked",
+    "addFriend": "Add friend",
+    "friendshipError": "Unable to update friendship."
+  },
   "apiTest": {
     "title": "API route tester"
   },

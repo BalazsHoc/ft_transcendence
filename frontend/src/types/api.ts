@@ -15,8 +15,17 @@ export type User = {
   languages?: string[];
   interests?: string[];
   avatar?: string | null;
+  friendship_status?: FriendshipStatus;
+  friendship_id?: number | null;
   created_at?: string;
 };
+export type FriendshipStatus =
+  | "none"
+  | "outgoing_pending"
+  | "incoming_pending"
+  | "accepted"
+  | "rejected"
+  | "blocked";
 export type EventParticipant = {
   id: number;
   user: User;
