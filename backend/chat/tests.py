@@ -90,6 +90,10 @@ class DirectMessagingApiTests(APITestCase):
         self.assertEqual(notification.type, Notification.TYPE_DIRECT_MESSAGE)
         self.assertEqual(notification.actor, self.alex)
         self.assertEqual(notification.payload["conversation_id"], conversation)
+        self.assertEqual(
+            notification.target_url,
+            f"/chats?conversationId={conversation}",
+        )
 
         self.client.force_authenticate(self.bob)
         recipient_messages = self.client.get(
