@@ -21,7 +21,7 @@
   - "Save" button → `ProfileEditForm`
   - "Cancel" button → `ProfileEditForm`
 
-- Community score card (ring gauge + score number) → `ProfileScoreCard`
+- Friends management panel (search, requests, friend list and private message links) → `FriendsPanel`
 
 - Activity History card (calendar icon + activity list / empty message) → `ProfileActivityTimeline`
 
@@ -32,5 +32,5 @@
   - Flame icon (30 Day Streak badge) → `ProfileAchievements`
   - Trophy icon (Court Master badge) → `ProfileAchievements`
 
-All files live in `frontend/src/components/profile/`, composed together in
-`frontend/src/pages/ProfilePage.tsx`.
+All profile components are composed in `frontend/src/pages/UserProfilePage.tsx` (with
+`ProfilePage.tsx` providing the current user's profile route).
