@@ -21,7 +21,8 @@
     "noNotifications": "You have no notifications yet.",
     "messages": "Messages",
     "groups": "Groups",
-    "events": "Events"
+    "events": "Events",
+    "friends": "Friends"
   },
   "common": {
     "join": "Join",
@@ -274,6 +275,32 @@
     "loadError": "Unable to load conversations.",
     "sendError": "Unable to send the message.",
     "wsError": "Real-time connection error."
+  },
+  "friends": {
+    "title": "Friends",
+    "description": "Find people, manage requests, and start personal conversations.",
+    "searchPlaceholder": "Search users by username or name",
+    "search": "Search",
+    "searching": "Searching...",
+    "searchResults": "Search results",
+    "incoming": "Incoming requests",
+    "outgoing": "Outgoing requests",
+    "list": "Your friends",
+    "add": "Add friend",
+    "accept": "Accept",
+    "reject": "Decline",
+    "respond": "Respond",
+    "message": "Message",
+    "remove": "Remove",
+    "requestSent": "Request sent",
+    "noIncoming": "No incoming requests.",
+    "noOutgoing": "No outgoing requests.",
+    "noFriends": "You do not have any friends yet.",
+    "loading": "Loading friends...",
+    "signIn": "Sign in to manage friends and messages.",
+    "loadError": "Unable to load friends.",
+    "searchError": "Unable to search users.",
+    "actionError": "Unable to update this friendship."
   },
   "profile": {
     "title": "Profile",

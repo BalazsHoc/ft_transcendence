@@ -21,7 +21,8 @@
     "noNotifications": "Du hast noch keine Benachrichtigungen.",
     "messages": "Nachrichten",
     "groups": "Gruppen",
-    "events": "Events"
+    "events": "Events",
+    "friends": "Freunde"
   },
   "common": {
     "join": "Teilnehmen",
@@ -274,6 +275,32 @@
     "loadError": "Unterhaltungen konnten nicht geladen werden.",
     "sendError": "Nachricht konnte nicht gesendet werden.",
     "wsError": "Fehler bei der Echtzeitverbindung."
+  },
+  "friends": {
+    "title": "Freunde",
+    "description": "Finde Personen, verwalte Anfragen und starte private Unterhaltungen.",
+    "searchPlaceholder": "Nach Benutzername oder Name suchen",
+    "search": "Suchen",
+    "searching": "Suche läuft...",
+    "searchResults": "Suchergebnisse",
+    "incoming": "Eingehende Anfragen",
+    "outgoing": "Ausgehende Anfragen",
+    "list": "Deine Freunde",
+    "add": "Freund hinzufügen",
+    "accept": "Annehmen",
+    "reject": "Ablehnen",
+    "respond": "Antworten",
+    "message": "Nachricht",
+    "remove": "Entfernen",
+    "requestSent": "Anfrage gesendet",
+    "noIncoming": "Keine eingehenden Anfragen.",
+    "noOutgoing": "Keine ausgehenden Anfragen.",
+    "noFriends": "Du hast noch keine Freunde.",
+    "loading": "Freunde werden geladen...",
+    "signIn": "Melde dich an, um Freunde und Nachrichten zu verwalten.",
+    "loadError": "Freunde konnten nicht geladen werden.",
+    "searchError": "Benutzer konnten nicht gesucht werden.",
+    "actionError": "Freundschaft konnte nicht aktualisiert werden."
   },
   "profile": {
     "title": "Profil",
