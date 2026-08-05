@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "./Button";
 
@@ -54,7 +54,7 @@ export function ConfirmDialog({
         aria-labelledby="confirm-dialog-title"
         aria-describedby="confirm-dialog-message"
         className="w-full max-w-md rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
-        onClick={(event) => event.stopPropagation()}
+        onClick={(event: MouseEvent<HTMLDivElement>) => event.stopPropagation()}
       >
         <h2
           id="confirm-dialog-title"
