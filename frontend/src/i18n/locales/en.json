@@ -302,6 +302,19 @@
     "searchError": "Unable to search users.",
     "actionError": "Unable to update this friendship."
   },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "You have no notifications yet.",
+    "loading": "Loading notifications...",
+    "loadError": "Unable to load notifications.",
+    "readError": "Unable to update the notification.",
+    "markAllRead": "Mark all as read",
+    "someone": "Someone",
+    "friendRequest": "{{actor}} sent you a friend request.",
+    "friendAccepted": "{{actor}} accepted your friend request.",
+    "directMessage": "{{actor}} sent you a message.",
+    "generic": "You have a new notification."
+  },
   "profile": {
     "title": "Profile",
     "update": "Update profile",
