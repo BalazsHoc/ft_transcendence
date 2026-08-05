@@ -259,7 +259,21 @@
     "title": "Чати",
     "selectEvent": "Вибери подію",
     "placeholder": "Введіть повідомлення...",
-    "connect": "Підключити чат"
+    "connect": "Підключити чат",
+    "personal": "Personal messages",
+    "eventChats": "Event chats",
+    "loading": "Loading conversations...",
+    "loadingEvents": "Loading event chats...",
+    "noPersonal": "No personal conversations yet.",
+    "noEventChats": "You do not have any joined event chats yet.",
+    "empty": "Select a conversation to start chatting.",
+    "noMessages": "No messages yet.",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "authRequired": "Sign in to use personal messages.",
+    "loadError": "Unable to load conversations.",
+    "sendError": "Unable to send the message.",
+    "wsError": "Real-time connection error."
   },
   "profile": {
     "logo": "Profile logo",

@@ -63,6 +63,20 @@ export type MessageItem = {
   text: string;
   created_at: string;
 };
+export type DirectMessageItem = {
+  id: string;
+  conversation: string;
+  sender: User;
+  text: string;
+  created_at: string;
+};
+export type DirectConversationItem = {
+  id: string;
+  peer: User;
+  last_message: DirectMessageItem | null;
+  created_at: string;
+  updated_at: string;
+};
 export type GeoSuggestion = {
   id: string;
   label: string;
