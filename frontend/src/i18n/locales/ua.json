@@ -302,6 +302,19 @@
     "searchError": "Unable to search users.",
     "actionError": "Unable to update the friendship."
   },
+  "notifications": {
+    "title": "Сповіщення",
+    "empty": "У вас поки немає сповіщень.",
+    "loading": "Завантаження сповіщень...",
+    "loadError": "Не вдалося завантажити сповіщення.",
+    "readError": "Не вдалося оновити сповіщення.",
+    "markAllRead": "Позначити всі як прочитані",
+    "someone": "Хтось",
+    "friendRequest": "{{actor}} надіслав запит у друзі.",
+    "friendAccepted": "{{actor}} прийняв ваш запит у друзі.",
+    "directMessage": "{{actor}} надіслав вам повідомлення.",
+    "generic": "У вас нове сповіщення."
+  },
   "profile": {
     "logo": "Profile logo",
     "bio": "Bio",

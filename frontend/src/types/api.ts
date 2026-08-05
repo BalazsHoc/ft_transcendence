@@ -19,6 +19,22 @@ export type User = {
   friendship_id?: number | null;
   created_at?: string;
 };
+
+export type NotificationType =
+  | "friend_request"
+  | "friend_accepted"
+  | "direct_message";
+
+export type NotificationItem = {
+  id: number;
+  actor: User | null;
+  type: NotificationType;
+  payload: Record<string, unknown>;
+  target_url: string;
+  read_at: string | null;
+  created_at: string;
+};
+
 export type FriendshipStatus =
   | "none"
   | "outgoing_pending"

@@ -302,6 +302,19 @@
     "searchError": "Benutzer konnten nicht gesucht werden.",
     "actionError": "Freundschaft konnte nicht aktualisiert werden."
   },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "empty": "Du hast noch keine Benachrichtigungen.",
+    "loading": "Benachrichtigungen werden geladen...",
+    "loadError": "Benachrichtigungen konnten nicht geladen werden.",
+    "readError": "Benachrichtigung konnte nicht aktualisiert werden.",
+    "markAllRead": "Alle als gelesen markieren",
+    "someone": "Jemand",
+    "friendRequest": "{{actor}} hat dir eine Freundschaftsanfrage gesendet.",
+    "friendAccepted": "{{actor}} hat deine Freundschaftsanfrage angenommen.",
+    "directMessage": "{{actor}} hat dir eine Nachricht gesendet.",
+    "generic": "Du hast eine neue Benachrichtigung."
+  },
   "profile": {
     "title": "Profil",
     "update": "Profil aktualisieren",
