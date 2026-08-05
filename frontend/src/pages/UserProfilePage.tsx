@@ -186,13 +186,16 @@ export function UserProfilePage() {
           />
         )}
 
+        <div className="mx-auto mt-8 max-w-6xl px-4">
+          <ProfileAbout user={profile} />
+        </div>
+
         <div className="mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-6 px-4 lg:grid-cols-12">
           <div className="space-y-6 lg:col-span-8">
             {isOwnProfile && <FriendsPanel />}
             <ProfileActivityTimeline />
           </div>
           <div className="space-y-6 lg:col-span-4">
-            <ProfileAbout user={profile} />
             <ProfileAchievements />
           </div>
         </div>

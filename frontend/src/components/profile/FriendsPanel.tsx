@@ -144,8 +144,8 @@ export function FriendsPanel() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl space-y-8 px-4 py-8">
-      <header className="space-y-2 border-b border-[var(--surface-border)] pb-6">
+    <section className="space-y-6 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-6 shadow-sm">
+      <header className="space-y-2 border-b border-[var(--surface-border)] pb-5">
         <h1 className="font-display text-3xl font-bold text-[var(--text)]">{t("friends.title")}</h1>
         <p className="text-[var(--muted)]">{t("friends.description")}</p>
       </header>
@@ -254,5 +254,4 @@ export function FriendsPanel() {
     </section>
   );
 }
-
 
