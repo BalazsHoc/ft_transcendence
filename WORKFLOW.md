@@ -14,3 +14,4 @@ Here we will share our thoughts on our project workflow.
 | Public user profiles | Added a universal profile route with edit mode for the current user, read-only public profiles with friendship actions, and profile links for group owners | DONE | Alex |
 | Personal messages | Added friend-only direct conversations, REST and WebSocket message delivery, recipient notifications, and a testable personal chat alongside event chats | DONE | Alex |
 | Friends management UI | Added user search, incoming and outgoing request controls, friend list actions and direct message links inside the signed-in profile | DONE | Alex |
+| Notifications UI | Added authenticated header polling, unread badge, notification actions and navigation for friend and message notifications | DONE | Alex |
