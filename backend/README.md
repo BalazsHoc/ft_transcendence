@@ -164,6 +164,32 @@ Send a message:
 {"text": "Hello everyone!"}
 ```
 
+## Social, Messages and Notifications
+
+The friendship, direct-message and notification contracts are documented in
+[SOCIAL_API.md](SOCIAL_API.md). The main routes are:
+
+```text
+GET/POST /api/users/ and /api/friends/
+GET/POST /api/messages/
+GET/POST /api/notifications/
+```
+
+Friend requests and direct messages create recipient-only notifications. The
+frontend polls the notification list and unread count every 30 seconds and
+marks notifications as read when the user opens them.
+
+## Run Tests
+
+From the backend directory:
+
+```bash
+python manage.py test core groups social chat
+```
+
+The repository currently keeps its test modules in those four app packages;
+passing the labels explicitly runs the complete local suite.
+
 ## MVP Scope
 
 Main entities:

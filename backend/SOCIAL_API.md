@@ -66,4 +66,13 @@ POST /api/notifications/read-all/
 
 Notifications are recipient-only. The payload contains the notification type,
 public actor, JSON `payload`, optional `target_url`, `read_at`, and
-`created_at`. `read-all` returns `{ "updated": <count> }`.
+`created_at`. Current notification types and frontend destinations are:
+
+| Type | Created when | Destination |
+| --- | --- | --- |
+| `friend_request` | A user sends a friend request | `/profile#friends-incoming` |
+| `friend_accepted` | The recipient accepts the request | `/profile` |
+| `direct_message` | A friend sends a personal message | `/chats?conversationId=<uuid>` |
+
+`read-all` returns `{ "updated": <count> }`. The frontend header uses the
+list and unread-count endpoints with 30-second polling for the MVP.

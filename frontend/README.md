@@ -12,4 +12,14 @@ Backend:
 
 To run backend see backend/README.md
 
-Realisation: register, login, me/profile, events CRUD, join/leave, messages, WebSocket chat, i18n EN/DE/UA.
+Realisation: register, login, me/profile, events CRUD, join/leave, groups,
+friendships, direct messages, header notifications, WebSocket chat, and i18n
+EN/DE/UA.
+
+## Verification
+
+```bash
+npm run build
+```
+
+The build runs TypeScript checking before creating the production bundle.
