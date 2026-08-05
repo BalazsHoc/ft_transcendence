@@ -38,6 +38,22 @@ cannot read, change, or remove someone else's relationship.
 Creating a request creates a `friend_request` notification. Accepting one
 creates a `friend_accepted` notification for the original requester.
 
+## Direct messages
+
+```text
+GET  /api/messages/conversations/
+POST /api/messages/conversations/                  {"user_id": "<uuid>"}
+GET  /api/messages/conversations/<uuid>/
+GET  /api/messages/conversations/<uuid>/messages/
+POST /api/messages/conversations/<uuid>/messages/  {"text": "Hello"}
+WS   /ws/direct/<uuid>/?token=<jwt>
+```
+
+Direct conversations are available only for accepted friendships. The
+conversation is created lazily when a friend opens the message action. REST
+and WebSocket messages use the same privacy checks, and every delivered
+message creates a recipient-only `direct_message` notification.
+
 ## Notifications
 
 ```text
