@@ -13,11 +13,11 @@ type ClubStatsRowProps = {
   middleLabel: string;
   /** Legacy club third tile */
   established?: string;
-  /** Group owner avatar third tile (no public profile API for other users) */
+  /** Group owner avatar third tile. When `to` is provided, the whole tile links to the profile. */
   owner?: {
     name: string;
     avatarUrl?: string | null;
-    /** Only set when linking to current user's /profile */
+    /** Profile route for the owner. */
     to?: string | null;
   };
 };
@@ -30,6 +30,27 @@ export function ClubStatsRow({
   owner,
 }: ClubStatsRowProps) {
   const { t } = useTranslation();
+  const ownerTileClassName =
+    "flex items-center gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-sm transition-colors hover:bg-[var(--bg)]";
+  const ownerTileContent = owner ? (
+    <>
+      <div className="flex h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-[var(--bg)]">
+        <img
+          src={resolveMediaUrl(owner.avatarUrl, DEFAULT_AVATAR_SRC)}
+          alt={owner.name}
+          className="h-full w-full object-cover"
+        />
+      </div>
+      <div className="min-w-0">
+        <p className="truncate font-display text-lg font-bold text-[var(--text)]">
+          {owner.name}
+        </p>
+        <p className="text-xs font-medium text-[var(--muted)]">
+          {t("groups.owner")}
+        </p>
+      </div>
+    </>
+  ) : null;
 
   return (
     <section className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-4 sm:grid-cols-3">
@@ -44,37 +65,13 @@ export function ClubStatsRow({
         label={middleLabel}
       />
       {owner ? (
-        <div className="flex items-center gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-sm">
-          {owner.to ? (
-            <Link
-              to={owner.to}
-              className="flex h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-[var(--bg)]"
-              aria-label={owner.name}
-            >
-              <img
-                src={resolveMediaUrl(owner.avatarUrl, DEFAULT_AVATAR_SRC)}
-                alt={owner.name}
-                className="h-full w-full object-cover"
-              />
-            </Link>
-          ) : (
-            <div className="flex h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-[var(--bg)]">
-              <img
-                src={resolveMediaUrl(owner.avatarUrl, DEFAULT_AVATAR_SRC)}
-                alt={owner.name}
-                className="h-full w-full object-cover"
-              />
-            </div>
-          )}
-          <div className="min-w-0">
-            <p className="truncate font-display text-lg font-bold text-[var(--text)]">
-              {owner.name}
-            </p>
-            <p className="text-xs font-medium text-[var(--muted)]">
-              {t("groups.owner")}
-            </p>
-          </div>
-        </div>
+        owner.to ? (
+          <Link to={owner.to} className={ownerTileClassName} aria-label={owner.name}>
+            {ownerTileContent}
+          </Link>
+        ) : (
+          <div className={ownerTileClassName}>{ownerTileContent}</div>
+        )
       ) : (
         <ClubStatCard
           icon={CLUB_STAT_ICONS.established}

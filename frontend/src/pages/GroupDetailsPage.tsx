@@ -451,7 +451,7 @@ export function GroupDetailsPage() {
           owner={{
             name: ownerName,
             avatarUrl: group.owner.avatar,
-            to: isOwnProfile ? "/profile" : null,
+            to: isOwnProfile ? "/profile" : `/users/${group.owner.id}`,
           }}
         />
 
