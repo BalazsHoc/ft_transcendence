@@ -13,4 +13,4 @@ Here we will share our thoughts on our project workflow.
 | Friends and notifications API | Added canonical friendship requests, public user search without email exposure, recipient-only in-app notifications, read/unread endpoints and privacy tests | DONE | Alex |
 | Public user profiles | Added a universal profile route with edit mode for the current user, read-only public profiles with friendship actions, and profile links for group owners | DONE | Alex |
 | Personal messages | Added friend-only direct conversations, REST and WebSocket message delivery, recipient notifications, and a testable personal chat alongside event chats | DONE | Alex |
-| Friends management UI | Added user search, incoming and outgoing request controls, friend list actions and direct message links under the Friends page | DONE | Alex |
+| Friends management UI | Added user search, incoming and outgoing request controls, friend list actions and direct message links inside the signed-in profile | DONE | Alex |

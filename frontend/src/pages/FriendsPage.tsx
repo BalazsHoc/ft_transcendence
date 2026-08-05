@@ -1,6 +1,6 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { Check, MessageCircle, Search, UserPlus, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -27,7 +27,7 @@ function profileLabel(user: User) {
   );
 }
 
-export function FriendsPage() {
+export function FriendsPanel() {
   const { t } = useTranslation();
   const { user: currentUser, loading: authLoading } = useAuth();
   const [friends, setFriends] = useState<FriendshipItem[]>([]);
@@ -130,21 +130,21 @@ export function FriendsPage() {
   }
 
   if (authLoading || (!currentUser && loading)) {
-    return <main className="mx-auto max-w-6xl px-4 py-12">{t("friends.loading")}</main>;
+    return <section className="mx-auto max-w-6xl px-4 py-12">{t("friends.loading")}</section>;
   }
 
   if (!currentUser) {
     return (
-      <main className="mx-auto max-w-3xl space-y-4 px-4 py-12">
+      <section className="mx-auto max-w-3xl space-y-4 px-4 py-12">
         <h1 className="font-display text-3xl font-bold text-[var(--text)]">{t("friends.title")}</h1>
         <p>{t("friends.signIn")}</p>
         <Link to="/login" className={actionLinkClasses}>{t("nav.login")}</Link>
-      </main>
+      </section>
     );
   }
 
   return (
-    <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
+    <section className="mx-auto max-w-6xl space-y-8 px-4 py-8">
       <header className="space-y-2 border-b border-[var(--surface-border)] pb-6">
         <h1 className="font-display text-3xl font-bold text-[var(--text)]">{t("friends.title")}</h1>
         <p className="text-[var(--muted)]">{t("friends.description")}</p>
@@ -183,7 +183,7 @@ export function FriendsPage() {
                   ) : status === "outgoing_pending" ? (
                     <Button variant="outline" size="sm" disabled>{t("friends.requestSent")}</Button>
                   ) : status === "incoming_pending" ? (
-                    <Link to="/friends" className={actionLinkClasses}>{t("friends.respond")}</Link>
+                    <Link to="/profile#friends-incoming" className={actionLinkClasses}>{t("friends.respond")}</Link>
                   ) : (
                     <Button
                       variant="primary"
@@ -202,7 +202,7 @@ export function FriendsPage() {
         </section>
       )}
 
-      <section className="space-y-3">
+      <section id="friends-incoming" className="space-y-3">
         <h2 className="font-display text-xl font-semibold text-[var(--text)]">{t("friends.incoming")}</h2>
         {loading ? <p>{t("friends.loading")}</p> : incoming.length === 0 ? <p className="text-[var(--muted)]">{t("friends.noIncoming")}</p> : incoming.map((request) => (
           <div key={request.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] p-4">
@@ -251,6 +251,14 @@ export function FriendsPage() {
           </div>
         ))}
       </section>
-    </main>
+    </section>
   );
+}
+
+/**
+ * Keep the old URL working for bookmarks and notification links. Friends are
+ * managed from the signed-in user's profile now.
+ */
+export function FriendsPage() {
+  return <Navigate to="/profile" replace />;
 }

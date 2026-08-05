@@ -19,6 +19,7 @@ import { ProfileActivityTimeline } from "../components/profile/ProfileActivityTi
 import { ProfileAbout } from "../components/profile/ProfileAbout";
 import { ProfileAchievements } from "../components/profile/ProfileAchievements";
 import Button from "../components/shared/Button";
+import { FriendsPanel } from "./FriendsPage";
 
 export function UserProfilePage() {
   const { userId } = useParams();
@@ -185,6 +186,8 @@ export function UserProfilePage() {
             onCancel={() => setEditing(false)}
           />
         )}
+
+        {isOwnProfile && <FriendsPanel />}
 
         <div className="mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-6 px-4 lg:grid-cols-12">
           <div className="space-y-6 lg:col-span-8">
