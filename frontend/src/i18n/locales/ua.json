@@ -212,10 +212,15 @@
     "slots": "???",
     "waiting": "???",
     "attending": "???",
-    "notJoined": "???"
+    "notJoined": "???",
+    "visibility": "Видимість",
+    "public": "Публічна",
+    "private": "Приватна",
+    "groupEvent": "Подія групи"
   },
   "createEvent": {
     "title": "Створити подію",
+    "groupTitle": "Створити подію для {{name}}",
     "submit": "Опублікувати"
   },
   "map": {
@@ -375,6 +380,7 @@
     "title": "Groups",
     "description": "Find communities and join groups across Vienna.",
     "upcomingEvents": "Upcoming events",
+    "createEvent": "Створити подію групи",
     "chatTitle": "Чат групи",
     "chatPlaceholder": "Напишіть повідомлення...",
     "chatConnected": "Підключено",

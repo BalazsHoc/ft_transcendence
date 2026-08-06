@@ -50,6 +50,12 @@ export type EventParticipant = {
   queue_position: number;
   joined_at: string;
 };
+export type EventGroupSummary = {
+  id: string;
+  name: string;
+  sport: string;
+  visibility: "public" | "private";
+};
 export type EventItem = {
   id: string;
   title: string;
@@ -66,6 +72,8 @@ export type EventItem = {
   end_at: string;
   max_slots: number;
   creator: User;
+  group: EventGroupSummary | null;
+  visibility: "public" | "private";
   participants: EventParticipant[];
   attending_count: number;
   waiting_count: number;

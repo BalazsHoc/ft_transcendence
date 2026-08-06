@@ -212,10 +212,15 @@
     "slots": "Slots",
     "waiting": "Warten",
     "attending": "Teilnehmend",
-    "notJoined": "Nicht beigetreten"
+    "notJoined": "Nicht beigetreten",
+    "visibility": "Sichtbarkeit",
+    "public": "Öffentlich",
+    "private": "Privat",
+    "groupEvent": "Gruppen-Event"
   },
   "createEvent": {
     "title": "Event erstellen",
+    "groupTitle": "Event für {{name}} erstellen",
     "submit": "Event veröffentlichen"
   },
   "map": {
@@ -375,6 +380,7 @@
     "title": "Gruppen",
     "description": "Finde Communities und tritt Gruppen in Wien bei.",
     "upcomingEvents": "Kommende Events",
+    "createEvent": "Gruppen-Event erstellen",
     "chatTitle": "Gruppenchat",
     "chatPlaceholder": "Nachricht schreiben...",
     "chatConnected": "Verbunden",
