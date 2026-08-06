@@ -313,6 +313,7 @@
     "friendRequest": "{{actor}} sent you a friend request.",
     "friendAccepted": "{{actor}} accepted your friend request.",
     "directMessage": "{{actor}} sent you a message.",
+    "groupMessage": "{{actor}} posted a new group message.",
     "generic": "You have a new notification."
   },
   "profile": {
@@ -374,6 +375,15 @@
     "title": "Groups",
     "description": "Find communities and join groups across Vienna.",
     "upcomingEvents": "Upcoming events",
+    "chatTitle": "Group chat",
+    "chatPlaceholder": "Write a message...",
+    "chatConnected": "Connected",
+    "chatDisconnected": "Disconnected",
+    "chatEmpty": "No group messages yet.",
+    "chatLoadError": "Unable to load group messages.",
+    "chatSendError": "Unable to send the group message.",
+    "chatWsError": "Group chat connection error.",
+    "chatAuthRequired": "Sign in to use the group chat.",
     "applyFull": "This group is full — no more spots right now.",
     "groupFull": "Group full",
     "applyInviteOnly": "This group is invite only.",
