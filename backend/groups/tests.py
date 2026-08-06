@@ -100,6 +100,51 @@ class GroupApiTests(APITestCase):
         self.assertEqual(hidden.status_code, 200)
         self.assertEqual(hidden.data, [])
 
+    def test_only_group_owner_can_create_group_event(self):
+        group = Group.objects.create(
+            name="Saturday Swimmers",
+            sport="swimming",
+            levels=["intermediate"],
+            visibility=Group.VISIBILITY_PUBLIC,
+            join_policy=Group.JOIN_OPEN,
+            owner=self.user,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.user,
+            role=GroupMembership.ROLE_OWNER,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.other_user,
+            role=GroupMembership.ROLE_MEMBER,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+
+        self.client.force_authenticate(self.other_user)
+        response = self.client.post(
+            f"/api/groups/{group.id}/events/",
+            {
+                "title": "Member-created event",
+                "description": "Should be rejected",
+                "sport": "swimming",
+                "level": "intermediate",
+                "languages": ["en"],
+                "location_name": "Stadthallenbad",
+                "location_address": "Vienna",
+                "latitude": 48.2082,
+                "longitude": 16.3738,
+                "start_at": "2026-08-03T18:00:00Z",
+                "end_at": "2026-08-03T20:00:00Z",
+                "max_slots": 8,
+                "visibility": "public",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, 403)
+
     def test_group_chat_is_member_only_and_notifies_active_members(self):
         group = Group.objects.create(
             name="Danube Runners",
