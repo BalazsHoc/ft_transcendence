@@ -13,7 +13,7 @@ Backend:
 To run backend see backend/README.md
 
 Realisation: register, login, me/profile, events CRUD, join/leave, groups,
-friendships, direct messages, header notifications, WebSocket chat, and i18n
+friendships, direct messages, group chats, header notifications, WebSocket chat, and i18n
 EN/DE/UA.
 
 ## Verification

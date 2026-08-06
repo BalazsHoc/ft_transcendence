@@ -73,6 +73,7 @@ public actor, JSON `payload`, optional `target_url`, `read_at`, and
 | `friend_request` | A user sends a friend request | `/profile#friends-incoming` |
 | `friend_accepted` | The recipient accepts the request | `/profile` |
 | `direct_message` | A friend sends a personal message | `/chats?conversationId=<uuid>` |
+| `group_message` | A member posts in a group chat | `/groups/<uuid>#group-chat` |
 
 `read-all` returns `{ "updated": <count> }`. The frontend header uses the
 list and unread-count endpoints with 30-second polling for the MVP.
