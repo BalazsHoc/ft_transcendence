@@ -150,6 +150,8 @@ DELETE /api/events/{id}/
 POST   /api/events/{id}/join/
 POST   /api/events/{id}/leave/
 GET    /api/events/{id}/messages/
+GET    /api/groups/{id}/events/
+POST   /api/groups/{id}/events/  # group owner only
 ```
 
 ### WebSocket Chat

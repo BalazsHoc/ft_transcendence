@@ -16,3 +16,4 @@ Here we will share our thoughts on our project workflow.
 | Friends management UI | Added user search, incoming and outgoing request controls, friend list actions and direct message links inside the signed-in profile | DONE | Alex |
 | Notifications UI | Added authenticated header polling, unread badge, notification actions and navigation for friend and message notifications | DONE | Alex |
 | Group chat | Added active-member-only REST/WebSocket group chats with recipient notifications and group-page UI | DONE | Alex |
+| Group event creation | Group owners can create public or private events from the group page; event cards and details link back to the group | DONE | Alex |
