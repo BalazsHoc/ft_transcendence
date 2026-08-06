@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 
+from chat.models import GroupMessage
+from notifications.models import Notification
+
 from .models import Group, GroupMembership
 
 
@@ -96,3 +99,65 @@ class GroupApiTests(APITestCase):
         hidden = self.client.get("/api/events/")
         self.assertEqual(hidden.status_code, 200)
         self.assertEqual(hidden.data, [])
+
+    def test_group_chat_is_member_only_and_notifies_active_members(self):
+        group = Group.objects.create(
+            name="Danube Runners",
+            sport="running",
+            levels=["beginner"],
+            visibility=Group.VISIBILITY_PUBLIC,
+            owner=self.user,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.user,
+            role=GroupMembership.ROLE_OWNER,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.other_user,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        pending_user = get_user_model().objects.create_user(
+            username="pending",
+            password="secure-password",
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=pending_user,
+            status=GroupMembership.STATUS_PENDING,
+        )
+
+        self.client.force_authenticate(self.other_user)
+        history = self.client.get(f"/api/groups/{group.id}/messages/")
+        self.assertEqual(history.status_code, 200)
+        self.assertEqual(history.data, [])
+
+        created = self.client.post(
+            f"/api/groups/{group.id}/messages/",
+            {"text": "Hello runners"},
+            format="json",
+        )
+        self.assertEqual(created.status_code, 201)
+        self.assertEqual(created.data["text"], "Hello runners")
+        self.assertEqual(GroupMessage.objects.count(), 1)
+        self.assertFalse(
+            Notification.objects.filter(
+                recipient=self.other_user,
+                type=Notification.TYPE_GROUP_MESSAGE,
+            ).exists()
+        )
+        notification = Notification.objects.get(
+            recipient=self.user,
+            type=Notification.TYPE_GROUP_MESSAGE,
+        )
+        self.assertEqual(notification.payload["group_id"], str(group.id))
+        self.assertEqual(
+            notification.target_url,
+            f"/groups/{group.id}#group-chat",
+        )
+
+        self.client.force_authenticate(pending_user)
+        pending_response = self.client.get(f"/api/groups/{group.id}/messages/")
+        self.assertEqual(pending_response.status_code, 404)
