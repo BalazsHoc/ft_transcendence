@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from accounts.serializers import UserPublicSerializer
 
-from .models import DirectConversation, DirectMessage
+from .models import DirectConversation, DirectMessage, GroupMessage
 
 User = get_user_model()
 
@@ -63,3 +63,16 @@ class DirectConversationCreateSerializer(serializers.Serializer):
         if request and target.pk == request.user.pk:
             raise serializers.ValidationError("You cannot start a conversation with yourself.")
         return target
+
+
+class GroupMessageSerializer(serializers.ModelSerializer):
+    sender = UserPublicSerializer(read_only=True)
+
+    class Meta:
+        model = GroupMessage
+        fields = ["id", "group", "sender", "text", "created_at"]
+        read_only_fields = ["id", "group", "sender", "created_at"]
+
+
+class GroupMessageCreateSerializer(serializers.Serializer):
+    text = serializers.CharField(max_length=5000, trim_whitespace=True)

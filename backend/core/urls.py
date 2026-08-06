@@ -25,6 +25,7 @@ urlpatterns=[
     path('api/notifications/', include('notifications.urls')),
     path('api/messages/', include('chat.direct_urls')),
     path('api/events/', include('events.urls')),
+    path('api/groups/', include('chat.group_urls')),
     path('api/groups/', include('groups.urls')),
     path('api/meta/sports/', sports, name='sports-catalog'),
     path('api/geo/', include('geo.urls')),

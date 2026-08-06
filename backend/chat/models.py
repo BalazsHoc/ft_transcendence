@@ -61,3 +61,33 @@ class DirectMessage(models.Model):
 
     def __str__(self):
         return f"{self.sender}: {self.text[:40]}"
+
+
+class GroupMessage(models.Model):
+    """A message in a group chat, visible to active group members only."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    group = models.ForeignKey(
+        "groups.Group",
+        on_delete=models.CASCADE,
+        related_name="group_messages",
+    )
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="group_messages_sent",
+    )
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+        indexes = [
+            models.Index(
+                fields=["group", "created_at"],
+                name="chat_group_created",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.sender}: {self.text[:40]}"
