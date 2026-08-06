@@ -66,9 +66,22 @@ export function EventCard({
 
 			<div className="p-4">
 				<div className="mb-3 flex items-start justify-between gap-3">
-					<h3 className="m-0 min-w-0 flex-1 text-lg font-semibold text-[var(--text)] text-3xl">
-						<Link to={`/events/${event.id}`}>{event.title}</Link>
-					</h3>
+					<div className="min-w-0 flex-1">
+						<h3 className="m-0 text-lg font-semibold text-[var(--text)] text-3xl">
+							<Link to={`/events/${event.id}`}>{event.title}</Link>
+						</h3>
+						{event.group ? (
+							<Link
+								to={`/groups/${event.group.id}`}
+								className="mt-2 inline-flex"
+								aria-label={t("event.groupEvent")}
+							>
+								<Badge variant="yellow">
+									{t("event.groupEvent")}: {event.group.name}
+								</Badge>
+							</Link>
+						) : null}
+					</div>
 
 					<div
 						className={`${styles.badges} flex shrink-0 flex-wrap justify-end gap-2`}
