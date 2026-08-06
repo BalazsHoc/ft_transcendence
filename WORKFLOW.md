@@ -15,3 +15,4 @@ Here we will share our thoughts on our project workflow.
 | Personal messages | Added friend-only direct conversations, REST and WebSocket message delivery, recipient notifications, and a testable personal chat alongside event chats | DONE | Alex |
 | Friends management UI | Added user search, incoming and outgoing request controls, friend list actions and direct message links inside the signed-in profile | DONE | Alex |
 | Notifications UI | Added authenticated header polling, unread badge, notification actions and navigation for friend and message notifications | DONE | Alex |
+| Group chat | Added active-member-only REST/WebSocket group chats with recipient notifications and group-page UI | DONE | Alex |

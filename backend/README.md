@@ -173,6 +173,8 @@ The friendship, direct-message and notification contracts are documented in
 GET/POST /api/users/ and /api/friends/
 GET/POST /api/messages/
 GET/POST /api/notifications/
+GET/POST /api/groups/{id}/messages/
+WS       /ws/groups/{id}/?token=<jwt>
 ```
 
 Friend requests and direct messages create recipient-only notifications. The
