@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from core.asgi import application
 from notifications.models import Notification
+from groups.models import Group, GroupMembership
 from social.models import Friendship
 
 from .models import DirectConversation, DirectMessage
@@ -142,3 +143,44 @@ class DirectMessagingApiTests(APITestCase):
         self.assertTrue(connected)
         self.assertEqual(message["type"], "message")
         self.assertEqual(message["text"], "Live hello")
+
+    def test_group_websocket_delivers_messages_and_notifies_members(self):
+        group = Group.objects.create(
+            name="Danube Runners",
+            sport="running",
+            levels=["beginner"],
+            owner=self.alex,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.alex,
+            role=GroupMembership.ROLE_OWNER,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.bob,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        token = str(AccessToken.for_user(self.alex))
+
+        async def communicate():
+            communicator = WebsocketCommunicator(
+                application,
+                f"/ws/groups/{group.pk}/?token={token}",
+            )
+            connected, _ = await communicator.connect()
+            await communicator.send_json_to({"text": "Group hello"})
+            message = await communicator.receive_json_from()
+            await communicator.disconnect()
+            return connected, message
+
+        connected, message = async_to_sync(communicate)()
+        self.assertTrue(connected)
+        self.assertEqual(message["type"], "message")
+        self.assertEqual(message["text"], "Group hello")
+        notification = Notification.objects.get(
+            recipient=self.bob,
+            type=Notification.TYPE_GROUP_MESSAGE,
+        )
+        self.assertEqual(notification.payload["group_id"], str(group.pk))
