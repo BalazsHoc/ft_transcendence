@@ -6,10 +6,12 @@ class Notification(models.Model):
     TYPE_FRIEND_REQUEST = "friend_request"
     TYPE_FRIEND_ACCEPTED = "friend_accepted"
     TYPE_DIRECT_MESSAGE = "direct_message"
+    TYPE_GROUP_MESSAGE = "group_message"
     TYPE_CHOICES = (
         (TYPE_FRIEND_REQUEST, "Friend request"),
         (TYPE_FRIEND_ACCEPTED, "Friend request accepted"),
         (TYPE_DIRECT_MESSAGE, "Direct message"),
+        (TYPE_GROUP_MESSAGE, "Group message"),
     )
 
     recipient = models.ForeignKey(

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DirectConversation, DirectMessage, Message
+from .models import DirectConversation, DirectMessage, GroupMessage, Message
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display=('sender','event','created_at')
@@ -19,3 +19,9 @@ class DirectConversationAdmin(admin.ModelAdmin):
 class DirectMessageAdmin(admin.ModelAdmin):
     list_display = ("sender", "conversation", "created_at")
     search_fields = ("text", "sender__username")
+
+
+@admin.register(GroupMessage)
+class GroupMessageAdmin(admin.ModelAdmin):
+    list_display = ("sender", "group", "created_at")
+    search_fields = ("text", "sender__username", "group__name")
