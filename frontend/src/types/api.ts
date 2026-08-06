@@ -23,7 +23,8 @@ export type User = {
 export type NotificationType =
   | "friend_request"
   | "friend_accepted"
-  | "direct_message";
+  | "direct_message"
+  | "group_message";
 
 export type NotificationItem = {
   id: number;
@@ -75,6 +76,13 @@ export type EventItem = {
 export type MessageItem = {
   id: string;
   event: string;
+  sender: User;
+  text: string;
+  created_at: string;
+};
+export type GroupMessageItem = {
+  id: string;
+  group: string;
   sender: User;
   text: string;
   created_at: string;

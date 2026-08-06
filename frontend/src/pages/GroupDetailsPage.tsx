@@ -14,6 +14,7 @@ import type { ClubRideItem } from "../components/club/ClubRideRow";
 import Button from "../components/shared/Button";
 import { ConfirmDialog } from "../components/shared/ConfirmDialog";
 import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
+import { GroupChat } from "../components/chat/GroupChat";
 
 function levelLabel(level: EventItem["level"], t: (key: string) => string) {
   const key = `discover.${level}` as const;
@@ -348,6 +349,7 @@ export function GroupDetailsPage() {
     group.owner.username;
   const isOwnProfile = Boolean(user && user.id === group.owner.id);
   const alreadyMember = Boolean(group.current_user_membership);
+  const isActiveMember = group.current_user_membership?.status === "active";
   const isGroupOwner =
     group.current_user_membership?.role === "owner";
   const canLeaveGroup = alreadyMember && !isGroupOwner;
@@ -454,6 +456,10 @@ export function GroupDetailsPage() {
             to: isOwnProfile ? "/profile" : `/users/${group.owner.id}`,
           }}
         />
+
+        {isActiveMember && (
+          <GroupChat groupId={group.id} groupName={group.name} />
+        )}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           <div className="lg:col-span-12">

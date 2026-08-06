@@ -31,6 +31,8 @@ function notificationMessage(
       return t("notifications.friendAccepted", { actor });
     case "direct_message":
       return t("notifications.directMessage", { actor });
+    case "group_message":
+      return t("notifications.groupMessage", { actor });
     default:
       return t("notifications.generic");
   }

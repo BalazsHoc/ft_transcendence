@@ -313,6 +313,7 @@
     "friendRequest": "{{actor}} hat dir eine Freundschaftsanfrage gesendet.",
     "friendAccepted": "{{actor}} hat deine Freundschaftsanfrage angenommen.",
     "directMessage": "{{actor}} hat dir eine Nachricht gesendet.",
+    "groupMessage": "{{actor}} hat eine neue Gruppennachricht gesendet.",
     "generic": "Du hast eine neue Benachrichtigung."
   },
   "profile": {
@@ -374,6 +375,15 @@
     "title": "Gruppen",
     "description": "Finde Communities und tritt Gruppen in Wien bei.",
     "upcomingEvents": "Kommende Events",
+    "chatTitle": "Gruppenchat",
+    "chatPlaceholder": "Nachricht schreiben...",
+    "chatConnected": "Verbunden",
+    "chatDisconnected": "Getrennt",
+    "chatEmpty": "Noch keine Gruppennachrichten.",
+    "chatLoadError": "Gruppennachrichten konnten nicht geladen werden.",
+    "chatSendError": "Gruppennachricht konnte nicht gesendet werden.",
+    "chatWsError": "Fehler bei der Gruppenchat-Verbindung.",
+    "chatAuthRequired": "Melde dich an, um den Gruppenchat zu nutzen.",
     "applyFull": "Diese Gruppe ist voll — aktuell keine Plätze mehr.",
     "groupFull": "Gruppe voll",
     "applyInviteOnly": "Diese Gruppe ist nur auf Einladung.",

@@ -313,6 +313,7 @@
     "friendRequest": "{{actor}} надіслав запит у друзі.",
     "friendAccepted": "{{actor}} прийняв ваш запит у друзі.",
     "directMessage": "{{actor}} надіслав вам повідомлення.",
+    "groupMessage": "{{actor}} надіслав нове повідомлення в групі.",
     "generic": "У вас нове сповіщення."
   },
   "profile": {
@@ -374,6 +375,15 @@
     "title": "Groups",
     "description": "Find communities and join groups across Vienna.",
     "upcomingEvents": "Upcoming events",
+    "chatTitle": "Чат групи",
+    "chatPlaceholder": "Напишіть повідомлення...",
+    "chatConnected": "Підключено",
+    "chatDisconnected": "Відключено",
+    "chatEmpty": "Повідомлень у групі ще немає.",
+    "chatLoadError": "Не вдалося завантажити повідомлення групи.",
+    "chatSendError": "Не вдалося надіслати повідомлення групи.",
+    "chatWsError": "Помилка підключення до чату групи.",
+    "chatAuthRequired": "Увійдіть, щоб користуватися чатом групи.",
     "applyFull": "This group is full — no more spots right now.",
     "groupFull": "Group full",
     "applyInviteOnly": "This group is invite only.",
