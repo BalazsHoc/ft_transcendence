@@ -212,10 +212,15 @@
     "slots": "Slots",
     "waiting": "Waiting",
     "attending": "Attending",
-    "notJoined": "Not Joined"
+    "notJoined": "Not Joined",
+    "visibility": "Visibility",
+    "public": "Public",
+    "private": "Private",
+    "groupEvent": "Group event"
   },
   "createEvent": {
     "title": "Create event",
+    "groupTitle": "Create event for {{name}}",
     "submit": "Publish event"
   },
   "map": {
@@ -375,6 +380,7 @@
     "title": "Groups",
     "description": "Find communities and join groups across Vienna.",
     "upcomingEvents": "Upcoming events",
+    "createEvent": "Create group event",
     "chatTitle": "Group chat",
     "chatPlaceholder": "Write a message...",
     "chatConnected": "Connected",

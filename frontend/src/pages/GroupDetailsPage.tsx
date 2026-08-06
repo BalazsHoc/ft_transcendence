@@ -468,6 +468,17 @@ export function GroupDetailsPage() {
               loading={loadingEvents}
               onRsvp={handleRsvp}
               title={t("groups.upcomingEvents")}
+              headerAction={
+                isGroupOwner ? (
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => navigate(`/events/new?groupId=${group.id}`)}
+                  >
+                    {t("groups.createEvent")}
+                  </Button>
+                ) : undefined
+              }
               rsvpBusyId={rsvpBusyId}
               rsvpError={rsvpError}
               rsvpInfo={rsvpInfo}

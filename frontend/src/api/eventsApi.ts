@@ -13,6 +13,7 @@ export type EventPayload = {
   start_at: string;
   end_at: string;
   max_slots: number;
+  visibility: "public" | "private";
   imageFile?: File | null;
 };
 
@@ -39,6 +40,7 @@ function toEventFormData(payload: Partial<EventPayload>) {
   appendFormValue(form, "start_at", payload.start_at);
   appendFormValue(form, "end_at", payload.end_at);
   appendFormValue(form, "max_slots", payload.max_slots);
+  appendFormValue(form, "visibility", payload.visibility);
   if (payload.imageFile) form.append("image", payload.imageFile);
   return form;
 }
@@ -61,6 +63,12 @@ export function getEvent(id: string) {
 }
 export function createEvent(payload: EventPayload) {
   return apiRequest<EventItem>("/api/events/", {
+    method: "POST",
+    body: toEventFormData(payload),
+  });
+}
+export function createGroupEvent(groupId: string, payload: EventPayload) {
+  return apiRequest<EventItem>(`/api/groups/${groupId}/events/`, {
     method: "POST",
     body: toEventFormData(payload),
   });
