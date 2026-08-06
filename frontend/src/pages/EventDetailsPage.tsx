@@ -7,6 +7,7 @@ import { EventItem } from "../types/api";
 import { getEvent, joinEvent, leaveEvent } from "../api/eventsApi";
 import eventStyles from "../components/events/EventCard.module.css";
 import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../utils/media";
+import { Badge } from "../components/shared/Badge";
 
 export function EventDetailsPage() {
   const { t } = useTranslation();
@@ -68,6 +69,15 @@ export function EventDetailsPage() {
           }}
         />
         <p>{event.description}</p>
+        {event.group ? (
+          <p>
+            <Link to={`/groups/${event.group.id}`} className="inline-flex">
+              <Badge variant="yellow">
+                {t("event.groupEvent")}: {event.group.name}
+              </Badge>
+            </Link>
+          </p>
+        ) : null}
         <p>
           {t("event.sport")}: {event.sport}
         </p>
