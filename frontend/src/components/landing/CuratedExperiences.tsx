@@ -1,16 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../features/auth/AuthContext";
 import { BentoImageCard } from "./BentoImageCard";
 import { BentoInfoCard } from "./BentoInfoCard";
 
 export function CuratedExperiences() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user, access } = useAuth();
-  const goToCuratedDestination = () => {
-    navigate(user || access ? "/discover" : "/login");
-  };
+  const goToDiscover = () => navigate("/discover");
 
   return (
     <section
@@ -35,7 +31,7 @@ export function CuratedExperiences() {
             tag={t("landing.curated.cards.tennis.tag")}
             title={t("landing.curated.cards.tennis.title")}
             description={t("landing.curated.cards.tennis.description")}
-            onClick={goToCuratedDestination}
+            onClick={goToDiscover}
           />
 
           <BentoInfoCard
@@ -44,14 +40,14 @@ export function CuratedExperiences() {
             title={t("landing.curated.cards.running.title")}
             description={t("landing.curated.cards.running.description")}
             attendingLabel={t("landing.curated.attending")}
-            onClick={goToCuratedDestination}
+            onClick={goToDiscover}
           />
 
           <BentoImageCard
             size="sm"
             image="/cycling.jpeg"
             title={t("landing.curated.cards.cycling.title")}
-            onClick={goToCuratedDestination}
+            onClick={goToDiscover}
           />
         </div>
       </div>

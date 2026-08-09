@@ -39,8 +39,10 @@ export function Sidebar({
 
   const timeOptions = [
     { label: t("discover.anytime"), value: "" },
-    { label: t("discover.morning"), value: "morning" },
-    { label: t("discover.evening"), value: "evening" },
+    { label: t("discover.today"), value: "today" },
+    { label: t("discover.tomorrow"), value: "tomorrow" },
+    { label: t("discover.next7Days"), value: "next7Days" },
+    { label: t("discover.nextMonth"), value: "nextMonth" },
   ];
 
   return (
@@ -55,18 +57,18 @@ export function Sidebar({
           type="chips"
         />
         <FilterGroup
-          title={t("discover.level")}
-          options={levelOptions}
-          selected={level}
-          onChange={onLevelChange}
-          type="checkbox"
-        />
-        <FilterGroup
           title={t("discover.time")}
           options={timeOptions}
           selected={time}
           onChange={onTimeChange}
           type="radio"
+        />
+        <FilterGroup
+          title={t("discover.level")}
+          options={levelOptions}
+          selected={level}
+          onChange={onLevelChange}
+          type="checkbox"
         />
       </div>
     </aside>
