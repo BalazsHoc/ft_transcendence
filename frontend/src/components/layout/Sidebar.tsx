@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { FilterGroup } from "../discover/FilterGroup";
+import { SportSelector } from "./SportSelector";
 import type { SportOption } from "../../types/api";
 
 type SidebarProps = {
@@ -49,12 +50,11 @@ export function Sidebar({
     <aside className="sidebar">
       <h2 className="sidebar__title">{t("nav.discover")}</h2>
       <div className="sidebar__filters">
-        <FilterGroup
+        <SportSelector
           title={t("discover.categories")}
-          options={sportOptions}
           selected={sport}
           onChange={onSportChange}
-          type="chips"
+          sports={sports}
         />
         <FilterGroup
           title={t("discover.time")}
