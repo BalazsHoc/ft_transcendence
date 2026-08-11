@@ -257,7 +257,10 @@
     "noEventsFilter": "Немає подій за цими фільтрами.",
     "locateMe": "Використати моє місцезнаходження",
     "zoomIn": "Збільшити",
-    "zoomOut": "Зменшити"
+    "zoomOut": "Зменшити",
+    "markerLegend": "Типи подій",
+    "individualEvent": "Індивідуальна подія",
+    "groupEvent": "Подія групи"
   },
   "editEvent": {
     "title": "Редагувати подію",

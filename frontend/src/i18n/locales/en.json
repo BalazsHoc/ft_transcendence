@@ -257,7 +257,10 @@
     "noEventsFilter": "No events match these filters.",
     "locateMe": "Use my location",
     "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out"
+    "zoomOut": "Zoom out",
+    "markerLegend": "Event types",
+    "individualEvent": "Individual event",
+    "groupEvent": "Group event"
   },
   "editEvent": {
     "title": "Edit event",
