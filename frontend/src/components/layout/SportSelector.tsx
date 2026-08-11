@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import type { ChangeEvent } from "react";
 import { ChevronDown, ChevronUp, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { SportOption } from "../../types/api";
@@ -58,7 +59,7 @@ export function SportSelector({
             type="search"
             value={query}
             onFocus={() => setExpanded(true)}
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               setQuery(event.target.value);
               setExpanded(true);
             }}
