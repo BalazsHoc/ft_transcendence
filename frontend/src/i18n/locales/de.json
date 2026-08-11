@@ -257,7 +257,10 @@
     "noEventsFilter": "Keine Events entsprechen diesen Filtern.",
     "locateMe": "Meinen Standort verwenden",
     "zoomIn": "Vergrößern",
-    "zoomOut": "Verkleinern"
+    "zoomOut": "Verkleinern",
+    "markerLegend": "Eventtypen",
+    "individualEvent": "Einzelnes Event",
+    "groupEvent": "Gruppen-Event"
   },
   "editEvent": {
     "title": "Event bearbeiten",
