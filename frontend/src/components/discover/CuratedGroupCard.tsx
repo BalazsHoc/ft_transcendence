@@ -85,7 +85,12 @@ export function CuratedGroupCard({
             {title}
           </h3>
 
-          {dateLabel ? (
+          {typeof memberCount === "number" ? (
+            <p className="mt-1 inline-flex items-center gap-1.5 text-sm text-white/80">
+              <Users size={14} aria-hidden="true" />
+              <span>{t("discover.members", { count: memberCount })}</span>
+            </p>
+          ) : dateLabel ? (
             <p className="mt-1 text-sm text-white/80">{dateLabel}</p>
           ) : timeLabel ? (
             <p className="mt-1 text-sm text-white/80">{timeLabel}</p>
