@@ -227,7 +227,7 @@ export function EventDetailsPage() {
                 <div className="space-y-3">
                   {event.participants.length === 0 ? (
                     <p className="m-0 text-sm text-[var(--muted)]">
-                      No participants yet.
+                      {t("event.no_participants")}
                     </p>
                   ) : (
                     event.participants.map((participant) => (

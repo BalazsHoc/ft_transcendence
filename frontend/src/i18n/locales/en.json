@@ -194,7 +194,8 @@
     "slots": "Slots",
     "waiting": "Waiting",
     "attending": "Attending",
-    "notJoined": "Not Joined"
+    "notJoined": "Not Joined",
+    "no_participants": "No participants yet"
   },
   "createEvent": {
     "title": "Create event",

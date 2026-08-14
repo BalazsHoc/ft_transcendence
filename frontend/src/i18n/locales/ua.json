@@ -194,7 +194,8 @@
     "slots": "???",
     "waiting": "???",
     "attending": "???",
-    "notJoined": "???"
+    "notJoined": "???",
+    "no_participants": "???"
   },
   "createEvent": {
     "title": "Створити подію",
