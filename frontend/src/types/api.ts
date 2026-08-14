@@ -122,6 +122,10 @@ export type GeoSuggestion = {
 export type SportOption = {
   code: string;
 };
+export type DistrictOption = {
+  code: string;
+  name: string;
+};
 export type GeoResponse = {
   provider: string;
   query: string;

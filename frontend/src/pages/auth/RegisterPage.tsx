@@ -5,24 +5,56 @@ import { useAuth } from "../../features/auth/AuthContext";
 import { PhotoBackdrop } from "../../components/shared/PhotoBackdrop";
 import Button from "../../components/shared/Button";
 import styles from "../../components/shared/FormCard.module.css";
+import { useDistricts } from "../../hooks/useDistricts";
 
 export function RegisterPage() {
   const { t } = useTranslation();
   const { register } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState("alex");
-  const [email, setEmail] = useState("alex@example.com");
-  const [password, setPassword] = useState("testpass123");
-  const [district, setDistrict] = useState("1030");
+  const districts = useDistricts();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [district, setDistrict] = useState("");
   const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   async function submit(e: FormEvent) {
     e.preventDefault();
+    const normalizedName = name.trim();
+    const normalizedEmail = email.trim().toLowerCase();
+    if (normalizedName.length < 2) {
+      setError(t("auth.nameRequired"));
+      return;
+    }
+    if (password.length < 8) {
+      setError(t("auth.passwordMinLength"));
+      return;
+    }
+    if (password !== passwordConfirm) {
+      setError(t("auth.passwordMismatch"));
+      return;
+    }
+    if (!district) {
+      setError(t("auth.districtRequired"));
+      return;
+    }
+    setSubmitting(true);
+    setError("");
     try {
-      await register({ username, email, password, district });
+      await register({
+        name: normalizedName,
+        email: normalizedEmail,
+        password,
+        passwordConfirm,
+        district,
+      });
       navigate("/discover");
     } catch (e: any) {
       setError(e.message);
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -36,16 +68,23 @@ export function RegisterPage() {
         </h1>
         <form className={styles.formCard} onSubmit={submit}>
           <label>
-            {t("auth.username")}
+            {t("auth.name")}
             <input
-              value={username}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+              value={name}
+              required
+              minLength={2}
+              maxLength={150}
+              autoComplete="name"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             />
           </label>
           <label>
             {t("auth.email")}
             <input
               value={email}
+              type="email"
+              required
+              autoComplete="email"
               onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             />
           </label>
@@ -54,18 +93,43 @@ export function RegisterPage() {
             <input
               type="password"
               value={password}
+              required
+              minLength={8}
+              autoComplete="new-password"
               onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
           </label>
           <label>
-            {t("auth.district")}
+            {t("auth.passwordConfirm")}
             <input
-              value={district}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)}
+              type="password"
+              value={passwordConfirm}
+              required
+              minLength={8}
+              autoComplete="new-password"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setPasswordConfirm(e.target.value)}
             />
           </label>
-          <Button type="submit" variant="primary">
-            {t("auth.submitRegister")}
+          <label>
+            {t("auth.district")}
+            <select
+              value={district}
+              required
+              disabled={districts.length === 0}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => setDistrict(e.target.value)}
+            >
+              <option value="" disabled>
+                {districts.length === 0 ? t("auth.loadingDistricts") : t("auth.selectDistrict")}
+              </option>
+              {districts.map((option) => (
+                <option key={option.code} value={option.code}>
+                  {option.code} — {option.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <Button type="submit" variant="primary" disabled={submitting || districts.length === 0}>
+            {submitting ? t("auth.creating") : t("auth.submitRegister")}
           </Button>
         </form>
         {error && (

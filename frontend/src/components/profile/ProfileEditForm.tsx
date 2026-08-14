@@ -4,6 +4,7 @@ import { User } from "../../types/api";
 import { updateMe } from "../../api/authApi";
 import Button from "../shared/Button";
 import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
+import { useDistricts } from "../../hooks/useDistricts";
 
 const fieldLabelClasses = "mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--muted)]";
 
@@ -15,6 +16,7 @@ type ProfileEditFormProps = {
 
 export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProps) {
   const { t } = useTranslation();
+  const districts = useDistricts();
   const [district, setDistrict] = useState("");
   const [bio, setBio] = useState("");
   const [languages, setLanguages] = useState("");
@@ -85,7 +87,18 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
         <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="sm:col-span-2">
             <span className={fieldLabelClasses}>{t("profile.district")}</span>
-            <input value={district} onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)} />
+            <select
+              value={district}
+              disabled={districts.length === 0}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => setDistrict(e.target.value)}
+            >
+              <option value="">{t("auth.selectDistrict")}</option>
+              {districts.map((option) => (
+                <option key={option.code} value={option.code}>
+                  {option.code} — {option.name}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="sm:col-span-2">
             <span className={fieldLabelClasses}>{t("profile.bio")}</span>
