@@ -2,8 +2,29 @@ from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import RegisterSerializer, MeSerializer, UserPublicSerializer
+
+
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'
+
+    def validate(self, attrs):
+        email=attrs.get('email', '').strip().casefold()
+        password=attrs.get('password', '')
+        user= get_user_model().objects.filter(email__iexact=email).first()
+        if not user or not user.is_active or not user.check_password(password):
+            raise AuthenticationFailed('No active account found with the given credentials.')
+        self.user=user
+        refresh=self.get_token(user)
+        return {'refresh':str(refresh), 'access':str(refresh.access_token)}
+
+
+class EmailLoginView(TokenObtainPairView):
+    serializer_class=EmailTokenObtainPairSerializer
 
 class RegisterView(generics.CreateAPIView):
     serializer_class=RegisterSerializer

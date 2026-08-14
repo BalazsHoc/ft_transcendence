@@ -139,6 +139,15 @@ GET    /api/auth/me/
 PATCH  /api/auth/me/
 ```
 
+Registration accepts `email`, `name`, `password`, `password_confirm` and a district
+code from `GET /api/meta/districts/`. Login accepts the email and password; passwords
+are validated with Django's password validators and stored using Django's salted hash.
+
+```text
+GET    /api/meta/districts/
+GET    /api/meta/sports/
+```
+
 ### Events
 
 ```text

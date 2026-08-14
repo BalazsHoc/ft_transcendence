@@ -10,14 +10,14 @@ export function LoginPage() {
   const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState("alex");
-  const [password, setPassword] = useState("testpass123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     try {
-      await login(username, password);
+      await login(email, password);
       navigate("/discover");
     } catch (e: any) {
       setError(e.message);
@@ -34,10 +34,13 @@ export function LoginPage() {
         </h1>
         <form className={styles.formCard} onSubmit={submit}>
           <label>
-            {t("auth.username")}
+            {t("auth.email")}
             <input
-              value={username}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+              type="email"
+              value={email}
+              required
+              autoComplete="email"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             />
           </label>
           <label>
@@ -45,6 +48,9 @@ export function LoginPage() {
             <input
               type="password"
               value={password}
+              required
+              minLength={8}
+              autoComplete="current-password"
               onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
           </label>
