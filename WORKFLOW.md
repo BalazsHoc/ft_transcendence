@@ -25,3 +25,4 @@ Here we will share our thoughts on our project workflow.
 | Landing page | Added the logged-out welcome page with a hero banner and curated experience cards | DONE | Mina |
 | Map page | Rewrote the map page with Leaflet markers, filters, zoom controls and an event detail panel | DONE | Mina |
 | Profile page | Built the original profile page layout — side nav, hero, edit form, activity and achievements cards | DONE | Mina |
+| Email authentication and registration validation | Login uses email; registration validates name, email, password confirmation and a backend-provided Vienna district list on both frontend and backend | DONE | Alex |
