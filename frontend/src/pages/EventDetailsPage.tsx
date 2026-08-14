@@ -1,54 +1,105 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { EventChat } from "../components/chat/EventChat";
-import { ApiLog } from "../components/shared/ApiLog";
 import { EventItem } from "../types/api";
 import { getEvent, joinEvent, leaveEvent } from "../api/eventsApi";
+import { useAuth } from "../features/auth/AuthContext";
 import eventStyles from "../components/events/EventCard.module.css";
 import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../utils/media";
 import { Badge } from "../components/shared/Badge";
+import Button from "../components/shared/Button";
 
 export function EventDetailsPage() {
   const { t } = useTranslation();
   const { eventId } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [event, setEvent] = useState<EventItem | null>(null);
-  const [log, setLog] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  async function load() {
+  async function load(options?: { silent?: boolean }) {
     if (!eventId) return;
+    if (!options?.silent) {
+      setLoading(true);
+      setError(null);
+    }
     try {
       setEvent(await getEvent(eventId));
-    } catch (e: any) {
-      setLog(e.message);
+      setError(null);
+    } catch (loadError: unknown) {
+      setEvent(null);
+      setError(
+        loadError instanceof Error ? loadError.message : t("event.loadError"),
+      );
+    } finally {
+      if (!options?.silent) setLoading(false);
     }
   }
 
   async function join() {
-    if (!eventId) return;
+    if (!eventId || busy) return;
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setBusy(true);
+    setActionError(null);
     try {
-      setLog(JSON.stringify(await joinEvent(eventId), null, 2));
-      await load();
-    } catch (e: any) {
-      setLog(e.message);
+      await joinEvent(eventId);
+      await load({ silent: true });
+    } catch (joinError: unknown) {
+      setActionError(
+        joinError instanceof Error ? joinError.message : t("club.rides.rsvpError"),
+      );
+    } finally {
+      setBusy(false);
     }
   }
 
   async function leave() {
-    if (!eventId) return;
+    if (!eventId || busy) return;
+    setBusy(true);
+    setActionError(null);
     try {
-      setLog(JSON.stringify(await leaveEvent(eventId), null, 2));
-      await load();
-    } catch (e: any) {
-      setLog(e.message);
+      await leaveEvent(eventId);
+      await load({ silent: true });
+    } catch (leaveError: unknown) {
+      setActionError(
+        leaveError instanceof Error ? leaveError.message : t("club.rides.rsvpError"),
+      );
+    } finally {
+      setBusy(false);
     }
   }
 
   useEffect(() => {
-    load();
+    void load();
   }, [eventId]);
 
-  if (!event || !eventId) return <ApiLog log={log || "Loading..."} />;
+  if (loading) {
+    return <p className="text-[var(--muted)]">{t("event.loading")}</p>;
+  }
+
+  if (error || !event || !eventId) {
+    return (
+      <div className="space-y-4">
+        <p role="alert">{error || t("event.loadError")}</p>
+        <Button variant="primary" size="sm" onClick={() => navigate(-1)}>
+          {t("event.back")}
+        </Button>
+      </div>
+    );
+  }
+
+  const isCreator = Boolean(user && user.id === event.creator.id);
+  const hasJoined =
+    event.user_status?.status === "attending" ||
+    event.user_status?.status === "waiting";
+  const canUseChat = isCreator || hasJoined;
 
   return (
     <>
@@ -64,7 +115,7 @@ export function EventDetailsPage() {
             borderRadius: "12px",
             marginBottom: "16px",
           }}
-          onError={(eventNode: any) => {
+          onError={(eventNode: { currentTarget: HTMLImageElement }) => {
             eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
           }}
         />
@@ -97,14 +148,28 @@ export function EventDetailsPage() {
           {t("event.end")}: {new Date(event.end_at).toLocaleString()}
         </p>
         <p>
-          Slots: {event.attending_count}/{event.max_slots}, waiting: {event.waiting_count}
+          {t("event.slots")}: {event.attending_count}/{event.max_slots}, {t("event.waiting")}: {event.waiting_count}
         </p>
+        {actionError ? (
+          <p role="alert" className="text-red-600">
+            {actionError}
+          </p>
+        ) : null}
         <div className="row">
-          <button onClick={join}>{t("common.join")}</button>
-          <button onClick={leave}>{t("common.leave")}</button>
-          <Link className="button secondary" to={`/events/${event.id}/edit`}>
-            {t("common.edit")}
-          </Link>
+          {!hasJoined ? (
+            <Button variant="primary" size="sm" disabled={busy} onClick={() => void join()}>
+              {t("common.join")}
+            </Button>
+          ) : (
+            <Button variant="outline" size="sm" disabled={busy} onClick={() => void leave()}>
+              {t("common.leave")}
+            </Button>
+          )}
+          {isCreator ? (
+            <Link className="button secondary" to={`/events/${event.id}/edit`}>
+              {t("common.edit")}
+            </Link>
+          ) : null}
         </div>
       </section>
       <section className="card">
@@ -116,8 +181,11 @@ export function EventDetailsPage() {
         ))}
       </section>
       <h2>{t("event.messages")}</h2>
-      <EventChat eventId={eventId} />
-      <ApiLog log={log} />
+      {canUseChat ? (
+        <EventChat eventId={eventId} eventTitle={event.title} />
+      ) : (
+        <p className="text-sm text-[var(--muted)]">{t("event.chatJoinPrompt")}</p>
+      )}
     </>
   );
 }

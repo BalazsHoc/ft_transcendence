@@ -238,7 +238,11 @@
     "visibility": "Sichtbarkeit",
     "public": "Öffentlich",
     "private": "Privat",
-    "groupEvent": "Gruppen-Event"
+    "groupEvent": "Gruppen-Event",
+    "back": "Zurück",
+    "loading": "Event wird geladen...",
+    "loadError": "Event konnte nicht geladen werden.",
+    "chatJoinPrompt": "Tritt dem Event bei, um den Chat zu nutzen."
   },
   "createEvent": {
     "title": "Event erstellen",

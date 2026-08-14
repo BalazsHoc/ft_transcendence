@@ -238,7 +238,11 @@
     "visibility": "Visibility",
     "public": "Public",
     "private": "Private",
-    "groupEvent": "Group event"
+    "groupEvent": "Group event",
+    "back": "Back",
+    "loading": "Loading event...",
+    "loadError": "Unable to load this event.",
+    "chatJoinPrompt": "Join this event to use the chat."
   },
   "createEvent": {
     "title": "Create event",
