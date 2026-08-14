@@ -6,12 +6,13 @@ type AuthContextValue = {
   user: User | null;
   access: string;
   loading: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   register: (payload: {
-    username: string;
     email: string;
+    name: string;
     password: string;
-    district?: string;
+    passwordConfirm: string;
+    district: string;
   }) => Promise<void>;
   refreshMe: () => Promise<void>;
   logout: () => void;
@@ -30,17 +31,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     }
   }
-  async function doLogin(username: string, password: string) {
-    const data = await authApi.login(username, password);
+  async function doLogin(email: string, password: string) {
+    const data = await authApi.login(email, password);
     setTokens(data.access, data.refresh);
     setAccess(data.access);
     await refreshMe();
   }
   async function doRegister(payload: {
-    username: string;
     email: string;
+    name: string;
     password: string;
-    district?: string;
+    passwordConfirm: string;
+    district: string;
   }) {
     const data = await authApi.register({
       ...payload,
