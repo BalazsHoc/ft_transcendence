@@ -143,45 +143,6 @@ export function EventCard({
 						</span>
 					</div>
 				</div>
-
-				<div className="row mt-4 flex items-center gap-2 flex-wrap">
-					{onJoin && (
-						<Button
-							variant="primary"
-							size="md"
-							onClick={() => onJoin(event.id)}
-						>
-							{t("common.join")}
-						</Button>
-					)}
-
-					{onLeave && (
-						<Button
-							variant="secondary"
-							size="md"
-							onClick={() => onLeave(event.id)}
-						>
-							{t("common.leave")}
-						</Button>
-					)}
-
-					<Link
-						className="button secondary"
-						to={`/events/${event.id}/edit`}
-					>
-						{t("common.edit")}
-					</Link>
-
-					{onDelete && (
-						<Button
-							variant="danger"
-							size="md"
-							onClick={() => onDelete(event.id)}
-						>
-							{t("common.delete")}
-						</Button>
-					)}
-				</div>
 				</div>
 			</div>
 		</article>
