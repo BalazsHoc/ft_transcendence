@@ -111,14 +111,7 @@
   "languageNames": {
     "en": "Englisch",
     "de": "Deutsch",
-    "ua": "Ukrainisch",
-    "ru": "Russisch",
-    "fr": "Französisch",
-    "es": "Spanisch",
-    "it": "Italienisch",
-    "pl": "Polnisch",
-    "tr": "Türkisch",
-    "hu": "Ungarisch"
+    "ua": "Ukrainisch"
   },
   "discover": {
     "title": "Events entdecken",
