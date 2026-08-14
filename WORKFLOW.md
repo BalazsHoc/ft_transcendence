@@ -18,3 +18,4 @@ Here we will share our thoughts on our project workflow.
 | Group chat | Added active-member-only REST/WebSocket group chats with recipient notifications and group-page UI | DONE | Alex |
 | Group event creation | Group owners can create public or private events from the group page; event cards and details link back to the group | DONE | Alex |
 | Map marker semantics | Map markers use separate colors for individual and group events instead of sport-specific colors, with a localized legend | DONE | Alex |
+| Email authentication and registration validation | Login uses email; registration validates name, email, password confirmation and a backend-provided Vienna district list on both frontend and backend | DONE | Alex |
