@@ -46,6 +46,12 @@
       "title": "Curated Experiences",
       "subtitle": "Find your next passion in the heart of the city.",
       "attending": "Attending",
+      "events": "Events",
+      "groups": "Groups",
+      "seeAll": "See all",
+      "loading": "Loading…",
+      "eventsEmpty": "No events yet.",
+      "groupsEmpty": "No groups yet.",
       "cards": {
         "tennis": {
           "tag": "Tennis Club",
