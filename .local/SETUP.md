@@ -7,7 +7,7 @@ Use this every day to start the app, and after `git pull` / branch switches.
 ## Prerequisites (once per machine)
 
 - **Python** 3.10+ (you have 3.12)
-- **Node.js** 18+ and **npm**
+- **Node.js** 20.19+ (or 22.12+) and **npm**
 - **Git**
 
 No Docker or PostgreSQL for local dev (SQLite by default).
@@ -61,6 +61,7 @@ daphne -b 127.0.0.1 -p 8000 core.asgi:application
 
 ```bash
 cd frontend
+nvm use 20.19.1       # if Node is managed with nvm
 npm run dev
 ```
 
@@ -82,7 +83,7 @@ npm run dev
 - [ ] `cd backend && source .venv/bin/activate`
 - [ ] `python manage.py migrate`
 - [ ] Start Daphne: `daphne -b 127.0.0.1 -p 8000 core.asgi:application`
-- [ ] Start frontend: `cd frontend && npm run dev`
+- [ ] Start frontend: `cd frontend && nvm use 20.19.1 && npm run dev` (if using nvm)
 - [ ] Open http://localhost:5173
 - [ ] Hard refresh if UI looks stale: `Cmd+Shift+R`
 
@@ -150,6 +151,7 @@ daphne -b 127.0.0.1 -p 8000 core.asgi:application
 
 # other terminal:
 cd frontend
+nvm use 20.19.1       # if Node is managed with nvm
 npm install
 npm run dev
 ```
