@@ -3,7 +3,7 @@ import { MapPin } from "lucide-react";
 
 import { Badge } from "../shared/Badge";
 import {
-  DEFAULT_EVENT_IMAGE_SRC,
+  getDefaultEventImage,
   resolveMediaUrl,
 } from "../../utils/media";
 import { joinEvent } from "../../api/eventsApi";
@@ -26,6 +26,8 @@ export function LiveEventCard({
   location,
   onClick,
 }: LiveEventCardProps) {
+  const fallbackImage = getDefaultEventImage(sport);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (!onClick) return;
 
@@ -44,11 +46,11 @@ export function LiveEventCard({
       <div className="relative">
         <img
           className="h-48 w-full object-cover"
-          src={resolveMediaUrl(image, DEFAULT_EVENT_IMAGE_SRC)}
+          src={resolveMediaUrl(image, fallbackImage)}
           alt={title}
           onError={(e: { currentTarget: HTMLImageElement }) => {
             const target = e.currentTarget;
-            target.src = DEFAULT_EVENT_IMAGE_SRC;
+            target.src = fallbackImage;
           }}
         />
 
