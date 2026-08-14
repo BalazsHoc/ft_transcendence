@@ -27,3 +27,4 @@ Here we will share our thoughts on our project workflow.
 | Profile page | Built the original profile page layout — side nav, hero, edit form, activity and achievements cards | DONE | Mina |
 | Email authentication and registration validation | Login uses email; registration validates name, email, password confirmation and a backend-provided Vienna district list on both frontend and backend | DONE | Alex |
 | Profile preference selectors | Replaced comma-separated profile inputs with translated language and sport checkbox lists; sports load from the backend catalog while preserving the existing API field | DONE | Alex |
+| Profile activity history | Added a per-user activities endpoint and split profile activity history into upcoming and past created/joined events with private-event visibility rules | DONE | Alex |

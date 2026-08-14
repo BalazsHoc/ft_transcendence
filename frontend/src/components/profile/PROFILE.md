@@ -23,7 +23,7 @@
 
 - Friends management panel (search, requests, friend list and private message links) → `FriendsPanel`
 
-- Activity History card (calendar icon + activity list / empty message) → `ProfileActivityTimeline`
+- Activity History card (upcoming and past activities from `/api/users/:id/activities/`) → `ProfileActivityTimeline`
 
 - About card (Languages text + Sports text) → `ProfileAbout`
 
