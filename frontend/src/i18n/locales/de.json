@@ -46,6 +46,12 @@
       "title": "Ausgewählte Erlebnisse",
       "subtitle": "Finde deine nächste Leidenschaft im Herzen der Stadt.",
       "attending": "Nehmen teil",
+      "events": "Events",
+      "groups": "Gruppen",
+      "seeAll": "Alle ansehen",
+      "loading": "Wird geladen…",
+      "eventsEmpty": "Noch keine Events.",
+      "groupsEmpty": "Noch keine Gruppen.",
       "cards": {
         "tennis": {
           "tag": "Tennisverein",
