@@ -131,6 +131,9 @@
     "intermediate": "Середній",
     "advanced": "Просунутий",
     "anytime": "Будь-коли",
+    "morning": "Ранок",
+    "evening": "Вечір",
+    "events": "???",
     "today": "Сьогодні",
     "tomorrow": "Завтра",
     "next7Days": "Наступні 7 днів",
@@ -236,6 +239,7 @@
     "waiting": "???",
     "attending": "???",
     "notJoined": "???",
+    "no_participants": "???"
     "visibility": "Видимість",
     "public": "Публічна",
     "private": "Приватна",

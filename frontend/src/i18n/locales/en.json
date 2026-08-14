@@ -118,7 +118,7 @@
     "sport": "Sport",
     "level": "Level",
     "load": "Load events",
-    "happeningNow": "Happening Now",
+    "events": "Events",
     "curatedForYou": "Curated for You",
     "joinGroup": "Join Group",
     "members": "{{count}} Members",
@@ -235,6 +235,7 @@
     "waiting": "Waiting",
     "attending": "Attending",
     "notJoined": "Not Joined",
+    "no_participants": "No participants yet"
     "visibility": "Visibility",
     "public": "Public",
     "private": "Private",
