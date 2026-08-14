@@ -2,6 +2,7 @@ import { API_URL } from "../api/client";
 
 export const DEFAULT_AVATAR_SRC = "/default-avatar.svg";
 export const DEFAULT_EVENT_IMAGE_SRC = "/default-event-image.svg";
+export const DEFAULT_GROUP_IMAGE_SRC = "/default-group-image.png";
 
 export function resolveMediaUrl(
   value: string | null | undefined,

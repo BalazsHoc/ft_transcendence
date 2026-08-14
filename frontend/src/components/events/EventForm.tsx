@@ -37,6 +37,9 @@ export function EventForm({
   );
   const [sport, setSport] = useState(initialEvent?.sport || "");
   const [level, setLevel] = useState(initialEvent?.level || "all");
+  const [visibility, setVisibility] = useState<"public" | "private">(
+    initialEvent?.visibility || "public",
+  );
   const [locationName, setLocationName] = useState(
     initialEvent?.location_name || "Prater",
   );
@@ -91,6 +94,7 @@ export function EventForm({
       start_at: new Date(startAt).toISOString(),
       end_at: new Date(endAt).toISOString(),
       max_slots: Number(maxSlots),
+      visibility,
       imageFile,
     };
 
@@ -183,6 +187,19 @@ export function EventForm({
           <option value="beginner">beginner</option>
           <option value="intermediate">intermediate</option>
           <option value="advanced">advanced</option>
+        </select>
+      </label>
+
+      <label>
+        {t("event.visibility")}
+        <select
+          value={visibility}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            setVisibility(e.target.value as "public" | "private")
+          }
+        >
+          <option value="public">{t("event.public")}</option>
+          <option value="private">{t("event.private")}</option>
         </select>
       </label>
 

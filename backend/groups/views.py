@@ -36,6 +36,7 @@ class GroupViewSet(viewsets.ModelViewSet):
             member_count=Count(
                 "memberships",
                 filter=Q(memberships__status=GroupMembership.STATUS_ACTIVE),
+                distinct=True,
             )
         )
         if self.request.user.is_authenticated:
@@ -133,8 +134,8 @@ class GroupViewSet(viewsets.ModelViewSet):
         ).exists() if request.user.is_authenticated else False
 
         if request.method == "POST":
-            if not user_is_group_admin(request.user, group):
-                raise PermissionDenied("Only group owners and admins can create group events.")
+            if not request.user.is_authenticated or group.owner_id != request.user.id:
+                raise PermissionDenied("Only the group owner can create group events.")
             serializer = EventSerializer(data=request.data, context={"request": request})
             serializer.is_valid(raise_exception=True)
             serializer.save(creator=request.user, group=group)

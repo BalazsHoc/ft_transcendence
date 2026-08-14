@@ -82,6 +82,38 @@ Swagger UI:
 http://localhost:8000/api/docs/
 ```
 
+The read-only public API is documented in the same Swagger UI under the
+`Public API` tag. It uses an `X-API-Key` header and is rate-limited per key and
+source IP. Issue a key from the backend directory (the raw key is printed only
+once):
+
+```bash
+python manage.py create_public_api_key --name "local integration"
+```
+
+Public API examples:
+
+```text
+GET /api/public/v1/health/
+GET /api/public/v1/sports/
+GET /api/public/v1/districts/
+GET /api/public/v1/events/
+GET /api/public/v1/groups/
+GET /api/public/v1/users/
+```
+
+Send the issued key with every request:
+
+```bash
+curl -H "X-API-Key: tr_pub_<issued-key>" http://localhost:8000/api/public/v1/groups/
+```
+
+The database stores only a salted hash of the key. Revoke keys from Django
+admin or issue a replacement through the management command.
+
+See [PUBLIC_API.md](PUBLIC_API.md) for the complete endpoint and query
+parameter contract.
+
 Admin:
 
 ```text
@@ -139,6 +171,15 @@ GET    /api/auth/me/
 PATCH  /api/auth/me/
 ```
 
+Registration accepts `email`, `name`, `password`, `password_confirm` and a district
+code from `GET /api/meta/districts/`. Login accepts the email and password; passwords
+are validated with Django's password validators and stored using Django's salted hash.
+
+```text
+GET    /api/meta/districts/
+GET    /api/meta/sports/
+```
+
 ### Events
 
 ```text
@@ -150,6 +191,8 @@ DELETE /api/events/{id}/
 POST   /api/events/{id}/join/
 POST   /api/events/{id}/leave/
 GET    /api/events/{id}/messages/
+GET    /api/groups/{id}/events/
+POST   /api/groups/{id}/events/  # group owner only
 ```
 
 ### WebSocket Chat
@@ -163,6 +206,34 @@ Send a message:
 ```json
 {"text": "Hello everyone!"}
 ```
+
+## Social, Messages and Notifications
+
+The friendship, direct-message and notification contracts are documented in
+[SOCIAL_API.md](SOCIAL_API.md). The main routes are:
+
+```text
+GET/POST /api/users/ and /api/friends/
+GET/POST /api/messages/
+GET/POST /api/notifications/
+GET/POST /api/groups/{id}/messages/
+WS       /ws/groups/{id}/?token=<jwt>
+```
+
+Friend requests and direct messages create recipient-only notifications. The
+frontend polls the notification list and unread count every 30 seconds and
+marks notifications as read when the user opens them.
+
+## Run Tests
+
+From the backend directory:
+
+```bash
+python manage.py test core groups social chat public_api
+```
+
+The repository currently keeps its test modules in those five app packages;
+passing the labels explicitly runs the complete local suite.
 
 ## MVP Scope
 

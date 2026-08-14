@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@300;400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -8,160 +8,166 @@
    BASE RESET
 --------------------------*/
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
 body {
-	height: 100%;
+  height: 100%;
 }
 
 body {
-	margin: 0;
-	font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-	background: var(--bg);
-	color: var(--text);
-	overflow-y: scroll;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-y: scroll;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* -------------------------
    DESIGN TOKENS (LIGHT)
 --------------------------*/
 :root {
-	/* Core */
-	--bg: #f4f5f4;
-	--text: #111827;
-	--muted: #6b7280;
+  /* Core */
+  --bg: #f4f5f4;
+  --text: #111827;
+  --muted: #6b7280;
 
-	/* Surfaces */
-	--surface: #ffffff;
-	--surface-border: #e5e7eb;
-	--surface-shadow: rgba(0, 0, 0, 0.08);
+  /* Surfaces */
+  --surface: #ffffff;
+  --surface-border: #e5e7eb;
+  --surface-shadow: rgba(22, 23, 31, 0.08);
 
-	/* Inputs / Controls */
-	--control-bg: #ffffff;
-	--control-border: #cbd5e1;
-	--control-text: #111827;
+  /* Inputs / Controls */
+  --control-bg: #ffffff;
+  --control-border: #cbd5e1;
+  --control-text: #111827;
 
-	/* Buttons (primary system) */
-	--button-bg: #111827;
-	--button-text: #ffffff;
-	--button-border: #111827;
+  /* Buttons (primary system) */
+  --button-bg: #174b69;
+  --button-text: #ffffff;
+  --button-border: #1a4c69;
 
-	--button-secondary-bg: rgba(255, 255, 255, 0.8);
-	--button-secondary-text: #0a1424;
-	--button-secondary-border: rgba(226, 232, 240, 0.9);
+  --button-secondary-bg: rgba(255, 255, 255, 0.8);
+  --button-secondary-text: #0a1424;
+  --button-secondary-border: rgba(226, 232, 240, 0.9);
 
-	/* Header */
-	--header-radius: 12px;
-	--header-link: #374151;
-	--header-link-hover: #111827;
-	--header-link-hover-bg: #cbb0fd;
-	--header-link-active: #ffffff;
-	--header-link-active-bg: #7355aa;
+  /* Header */
+  --header-radius: 12px;
+  --header-link: #374151;
+  --header-link-hover: #111827;
+  --header-link-hover-bg: #cbb0fd;
+  --header-link-active: #ffffff;
+  --header-link-active-bg: #7355aa;
 
-	--header-action: #ffffff;
-	--header-action-hover: #374151;
-	--header-action-hover-bg: #e5e7eb;
+  --header-action: #ffffff;
+  --header-action-hover: #374151;
+  --header-action-hover-bg: #e5e7eb;
 
-	/* Chips / user tags */
-	--user-chip-bg: #eef2ff;
-	--user-chip-text: #111827;
+  /* Chips / user tags */
+  --user-chip-bg: #eef2ff;
+  --user-chip-text: #111827;
 
-	/* Radius system (design rules) */
-	--radius-card: 8px;
-	--radius-button: 12px;
-	--radius-badge: 999px;
+  /* Radius system (design rules) */
+  --radius-card: 8px;
+  --radius-button: 12px;
+  --radius-badge: 999px;
 }
 
 /* -------------------------
    DARK MODE
 --------------------------*/
 body.dark {
-	--bg: #0b0f19;
-	--text: #e5e7eb;
-	--muted: #9ca3af;
+  --bg: #0b0f19;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
 
-	--surface: #111827;
-	--surface-border: #1f2937;
-	--surface-shadow: rgba(0, 0, 0, 0.35);
+  --surface: #111827;
+  --surface-border: #1f2937;
+  --surface-shadow: rgba(0, 0, 0, 0.35);
 
-	--control-bg: #0f172a;
-	--control-border: #334155;
-	--control-text: #e5e7eb;
+  --control-bg: #0f172a;
+  --control-border: #334155;
+  --control-text: #e5e7eb;
 
-	--button-bg: #1f2937;
-	--button-border: #374151;
-	--button-text: #e5e7eb;
+  --button-bg: #1f2937;
+  --button-border: #374151;
+  --button-text: #e5e7eb;
 
-	--button-secondary-bg: transparent;
-	--button-secondary-text: #e5e7eb;
-	--button-secondary-border: #6b7280;
+  --button-secondary-bg: transparent;
+  --button-secondary-text: #e5e7eb;
+  --button-secondary-border: #6b7280;
 
-	--header-link: #d1d5db;
-	--header-link-hover: #ffffff;
-	--header-link-hover-bg: #452f6f;
-	--header-link-active: #ffffff;
-	--header-link-active-bg: #7b54c5;
+  --header-link: #d1d5db;
+  --header-link-hover: #ffffff;
+  --header-link-hover-bg: #452f6f;
+  --header-link-active: #ffffff;
+  --header-link-active-bg: #7b54c5;
 
-	--header-action: #d1d5db;
-	--header-action-hover: #ffffff;
-	--header-action-hover-bg: #1f2937;
+  --header-action: #d1d5db;
+  --header-action-hover: #ffffff;
+  --header-action-hover-bg: #1f2937;
 
-	--user-chip-bg: #1e293b;
-	--user-chip-text: #e5e7eb;
+  --user-chip-bg: #1e293b;
+  --user-chip-text: #e5e7eb;
 }
 
 /* -------------------------
    GLOBAL ELEMENTS
 --------------------------*/
 a {
-	color: inherit;
-	text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 
 input,
 select,
 textarea {
-	width: 100%;
-	border: 1px solid var(--control-border);
-	border-radius: var(--radius-button);
-	padding: 10px;
-	font: inherit;
-	background: var(--control-bg);
-	color: var(--control-text);
+  width: 100%;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-button);
+  padding: 10px;
+  font: inherit;
+  background: var(--control-bg);
+  color: var(--control-text);
 }
 
 /* -------------------------
    LAYOUT
 --------------------------*/
 .app-shell {
-	min-height: 100vh;
-	display: grid;
-	grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 /* .header selector removed below — Header.tsx was rebuilt with Tailwind
    classes directly (see components/layout/Header.tsx) and no longer uses
    this class. .footer still uses this rule (Footer.tsx does). */
 .footer {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-	padding: 14px 22px;
-	background: var(--surface);
-	border-bottom: 1px solid var(--surface-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 22px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--surface-border);
 }
 
 /* Old .header { position: sticky; ... } block removed — Header.tsx sets
    its own sticky/shadow styles with Tailwind classes now. */
 
 .footer {
-	border-top: 1px solid var(--surface-border);
-	border-bottom: 0;
+  border-top: 1px solid var(--surface-border);
+  border-bottom: 0;
 }
 
 /* -------------------------
@@ -209,23 +215,26 @@ textarea {
 --------------------------*/
 button,
 .button {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	border: 1px solid var(--button-border);
-	border-radius: var(--radius-button);
-	padding: 9px 13px;
-	background: var(--button-bg);
-	color: var(--button-text);
-	cursor: pointer;
-	font: inherit;
-	transition: transform 0.08s ease, background 0.15s ease, opacity 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--button-border);
+  border-radius: var(--radius-button);
+  padding: 9px 13px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  font: inherit;
+  transition:
+    transform 0.08s ease,
+    background 0.15s ease,
+    opacity 0.15s ease;
 }
 
 button:active,
 .button:active {
-	transform: scale(0.97);
-	opacity: 0.85;
+  transform: scale(0.97);
+  opacity: 0.85;
 }
 
 /* -------------------------
@@ -235,58 +244,58 @@ button:active,
    markup; HeaderNav.tsx and Header.tsx use Tailwind classes now. .row is
    still used throughout (EventCard, DiscoverPage, EventDetailsPage, ...). */
 .row {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 /* -------------------------
    LANGUAGE SWITCHER
 --------------------------*/
 .language-switcher {
-	position: relative;
-	display: inline-flex;
-	align-items: center;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .language-switcher__list {
-	position: absolute;
-	top: calc(100% + 6px);
-	right: 0;
-	min-width: 100px;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	background: var(--surface);
-	border: 1px solid var(--surface-border);
-	border-radius: var(--radius-button);
-	box-shadow: 0 8px 24px var(--surface-shadow);
-	overflow: hidden;
-	z-index: 60;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 100px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-button);
+  box-shadow: 0 8px 24px var(--surface-shadow);
+  overflow: hidden;
+  z-index: 60;
 }
 
 .language-switcher__option {
-	display: block;
-	width: 100%;
-	text-align: left;
-	padding: 10px 14px;
-	border: none;
-	background: transparent;
-	color: var(--text);
-	font: inherit;
-	font-size: 13px;
-	cursor: pointer;
-	transition: background 0.15s ease;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s ease;
 }
 
 .language-switcher__option:hover {
-	background: var(--surface-border);
+  background: var(--surface-border);
 }
 
 .language-switcher__option--active {
-	background: var(--surface-border);
-	font-weight: 600;
+  background: var(--surface-border);
+  font-weight: 600;
 }
 
 /* -------------------------
@@ -297,49 +306,49 @@ button:active,
    or a list of notification rows.
 --------------------------*/
 .notifications-menu {
-	position: relative;
-	display: inline-flex;
-	align-items: center;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .notifications-menu__list {
-	position: absolute;
-	top: calc(100% + 6px);
-	right: 0;
-	width: 280px;
-	margin: 0;
-	padding: 0;
-	background: var(--surface);
-	border: 1px solid var(--surface-border);
-	border-radius: var(--radius-button);
-	box-shadow: 0 8px 24px var(--surface-shadow);
-	overflow: hidden;
-	z-index: 60;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 280px;
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-button);
+  box-shadow: 0 8px 24px var(--surface-shadow);
+  overflow: hidden;
+  z-index: 60;
 }
 
 .notifications-menu__empty {
-	margin: 0;
-	padding: 20px 16px;
-	text-align: center;
-	color: var(--muted);
-	font-size: 13px;
+  margin: 0;
+  padding: 20px 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .notifications-menu__items {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .notifications-menu__item {
-	padding: 10px 14px;
-	font-size: 13px;
-	color: var(--text);
-	border-top: 1px solid var(--surface-border);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text);
+  border-top: 1px solid var(--surface-border);
 }
 
 .notifications-menu__item:first-child {
-	border-top: none;
+  border-top: none;
 }
 
 /* -------------------------
@@ -350,147 +359,147 @@ button:active,
    labels like "My Events" instead of two-letter language codes.
 --------------------------*/
 .user-menu {
-	position: relative;
-	display: inline-flex;
-	align-items: center;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .user-menu__trigger {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 6px 10px;
-	border: none;
-	border-radius: var(--radius-button);
-	background: transparent;
-	color: var(--text);
-	font: inherit;
-	font-size: 14px;
-	font-weight: 500;
-	cursor: pointer;
-	transition: background 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--radius-button);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
 }
 
 .user-menu__trigger:hover {
-	background: var(--surface-border);
+  background: var(--surface-border);
 }
 
 .user-menu__list {
-	position: absolute;
-	top: calc(100% + 6px);
-	right: 0;
-	min-width: 170px;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	background: var(--surface);
-	border: 1px solid var(--surface-border);
-	border-radius: var(--radius-button);
-	box-shadow: 0 8px 24px var(--surface-shadow);
-	overflow: hidden;
-	z-index: 60;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 170px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-button);
+  box-shadow: 0 8px 24px var(--surface-shadow);
+  overflow: hidden;
+  z-index: 60;
 }
 
 .user-menu__option {
-	display: block;
-	width: 100%;
-	text-align: left;
-	padding: 10px 14px;
-	border: none;
-	background: transparent;
-	color: var(--text);
-	font: inherit;
-	font-size: 13px;
-	cursor: pointer;
-	transition: background 0.15s ease;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s ease;
 }
 
 .user-menu__option:hover {
-	background: var(--surface-border);
+  background: var(--surface-border);
 }
 
 .user-menu__divider {
-	height: 1px;
-	margin: 4px 0;
-	background: var(--surface-border);
+  height: 1px;
+  margin: 4px 0;
+  background: var(--surface-border);
 }
 
 /* -------------------------
    PAGE LAYOUT
 --------------------------*/
 .page-container {
-	max-width: 1100px;
-	width: 100%;
-	margin: 0 auto;
-	padding: 30px 22px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 22px;
 }
 
 /* The Discover page's sidebar layout needs the full viewport width,
    not the narrow centered column used by regular pages (forms, hero
    sections, etc.) — let it break out of .page-container's constraint. */
 .page-container:has(.discover-layout) {
-	max-width: none;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* The Map page needs an edge-to-edge canvas below the header instead of
    the centered column, same escape hatch as the Discover layout above. */
 .page-container:has(.map-page-full) {
-	max-width: none;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* The logged-out landing page's hero needs to bleed edge-to-edge too;
    its sections re-introduce their own centered max-width wrappers. */
 .page-container:has(.landing-page) {
-	max-width: none;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* The login page's photo backdrop should bleed edge-to-edge too; the form
    card inside it stays centered via its own max-width. */
 .page-container:has(.login-page-full) {
-	max-width: none;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* The profile page's cover photo should bleed edge-to-edge too; the
    sections below it stay centered via their own max-width. */
 .page-container:has(.profile-page-full) {
-	max-width: none;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .page-container:has(.club-page) {
-	max-width: none;
-	width: 100%;
-	margin: 0;
-	padding: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .club-page {
-	width: 100%;
+  width: 100%;
 }
 
 /* .hero removed below — LandingPage.tsx no longer uses it (rewritten to
    use WelcomeHero.tsx with its own Tailwind classes). .card is still used
    (DiscoverPage, MyEventsPage, EventDetailsPage). */
 .card {
-	background: var(--surface);
-	border: 1px solid var(--surface-border);
-	border-radius: var(--radius-card);
-	padding: 18px;
-	margin-bottom: 18px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-card);
+  padding: 18px;
+  margin-bottom: 18px;
 }
 
 /* -------------------------
@@ -502,38 +511,38 @@ button:active,
    CODE BLOCKS
 --------------------------*/
 pre {
-	white-space: pre-wrap;
-	background: #0f172a;
-	color: #e5e7eb;
-	padding: 14px;
-	border-radius: 10px;
-	overflow: auto;
+  white-space: pre-wrap;
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 14px;
+  border-radius: 10px;
+  overflow: auto;
 }
 
 /* -------------------------
    STATUS
 --------------------------*/
 .ok {
-	color: #059669;
-	font-weight: 700;
+  color: #059669;
+  font-weight: 700;
 }
 
 .bad {
-	color: #dc2626;
-	font-weight: 700;
+  color: #dc2626;
+  font-weight: 700;
 }
 
 /* -------------------------
    RESPONSIVE
 --------------------------*/
 @media (max-width: 800px) {
-	/* .header removed — unused, see note above */
-	.footer {
-		display: grid;
-		grid-template-columns: 1fr;
-	}
+  /* .header removed — unused, see note above */
+  .footer {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 
-	/* .hero h1 removed — unused, see note above */
+  /* .hero h1 removed — unused, see note above */
 }
 
 /* -------------------------
@@ -570,6 +579,291 @@ pre {
 }
 
 /* -------------------------
+   SPORT SELECTOR
+--------------------------*/
+.sport-selector {
+  gap: 12px;
+}
+
+.sport-selector__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sport-selector__toggle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.sport-selector__toggle:hover {
+  border-color: #0d9488;
+}
+
+.sport-selector__toggle svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.sport-selector__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.sport-selector__summary-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sport-selector__summary-search {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sport-selector__summary-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+}
+
+.sport-selector__summary-search input::placeholder {
+  color: var(--muted);
+}
+
+.sport-selector__summary-search:hover {
+  color: #0d9488;
+}
+
+.sport-selector__summary-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sport-selector__summary-action {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.sport-selector__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--surface-border);
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.sport-selector__search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--surface-border);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--muted);
+}
+
+.sport-selector__search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+}
+
+.sport-selector__search input::placeholder {
+  color: var(--muted);
+}
+
+.sport-selector__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.sport-selector__list--compact {
+  grid-template-columns: 1fr;
+}
+
+.sport-selector__option {
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--surface-border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.sport-selector__option:hover {
+  border-color: #0d9488;
+}
+
+.sport-selector__option--active {
+  background: var(--text);
+  color: var(--surface);
+  border-color: var(--text);
+}
+
+.sport-selector__more {
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  text-align: center;
+}
+
+.sport-selector__more:hover {
+  color: var(--text);
+}
+
+/* -------------------------
+   TIME RANGE FILTER
+--------------------------*/
+.time-range {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.time-range__labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.time-range__slider {
+  position: relative;
+  height: 34px;
+  display: flex;
+  align-items: center;
+}
+
+.time-range__track,
+.time-range__fill {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 4px;
+  border-radius: 999px;
+}
+
+.time-range__track {
+  left: 0;
+  right: 0;
+  background: var(--surface-border);
+}
+
+.time-range__fill {
+  background: linear-gradient(90deg, #0d9488, #14b8a6);
+}
+
+.time-range__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  background: transparent;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.time-range__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  background: var(--text);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.time-range__input::-moz-range-thumb {
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  background: var(--text);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.time-range__input::-webkit-slider-runnable-track {
+  height: 4px;
+  background: transparent;
+}
+
+.time-range__input::-moz-range-track {
+  height: 4px;
+  background: transparent;
+}
+
+.time-range__ticks {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.time-range__tick {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* -------------------------
    FILTER GROUP
 --------------------------*/
 .filter-group__title {
@@ -598,7 +892,10 @@ pre {
   color: var(--text);
   cursor: pointer;
   text-align: center;
-  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .filter-chip:hover {
@@ -635,7 +932,9 @@ pre {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .filter-option:hover .filter-checkbox {
@@ -839,6 +1138,41 @@ body.dark .filters {
   bottom: 20px;
   right: 20px;
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.mapLegend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px 12px;
+  max-width: min(300px, calc(100vw - 32px));
+  padding: 8px 12px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px var(--surface-shadow);
+  color: var(--text);
+  font-size: 12px;
+}
+
+.mapLegendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.mapLegendDot {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.35);
 }
 
 .mapStatus {

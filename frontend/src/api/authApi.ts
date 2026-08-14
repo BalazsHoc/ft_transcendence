@@ -12,22 +12,31 @@ function appendFormValue(form: FormData, key: string, value: unknown) {
 }
 
 export function register(payload: {
-  username: string;
   email: string;
+  name: string;
   password: string;
-  district?: string;
+  passwordConfirm: string;
+  district: string;
   languages?: string[];
   interests?: string[];
 }) {
   return apiRequest<AuthResponse>("/api/auth/register/", {
     method: "POST",
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      email: payload.email.trim().toLowerCase(),
+      name: payload.name.trim(),
+      password: payload.password,
+      password_confirm: payload.passwordConfirm,
+      district: payload.district,
+      languages: payload.languages,
+      interests: payload.interests,
+    }),
   });
 }
-export function login(username: string, password: string) {
+export function login(email: string, password: string) {
   return apiRequest<AuthResponse>("/api/auth/login/", {
     method: "POST",
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
   });
 }
 export function getMe() {

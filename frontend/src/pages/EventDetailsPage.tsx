@@ -22,6 +22,9 @@ const formatEventDateTime = (value: string) =>
     hour: "numeric",
     minute: "2-digit",
   });
+import eventStyles from "../components/events/EventCard.module.css";
+import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../utils/media";
+import { Badge } from "../components/shared/Badge";
 
 export function EventDetailsPage() {
   const { t } = useTranslation();
@@ -112,6 +115,60 @@ export function EventDetailsPage() {
               {event.title}
             </h1>
           </div>
+    <>
+      <h1>{event.title}</h1>
+      <section className="card">
+        <img
+          src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
+          alt={event.title}
+          style={{
+            width: "100%",
+            maxHeight: "320px",
+            objectFit: "cover",
+            borderRadius: "12px",
+            marginBottom: "16px",
+          }}
+          onError={(eventNode: any) => {
+            eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
+          }}
+        />
+        <p>{event.description}</p>
+        {event.group ? (
+          <p>
+            <Link to={`/groups/${event.group.id}`} className="inline-flex">
+              <Badge variant="yellow">
+                {t("event.groupEvent")}: {event.group.name}
+              </Badge>
+            </Link>
+          </p>
+        ) : null}
+        <p>
+          {t("event.sport")}: {event.sport}
+        </p>
+        <p>
+          {t("event.level")}: {event.level}
+        </p>
+        <p>
+          {t("event.location")}: {event.location_name}
+        </p>
+        {event.location_address && event.location_address !== event.location_name && (
+          <p className={eventStyles.eventAddress}>{event.location_address}</p>
+        )}
+        <p>
+          {t("event.start")}: {new Date(event.start_at).toLocaleString()}
+        </p>
+        <p>
+          {t("event.end")}: {new Date(event.end_at).toLocaleString()}
+        </p>
+        <p>
+          Slots: {event.attending_count}/{event.max_slots}, waiting: {event.waiting_count}
+        </p>
+        <div className="row">
+          <button onClick={join}>{t("common.join")}</button>
+          <button onClick={leave}>{t("common.leave")}</button>
+          <Link className="button secondary" to={`/events/${event.id}/edit`}>
+            {t("common.edit")}
+          </Link>
         </div>
 
         <div className="p-5 sm:p-6 lg:p-8">

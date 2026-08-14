@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { FilterGroup } from "../discover/FilterGroup";
+import { SportSelector } from "./SportSelector";
 import type { SportOption } from "../../types/api";
 
 type SidebarProps = {
@@ -39,27 +40,21 @@ export function Sidebar({
 
   const timeOptions = [
     { label: t("discover.anytime"), value: "" },
-    { label: t("discover.morning"), value: "morning" },
-    { label: t("discover.evening"), value: "evening" },
+    { label: t("discover.today"), value: "today" },
+    { label: t("discover.tomorrow"), value: "tomorrow" },
+    { label: t("discover.next7Days"), value: "next7Days" },
+    { label: t("discover.nextMonth"), value: "nextMonth" },
   ];
 
   return (
     <aside className="sidebar">
       <h2 className="sidebar__title">{t("nav.discover")}</h2>
       <div className="sidebar__filters">
-        <FilterGroup
+        <SportSelector
           title={t("discover.categories")}
-          options={sportOptions}
           selected={sport}
           onChange={onSportChange}
-          type="chips"
-        />
-        <FilterGroup
-          title={t("discover.level")}
-          options={levelOptions}
-          selected={level}
-          onChange={onLevelChange}
-          type="checkbox"
+          sports={sports}
         />
         <FilterGroup
           title={t("discover.time")}
@@ -67,6 +62,13 @@ export function Sidebar({
           selected={time}
           onChange={onTimeChange}
           type="radio"
+        />
+        <FilterGroup
+          title={t("discover.level")}
+          options={levelOptions}
+          selected={level}
+          onChange={onLevelChange}
+          type="checkbox"
         />
       </div>
     </aside>

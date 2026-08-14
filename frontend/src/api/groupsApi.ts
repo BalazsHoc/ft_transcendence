@@ -1,5 +1,5 @@
 import { apiRequest } from "./client";
-import type { GroupItem, GroupPayload } from "../types/api";
+import type { EventItem, GroupItem, GroupPayload } from "../types/api";
 
 function appendFormValue(form: FormData, key: string, value: unknown) {
   if (value === undefined || value === null) return;
@@ -52,9 +52,18 @@ export function createGroup(payload: GroupPayload) {
 }
 
 export function joinGroup(id: string) {
-  return apiRequest(`/api/groups/${id}/join/`, { method: "POST" });
+  return apiRequest<{
+    id: string;
+    role: string;
+    status: "active" | "pending";
+    joined_at: string;
+  }>(`/api/groups/${id}/join/`, { method: "POST" });
 }
 
 export function leaveGroup(id: string) {
   return apiRequest<void>(`/api/groups/${id}/leave/`, { method: "POST" });
+}
+
+export function getGroupEvents(id: string) {
+  return apiRequest<EventItem[]>(`/api/groups/${id}/events/`);
 }
