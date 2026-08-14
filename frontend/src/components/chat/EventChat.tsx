@@ -48,10 +48,7 @@ export function EventChat({ eventId, eventTitle }: { eventId: string; eventTitle
     wsRef.current = ws;
 
     ws.onopen = () => {
-      if (!cancelled) {
-        setConnected(true);
-        setStatusMessage("");
-      }
+      if (!cancelled) setConnected(true);
     };
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data) as { type?: string; detail?: string } & Partial<MessageItem>;
@@ -64,14 +61,11 @@ export function EventChat({ eventId, eventTitle }: { eventId: string; eventTitle
         setStatusMessage(data.detail);
       }
     };
-    ws.onclose = (closeEvent) => {
-      if (cancelled) return;
-      setConnected(false);
-      if (closeEvent.code === 4001) {
-        setStatusMessage(t("chats.authRequired"));
-      } else if (closeEvent.code === 4003) {
-        setStatusMessage(t("event.chatJoinPrompt"));
-      }
+    ws.onclose = () => {
+      if (!cancelled) setConnected(false);
+    };
+    ws.onerror = () => {
+      if (!cancelled) setStatusMessage(t("chats.wsError"));
     };
 
     return () => {
@@ -93,7 +87,7 @@ export function EventChat({ eventId, eventTitle }: { eventId: string; eventTitle
     const trimmed = text.trim();
     if (!trimmed) return;
     if (wsRef.current?.readyState !== WebSocket.OPEN) {
-      setStatusMessage(t("chats.disconnected"));
+      setStatusMessage(t("chats.wsError"));
       return;
     }
     wsRef.current.send(JSON.stringify({ text: trimmed }));
