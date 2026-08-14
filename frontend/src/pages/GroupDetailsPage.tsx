@@ -481,7 +481,7 @@ export function GroupDetailsPage() {
             <ClubUpcomingRides
               rides={rides}
               loading={loadingEvents}
-              onRsvp={handleRsvp}
+              onRsvp={isActiveMember ? handleRsvp : undefined}
               title={t("groups.upcomingEvents")}
               headerAction={
                 isGroupOwner ? (

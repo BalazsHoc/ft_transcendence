@@ -8,6 +8,7 @@ import { Badge } from "../components/shared/Badge";
 import Button from "../components/shared/Button";
 import { EventItem } from "../types/api";
 import { getEvent, joinEvent, leaveEvent } from "../api/eventsApi";
+import { getGroup } from "../api/groupsApi";
 import { DEFAULT_AVATAR_SRC, DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../utils/media";
 import { useAuth } from "../features/auth/AuthContext";
 
@@ -29,6 +30,7 @@ export function EventDetailsPage() {
   const { user } = useAuth();
   const [event, setEvent] = useState<EventItem | null>(null);
   const [log, setLog] = useState("");
+  const [isGroupMember, setIsGroupMember] = useState(false);
 
   async function load() {
     if (!eventId) return;
@@ -66,6 +68,29 @@ export function EventDetailsPage() {
     void load();
   }, [eventId]);
 
+  useEffect(() => {
+    const groupId = event?.group?.id;
+    if (!groupId || !user) {
+      setIsGroupMember(false);
+      return;
+    }
+
+    let cancelled = false;
+    getGroup(groupId)
+      .then((group) => {
+        if (!cancelled) {
+          setIsGroupMember(group.current_user_membership?.status === "active");
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setIsGroupMember(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [event?.group?.id, user?.id]);
+
   if (!event || !eventId) {
     return <ApiLog log={log || "Loading..."} />;
   }
@@ -74,6 +99,8 @@ export function EventDetailsPage() {
   const isLoggedIn = Boolean(user);
   const isOwner = Boolean(user && event.creator && user.id === event.creator.id);
   const isJoined = userStatus === "attending" || userStatus === "waiting";
+  const isGroupEvent = Boolean(event.group);
+  const canJoinEvent = !isGroupEvent || isGroupMember;
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
@@ -124,10 +151,16 @@ export function EventDetailsPage() {
                 </Button>
               )}
 
-              {isLoggedIn && !isJoined && (
+              {isLoggedIn && !isJoined && canJoinEvent && (
                 <Button variant="primary" onClick={join}>
                   {t("common.join")}
                 </Button>
+              )}
+
+              {!isJoined && isGroupEvent && !canJoinEvent && event.group && (
+                <Link to={`/groups/${event.group.id}`}>
+                  <Button variant="primary">{t("event.viewGroup")}</Button>
+                </Link>
               )}
 
               {isOwner && (

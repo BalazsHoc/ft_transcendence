@@ -117,19 +117,21 @@ export function ClubRideRow({
               {t("club.rides.details")}
             </Button>
           ) : null}
-          <Button
-            variant={alreadyJoined ? "outline" : "primary"}
-            size="sm"
-            disabled={rsvpDisabled || rsvpBusy}
-            onClick={handleClick}
-            className={
-              alreadyJoined
-                ? "!border-[var(--surface-border)] !text-[var(--text)]"
-                : ""
-            }
-          >
-            {label}
-          </Button>
+          {onRsvp ? (
+            <Button
+              variant={alreadyJoined ? "outline" : "primary"}
+              size="sm"
+              disabled={rsvpDisabled || rsvpBusy}
+              onClick={handleClick}
+              className={
+                alreadyJoined
+                  ? "!border-[var(--surface-border)] !text-[var(--text)]"
+                  : ""
+              }
+            >
+              {label}
+            </Button>
+          ) : null}
         </div>
       </div>
 
