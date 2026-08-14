@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../features/auth/AuthContext";
 import { CalendarDays, Clock3, MapPin, PencilLine, Users } from "lucide-react";
 import { EventChat } from "../components/chat/EventChat";
 import { ApiLog } from "../components/shared/ApiLog";
@@ -25,6 +26,7 @@ const formatEventDateTime = (value: string) =>
 export function EventDetailsPage() {
   const { t } = useTranslation();
   const { eventId } = useParams();
+  const { user } = useAuth();
   const [event, setEvent] = useState<EventItem | null>(null);
   const [log, setLog] = useState("");
 
@@ -70,8 +72,10 @@ export function EventDetailsPage() {
 
   const userStatus = event.user_status?.status;
 
-  // event.user_status is expected to be present for logged-in users.
-  const isLoggedIn = event.user_status !== undefined;
+  // Use auth user to determine logged-in state.
+  const isLoggedIn = Boolean(user);
+
+  const isOwner = Boolean(user && event && user.id === event.creator?.id);
 
   // Both attending and waiting users are considered joined.
   const isJoined =
@@ -201,20 +205,22 @@ export function EventDetailsPage() {
                     </Button>
                   )}
 
-                <Link
-                  to={`/events/${event.id}/edit`}
-                  className="flex-1"
-                >
-                  <Button
-                    variant="secondary"
-                    className="w-full"
-                  >
-                    <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
-                      <PencilLine size={16} />
-                      {t("common.edit")}
-                    </span>
-                  </Button>
-                </Link>
+                  {isOwner && (
+                    <Link
+                      to={`/events/${event.id}/edit`}
+                      className="flex-1"
+                    >
+                      <Button
+                        variant="secondary"
+                        className="w-full"
+                      >
+                        <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
+                          <PencilLine size={16} />
+                          {t("common.edit")}
+                        </span>
+                      </Button>
+                    </Link>
+                  )}
               </div>
 
               <div className="mt-5 border-t border-[var(--surface-border)] pt-4">
