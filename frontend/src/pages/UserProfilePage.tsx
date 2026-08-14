@@ -3,18 +3,18 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Check, MessageCircle, UserPlus, X } from "lucide-react";
 
-import { getPublicUser } from "../api/usersApi";
+import { getPublicUser, getUserActivities } from "../api/usersApi";
 import {
   acceptFriendRequest,
   rejectFriendRequest,
   sendFriendRequest,
 } from "../api/friendsApi";
-import type { FriendshipStatus, User } from "../types/api";
+import type { EventItem, FriendshipStatus, User } from "../types/api";
 import { useAuth } from "../features/auth/AuthContext";
 import { ProfileSideNav } from "../components/profile/ProfileSideNav";
 import { ProfileHero } from "../components/profile/ProfileHero";
 import { ProfileEditForm } from "../components/profile/ProfileEditForm";
-import { ProfileActivityTimeline } from "../components/profile/ProfileActivityTimeline";
+import { ProfileActivityTimeline, type ActivityItem } from "../components/profile/ProfileActivityTimeline";
 import { ProfileAbout } from "../components/profile/ProfileAbout";
 import { ProfileAchievements } from "../components/profile/ProfileAchievements";
 import Button from "../components/shared/Button";
@@ -23,7 +23,7 @@ import { FriendsPanel } from "../components/profile/FriendsPanel";
 export function UserProfilePage() {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user: currentUser, refreshMe } = useAuth();
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,6 +33,8 @@ export function UserProfilePage() {
   const [friendshipId, setFriendshipId] = useState<number | null>(null);
   const [friendshipBusy, setFriendshipBusy] = useState(false);
   const [friendshipError, setFriendshipError] = useState<string | null>(null);
+  const [activityItems, setActivityItems] = useState<ActivityItem[]>([]);
+  const [activityLoading, setActivityLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -69,6 +71,70 @@ export function UserProfilePage() {
       cancelled = true;
     };
   }, [currentUser, t, userId]);
+
+  useEffect(() => {
+    if (!profile?.id) {
+      setActivityItems([]);
+      setActivityLoading(false);
+      return () => undefined;
+    }
+
+    let cancelled = false;
+    setActivityLoading(true);
+    getUserActivities(profile.id)
+      .then((events) => {
+        if (cancelled) return;
+        const now = Date.now();
+        const sortedEvents = [...events].sort((a, b) => {
+          const aStart = new Date(a.start_at).getTime();
+          const bStart = new Date(b.start_at).getTime();
+          const aPast = new Date(a.end_at).getTime() < now;
+          const bPast = new Date(b.end_at).getTime() < now;
+          if (aPast !== bPast) return aPast ? 1 : -1;
+          return aPast ? bStart - aStart : aStart - bStart;
+        });
+        const mapped = sortedEvents.map((event: EventItem) => {
+          const start = new Date(event.start_at);
+          const end = new Date(event.end_at);
+          const status: ActivityItem["status"] = end.getTime() < now ? "past" : "upcoming";
+          const date = new Intl.DateTimeFormat(i18n.language, {
+            dateStyle: "medium",
+          }).format(start);
+          const time = new Intl.DateTimeFormat(i18n.language, {
+            hour: "2-digit",
+            minute: "2-digit",
+          }).format(start);
+          const endTime = new Intl.DateTimeFormat(i18n.language, {
+            hour: "2-digit",
+            minute: "2-digit",
+          }).format(end);
+          const sport = t(`sports.${event.sport}`, { defaultValue: event.sport });
+          const location = event.location_name || event.location_address;
+          const role = event.creator?.id === profile.id
+            ? t("profile.createdActivity")
+            : t("profile.joinedActivity");
+
+          return {
+            id: event.id,
+            title: event.title,
+            time: `${date} · ${time}–${endTime}`,
+            description: [role, sport, location].filter(Boolean).join(" · "),
+            status,
+          };
+        });
+        setActivityItems(mapped);
+      })
+      .catch(() => {
+        if (!cancelled) setActivityItems([]);
+      })
+      .finally(() => {
+        if (!cancelled) setActivityLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [i18n.language, profile?.id, t]);
 
   const isOwnProfile = Boolean(profile && currentUser && profile.id === currentUser.id);
 
@@ -193,7 +259,7 @@ export function UserProfilePage() {
         <div className="mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-6 px-4 lg:grid-cols-12">
           <div className="space-y-6 lg:col-span-8">
             {isOwnProfile && <FriendsPanel />}
-            <ProfileActivityTimeline />
+            <ProfileActivityTimeline items={activityItems} loading={activityLoading} />
           </div>
           <div className="space-y-6 lg:col-span-4">
             <ProfileAchievements />

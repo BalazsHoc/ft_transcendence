@@ -1,6 +1,10 @@
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from rest_framework.test import APITestCase
 
+from events.models import Event, EventParticipant
 from notifications.models import Notification
 from .models import Friendship
 
@@ -250,3 +254,84 @@ class NotificationApiTests(APITestCase):
         self.assertEqual(all_read.status_code, 200)
         self.assertEqual(all_read.data["updated"], 1)
         self.assertEqual(self.client.get("/api/notifications/unread-count/").data["count"], 0)
+
+
+class UserActivityApiTests(APITestCase):
+    def setUp(self):
+        self.alex = User.objects.create_user(
+            username="alex",
+            email="alex@example.com",
+            password="secure-password",
+        )
+        self.bob = User.objects.create_user(
+            username="bob",
+            email="bob@example.com",
+            password="secure-password",
+        )
+        self.now = timezone.now()
+
+    def create_event(self, title, creator, start_at, visibility=Event.VISIBILITY_PUBLIC):
+        return Event.objects.create(
+            title=title,
+            sport="running",
+            level="all",
+            languages=[],
+            location_name="Prater",
+            location_address="Prater, Vienna",
+            latitude=48.217,
+            longitude=16.395,
+            start_at=start_at,
+            end_at=start_at + timedelta(hours=1),
+            max_slots=10,
+            creator=creator,
+            visibility=visibility,
+        )
+
+    def test_public_profile_activities_include_public_created_and_joined_events_only(self):
+        past = self.create_event(
+            "Past run",
+            self.bob,
+            self.now - timedelta(days=2),
+        )
+        future = self.create_event(
+            "Future run",
+            self.alex,
+            self.now + timedelta(days=2),
+        )
+        private = self.create_event(
+            "Private run",
+            self.bob,
+            self.now + timedelta(days=3),
+            visibility=Event.VISIBILITY_PRIVATE,
+        )
+        EventParticipant.objects.create(
+            user=self.bob,
+            event=future,
+            status=EventParticipant.STATUS_ATTENDING,
+        )
+        EventParticipant.objects.create(
+            user=self.bob,
+            event=private,
+            status=EventParticipant.STATUS_ATTENDING,
+        )
+
+        self.client.force_authenticate(None)
+        response = self.client.get(f"/api/users/{self.bob.pk}/activities/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([item["title"] for item in response.data], [past.title, future.title])
+        self.assertNotIn(private.title, {item["title"] for item in response.data})
+
+    def test_owner_can_see_private_activity(self):
+        private = self.create_event(
+            "Private run",
+            self.bob,
+            self.now + timedelta(days=1),
+            visibility=Event.VISIBILITY_PRIVATE,
+        )
+
+        self.client.force_authenticate(self.bob)
+        response = self.client.get(f"/api/users/{self.bob.pk}/activities/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data[0]["title"], private.title)

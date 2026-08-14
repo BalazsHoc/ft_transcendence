@@ -1,7 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Q
+from django.db.models import Count, Q
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions
 
+from events.models import Event, EventParticipant
+from events.serializers import EventSerializer
 from .models import Friendship
 from .serializers import UserSearchSerializer
 
@@ -68,3 +71,42 @@ class UserProfileView(generics.RetrieveAPIView):
             if relation.user_low_id != relation.user_high_id
         }
         return context
+
+
+class UserActivityView(generics.ListAPIView):
+    """Return the public event history for a profile.
+
+    A signed-in user can also see their own private events. Private events of
+    another profile are intentionally excluded from this public timeline.
+    """
+
+    serializer_class = EventSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        profile_user = get_object_or_404(User, pk=self.kwargs["pk"])
+        queryset = (
+            Event.objects.select_related("creator", "group")
+            .prefetch_related("participants", "participants__user")
+            .annotate(
+                attending_count=Count(
+                    "participants",
+                    filter=Q(participants__status=EventParticipant.STATUS_ATTENDING),
+                ),
+                waiting_count=Count(
+                    "participants",
+                    filter=Q(participants__status=EventParticipant.STATUS_WAITING),
+                ),
+            )
+            .filter(
+                Q(creator=profile_user)
+                | Q(participants__user=profile_user)
+            )
+        )
+
+        request = self.request
+        is_own_profile = request.user.is_authenticated and request.user.pk == profile_user.pk
+        if not is_own_profile:
+            queryset = queryset.filter(visibility=Event.VISIBILITY_PUBLIC)
+
+        return queryset.distinct().order_by("start_at")
