@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../features/auth/AuthContext";
 import { CalendarDays, Clock3, MapPin, PencilLine, Users } from "lucide-react";
 import { EventChat } from "../components/chat/EventChat";
 import { ApiLog } from "../components/shared/ApiLog";
@@ -10,6 +9,7 @@ import Button from "../components/shared/Button";
 import { EventItem } from "../types/api";
 import { getEvent, joinEvent, leaveEvent } from "../api/eventsApi";
 import { DEFAULT_AVATAR_SRC, DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../utils/media";
+import { useAuth } from "../features/auth/AuthContext";
 
 const getParticipantAvatar = (avatar?: string | null) =>
   resolveMediaUrl(avatar, DEFAULT_AVATAR_SRC);
@@ -22,9 +22,6 @@ const formatEventDateTime = (value: string) =>
     hour: "numeric",
     minute: "2-digit",
   });
-import eventStyles from "../components/events/EventCard.module.css";
-import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../utils/media";
-import { Badge } from "../components/shared/Badge";
 
 export function EventDetailsPage() {
   const { t } = useTranslation();
@@ -66,7 +63,7 @@ export function EventDetailsPage() {
   }
 
   useEffect(() => {
-    load();
+    void load();
   }, [eventId]);
 
   if (!event || !eventId) {
@@ -74,15 +71,9 @@ export function EventDetailsPage() {
   }
 
   const userStatus = event.user_status?.status;
-
-  // Use auth user to determine logged-in state.
   const isLoggedIn = Boolean(user);
-
-  const isOwner = Boolean(user && event && user.id === event.creator?.id);
-
-  // Both attending and waiting users are considered joined.
-  const isJoined =
-    userStatus === "attending" || userStatus === "waiting";
+  const isOwner = Boolean(user && event.creator && user.id === event.creator.id);
+  const isJoined = userStatus === "attending" || userStatus === "waiting";
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
@@ -102,11 +93,8 @@ export function EventDetailsPage() {
           <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <Badge variant={isJoined ? "green" : "default"}>
-                {isJoined
-                  ? t("event.attending")
-                  : t("event.notJoined")}
+                {isJoined ? t("event.attending") : t("event.notJoined")}
               </Badge>
-
               <Badge>{event.sport}</Badge>
               <Badge>{event.level}</Badge>
             </div>
@@ -115,63 +103,46 @@ export function EventDetailsPage() {
               {event.title}
             </h1>
           </div>
-    <>
-      <h1>{event.title}</h1>
-      <section className="card">
-        <img
-          src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
-          alt={event.title}
-          style={{
-            width: "100%",
-            maxHeight: "320px",
-            objectFit: "cover",
-            borderRadius: "12px",
-            marginBottom: "16px",
-          }}
-          onError={(eventNode: any) => {
-            eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
-          }}
-        />
-        <p>{event.description}</p>
-        {event.group ? (
-          <p>
-            <Link to={`/groups/${event.group.id}`} className="inline-flex">
-              <Badge variant="yellow">
-                {t("event.groupEvent")}: {event.group.name}
-              </Badge>
-            </Link>
-          </p>
-        ) : null}
-        <p>
-          {t("event.sport")}: {event.sport}
-        </p>
-        <p>
-          {t("event.level")}: {event.level}
-        </p>
-        <p>
-          {t("event.location")}: {event.location_name}
-        </p>
-        {event.location_address && event.location_address !== event.location_name && (
-          <p className={eventStyles.eventAddress}>{event.location_address}</p>
-        )}
-        <p>
-          {t("event.start")}: {new Date(event.start_at).toLocaleString()}
-        </p>
-        <p>
-          {t("event.end")}: {new Date(event.end_at).toLocaleString()}
-        </p>
-        <p>
-          Slots: {event.attending_count}/{event.max_slots}, waiting: {event.waiting_count}
-        </p>
-        <div className="row">
-          <button onClick={join}>{t("common.join")}</button>
-          <button onClick={leave}>{t("common.leave")}</button>
-          <Link className="button secondary" to={`/events/${event.id}/edit`}>
-            {t("common.edit")}
-          </Link>
         </div>
 
         <div className="p-5 sm:p-6 lg:p-8">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            {event.group ? (
+              <Link to={`/groups/${event.group.id}`} className="inline-flex">
+                <Badge variant="yellow">
+                  {t("event.groupEvent")}: {event.group.name}
+                </Badge>
+              </Link>
+            ) : (
+              <span />
+            )}
+
+            <div className="ml-auto flex flex-wrap gap-3">
+              {isLoggedIn && isJoined && (
+                <Button variant="primary" onClick={leave}>
+                  {t("common.leave")}
+                </Button>
+              )}
+
+              {isLoggedIn && !isJoined && (
+                <Button variant="primary" onClick={join}>
+                  {t("common.join")}
+                </Button>
+              )}
+
+              {isOwner && (
+                <Link to={`/events/${event.id}/edit`}>
+                  <Button variant="secondary" className="w-full">
+                    <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
+                      <PencilLine size={16} />
+                      {t("common.edit")}
+                    </span>
+                  </Button>
+                </Link>
+              )}
+            </div>
+          </div>
+
           <div className="grid gap-6 lg:grid-cols-[1.8fr_0.9fr]">
             <div>
               <p className="mb-5 text-base leading-7 text-[var(--muted)]">
@@ -211,12 +182,11 @@ export function EventDetailsPage() {
                     {event.location_name}
                   </p>
 
-                  {event.location_address &&
-                    event.location_address !== event.location_name && (
-                      <p className="mt-1 m-0 text-sm text-[var(--muted)]">
-                        {event.location_address}
-                      </p>
-                    )}
+                  {event.location_address && event.location_address !== event.location_name && (
+                    <p className="mt-1 m-0 text-sm text-[var(--muted)]">
+                      {event.location_address}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -249,37 +219,6 @@ export function EventDetailsPage() {
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-wrap gap-3">
-                  {isLoggedIn && isJoined && (
-                    <Button variant="primary" onClick={leave}>
-                      {t("common.leave")}
-                    </Button>
-                  )}
-
-                  {isLoggedIn && !isJoined && (
-                    <Button variant="primary" onClick={join}>
-                      {t("common.join")}
-                    </Button>
-                  )}
-
-                  {isOwner && (
-                    <Link
-                      to={`/events/${event.id}/edit`}
-                      className="flex-1"
-                    >
-                      <Button
-                        variant="secondary"
-                        className="w-full"
-                      >
-                        <span className="inline-flex items-center justify-center gap-2 whitespace-nowrap">
-                          <PencilLine size={16} />
-                          {t("common.edit")}
-                        </span>
-                      </Button>
-                    </Link>
-                  )}
-              </div>
-
               <div className="mt-5 border-t border-[var(--surface-border)] pt-4">
                 <div className="space-y-3">
                   {event.participants.length === 0 ? (
@@ -294,16 +233,11 @@ export function EventDetailsPage() {
                       >
                         <div className="flex min-w-0 items-center gap-3">
                           <img
-                            src={getParticipantAvatar(
-                              participant.user.avatar
-                            )}
+                            src={getParticipantAvatar(participant.user.avatar)}
                             alt={participant.user.username}
                             className="h-9 w-9 rounded-full object-cover ring-2 ring-[var(--surface-border)]"
-                            onError={(
-                              eventNode: React.SyntheticEvent<HTMLImageElement>
-                            ) => {
-                              eventNode.currentTarget.src =
-                                DEFAULT_AVATAR_SRC;
+                            onError={(eventNode: any) => {
+                              eventNode.currentTarget.src = DEFAULT_AVATAR_SRC;
                             }}
                           />
 
@@ -313,20 +247,12 @@ export function EventDetailsPage() {
                             </p>
 
                             <p className="m-0 text-xs text-[var(--muted)]">
-                              {participant.queue_position
-                                ? `#${participant.queue_position}`
-                                : ""}
+                              {participant.queue_position ? `#${participant.queue_position}` : ""}
                             </p>
                           </div>
                         </div>
 
-                        <Badge
-                          variant={
-                            participant.status === "attending"
-                              ? "green"
-                              : "default"
-                          }
-                        >
+                        <Badge variant={participant.status === "attending" ? "green" : "default"}>
                           {participant.status}
                         </Badge>
                       </div>

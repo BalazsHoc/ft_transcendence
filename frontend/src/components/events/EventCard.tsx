@@ -1,17 +1,10 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { MapPin } from "lucide-react";
-
 import { EventItem } from "../../types/api";
-import {
-	DEFAULT_AVATAR_SRC,
-	DEFAULT_EVENT_IMAGE_SRC,
-	resolveMediaUrl,
-} from "../../utils/media";
-
+import { DEFAULT_AVATAR_SRC, DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
 import { Badge } from "../shared/Badge";
 import Button from "../shared/Button";
-
 import styles from "./EventCard.module.css";
 
 type ImageErrorEvent = {
@@ -82,20 +75,6 @@ export function EventCard({
 								? t("event.attending")
 								: t("event.notJoined")}
 						</Badge>
-					</div>
-
-					<div className="min-h-[180px]" aria-hidden="true" />
-				</Link>
-
-				<div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-[18px]">
-				<div className="mb-3 flex items-start justify-between gap-3">
-					<h3 className="m-0 min-w-0 flex-1 text-lg font-semibold text-white">
-						<Link to={`/events/${event.id}`}>{event.title}</Link>
-					</h3>
-					<div className="min-w-0 flex-1">
-						<h3 className="m-0 text-lg font-semibold text-[var(--text)] text-3xl">
-							<Link to={`/events/${event.id}`}>{event.title}</Link>
-						</h3>
 						{event.group ? (
 							<Link
 								to={`/groups/${event.group.id}`}
@@ -108,6 +87,15 @@ export function EventCard({
 							</Link>
 						) : null}
 					</div>
+
+					<div className="min-h-[180px]" aria-hidden="true" />
+				</Link>
+
+				<div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-[18px]">
+				<div className="mb-3 flex items-start justify-between gap-3">
+					<h3 className="m-0 min-w-0 flex-1 text-lg font-semibold text-white">
+						<Link to={`/events/${event.id}`}>{event.title}</Link>
+					</h3>
 
 					<div
 						className={`${styles.badges} flex shrink-0 flex-wrap justify-end gap-2`}
