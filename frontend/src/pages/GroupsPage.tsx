@@ -220,7 +220,6 @@ export function GroupsPage() {
                 : undefined
             }
             memberCount={groups[0].member_count}
-            dateAt={groups[0].created_at}
             timeLabel={groups[0].location_name || undefined}
             detailsTo={`/groups/${groups[0].id}`}
           />
@@ -235,7 +234,7 @@ export function GroupsPage() {
                   image={group.cover_image || DEFAULT_GROUP_IMAGE_SRC}
                   title={group.name}
                   categoryLabel={t(`sports.${group.sport}`)}
-                  dateAt={group.created_at}
+                  memberCount={group.member_count}
                   timeLabel={group.location_name || undefined}
                   detailsTo={`/groups/${group.id}`}
                 />
