@@ -194,7 +194,17 @@
       "signInRequired": "Увійдіть або створіть обліковий запис, щоб приєднатися до цієї події.",
       "loading": "Завантаження…",
       "empty": "Немає майбутніх подій.",
-      "loadError": "Не вдалося завантажити події."},
+      "loadError": "Не вдалося завантажити події.",
+      "details": "Деталі",
+      "demoOneTitle": "Morning Coffee Spin: Kahlenberg",
+      "demoOneMonth": "Oct",
+      "demoOneTime": "06:30 AM",
+      "demoOneIntensity": "Moderate (25km/h)",
+      "demoTwoTitle": "Donauinsel Sprint Intervals",
+      "demoTwoMonth": "Oct",
+      "demoTwoTime": "06:00 PM",
+      "demoTwoIntensity": "High Intensity"
+    },
     "recruiting": {
       "title": "Рекрутинг",
       "description": "We are currently looking for experienced ride leaders to guide our weekend long routes.",
@@ -430,7 +440,10 @@
     "leaveConfirmTitle": "Покинути цю групу?",
     "leaveConfirm": "Покинути \"{{title}}\"? Ви можете знову подати заявку пізніше.",
     "leaveSuccess": "Ви покинули групу.",
-    "leaveError": "Не вдалося покинути цю групу. Спробуйте ще раз."
+    "leaveError": "Не вдалося покинути цю групу. Спробуйте ще раз.",
+    "roleAdmin": "Адмін",
+    "roleMember": "Учасник",
+    "membersEmpty": "Ще немає активних учасників."
   },
   "groupsTest": {
     "selectSport": "Оберіть вид спорту",

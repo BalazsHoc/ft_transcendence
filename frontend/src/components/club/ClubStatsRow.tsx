@@ -20,6 +20,9 @@ type ClubStatsRowProps = {
     /** Profile route for the owner. */
     to?: string | null;
   };
+  onMembersClick?: () => void;
+  membersExpanded?: boolean;
+  membersListId?: string;
 };
 
 export function ClubStatsRow({
@@ -28,6 +31,9 @@ export function ClubStatsRow({
   middleLabel,
   established,
   owner,
+  onMembersClick,
+  membersExpanded = false,
+  membersListId,
 }: ClubStatsRowProps) {
   const { t } = useTranslation();
   const ownerTileClassName =
@@ -58,6 +64,9 @@ export function ClubStatsRow({
         icon={CLUB_STAT_ICONS.members}
         value={members}
         label={t("club.stats.activeMembers")}
+        onClick={onMembersClick}
+        expanded={membersExpanded}
+        controlsId={membersListId}
       />
       <ClubStatCard
         icon={CLUB_STAT_ICONS.score}
