@@ -6,6 +6,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .sports import sport_catalog
+from .districts import district_catalog
 
 @api_view(['GET'])
 def health(request):
@@ -15,6 +16,11 @@ def health(request):
 @api_view(['GET'])
 def sports(request):
     return Response(sport_catalog())
+
+
+@api_view(['GET'])
+def districts(request):
+    return Response(district_catalog())
 
 urlpatterns=[
     path('', health),
@@ -28,6 +34,7 @@ urlpatterns=[
     path('api/groups/', include('chat.group_urls')),
     path('api/groups/', include('groups.urls')),
     path('api/meta/sports/', sports, name='sports-catalog'),
+    path('api/meta/districts/', districts, name='districts-catalog'),
     path('api/geo/', include('geo.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),

@@ -2,10 +2,11 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from core.districts import DISTRICT_CHOICES
 
 class User(AbstractUser):
     id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    district=models.CharField(max_length=100, blank=True)
+    district=models.CharField(max_length=4, choices=DISTRICT_CHOICES, blank=True)
     bio=models.TextField(blank=True)
     languages=models.JSONField(default=list, blank=True)
     interests=models.JSONField(default=list, blank=True)
