@@ -29,12 +29,12 @@ export function LoginPage() {
       <PhotoBackdrop />
 
       <div className="relative z-10 w-full max-w-md rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)]/95 p-8 shadow-[0_10px_30px_rgba(0,0,0,0.15)] backdrop-blur-xl">
-        <h1 className="mb-6 font-display text-2xl font-bold text-[var(--text)]">
+        <h1 className={`mb-6 font-display text-2xl font-bold ${styles.pageTitle}`}>
           {t("auth.loginTitle")}
         </h1>
         <form className={styles.formCard} onSubmit={submit}>
           <label>
-            {t("auth.email")}
+            <span className={styles.labelText}>{t("auth.email")}</span>
             <input
               type="email"
               value={email}
@@ -44,7 +44,7 @@ export function LoginPage() {
             />
           </label>
           <label>
-            {t("auth.password")}
+            <span className={styles.labelText}>{t("auth.password")}</span>
             <input
               type="password"
               value={password}
