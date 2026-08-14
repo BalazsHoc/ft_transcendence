@@ -238,12 +238,7 @@
     "visibility": "Visibility",
     "public": "Public",
     "private": "Private",
-    "groupEvent": "Group event",
-    "back": "Back",
-    "loading": "Loading event...",
-    "loadError": "Unable to load this event.",
-    "chatJoinPrompt": "Join this event to use the chat.",
-    "participantsEmpty": "No one has joined this event yet."
+    "groupEvent": "Group event"
   },
   "createEvent": {
     "title": "Create event",
