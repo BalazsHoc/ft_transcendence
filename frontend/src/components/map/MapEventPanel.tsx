@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { EventItem } from "../../types/api";
-import { DEFAULT_AVATAR_SRC, DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
+import { DEFAULT_AVATAR_SRC, getDefaultEventImage, resolveMediaUrl } from "../../utils/media";
 import Button from "../shared/Button";
 import styles from "./MapEventPanel.module.css";
 
@@ -41,16 +41,17 @@ export function MapEventPanel({ event, busy, onJoin, onLeave }: Props) {
   const isAttending = event.user_status?.status === "attending";
   const isWaiting = event.user_status?.status === "waiting";
   const spotsLeft = Math.max(event.max_slots - event.attending_count, 0);
+  const fallbackImage = getDefaultEventImage(event.sport);
 
   return (
     <section className={styles.panel}>
       <div className={styles.imageWrap}>
         <img
           className={styles.image}
-          src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
+          src={resolveMediaUrl(event.image, fallbackImage)}
           alt={event.title}
           onError={(node: any) => {
-            node.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
+            node.currentTarget.src = fallbackImage;
           }}
         />
         <span className={styles.categoryBadge}>{capitalize(event.sport)}</span>

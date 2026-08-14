@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Badge } from "../shared/Badge";
 import Button from "../shared/Button";
 import {
-  DEFAULT_EVENT_IMAGE_SRC,
+  DEFAULT_GROUP_IMAGE_SRC,
   resolveMediaUrl,
 } from "../../utils/media";
 
@@ -39,7 +39,7 @@ export function ClubHero({
   leaveLabel,
 }: ClubHeroProps) {
   const { t } = useTranslation();
-  const imageUrl = resolveMediaUrl(coverImage, DEFAULT_EVENT_IMAGE_SRC);
+  const imageUrl = resolveMediaUrl(coverImage, DEFAULT_GROUP_IMAGE_SRC);
 
   return (
     <div>
