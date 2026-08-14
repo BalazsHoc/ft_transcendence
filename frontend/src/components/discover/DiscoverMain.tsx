@@ -1,5 +1,6 @@
 import { EventItem } from "../../types/api";
-import { HappeningNowSection } from "./HappeningNowSection";
+import { CuratedForYouSection } from "./CuratedForYouSection";
+import { EventsSection } from "./EventsSection";
 
 type DiscoverMainProps = {
   events: EventItem[];
@@ -9,7 +10,8 @@ type DiscoverMainProps = {
 export function DiscoverMain({ events, onCardClick }: DiscoverMainProps) {
   return (
     <div className="discover-main">
-      <HappeningNowSection events={events} onCardClick={onCardClick} />
+      <EventsSection events={events} onCardClick={onCardClick} />
+      {/* <CuratedForYouSection /> */}
     </div>
   );
 }
