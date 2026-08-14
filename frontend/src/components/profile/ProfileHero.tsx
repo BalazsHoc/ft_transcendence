@@ -63,7 +63,7 @@ export function ProfileHero({ user, onEditClick }: ProfileHeroProps) {
                   key={tag}
                   className="rounded-full bg-[var(--bg)] px-3 py-1 text-xs font-medium text-[var(--muted)]"
                 >
-                  {tag}
+                  {t(`sports.${tag}`, { defaultValue: tag })}
                 </span>
               ))}
             </div>

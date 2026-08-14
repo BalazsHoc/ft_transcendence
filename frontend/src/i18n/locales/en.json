@@ -108,6 +108,18 @@
     "volleyball": "Volleyball",
     "yoga": "Yoga"
   },
+  "languageNames": {
+    "en": "English",
+    "de": "German",
+    "ua": "Ukrainian",
+    "ru": "Russian",
+    "fr": "French",
+    "es": "Spanish",
+    "it": "Italian",
+    "pl": "Polish",
+    "tr": "Turkish",
+    "hu": "Hungarian"
+  },
   "discover": {
     "title": "Discover events",
     "sport": "Sport",
@@ -356,6 +368,8 @@
     "noActivity": "No activity yet. Join an event to get started.",
     "about": "About",
     "languages": "Languages",
+    "sports": "Sports",
+    "loadingSports": "Loading sports...",
     "focusAreas": "Focus Areas",
     "notSet": "Not set",
     "achievements": "Achievements",
@@ -364,8 +378,8 @@
     "bio": "Bio",
     "noBio": "No bio yet.",
     "district": "District",
-    "languagesCsv": "Languages (comma separated)",
-    "interestsCsv": "Interests (comma separated)",
+    "languagesCsv": "Languages",
+    "interestsCsv": "Sports",
     "save": "Save",
     "cancel": "Cancel",
     "achievementWorkouts": "100 Workouts",

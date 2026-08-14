@@ -26,3 +26,4 @@ Here we will share our thoughts on our project workflow.
 | Map page | Rewrote the map page with Leaflet markers, filters, zoom controls and an event detail panel | DONE | Mina |
 | Profile page | Built the original profile page layout — side nav, hero, edit form, activity and achievements cards | DONE | Mina |
 | Email authentication and registration validation | Login uses email; registration validates name, email, password confirmation and a backend-provided Vienna district list on both frontend and backend | DONE | Alex |
+| Profile preference selectors | Replaced comma-separated profile inputs with translated language and sport checkbox lists; sports load from the backend catalog while preserving the existing API field | DONE | Alex |
