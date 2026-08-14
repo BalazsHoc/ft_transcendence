@@ -18,3 +18,10 @@ Here we will share our thoughts on our project workflow.
 | Group chat | Added active-member-only REST/WebSocket group chats with recipient notifications and group-page UI | DONE | Alex |
 | Group event creation | Group owners can create public or private events from the group page; event cards and details link back to the group | DONE | Alex |
 | Map marker semantics | Map markers use separate colors for individual and group events instead of sport-specific colors, with a localized legend | DONE | Alex |
+| Chats page redesign | Restyled the personal messages and event chats page with cards, avatars, status dots and chat bubbles, and made the layout fill the screen instead of scrolling | DONE | Mina |
+| Header | Split the header into small reusable pieces — brand, nav, user menu, language switcher — plus shared Button/IconButton components | DONE | Mina |
+| Sidebar and filters | Built the Discover page's filter sidebar (category, level, time) as one reusable FilterGroup component | DONE | Mina |
+| Discover page | Built the Happening Now and Curated for You sections with reusable event cards and a shared Badge component | DONE | Mina |
+| Landing page | Added the logged-out welcome page with a hero banner and curated experience cards | DONE | Mina |
+| Map page | Rewrote the map page with Leaflet markers, filters, zoom controls and an event detail panel | DONE | Mina |
+| Profile page | Built the original profile page layout — side nav, hero, edit form, activity and achievements cards | DONE | Mina |
