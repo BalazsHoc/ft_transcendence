@@ -177,7 +177,7 @@ export function EventDetailsPage() {
                   </p>
 
                   <p className="mt-1 text-xl font-semibold text-[var(--text)]">
-                    {event.attending_count}/{event.max_slots}
+                    {event.attending_count}/{event.max_slots === 0 ? "∞" : event.max_slots}
                   </p>
                 </div>
 
