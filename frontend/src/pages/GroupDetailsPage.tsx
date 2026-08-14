@@ -15,6 +15,7 @@ import Button from "../components/shared/Button";
 import { ConfirmDialog } from "../components/shared/ConfirmDialog";
 import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
 import { GroupChat } from "../components/chat/GroupChat";
+import { GroupMembersList } from "../components/groups/GroupMembersList";
 
 function levelLabel(level: EventItem["level"], t: (key: string) => string) {
   const key = `discover.${level}` as const;
@@ -87,6 +88,7 @@ export function GroupDetailsPage() {
   const [rsvpError, setRsvpError] = useState<string | null>(null);
   const [rsvpInfo, setRsvpInfo] = useState<string | null>(null);
   const [rsvpNeedsAuth, setRsvpNeedsAuth] = useState(false);
+  const [membersOpen, setMembersOpen] = useState(false);
   const applyErrorTimer = useRef<number | null>(null);
 
   useEffect(() => {
@@ -361,6 +363,9 @@ export function GroupDetailsPage() {
     group.max_members > 0
       ? `${group.member_count}/${group.max_members}`
       : `${group.member_count}/∞`;
+  const activeMemberships = (group.memberships ?? []).filter(
+    (membership) => membership.status === "active",
+  );
 
   return (
     <div className="club-page relative">
@@ -455,7 +460,17 @@ export function GroupDetailsPage() {
             avatarUrl: group.owner.avatar,
             to: isOwnProfile ? "/profile" : `/users/${group.owner.id}`,
           }}
+          onMembersClick={() => setMembersOpen((open) => !open)}
+          membersExpanded={membersOpen}
+          membersListId="group-members-list"
         />
+
+        {membersOpen ? (
+          <GroupMembersList
+            memberships={activeMemberships}
+            currentUserId={user?.id}
+          />
+        ) : null}
 
         {isActiveMember && (
           <GroupChat groupId={group.id} groupName={group.name} />
