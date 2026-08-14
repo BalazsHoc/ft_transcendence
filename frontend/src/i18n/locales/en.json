@@ -289,7 +289,12 @@
     "authRequired": "Sign in to use personal messages.",
     "loadError": "Unable to load conversations.",
     "sendError": "Unable to send the message.",
-    "wsError": "Real-time connection error."
+    "wsError": "Real-time connection error.",
+    "description": "Chat privately with friends or with people joined to the same event.",
+    "you": "You",
+    "filterAll": "All",
+    "filterPersonal": "Personal",
+    "filterEvents": "Events"
   },
   "friends": {
     "title": "Friends",

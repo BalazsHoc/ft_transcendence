@@ -289,7 +289,12 @@
     "authRequired": "Melde dich an, um private Nachrichten zu nutzen.",
     "loadError": "Unterhaltungen konnten nicht geladen werden.",
     "sendError": "Nachricht konnte nicht gesendet werden.",
-    "wsError": "Fehler bei der Echtzeitverbindung."
+    "wsError": "Fehler bei der Echtzeitverbindung.",
+    "description": "Chatte privat mit Freunden oder mit Teilnehmenden desselben Events.",
+    "you": "Du",
+    "filterAll": "Alle",
+    "filterPersonal": "Privat",
+    "filterEvents": "Events"
   },
   "friends": {
     "title": "Freunde",
