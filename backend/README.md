@@ -82,6 +82,38 @@ Swagger UI:
 http://localhost:8000/api/docs/
 ```
 
+The read-only public API is documented in the same Swagger UI under the
+`Public API` tag. It uses an `X-API-Key` header and is rate-limited per key and
+source IP. Issue a key from the backend directory (the raw key is printed only
+once):
+
+```bash
+python manage.py create_public_api_key --name "local integration"
+```
+
+Public API examples:
+
+```text
+GET /api/public/v1/health/
+GET /api/public/v1/sports/
+GET /api/public/v1/districts/
+GET /api/public/v1/events/
+GET /api/public/v1/groups/
+GET /api/public/v1/users/
+```
+
+Send the issued key with every request:
+
+```bash
+curl -H "X-API-Key: tr_pub_<issued-key>" http://localhost:8000/api/public/v1/groups/
+```
+
+The database stores only a salted hash of the key. Revoke keys from Django
+admin or issue a replacement through the management command.
+
+See [PUBLIC_API.md](PUBLIC_API.md) for the complete endpoint and query
+parameter contract.
+
 Admin:
 
 ```text
@@ -197,10 +229,10 @@ marks notifications as read when the user opens them.
 From the backend directory:
 
 ```bash
-python manage.py test core groups social chat
+python manage.py test core groups social chat public_api
 ```
 
-The repository currently keeps its test modules in those four app packages;
+The repository currently keeps its test modules in those five app packages;
 passing the labels explicitly runs the complete local suite.
 
 ## MVP Scope

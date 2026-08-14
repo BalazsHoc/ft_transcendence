@@ -36,6 +36,7 @@ urlpatterns=[
     path('api/meta/sports/', sports, name='sports-catalog'),
     path('api/meta/districts/', districts, name='districts-catalog'),
     path('api/geo/', include('geo.urls')),
+    path('api/public/v1/', include('public_api.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]
