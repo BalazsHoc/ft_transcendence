@@ -9,7 +9,7 @@ import Button from "../components/shared/Button";
 import { EventItem } from "../types/api";
 import { getEvent, joinEvent, leaveEvent } from "../api/eventsApi";
 import { getGroup } from "../api/groupsApi";
-import { DEFAULT_AVATAR_SRC, DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../utils/media";
+import { DEFAULT_AVATAR_SRC, getDefaultEventImage, resolveMediaUrl } from "../utils/media";
 import { useAuth } from "../features/auth/AuthContext";
 
 const getParticipantAvatar = (avatar?: string | null) =>
@@ -101,17 +101,18 @@ export function EventDetailsPage() {
   const isJoined = userStatus === "attending" || userStatus === "waiting";
   const isGroupEvent = Boolean(event.group);
   const canJoinEvent = !isGroupEvent || isGroupMember;
+  const fallbackImage = getDefaultEventImage(event.sport);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="overflow-hidden rounded-[28px] border border-[var(--surface-border)] bg-[var(--surface)] shadow-[0_12px_30px_rgba(15,23,42,0.08)]">
         <div className="relative h-72 overflow-hidden sm:h-80">
           <img
-            src={resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}
+            src={resolveMediaUrl(event.image, fallbackImage)}
             alt={event.title}
             className="h-full w-full object-cover"
             onError={(eventNode: any) => {
-              eventNode.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
+              eventNode.currentTarget.src = fallbackImage;
             }}
           />
 

@@ -5,7 +5,7 @@ import { EventPayload } from "../../api/eventsApi";
 import { rememberSearch } from "../../api/geoApi";
 import { LocationAutocomplete } from "../geo/LocationAutocomplete";
 import styles from "../shared/FormCard.module.css";
-import { DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
+import { getDefaultEventImage, resolveMediaUrl } from "../../utils/media";
 import { useSports } from "../../hooks/useSports";
 
 function toLocalInputValue(value?: string) {
@@ -60,12 +60,12 @@ export function EventForm({
   );
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState(
-    resolveMediaUrl(initialEvent?.image, DEFAULT_EVENT_IMAGE_SRC),
+    resolveMediaUrl(initialEvent?.image, getDefaultEventImage(initialEvent?.sport)),
   );
 
   useEffect(() => {
     if (!imageFile) {
-      setImagePreview(resolveMediaUrl(initialEvent?.image, DEFAULT_EVENT_IMAGE_SRC));
+      setImagePreview(resolveMediaUrl(initialEvent?.image, getDefaultEventImage(sport)));
       return;
     }
 
@@ -73,7 +73,7 @@ export function EventForm({
     setImagePreview(previewUrl);
 
     return () => URL.revokeObjectURL(previewUrl);
-  }, [imageFile, initialEvent?.image]);
+  }, [imageFile, initialEvent?.image, sport]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -173,7 +173,7 @@ export function EventForm({
             borderRadius: "12px",
           }}
         onError={(event: any) => {
-          event.currentTarget.src = DEFAULT_EVENT_IMAGE_SRC;
+          event.currentTarget.src = getDefaultEventImage(sport);
         }}
       />
 
