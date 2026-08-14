@@ -242,7 +242,8 @@
     "back": "Back",
     "loading": "Loading event...",
     "loadError": "Unable to load this event.",
-    "chatJoinPrompt": "Join this event to use the chat."
+    "chatJoinPrompt": "Join this event to use the chat.",
+    "participantsEmpty": "No one has joined this event yet."
   },
   "createEvent": {
     "title": "Create event",

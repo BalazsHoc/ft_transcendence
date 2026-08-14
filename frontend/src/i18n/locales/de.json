@@ -242,7 +242,8 @@
     "back": "Zurück",
     "loading": "Event wird geladen...",
     "loadError": "Event konnte nicht geladen werden.",
-    "chatJoinPrompt": "Tritt dem Event bei, um den Chat zu nutzen."
+    "chatJoinPrompt": "Tritt dem Event bei, um den Chat zu nutzen.",
+    "participantsEmpty": "Noch niemand ist diesem Event beigetreten."
   },
   "createEvent": {
     "title": "Event erstellen",
