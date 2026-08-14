@@ -128,7 +128,7 @@ export function ChatsPage() {
           <h1 className="font-display text-3xl font-bold text-[var(--text)] md:text-4xl">
             {t("chats.title")}
           </h1>
-          <p className="text-sm text-[var(--muted)] md:text-base">{t("chats.description")}</p>
+          <p className="text-sm text-[var(--text)] opacity-70 md:text-base">{t("chats.description")}</p>
         </div>
       </header>
 
@@ -145,10 +145,10 @@ export function ChatsPage() {
                 aria-selected={filter === option.value}
                 onClick={() => setFilter(option.value)}
                 className={[
-                  "flex-1 rounded-full px-3 py-1.5 text-sm font-medium transition-all",
+                  "flex-1 rounded-full px-3 py-1.5 text-sm font-medium text-white transition-all",
                   filter === option.value
-                    ? "bg-[var(--button-bg)] text-[var(--button-text)] shadow-sm"
-                    : "text-[var(--muted)] hover:text-[var(--text)]",
+                    ? "bg-[var(--button-bg)] shadow-sm"
+                    : "opacity-70 hover:opacity-100",
                 ].join(" ")}
               >
                 {t(option.labelKey)}
@@ -158,7 +158,7 @@ export function ChatsPage() {
 
           {filter !== "events" && (
           <section className="space-y-2 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-4 shadow-sm">
-            <h2 className="flex items-center justify-between gap-2 px-1 text-sm font-medium text-[var(--muted)]">
+            <h2 className="flex items-center justify-between gap-2 px-1 text-sm font-medium text-[var(--text)] opacity-70">
               <span className="flex items-center gap-2">
                 <MessageCircle size={16} />
                 {t("chats.personal")}
@@ -166,9 +166,9 @@ export function ChatsPage() {
               {conversations.length > 0 && <Badge>{conversations.length}</Badge>}
             </h2>
             {loadingConversations ? (
-              <p className="px-1 text-sm text-[var(--muted)]">{t("chats.loading")}</p>
+              <p className="px-1 text-sm text-[var(--text)] opacity-70">{t("chats.loading")}</p>
             ) : conversations.length === 0 ? (
-              <p className="px-1 text-sm text-[var(--muted)]">{t("chats.noPersonal")}</p>
+              <p className="px-1 text-sm text-[var(--text)] opacity-70">{t("chats.noPersonal")}</p>
             ) : (
               <ul className="space-y-1">
                 {conversations.map((conversation) => {
@@ -185,10 +185,10 @@ export function ChatsPage() {
                           setSelectedEventId("");
                         }}
                         className={[
-                          "flex w-full items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-all",
+                          "group flex w-full items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-all",
                           isActive
-                            ? "border-[var(--button-bg)]/30 bg-[var(--text)]/5 shadow-sm"
-                            : "border-transparent hover:bg-[var(--text)]/5",
+                            ? "border-transparent bg-[var(--surface-border)] shadow-sm"
+                            : "border-transparent hover:bg-[var(--bg)]",
                         ].join(" ")}
                       >
                         <img
@@ -203,10 +203,10 @@ export function ChatsPage() {
                           }}
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="truncate font-medium text-[var(--text)]">
+                          <p className="truncate font-medium text-white group-hover:text-[var(--text)]">
                             {conversation.peer.username}
                           </p>
-                          <p className="truncate text-xs text-[var(--muted)]">{preview}</p>
+                          <p className="truncate text-xs text-white opacity-70 group-hover:text-[var(--text)]">{preview}</p>
                         </div>
                       </button>
                     </li>
@@ -219,7 +219,7 @@ export function ChatsPage() {
 
           {filter !== "personal" && (
           <section className="space-y-2 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-4 shadow-sm">
-            <h2 className="flex items-center justify-between gap-2 px-1 text-sm font-medium text-[var(--muted)]">
+            <h2 className="flex items-center justify-between gap-2 px-1 text-sm font-medium text-[var(--text)] opacity-70">
               <span className="flex items-center gap-2">
                 <CalendarDays size={16} />
                 {t("chats.eventChats")}
@@ -227,9 +227,9 @@ export function ChatsPage() {
               {events.length > 0 && <Badge>{events.length}</Badge>}
             </h2>
             {loadingEvents ? (
-              <p className="px-1 text-sm text-[var(--muted)]">{t("chats.loadingEvents")}</p>
+              <p className="px-1 text-sm text-[var(--text)] opacity-70">{t("chats.loadingEvents")}</p>
             ) : events.length === 0 ? (
-              <p className="px-1 text-sm text-[var(--muted)]">{t("chats.noEventChats")}</p>
+              <p className="px-1 text-sm text-[var(--text)] opacity-70">{t("chats.noEventChats")}</p>
             ) : (
               <ul className="space-y-1">
                 {events.map((event) => {
@@ -243,10 +243,10 @@ export function ChatsPage() {
                           setSelectedConversationId("");
                         }}
                         className={[
-                          "flex w-full items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-all",
+                          "group flex w-full items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-all",
                           isActive
-                            ? "border-[var(--button-bg)]/30 bg-[var(--text)]/5 shadow-sm"
-                            : "border-transparent hover:bg-[var(--text)]/5",
+                            ? "border-transparent bg-[var(--surface-border)] shadow-sm"
+                            : "border-transparent hover:bg-[var(--bg)]",
                         ].join(" ")}
                       >
                         <span
@@ -258,8 +258,8 @@ export function ChatsPage() {
                           <CalendarDays size={18} />
                         </span>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate font-medium text-[var(--text)]">{event.title}</p>
-                          <p className="truncate text-xs text-[var(--muted)]">{t(`sports.${event.sport}`)}</p>
+                          <p className="truncate font-medium text-white group-hover:text-[var(--text)]">{event.title}</p>
+                          <p className="truncate text-xs text-white opacity-70 group-hover:text-[var(--text)]">{t(`sports.${event.sport}`)}</p>
                         </div>
                       </button>
                     </li>
@@ -277,11 +277,11 @@ export function ChatsPage() {
           ) : selectedEvent ? (
             <EventChat eventId={selectedEvent.id} eventTitle={selectedEvent.title} />
           ) : (
-            <div className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-[var(--surface-border)] bg-[var(--surface)]/50 text-center">
+            <div className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-[var(--surface-border)] bg-[var(--surface)] text-center">
               <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg)] text-[var(--muted)]">
                 <MessageCircle size={28} />
               </span>
-              <p className="max-w-xs text-sm text-[var(--muted)]">{t("chats.empty")}</p>
+              <p className="max-w-xs text-sm text-[var(--text)] opacity-70">{t("chats.empty")}</p>
             </div>
           )}
         </div>
