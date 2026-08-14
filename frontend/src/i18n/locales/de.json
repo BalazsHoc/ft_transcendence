@@ -239,7 +239,8 @@
     "visibility": "Sichtbarkeit",
     "public": "Öffentlich",
     "private": "Privat",
-    "groupEvent": "Gruppen-Event"
+    "groupEvent": "Gruppen-Event",
+    "viewGroup": "Gruppe ansehen"
   },
   "createEvent": {
     "title": "Event erstellen",

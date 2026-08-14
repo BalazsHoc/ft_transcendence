@@ -243,7 +243,8 @@
     "visibility": "Видимість",
     "public": "Публічна",
     "private": "Приватна",
-    "groupEvent": "Подія групи"
+    "groupEvent": "Подія групи",
+    "viewGroup": "Переглянути групу"
   },
   "createEvent": {
     "title": "Створити подію",
