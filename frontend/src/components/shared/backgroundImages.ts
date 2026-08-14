@@ -1,2 +1,3 @@
 export const VIENNA_SKYLINE_IMAGE =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuBOXWmfEumbEvOGRGNU7AdhHe6nQe0AG4ljK7eOfAA7VTvd_Fet511r8w-5q2bRldOVFzVgx8j1UjYPxkYBfZxha384H_RvHkDnr-pPC-DO-QALBsvAmsxSor4LVgnfkE-jDuTq5TGVEqNuMNmTMMwh4VU25z_vRXBoLGwPcjUVPLo98sZ07RUfH8W53VZBxjXaF8Jv4S9FqPsVOE22yUE3-zkklL7UUcom-SR_WxkJLiaox1ayRGxR2uUDMXy_Y1UvOyfLqzLs6NA";
+  // "https://lh3.googleusercontent.com/aida-public/AB6AXuBOXWmfEumbEvOGRGNU7AdhHe6nQe0AG4ljK7eOfAA7VTvd_Fet511r8w-5q2bRldOVFzVgx8j1UjYPxkYBfZxha384H_RvHkDnr-pPC-DO-QALBsvAmsxSor4LVgnfkE-jDuTq5TGVEqNuMNmTMMwh4VU25z_vRXBoLGwPcjUVPLo98sZ07RUfH8W53VZBxjXaF8Jv4S9FqPsVOE22yUE3-zkklL7UUcom-SR_WxkJLiaox1ayRGxR2uUDMXy_Y1UvOyfLqzLs6NA";
+"../../public/Stadtansicht-Wien.jpg";
