@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
 import { getMapStyle, MapStyleResponse } from "../api/geoApi";
 import { GeoSuggestion, EventItem } from "../types/api";
@@ -33,18 +34,8 @@ const FALLBACK_MAP_STYLE: MapStyleResponse = {
   },
 };
 
-const SPORT_COLORS: Record<string, string> = {
-  swimming: "#0ea5a5",
-  tennis: "#6366f1",
-  running: "#f59e0b",
-  cycling: "#10b981",
-  yoga: "#8b5cf6",
-};
-const DEFAULT_SPORT_COLOR = "#475569";
-
-function sportColor(sport: string) {
-  return SPORT_COLORS[(sport || "").toLowerCase()] || DEFAULT_SPORT_COLOR;
-}
+const INDIVIDUAL_EVENT_COLOR = "#2563eb";
+const GROUP_EVENT_COLOR = "#c026d3";
 
 function getCurrentMapTheme() {
   return document.body.classList.contains("dark") ? "dark" : "light";
@@ -110,6 +101,7 @@ function isToday(dateString: string) {
 }
 
 export function MapPage() {
+  const { t } = useTranslation();
   const [events, setEvents] = useState<EventItem[]>([]);
   const sports = useSports();
   const [focusPoint, setFocusPoint] = useState<GeoSuggestion | null>(null);
@@ -264,7 +256,7 @@ export function MapPage() {
 
     visibleEvents.forEach((event: EventItem) => {
       const isSelected = event.id === selectedEventId;
-      const color = sportColor(event.sport);
+      const color = event.group ? GROUP_EVENT_COLOR : INDIVIDUAL_EVENT_COLOR;
       const icon = window.L.divIcon({
         className: isSelected ? "eventMarkerSelected" : "eventMarker",
         html: `<span style="background:${color}"></span>`,
@@ -393,6 +385,24 @@ export function MapPage() {
       </div>
 
       <div className="zoomOverlay">
+        <div className="mapLegend" aria-label={t("map.markerLegend")}>
+          <span className="mapLegendItem">
+            <span
+              className="mapLegendDot"
+              style={{ backgroundColor: INDIVIDUAL_EVENT_COLOR }}
+              aria-hidden="true"
+            />
+            {t("map.individualEvent")}
+          </span>
+          <span className="mapLegendItem">
+            <span
+              className="mapLegendDot"
+              style={{ backgroundColor: GROUP_EVENT_COLOR }}
+              aria-hidden="true"
+            />
+            {t("map.groupEvent")}
+          </span>
+        </div>
         <MapZoomControls
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}

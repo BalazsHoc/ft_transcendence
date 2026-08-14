@@ -4,6 +4,9 @@ import { User } from "../../types/api";
 import { updateMe } from "../../api/authApi";
 import Button from "../shared/Button";
 import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
+import { useDistricts } from "../../hooks/useDistricts";
+import { useSports } from "../../hooks/useSports";
+import { PROFILE_LANGUAGE_CODES } from "../../data/profileLanguages";
 
 const fieldLabelClasses = "mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--muted)]";
 
@@ -15,10 +18,12 @@ type ProfileEditFormProps = {
 
 export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProps) {
   const { t } = useTranslation();
+  const districts = useDistricts();
+  const sports = useSports();
   const [district, setDistrict] = useState("");
   const [bio, setBio] = useState("");
-  const [languages, setLanguages] = useState("");
-  const [interests, setInterests] = useState("");
+  const [languages, setLanguages] = useState<string[]>([]);
+  const [sportsSelection, setSportsSelection] = useState<string[]>([]);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState(
     resolveMediaUrl(user?.avatar, DEFAULT_AVATAR_SRC),
@@ -28,8 +33,9 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
   useEffect(() => {
     setDistrict(user?.district || "");
     setBio(user?.bio || "");
-    setLanguages((user?.languages || []).join(","));
-    setInterests((user?.interests || []).join(","));
+    setLanguages([...(user?.languages || [])]);
+    // The API keeps this profile list in `interests` for backwards compatibility.
+    setSportsSelection([...(user?.interests || [])]);
   }, [user]);
 
   useEffect(() => {
@@ -47,8 +53,8 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
       await updateMe({
         district,
         bio,
-        languages: languages.split(",").map((x) => x.trim()).filter(Boolean),
-        interests: interests.split(",").map((x) => x.trim()).filter(Boolean),
+        languages,
+        interests: sportsSelection,
         avatarFile,
       });
       onSaved();
@@ -85,20 +91,71 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
         <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="sm:col-span-2">
             <span className={fieldLabelClasses}>{t("profile.district")}</span>
-            <input value={district} onChange={(e: ChangeEvent<HTMLInputElement>) => setDistrict(e.target.value)} />
+            <select
+              value={district}
+              disabled={districts.length === 0}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => setDistrict(e.target.value)}
+            >
+              <option value="">{t("auth.selectDistrict")}</option>
+              {districts.map((option) => (
+                <option key={option.code} value={option.code}>
+                  {option.code} — {option.name}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="sm:col-span-2">
             <span className={fieldLabelClasses}>{t("profile.bio")}</span>
             <textarea value={bio} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBio(e.target.value)} rows={4} />
           </label>
-          <label>
-            <span className={fieldLabelClasses}>{t("profile.languagesCsv")}</span>
-            <input value={languages} onChange={(e: ChangeEvent<HTMLInputElement>) => setLanguages(e.target.value)} />
-          </label>
-          <label>
-            <span className={fieldLabelClasses}>{t("profile.interestsCsv")}</span>
-            <input value={interests} onChange={(e: ChangeEvent<HTMLInputElement>) => setInterests(e.target.value)} />
-          </label>
+          <fieldset>
+            <legend className={fieldLabelClasses}>{t("profile.languages")}</legend>
+            <div className="grid max-h-48 grid-cols-1 gap-2 overflow-y-auto rounded-[var(--radius-button)] border border-[var(--control-border)] p-3 sm:grid-cols-2">
+              {PROFILE_LANGUAGE_CODES.map((code) => (
+                <label key={code} className="flex cursor-pointer items-center gap-2 text-sm text-[var(--text)]">
+                  <input
+                    type="checkbox"
+                    className="!h-4 !w-4 !p-0"
+                    checked={languages.includes(code)}
+                    onChange={() =>
+                      setLanguages((current) =>
+                        current.includes(code)
+                          ? current.filter((value) => value !== code)
+                          : [...current, code],
+                      )
+                    }
+                  />
+                  {t(`languageNames.${code}`)}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend className={fieldLabelClasses}>{t("profile.sports")}</legend>
+            <div className="grid max-h-48 grid-cols-1 gap-2 overflow-y-auto rounded-[var(--radius-button)] border border-[var(--control-border)] p-3 sm:grid-cols-2">
+              {sports.length > 0 ? (
+                sports.map((sportOption) => (
+                  <label key={sportOption.code} className="flex cursor-pointer items-center gap-2 text-sm text-[var(--text)]">
+                    <input
+                      type="checkbox"
+                      className="!h-4 !w-4 !p-0"
+                      checked={sportsSelection.includes(sportOption.code)}
+                      onChange={() =>
+                        setSportsSelection((current) =>
+                          current.includes(sportOption.code)
+                            ? current.filter((value) => value !== sportOption.code)
+                            : [...current, sportOption.code],
+                        )
+                      }
+                    />
+                    {t(`sports.${sportOption.code}`, { defaultValue: sportOption.code })}
+                  </label>
+                ))
+              ) : (
+                <p className="text-sm text-[var(--muted)]">{t("profile.loadingSports")}</p>
+              )}
+            </div>
+          </fieldset>
         </div>
       </div>
 

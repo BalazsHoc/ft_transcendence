@@ -7,7 +7,7 @@ import Button from "../shared/Button";
 
 type ProfileHeroProps = {
   user: User | null;
-  onEditClick: () => void;
+  onEditClick?: () => void;
 };
 
 export function ProfileHero({ user, onEditClick }: ProfileHeroProps) {
@@ -49,7 +49,7 @@ export function ProfileHero({ user, onEditClick }: ProfileHeroProps) {
               </p>
             </div>
 
-            {user && (
+            {user && onEditClick && (
               <Button variant="primary" icon={<Pencil size={16} />} onClick={onEditClick}>
                 {t("profile.editProfile")}
               </Button>
@@ -63,7 +63,7 @@ export function ProfileHero({ user, onEditClick }: ProfileHeroProps) {
                   key={tag}
                   className="rounded-full bg-[var(--bg)] px-3 py-1 text-xs font-medium text-[var(--muted)]"
                 >
-                  {tag}
+                  {t(`sports.${tag}`, { defaultValue: tag })}
                 </span>
               ))}
             </div>

@@ -10,6 +10,26 @@
   font-weight: 700;
 }
 
+.labelText {
+  color: #fff;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    0 0 3px #000;
+}
+
+.pageTitle {
+  color: #fff;
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 0 4px #000;
+}
+
 .formGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;

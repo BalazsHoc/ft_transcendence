@@ -10,7 +10,7 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if h.strip()]
 INSTALLED_APPS = [
     'daphne','django.contrib.admin','django.contrib.auth','django.contrib.contenttypes','django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
-    'rest_framework','rest_framework_simplejwt','corsheaders','drf_spectacular','channels','accounts','events','chat','geo','groups',
+    'rest_framework','rest_framework_simplejwt','corsheaders','drf_spectacular','channels','accounts','events','chat','geo','groups','social','notifications','public_api',
 ]
 MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware','django.middleware.security.SecurityMiddleware','django.contrib.sessions.middleware.SessionMiddleware','django.middleware.common.CommonMiddleware','django.middleware.csrf.CsrfViewMiddleware','django.contrib.auth.middleware.AuthenticationMiddleware','django.contrib.messages.middleware.MessageMiddleware','django.middleware.clickjacking.XFrameOptionsMiddleware']
 ROOT_URLCONF='core.urls'
@@ -48,9 +48,9 @@ MEDIA_URL='/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS=[o.strip() for o in os.getenv('CORS_ALLOWED_ORIGINS','http://localhost:5173').split(',') if o.strip()]
-REST_FRAMEWORK={'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework_simplejwt.authentication.JWTAuthentication',),'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticatedOrReadOnly',),'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema'}
+REST_FRAMEWORK={'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework_simplejwt.authentication.JWTAuthentication',),'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticatedOrReadOnly',),'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema','DEFAULT_THROTTLE_RATES':{'public_api':os.getenv('PUBLIC_API_RATE','60/minute'),'public_api_ip':os.getenv('PUBLIC_API_IP_RATE','120/minute')}}
 SIMPLE_JWT={'ACCESS_TOKEN_LIFETIME':timedelta(hours=2),'REFRESH_TOKEN_LIFETIME':timedelta(days=7),'AUTH_HEADER_TYPES':('Bearer',)}
-SPECTACULAR_SETTINGS={'TITLE':'Transcendence Sports MVP API','DESCRIPTION':'Sports events, RSVPs and event chat backend for Transcendence MVP.','VERSION':'0.1.0'}
+SPECTACULAR_SETTINGS={'TITLE':'Transcendence Sports MVP API','DESCRIPTION':'Authenticated application API plus a read-only, API-key protected public API.','VERSION':'0.1.0'}
 GEO_PROVIDER=os.getenv('GEO_PROVIDER','auto')
 MAPTILER_API_KEY=os.getenv('MAPTILER_API_KEY','')
 MAPTILER_LIGHT_MAP_ID=os.getenv('MAPTILER_LIGHT_MAP_ID','dataviz-v4-light')

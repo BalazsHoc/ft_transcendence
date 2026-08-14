@@ -6,7 +6,7 @@ import { ClubUpcomingRides } from "../components/club/ClubUpcomingRides";
 import { ClubRecruitingCard } from "../components/club/ClubRecruitingCard";
 import { ClubMemberSpotlight } from "../components/club/ClubMemberSpotlight";
 import type { ClubRideItem } from "../components/club/ClubRideRow";
-import { getEvents, joinEvent } from "../api/eventsApi";
+import { getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
 import type { EventItem } from "../types/api";
 
 const CLUB_COVER_IMAGE =
@@ -100,7 +100,11 @@ export function ClubPage() {
   async function handleRsvp(ride: ClubRideItem) {
     if (!ride.eventId) return;
     try {
-      await joinEvent(ride.eventId);
+      if (ride.userStatus === "attending" || ride.userStatus === "waiting") {
+        await leaveEvent(ride.eventId);
+      } else {
+        await joinEvent(ride.eventId);
+      }
     } catch {
       // Auth or capacity errors — quiet for MVP
     }
@@ -120,7 +124,8 @@ export function ClubPage() {
       <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-8">
         <ClubStatsRow
           members={t("club.stats.membersValue")}
-          score={t("club.stats.scoreValue")}
+          middleValue={t("club.stats.scoreValue")}
+          middleLabel={t("club.stats.clubScore")}
           established={t("club.stats.establishedValue")}
         />
 

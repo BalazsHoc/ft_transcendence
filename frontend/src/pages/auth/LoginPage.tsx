@@ -10,14 +10,14 @@ export function LoginPage() {
   const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState("alex");
-  const [password, setPassword] = useState("testpass123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     try {
-      await login(username, password);
+      await login(email, password);
       navigate("/discover");
     } catch (e: any) {
       setError(e.message);
@@ -29,22 +29,28 @@ export function LoginPage() {
       <PhotoBackdrop />
 
       <div className="relative z-10 w-full max-w-md rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)]/95 p-8 shadow-[0_10px_30px_rgba(0,0,0,0.15)] backdrop-blur-xl">
-        <h1 className="mb-6 font-display text-2xl font-bold text-[var(--text)]">
+        <h1 className={`mb-6 font-display text-2xl font-bold ${styles.pageTitle}`}>
           {t("auth.loginTitle")}
         </h1>
         <form className={styles.formCard} onSubmit={submit}>
           <label>
-            {t("auth.username")}
+            <span className={styles.labelText}>{t("auth.email")}</span>
             <input
-              value={username}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+              type="email"
+              value={email}
+              required
+              autoComplete="email"
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             />
           </label>
           <label>
-            {t("auth.password")}
+            <span className={styles.labelText}>{t("auth.password")}</span>
             <input
               type="password"
               value={password}
+              required
+              minLength={8}
+              autoComplete="current-password"
               onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
           </label>

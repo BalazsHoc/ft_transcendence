@@ -15,14 +15,46 @@ export type User = {
   languages?: string[];
   interests?: string[];
   avatar?: string | null;
+  friendship_status?: FriendshipStatus;
+  friendship_id?: number | null;
   created_at?: string;
 };
+
+export type NotificationType =
+  | "friend_request"
+  | "friend_accepted"
+  | "direct_message"
+  | "group_message";
+
+export type NotificationItem = {
+  id: number;
+  actor: User | null;
+  type: NotificationType;
+  payload: Record<string, unknown>;
+  target_url: string;
+  read_at: string | null;
+  created_at: string;
+};
+
+export type FriendshipStatus =
+  | "none"
+  | "outgoing_pending"
+  | "incoming_pending"
+  | "accepted"
+  | "rejected"
+  | "blocked";
 export type EventParticipant = {
   id: number;
   user: User;
   status: "attending" | "waiting";
   queue_position: number;
   joined_at: string;
+};
+export type EventGroupSummary = {
+  id: string;
+  name: string;
+  sport: string;
+  visibility: "public" | "private";
 };
 export type EventItem = {
   id: string;
@@ -40,6 +72,8 @@ export type EventItem = {
   end_at: string;
   max_slots: number;
   creator: User;
+  group: EventGroupSummary | null;
+  visibility: "public" | "private";
   participants: EventParticipant[];
   attending_count: number;
   waiting_count: number;
@@ -54,6 +88,27 @@ export type MessageItem = {
   text: string;
   created_at: string;
 };
+export type GroupMessageItem = {
+  id: string;
+  group: string;
+  sender: User;
+  text: string;
+  created_at: string;
+};
+export type DirectMessageItem = {
+  id: string;
+  conversation: string;
+  sender: User;
+  text: string;
+  created_at: string;
+};
+export type DirectConversationItem = {
+  id: string;
+  peer: User;
+  last_message: DirectMessageItem | null;
+  created_at: string;
+  updated_at: string;
+};
 export type GeoSuggestion = {
   id: string;
   label: string;
@@ -66,6 +121,10 @@ export type GeoSuggestion = {
 
 export type SportOption = {
   code: string;
+};
+export type DistrictOption = {
+  code: string;
+  name: string;
 };
 export type GeoResponse = {
   provider: string;
@@ -103,6 +162,7 @@ export type GroupItem = {
     role: "owner" | "admin" | "member";
     status: "active" | "pending";
   } | null;
+  memberships?: GroupMembership[];
   created_at: string;
   updated_at: string;
 };
