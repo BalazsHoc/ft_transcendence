@@ -162,6 +162,7 @@ export type GroupItem = {
     role: "owner" | "admin" | "member";
     status: "active" | "pending";
   } | null;
+  memberships?: GroupMembership[];
   created_at: string;
   updated_at: string;
 };

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Button from "../shared/Button";
@@ -32,6 +33,7 @@ export function ClubRideRow({
   rsvpBusy,
 }: ClubRideRowProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const isGoing = ride.userStatus === "attending";
   const isWaiting = ride.userStatus === "waiting";
@@ -105,19 +107,30 @@ export function ClubRideRow({
           </div>
         </div>
 
-        <Button
-          variant={alreadyJoined ? "outline" : "primary"}
-          size="sm"
-          disabled={rsvpDisabled || rsvpBusy}
-          onClick={handleClick}
-          className={`self-start sm:self-center ${
-            alreadyJoined
-              ? "!border-[var(--surface-border)] !text-[var(--text)]"
-              : ""
-          }`}
-        >
-          {label}
-        </Button>
+        <div className="flex shrink-0 flex-wrap items-center gap-2 self-start sm:self-center">
+          {ride.eventId ? (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate(`/events/${ride.eventId}`)}
+            >
+              {t("club.rides.details")}
+            </Button>
+          ) : null}
+          <Button
+            variant={alreadyJoined ? "outline" : "primary"}
+            size="sm"
+            disabled={rsvpDisabled || rsvpBusy}
+            onClick={handleClick}
+            className={
+              alreadyJoined
+                ? "!border-[var(--surface-border)] !text-[var(--text)]"
+                : ""
+            }
+          >
+            {label}
+          </Button>
+        </div>
       </div>
 
       <ConfirmDialog
