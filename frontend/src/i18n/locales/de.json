@@ -108,6 +108,18 @@
     "volleyball": "Volleyball",
     "yoga": "Yoga"
   },
+  "languageNames": {
+    "en": "Englisch",
+    "de": "Deutsch",
+    "ua": "Ukrainisch",
+    "ru": "Russisch",
+    "fr": "Französisch",
+    "es": "Spanisch",
+    "it": "Italienisch",
+    "pl": "Polnisch",
+    "tr": "Türkisch",
+    "hu": "Ungarisch"
+  },
   "discover": {
     "title": "Events entdecken",
     "sport": "Sport",
@@ -356,6 +368,8 @@
     "noActivity": "Noch keine Aktivität. Tritt einem Event bei, um loszulegen.",
     "about": "Über mich",
     "languages": "Sprachen",
+    "sports": "Sportarten",
+    "loadingSports": "Sportarten werden geladen...",
     "focusAreas": "Schwerpunkte",
     "notSet": "Nicht angegeben",
     "achievements": "Erfolge",
@@ -364,8 +378,8 @@
     "bio": "Über mich",
     "noBio": "Noch keine Beschreibung.",
     "district": "Bezirk",
-    "languagesCsv": "Sprachen (kommagetrennt)",
-    "interestsCsv": "Interessen (kommagetrennt)",
+    "languagesCsv": "Sprachen",
+    "interestsCsv": "Sportarten",
     "save": "Speichern",
     "cancel": "Abbrechen",
     "achievementWorkouts": "100 Workouts",
