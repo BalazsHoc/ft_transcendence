@@ -289,7 +289,12 @@
     "authRequired": "Sign in to use personal messages.",
     "loadError": "Unable to load conversations.",
     "sendError": "Unable to send the message.",
-    "wsError": "Real-time connection error."
+    "wsError": "Real-time connection error.",
+    "description": "Спілкуйся приватно з друзями або з учасниками тієї самої події.",
+    "you": "Ви",
+    "filterAll": "Усі",
+    "filterPersonal": "Особисті",
+    "filterEvents": "Події"
   },
   "friends": {
     "title": "Friends",

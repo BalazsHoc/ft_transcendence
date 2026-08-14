@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { CalendarDays, MessageCircle } from "lucide-react";
 
 import { getEvents } from "../api/eventsApi";
 import {
@@ -8,15 +9,27 @@ import {
   getDirectConversation,
   getDirectConversations,
 } from "../api/messagesApi";
+import { useAuth } from "../features/auth/AuthContext";
 import { DirectChat } from "../components/chat/DirectChat";
 import { EventChat } from "../components/chat/EventChat";
+import { Badge } from "../components/shared/Badge";
+import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../utils/media";
 import type {
   DirectConversationItem,
   EventItem,
 } from "../types/api";
 
+type ChatFilter = "all" | "personal" | "events";
+
+const CHAT_FILTERS: { value: ChatFilter; labelKey: string }[] = [
+  { value: "all", labelKey: "chats.filterAll" },
+  { value: "personal", labelKey: "chats.filterPersonal" },
+  { value: "events", labelKey: "chats.filterEvents" },
+];
+
 export function ChatsPage() {
   const { t } = useTranslation();
+  const { user: currentUser } = useAuth();
   const [searchParams] = useSearchParams();
   const requestedUserId = searchParams.get("userId");
   const requestedConversationId = searchParams.get("conversationId");
@@ -27,6 +40,7 @@ export function ChatsPage() {
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [error, setError] = useState("");
+  const [filter, setFilter] = useState<ChatFilter>("all");
 
   useEffect(() => {
     let cancelled = false;
@@ -84,7 +98,6 @@ export function ChatsPage() {
           (event) => event.user_status,
         );
         setEvents(joinedEvents);
-        if (!selectedConversationId) setSelectedEventId(joinedEvents[0]?.id || "");
       })
       .catch((loadError: unknown) => {
         if (!cancelled) {
@@ -106,63 +119,173 @@ export function ChatsPage() {
   const selectedEvent = events.find((event) => event.id === selectedEventId) || null;
 
   return (
-    <main>
-      <h1>{t("chats.title")}</h1>
-      {error && <p role="alert">{error}</p>}
+    <div className="mx-auto flex h-[calc(100vh-88px)] max-w-6xl flex-col gap-6 px-4 py-8 md:py-10">
+      <header className="flex shrink-0 flex-wrap items-center gap-4 border-b border-[var(--surface-border)] pb-6">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--button-bg)] text-[var(--button-text)]">
+          <MessageCircle size={26} />
+        </div>
+        <div className="min-w-0 space-y-1">
+          <h1 className="font-display text-3xl font-bold text-[var(--text)] md:text-4xl">
+            {t("chats.title")}
+          </h1>
+          <p className="text-sm text-[var(--muted)] md:text-base">{t("chats.description")}</p>
+        </div>
+      </header>
 
-      <div className="two-column">
-        <aside className="sidebar-list">
-          <h3>{t("chats.personal")}</h3>
-          {loadingConversations ? (
-            <p>{t("chats.loading")}</p>
-          ) : conversations.length === 0 ? (
-            <p>{t("chats.noPersonal")}</p>
-          ) : (
-            conversations.map((conversation) => (
+      {error && <p role="alert" className="shrink-0 text-sm text-red-600">{error}</p>}
+
+      <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-12">
+        <aside className="min-h-0 space-y-6 overflow-y-auto lg:col-span-4">
+          <div role="tablist" className="flex gap-1 rounded-full bg-[var(--bg)] p-1">
+            {CHAT_FILTERS.map((option) => (
               <button
+                key={option.value}
                 type="button"
-                key={conversation.id}
-                className={conversation.id === selectedConversationId ? "active" : ""}
-                onClick={() => {
-                  setSelectedConversationId(conversation.id);
-                  setSelectedEventId("");
-                }}
+                role="tab"
+                aria-selected={filter === option.value}
+                onClick={() => setFilter(option.value)}
+                className={[
+                  "flex-1 rounded-full px-3 py-1.5 text-sm font-medium transition-all",
+                  filter === option.value
+                    ? "bg-[var(--button-bg)] text-[var(--button-text)] shadow-sm"
+                    : "text-[var(--muted)] hover:text-[var(--text)]",
+                ].join(" ")}
               >
-                {conversation.peer.username}
+                {t(option.labelKey)}
               </button>
-            ))
+            ))}
+          </div>
+
+          {filter !== "events" && (
+          <section className="space-y-2 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-4 shadow-sm">
+            <h2 className="flex items-center justify-between gap-2 px-1 text-sm font-medium text-[var(--muted)]">
+              <span className="flex items-center gap-2">
+                <MessageCircle size={16} />
+                {t("chats.personal")}
+              </span>
+              {conversations.length > 0 && <Badge>{conversations.length}</Badge>}
+            </h2>
+            {loadingConversations ? (
+              <p className="px-1 text-sm text-[var(--muted)]">{t("chats.loading")}</p>
+            ) : conversations.length === 0 ? (
+              <p className="px-1 text-sm text-[var(--muted)]">{t("chats.noPersonal")}</p>
+            ) : (
+              <ul className="space-y-1">
+                {conversations.map((conversation) => {
+                  const isActive = conversation.id === selectedConversationId;
+                  const preview = conversation.last_message
+                    ? `${conversation.last_message.sender.id === currentUser?.id ? `${t("chats.you")}: ` : ""}${conversation.last_message.text}`
+                    : t("chats.noMessages");
+                  return (
+                    <li key={conversation.id}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedConversationId(conversation.id);
+                          setSelectedEventId("");
+                        }}
+                        className={[
+                          "flex w-full items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-all",
+                          isActive
+                            ? "border-[var(--button-bg)]/30 bg-[var(--text)]/5 shadow-sm"
+                            : "border-transparent hover:bg-[var(--text)]/5",
+                        ].join(" ")}
+                      >
+                        <img
+                          src={resolveMediaUrl(conversation.peer.avatar, DEFAULT_AVATAR_SRC)}
+                          alt=""
+                          className={[
+                            "h-10 w-10 shrink-0 rounded-full object-cover transition-all",
+                            isActive ? "ring-2 ring-[var(--button-bg)] ring-offset-2 ring-offset-[var(--surface)]" : "",
+                          ].join(" ")}
+                          onError={(event: any) => {
+                            event.currentTarget.src = DEFAULT_AVATAR_SRC;
+                          }}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-[var(--text)]">
+                            {conversation.peer.username}
+                          </p>
+                          <p className="truncate text-xs text-[var(--muted)]">{preview}</p>
+                        </div>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
           )}
 
-          <h3>{t("chats.eventChats")}</h3>
-          {loadingEvents ? (
-            <p>{t("chats.loadingEvents")}</p>
-          ) : events.length === 0 ? (
-            <p>{t("chats.noEventChats")}</p>
-          ) : (
-            events.map((event) => (
-              <button
-                type="button"
-                key={event.id}
-                className={event.id === selectedEventId ? "active" : ""}
-                onClick={() => {
-                  setSelectedEventId(event.id);
-                  setSelectedConversationId("");
-                }}
-              >
-                {event.title}
-              </button>
-            ))
+          {filter !== "personal" && (
+          <section className="space-y-2 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-4 shadow-sm">
+            <h2 className="flex items-center justify-between gap-2 px-1 text-sm font-medium text-[var(--muted)]">
+              <span className="flex items-center gap-2">
+                <CalendarDays size={16} />
+                {t("chats.eventChats")}
+              </span>
+              {events.length > 0 && <Badge>{events.length}</Badge>}
+            </h2>
+            {loadingEvents ? (
+              <p className="px-1 text-sm text-[var(--muted)]">{t("chats.loadingEvents")}</p>
+            ) : events.length === 0 ? (
+              <p className="px-1 text-sm text-[var(--muted)]">{t("chats.noEventChats")}</p>
+            ) : (
+              <ul className="space-y-1">
+                {events.map((event) => {
+                  const isActive = event.id === selectedEventId;
+                  return (
+                    <li key={event.id}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedEventId(event.id);
+                          setSelectedConversationId("");
+                        }}
+                        className={[
+                          "flex w-full items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-all",
+                          isActive
+                            ? "border-[var(--button-bg)]/30 bg-[var(--text)]/5 shadow-sm"
+                            : "border-transparent hover:bg-[var(--text)]/5",
+                        ].join(" ")}
+                      >
+                        <span
+                          className={[
+                            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--bg)] text-[var(--muted)] transition-all",
+                            isActive ? "ring-2 ring-[var(--button-bg)] ring-offset-2 ring-offset-[var(--surface)]" : "",
+                          ].join(" ")}
+                        >
+                          <CalendarDays size={18} />
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-[var(--text)]">{event.title}</p>
+                          <p className="truncate text-xs text-[var(--muted)]">{t(`sports.${event.sport}`)}</p>
+                        </div>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
           )}
         </aside>
 
-        {selectedConversation ? (
-          <DirectChat conversation={selectedConversation} />
-        ) : selectedEvent ? (
-          <EventChat eventId={selectedEvent.id} />
-        ) : (
-          <p>{t("chats.empty")}</p>
-        )}
+        <div className="min-h-0 lg:col-span-8">
+          {selectedConversation ? (
+            <DirectChat conversation={selectedConversation} />
+          ) : selectedEvent ? (
+            <EventChat eventId={selectedEvent.id} eventTitle={selectedEvent.title} />
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-[var(--surface-border)] bg-[var(--surface)]/50 text-center">
+              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg)] text-[var(--muted)]">
+                <MessageCircle size={28} />
+              </span>
+              <p className="max-w-xs text-sm text-[var(--muted)]">{t("chats.empty")}</p>
+            </div>
+          )}
+        </div>
       </div>
-    </main>
+    </div>
   );
 }
