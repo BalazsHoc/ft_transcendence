@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { MapPin } from "lucide-react";
 import { EventItem } from "../../types/api";
-import { DEFAULT_AVATAR_SRC, DEFAULT_EVENT_IMAGE_SRC, resolveMediaUrl } from "../../utils/media";
+import { DEFAULT_AVATAR_SRC, getDefaultEventImage, resolveMediaUrl } from "../../utils/media";
 import { Badge } from "../shared/Badge";
 import Button from "../shared/Button";
 import styles from "./EventCard.module.css";
@@ -44,6 +44,7 @@ export function EventCard({
 		: `${shortDateFormatter.format(startDate)} • ${shortTimeFormatter.format(startDate)} – ${shortDateFormatter.format(endDate)} • ${shortTimeFormatter.format(endDate)}`;
 	const visibleParticipants = event.participants.slice(0, 4);
 	const extraParticipantCount = Math.max(event.participants.length - visibleParticipants.length, 0);
+	const fallbackImage = getDefaultEventImage(event.sport);
 
 	return (
 		<article
@@ -52,7 +53,7 @@ export function EventCard({
 			<div
 				className="absolute inset-0 bg-cover bg-center"
 				style={{
-					backgroundImage: `url('${resolveMediaUrl(event.image, DEFAULT_EVENT_IMAGE_SRC)}')`,
+					backgroundImage: `url('${resolveMediaUrl(event.image, fallbackImage)}')`,
 				}}
 			/>
 			<div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
