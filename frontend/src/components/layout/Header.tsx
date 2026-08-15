@@ -1,10 +1,9 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../features/auth/AuthContext";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
-import Button from "../shared/Button";
 import { IconButton } from "../shared/IconButton";
 import { HeaderBrand } from "./HeaderBrand";
 import { HeaderNav } from "./HeaderNav";
@@ -20,7 +19,6 @@ type HeaderProps = {
 export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [search, setSearch] = React.useState("");
   //to remove the search bar and join club button on the landing page, login page, and register page
@@ -35,16 +33,6 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
       <div className="flex items-center gap-3 shrink-0">
         {/* {!isMinimalHeaderPage && <HeaderSearch value={search} onChange={setSearch} />} */}
-
-        {!isMinimalHeaderPage && (
-          <Button
-            variant="primary"
-            className="hidden xl:inline-flex"
-            onClick={() => navigate("/events/new")}
-          >
-            {t("nav.createEvent")}
-          </Button>
-        )}
 
         <IconButton
           variant="outline"
