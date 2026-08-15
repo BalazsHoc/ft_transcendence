@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Map } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../features/auth/AuthContext";
 
 function HeaderNavLink({
   to,
@@ -26,6 +27,7 @@ function HeaderNavLink({
 
 export function HeaderNav() {
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   return (
     <nav className="hidden md:flex items-center gap-3 lg:gap-6 shrink-0">
@@ -36,7 +38,7 @@ export function HeaderNav() {
           <Map size={16} /> {t("nav.map")}
         </span>
       </HeaderNavLink>
-      <HeaderNavLink to="/chats">{t("nav.messages")}</HeaderNavLink>
+      {user && <HeaderNavLink to="/chats">{t("nav.messages")}</HeaderNavLink>}
     </nav>
   );
 }

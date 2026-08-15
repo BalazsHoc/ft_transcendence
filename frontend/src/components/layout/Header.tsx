@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../features/auth/AuthContext";
 import { LanguageSwitcher } from "../shared/LanguageSwitcher";
 import Button from "../shared/Button";
 import { IconButton } from "../shared/IconButton";
@@ -18,6 +19,7 @@ type HeaderProps = {
 
 export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [search, setSearch] = React.useState("");
@@ -53,7 +55,7 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
         <LanguageSwitcher />
 
-        {!isMinimalHeaderPage && <HeaderNotifications />}
+        {!isMinimalHeaderPage && user && <HeaderNotifications />}
 
         <HeaderUserMenu />
       </div>
