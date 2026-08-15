@@ -39,6 +39,23 @@
     "refresh": "Aktualisieren",
     "toggleDarkMode": "Dunkelmodus umschalten"
   },
+  "home": {
+    "greeting": "Hi, {{name}}",
+    "subtitle": "Das steht als Nächstes für dich in Wien an.",
+    "notificationsTitle": "Benachrichtigungen",
+    "unreadCount": "Du hast {{count}} ungelesene Benachrichtigung(en).",
+    "noNotifications": "Keine neuen Benachrichtigungen.",
+    "upcomingTitle": "Kommende Events",
+    "upcomingEmpty": "Noch keine kommenden Events.",
+    "seeAllEvents": "Alle anzeigen",
+    "groupsTitle": "Meine Gruppen",
+    "groupsEmpty": "Du bist noch in keiner Gruppe.",
+    "seeAllGroups": "Alle anzeigen",
+    "quickLinks": "Schnellzugriff",
+    "linkEvents": "Events",
+    "linkGroups": "Gruppen",
+    "linkMap": "Karte"
+  },
   "landing": {
     "hero": {
       "title": "Bewegen. Verbinden. Dazugehören.",

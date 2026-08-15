@@ -39,6 +39,23 @@
     "refresh": "Оновити",
     "toggleDarkMode": "Перемкнути темний режим"
   },
+  "home": {
+    "greeting": "Hi, {{name}}",
+    "subtitle": "Here’s what’s next for you in Vienna.",
+    "notificationsTitle": "Notifications",
+    "unreadCount": "You have {{count}} unread notification(s).",
+    "noNotifications": "No new notifications.",
+    "upcomingTitle": "Upcoming events",
+    "upcomingEmpty": "No upcoming events yet.",
+    "seeAllEvents": "See all",
+    "groupsTitle": "My groups",
+    "groupsEmpty": "You’re not in any groups yet.",
+    "seeAllGroups": "See all",
+    "quickLinks": "Quick links",
+    "linkEvents": "Events",
+    "linkGroups": "Groups",
+    "linkMap": "Map"
+  },
   "landing": {
     "hero": {
       "title": "Рухайся. Спілкуйся. Будь своїм.",
