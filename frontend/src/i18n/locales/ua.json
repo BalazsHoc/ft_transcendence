@@ -41,15 +41,15 @@
   },
   "home": {
     "greeting": "Welcome back, {{name}}",
-    "subtitle": "Good to see you again. Here's a quick look at your Vienna Active day.",
+    "subtitle": "Good to see you again. Here's a quick look at your day.",
     "notificationsTitle": "Notifications",
     "unreadCount": "You have {{count}} unread notification(s).",
     "noNotifications": "No new notifications right now.",
     "upcomingTitle": "Upcoming events",
-    "upcomingEmpty": "No upcoming events yet — explore something new when you’re ready.",
+    "upcomingEmpty": "No upcoming events yet. Explore something new when you're ready.",
     "seeAllEvents": "See all",
     "groupsTitle": "My groups",
-    "groupsEmpty": "You’re not in any groups yet.",
+    "groupsEmpty": "You're not in any groups yet.",
     "seeAllGroups": "See all"
   },
   "landing": {
