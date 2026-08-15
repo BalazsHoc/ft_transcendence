@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { UserCircle } from "lucide-react";
 import { useAuth } from "../../features/auth/AuthContext";
-import { IconButton } from "../shared/IconButton";
+import Button from "../shared/Button";
 import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
 
 export function HeaderUserMenu() {
@@ -23,15 +22,15 @@ export function HeaderUserMenu() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  //if user is not logged in, show login button
   if (!user) {
     return (
-      <IconButton
+      <Button
         variant="outline"
-        icon={<UserCircle size={20} />}
-        aria-label={t("nav.login")}
+        size="sm"
         onClick={() => navigate("/login")}
-      />
+      >
+        {t("nav.signInRegister")}
+      </Button>
     );
   }
 
