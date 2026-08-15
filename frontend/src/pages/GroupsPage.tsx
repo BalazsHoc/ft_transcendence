@@ -1,12 +1,21 @@
+// react tools
 import { useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+// function for translations
 import { useTranslation } from "react-i18next";
-
+// api calls (talk to the backend)
 import { createGroup, getGroups } from "../api/groupsApi";
+// the types of the data we are getting from the backend
 import type { GroupItem, GroupPayload } from "../types/api";
+// list of sports we are getting from the backend for the dropdown
 import { useSports } from "../hooks/useSports";
+// the component for the curated group card
 import { CuratedGroupCard } from "../components/discover/CuratedGroupCard";
+// the button component (not mine)
 import Button from "../components/shared/Button";
+// the default image for the group
 import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
+
+
 
 type GroupFormState = {
   name: string;

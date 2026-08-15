@@ -25,8 +25,8 @@ export function App() {
       <Route path="/" element={<AppLayout />}>
         <Route index element={<LandingPage />} />
         <Route path="discover" element={<DiscoverPage />} />
-        <Route path="clubs" element={<Navigate to="/groups" replace />} />
-        <Route path="groups" element={<GroupsPage />} />
+        <Route path="clubs" element={<Navigate to="/groups" replace />} /> //redirect to groups
+        <Route path="groups" element={<GroupsPage />} /> 
         <Route path="groups/:groupId" element={<GroupDetailsPage />} />
         <Route path="map" element={<MapPage />} />
         <Route path="events/new" element={<CreateEventPage />} />
