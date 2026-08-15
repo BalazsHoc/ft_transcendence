@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Bell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -7,6 +8,8 @@ import {
   markNotificationRead,
 } from "../../api/notificationsApi";
 import type { NotificationItem } from "../../types/api";
+
+const POLL_INTERVAL_MS = 30_000;
 
 function actorLabel(notification: NotificationItem, fallback: string) {
   return notification.actor?.username || fallback;
@@ -37,6 +40,11 @@ function notificationTarget(targetUrl: string) {
   return targetUrl || "/profile";
 }
 
+function formatNotificationDate(value: string) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+}
+
 export function HomeNotifications() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -45,38 +53,39 @@ export function HomeNotifications() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
+  const load = useCallback(async (silent = false) => {
+    if (!silent) {
       setLoading(true);
       setError("");
-      try {
-        const [countResult, unreadItems] = await Promise.all([
-          getUnreadNotificationCount(),
-          getNotifications(true),
-        ]);
-        if (cancelled) return;
-        setUnreadCount(countResult.count);
-        setItems(unreadItems.slice(0, 3));
-      } catch (loadError) {
-        if (!cancelled) {
-          setError(
-            loadError instanceof Error
-              ? loadError.message
-              : t("notifications.loadError"),
-          );
-        }
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
     }
-
-    void load();
-    return () => {
-      cancelled = true;
-    };
+    try {
+      const [countResult, unreadItems] = await Promise.all([
+        getUnreadNotificationCount(),
+        getNotifications(true),
+      ]);
+      setUnreadCount(countResult.count);
+      setItems(unreadItems.slice(0, 3));
+      setError("");
+    } catch (loadError) {
+      if (!silent) {
+        setError(
+          loadError instanceof Error
+            ? loadError.message
+            : t("notifications.loadError"),
+        );
+      }
+    } finally {
+      if (!silent) setLoading(false);
+    }
   }, [t]);
+
+  useEffect(() => {
+    void load();
+    const interval = window.setInterval(() => {
+      void load(true);
+    }, POLL_INTERVAL_MS);
+    return () => window.clearInterval(interval);
+  }, [load]);
 
   async function openNotification(notification: NotificationItem) {
     if (!notification.read_at) {
@@ -91,11 +100,29 @@ export function HomeNotifications() {
     navigate(notificationTarget(notification.target_url));
   }
 
+  const isEmpty = !loading && !error && unreadCount === 0;
+
+  if (isEmpty) {
+    return (
+      <p className="flex items-center gap-2 text-sm text-[var(--muted)]">
+        <Bell size={16} className="shrink-0 opacity-70" />
+        {t("home.noNotifications")}
+      </p>
+    );
+  }
+
   return (
     <section className="space-y-3">
-      <h2 className="text-xl font-semibold text-[var(--text)]">
-        {t("home.notificationsTitle")}
-      </h2>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="text-xl font-semibold text-[var(--text)]">
+          {t("home.notificationsTitle")}
+        </h2>
+        {!loading && !error && unreadCount > 0 && (
+          <span className="inline-flex items-center rounded-full bg-[var(--bg)] px-3 py-1 text-xs font-medium text-[var(--muted)]">
+            {t("home.unreadCount", { count: unreadCount })}
+          </span>
+        )}
+      </div>
 
       {loading && (
         <p className="text-sm text-[var(--muted)]">{t("notifications.loading")}</p>
@@ -107,29 +134,33 @@ export function HomeNotifications() {
         </p>
       )}
 
-      {!loading && !error && unreadCount === 0 && (
-        <p className="text-sm text-[var(--muted)]">{t("home.noNotifications")}</p>
-      )}
-
       {!loading && !error && unreadCount > 0 && (
-        <>
-          <p className="text-sm text-[var(--text)]">
-            {t("home.unreadCount", { count: unreadCount })}
-          </p>
-          <ul className="divide-y divide-[var(--surface-border)] overflow-hidden rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)]">
-            {items.map((notification) => (
-              <li key={notification.id}>
-                <button
-                  type="button"
-                  className="w-full px-4 py-3 text-left text-sm text-[var(--text)] transition-colors hover:bg-[var(--surface-border)]"
-                  onClick={() => void openNotification(notification)}
-                >
-                  {notificationMessage(notification, t)}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </>
+        <ul className="space-y-2">
+          {items.map((notification) => (
+            <li key={notification.id}>
+              <button
+                type="button"
+                className="flex w-full items-start gap-3 rounded-2xl bg-[var(--bg)] px-4 py-3 text-left transition-colors hover:bg-[var(--surface-border)]/40"
+                onClick={() => void openNotification(notification)}
+              >
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--surface)] text-sm font-semibold uppercase text-[var(--muted)]">
+                  {notification.actor?.username?.slice(0, 1) || (
+                    <Bell size={16} />
+                  )}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm leading-5 text-[var(--text)]">
+                    {notificationMessage(notification, t)}
+                  </span>
+                  <span className="mt-1 block text-xs text-[var(--muted)]">
+                    {formatNotificationDate(notification.created_at)}
+                  </span>
+                </span>
+                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-red-500" />
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
     </section>
   );

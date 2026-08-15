@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getUserActivities } from "../../api/usersApi";
+import { getEvents } from "../../api/eventsApi";
 import { useAuth } from "../../features/auth/AuthContext";
 import type { EventItem } from "../../types/api";
 import { EventCard } from "../events/EventCard";
@@ -25,12 +25,13 @@ export function HomeUpcomingEvents() {
     let cancelled = false;
     setLoading(true);
 
-    getUserActivities(user.id)
+    getEvents()
       .then((data) => {
         if (cancelled) return;
         const now = Date.now();
         const upcoming = (Array.isArray(data) ? data : [])
           .filter((event) => {
+            if (!event.user_status) return false;
             const end = new Date(event.end_at).getTime();
             return !Number.isNaN(end) && end >= now;
           })
@@ -53,8 +54,10 @@ export function HomeUpcomingEvents() {
     };
   }, [user?.id]);
 
+  const isEmpty = !loading && events.length === 0;
+
   return (
-    <section className="space-y-4">
+    <section className={isEmpty ? "space-y-1" : "space-y-4"}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xl font-semibold text-[var(--text)]">
           {t("home.upcomingTitle")}
@@ -71,7 +74,7 @@ export function HomeUpcomingEvents() {
         <p className="text-sm text-[var(--muted)]">{t("notifications.loading")}</p>
       )}
 
-      {!loading && events.length === 0 && (
+      {isEmpty && (
         <p className="text-sm text-[var(--muted)]">{t("home.upcomingEmpty")}</p>
       )}
 
