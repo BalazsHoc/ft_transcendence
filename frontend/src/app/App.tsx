@@ -15,6 +15,7 @@ import { ProfilePage } from "../pages/ProfilePage";
 import { UserProfilePage } from "../pages/UserProfilePage";
 import { GroupsPage } from "../pages/GroupsPage";
 import { GroupDetailsPage } from "../pages/GroupDetailsPage";
+import { ApiTesterPage } from "../pages/ApiTesterPage";
 import { UiElementsTest } from "../pages/UiElementsTest";
 import { NotFoundPage } from "../pages/NotFoundPage";
 
@@ -36,6 +37,7 @@ export function App() {
         <Route path="friends" element={<Navigate to="/profile" replace />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="users/:userId" element={<UserProfilePage />} />
+        <Route path="api-test" element={<ApiTesterPage />} />
         <Route path="ui-elements-test" element={<UiElementsTest />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />

@@ -7,6 +7,7 @@
     "createEvent": "Створити подію",
     "chats": "Чати",
     "profile": "Профіль",
+    "apiTest": "API тест",
     "login": "Вхід",
     "register": "Реєстрація",
     "signInRegister": "Вхід/Реєстрація",
@@ -413,6 +414,9 @@
     "blocked": "Заблоковано",
     "addFriend": "Додати друга",
     "friendshipError": "Не вдалося оновити дружбу."
+  },
+  "apiTest": {
+    "title": "Тест API роутів"
   },
   "groups": {
     "image": "Логотип групи",
