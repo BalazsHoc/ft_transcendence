@@ -1,6 +1,7 @@
 import { HomeGreeting } from "../components/home/HomeGreeting";
 import { HomeNotifications } from "../components/home/HomeNotifications";
 import { HomeUpcomingEvents } from "../components/home/HomeUpcomingEvents";
+import { HomeMyGroups } from "../components/home/HomeMyGroups";
 
 export function HomePage() {
   return (
@@ -8,6 +9,7 @@ export function HomePage() {
       <HomeGreeting />
       <HomeNotifications />
       <HomeUpcomingEvents />
+      <HomeMyGroups />
     </main>
   );
 }
