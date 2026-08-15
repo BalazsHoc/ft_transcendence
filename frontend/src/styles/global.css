@@ -541,6 +541,15 @@ button.header-mobile-menu__action:hover {
   padding: 0;
 }
 
+/* Signed-in home hero should also bleed edge-to-edge; content below
+   keeps its own centered max-width wrapper. */
+.page-container:has(.home-page) {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* The login page's photo backdrop should bleed edge-to-edge too; the form
    card inside it stays centered via its own max-width. */
 .page-container:has(.login-page-full) {
