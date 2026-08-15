@@ -40,21 +40,17 @@
     "toggleDarkMode": "Перемкнути темний режим"
   },
   "home": {
-    "greeting": "Hi, {{name}}",
-    "subtitle": "Here’s what’s next for you in Vienna.",
+    "greeting": "Welcome back, {{name}}",
+    "subtitle": "Good to see you again. Here's a quick look at your Vienna Active day.",
     "notificationsTitle": "Notifications",
     "unreadCount": "You have {{count}} unread notification(s).",
-    "noNotifications": "No new notifications.",
+    "noNotifications": "No new notifications right now.",
     "upcomingTitle": "Upcoming events",
-    "upcomingEmpty": "No upcoming events yet.",
+    "upcomingEmpty": "No upcoming events yet — explore something new when you’re ready.",
     "seeAllEvents": "See all",
     "groupsTitle": "My groups",
     "groupsEmpty": "You’re not in any groups yet.",
-    "seeAllGroups": "See all",
-    "quickLinks": "Quick links",
-    "linkEvents": "Events",
-    "linkGroups": "Groups",
-    "linkMap": "Map"
+    "seeAllGroups": "See all"
   },
   "landing": {
     "hero": {

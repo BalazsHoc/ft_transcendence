@@ -40,21 +40,17 @@
     "toggleDarkMode": "Dunkelmodus umschalten"
   },
   "home": {
-    "greeting": "Hi, {{name}}",
-    "subtitle": "Das steht als Nächstes für dich in Wien an.",
+    "greeting": "Willkommen zurück, {{name}}",
+    "subtitle": "Schön, dich wiederzusehen. Hier ist ein kurzer Überblick für dich.",
     "notificationsTitle": "Benachrichtigungen",
     "unreadCount": "Du hast {{count}} ungelesene Benachrichtigung(en).",
-    "noNotifications": "Keine neuen Benachrichtigungen.",
+    "noNotifications": "Gerade keine neuen Benachrichtigungen.",
     "upcomingTitle": "Kommende Events",
-    "upcomingEmpty": "Noch keine kommenden Events.",
+    "upcomingEmpty": "Noch keine kommenden Events — entdecke etwas Neues, wenn du magst.",
     "seeAllEvents": "Alle anzeigen",
     "groupsTitle": "Meine Gruppen",
     "groupsEmpty": "Du bist noch in keiner Gruppe.",
-    "seeAllGroups": "Alle anzeigen",
-    "quickLinks": "Schnellzugriff",
-    "linkEvents": "Events",
-    "linkGroups": "Gruppen",
-    "linkMap": "Karte"
+    "seeAllGroups": "Alle anzeigen"
   },
   "landing": {
     "hero": {
