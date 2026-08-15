@@ -1,13 +1,13 @@
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthContext";
 import { WelcomeHero } from "../components/landing/WelcomeHero";
 import { CuratedExperiences } from "../components/landing/CuratedExperiences";
+import { HomePage } from "./HomePage";
 
 export function LandingPage() {
   const { user } = useAuth();
 
   if (user) {
-    return <Navigate to="/discover" replace />;
+    return <HomePage />;
   }
 
   return (
