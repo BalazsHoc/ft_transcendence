@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { createGroup, getGroups } from "../api/groupsApi";
 import type { GroupItem, GroupPayload } from "../types/api";
+import { useAuth } from "../features/auth/AuthContext";
 import { useSports } from "../hooks/useSports";
 import { CuratedGroupCard } from "../components/discover/CuratedGroupCard";
 import Button from "../components/shared/Button";
@@ -34,6 +35,7 @@ const initialForm: GroupFormState = {
 
 export function GroupsPage() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const sports = useSports();
   const [groups, setGroups] = useState<GroupItem[]>([]);
   const [form, setForm] = useState<GroupFormState>(initialForm);
@@ -109,16 +111,18 @@ export function GroupsPage() {
             {t("groupsTest.description")}
           </p>
         </div>
-        <Button
-          type="button"
-          variant="primary"
-          onClick={() => setShowForm((visible) => !visible)}
-        >
-          {showForm ? t("groupsTest.cancel") : t("groupsTest.create")}
-        </Button>
+        {user && (
+          <Button
+            type="button"
+            variant="primary"
+            onClick={() => setShowForm((visible) => !visible)}
+          >
+            {showForm ? t("groupsTest.cancel") : t("groupsTest.create")}
+          </Button>
+        )}
       </header>
 
-      {showForm && (
+      {user && showForm && (
         <form
           onSubmit={submitGroup}
           className="grid grid-cols-1 gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-sm md:grid-cols-2 md:p-6"
