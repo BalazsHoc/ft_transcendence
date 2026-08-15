@@ -7,7 +7,6 @@
     "createEvent": "Create event",
     "chats": "Chats",
     "profile": "Profile",
-    "apiTest": "API test",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
@@ -406,9 +405,6 @@
     "blocked": "Blocked",
     "addFriend": "Add friend",
     "friendshipError": "Unable to update friendship."
-  },
-  "apiTest": {
-    "title": "API route tester"
   },
   "groups": {
     "image": "Group image",
