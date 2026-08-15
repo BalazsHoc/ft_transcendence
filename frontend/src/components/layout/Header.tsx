@@ -10,6 +10,7 @@ import { HeaderNav } from "./HeaderNav";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderNotifications } from "./HeaderNotifications";
 import { HeaderUserMenu } from "./HeaderUserMenu";
+import { HeaderMobileMenu } from "./HeaderMobileMenu";
 
 type HeaderProps = {
   darkMode: boolean;
@@ -36,16 +37,24 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
 
         <IconButton
           variant="outline"
+          className="hidden md:inline-flex"
           aria-label={t("common.toggleDarkMode")}
           onClick={onToggleDarkMode}
           icon={darkMode ? <Sun size={18} /> : <Moon size={18} />}
         />
 
-        <LanguageSwitcher />
+        <div className="hidden md:block">
+          <LanguageSwitcher />
+        </div>
 
         {!isMinimalHeaderPage && user && <HeaderNotifications />}
 
         <HeaderUserMenu />
+
+        <HeaderMobileMenu
+          darkMode={darkMode}
+          onToggleDarkMode={onToggleDarkMode}
+        />
       </div>
     </header>
   );
