@@ -37,7 +37,6 @@ export function HeaderNav() {
         </span>
       </HeaderNavLink>
       <HeaderNavLink to="/chats">{t("nav.messages")}</HeaderNavLink>
-      <HeaderNavLink to="/api-test">API Tester</HeaderNavLink>
     </nav>
   );
 }

@@ -7,7 +7,6 @@
     "createEvent": "Event erstellen",
     "chats": "Chats",
     "profile": "Profil",
-    "apiTest": "API-Test",
     "login": "Login",
     "register": "Registrieren",
     "logout": "Logout",
@@ -406,9 +405,6 @@
     "blocked": "Blockiert",
     "addFriend": "Freund hinzufügen",
     "friendshipError": "Freundschaft konnte nicht aktualisiert werden."
-  },
-  "apiTest": {
-    "title": "API-Routen testen"
   },
   "groups": {
     "image": "Gruppenbild",
