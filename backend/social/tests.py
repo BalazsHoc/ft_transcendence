@@ -128,6 +128,13 @@ class FriendshipApiTests(APITestCase):
         rejected_id = rejected.data["id"]
         self.client.force_authenticate(self.carol)
         self.client.post(f"/api/friends/requests/{rejected_id}/reject/")
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.alex,
+                actor=self.carol,
+                type=Notification.TYPE_FRIEND_REJECTED,
+            ).exists()
+        )
 
         self.client.force_authenticate(self.bob)
         self.assertEqual(
@@ -215,6 +222,13 @@ class FriendshipApiTests(APITestCase):
         deleted = self.client.delete(f"/api/friends/{friendship_id}/")
         self.assertEqual(deleted.status_code, 204)
         self.assertFalse(Friendship.objects.exists())
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.bob,
+                actor=self.alex,
+                type=Notification.TYPE_FRIEND_REMOVED,
+            ).exists()
+        )
 
 
 class NotificationApiTests(APITestCase):

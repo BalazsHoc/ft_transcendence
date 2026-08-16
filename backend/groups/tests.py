@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 
 from chat.models import GroupMessage
+from events.models import Event
 from notifications.models import Notification
 
 from .models import Group, GroupMembership
@@ -206,3 +207,207 @@ class GroupApiTests(APITestCase):
         self.client.force_authenticate(pending_user)
         pending_response = self.client.get(f"/api/groups/{group.id}/messages/")
         self.assertEqual(pending_response.status_code, 404)
+
+    def test_group_join_and_leave_notify_active_members(self):
+        group = Group.objects.create(
+            name="Join notifications",
+            sport="running",
+            levels=["beginner"],
+            owner=self.user,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.user,
+            role=GroupMembership.ROLE_OWNER,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.other_user,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        joiner = get_user_model().objects.create_user(
+            username="joiner",
+            password="secure-password",
+        )
+
+        self.client.force_authenticate(joiner)
+        joined = self.client.post(f"/api/groups/{group.id}/join/")
+        self.assertEqual(joined.status_code, 201)
+        joined_notifications = Notification.objects.filter(
+            type=Notification.TYPE_GROUP_MEMBER_JOINED,
+            actor=joiner,
+        )
+        self.assertEqual(joined_notifications.count(), 2)
+        self.assertEqual(
+            set(joined_notifications.values_list("recipient_id", flat=True)),
+            {self.user.id, self.other_user.id},
+        )
+
+        left = self.client.post(f"/api/groups/{group.id}/leave/")
+        self.assertEqual(left.status_code, 204)
+        self.assertEqual(
+            Notification.objects.filter(
+                type=Notification.TYPE_GROUP_MEMBER_LEFT,
+                actor=joiner,
+            ).count(),
+            2,
+        )
+
+    def test_group_join_request_and_cancellation_notify_admins(self):
+        group = Group.objects.create(
+            name="Approval notifications",
+            sport="cycling",
+            levels=["all"],
+            join_policy=Group.JOIN_APPROVAL,
+            owner=self.user,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.user,
+            role=GroupMembership.ROLE_OWNER,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        joiner = get_user_model().objects.create_user(
+            username="requester",
+            password="secure-password",
+        )
+
+        self.client.force_authenticate(joiner)
+        joined = self.client.post(f"/api/groups/{group.id}/join/")
+        self.assertEqual(joined.status_code, 201)
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.user,
+                actor=joiner,
+                type=Notification.TYPE_GROUP_JOIN_REQUEST,
+            ).exists()
+        )
+
+        left = self.client.post(f"/api/groups/{group.id}/leave/")
+        self.assertEqual(left.status_code, 204)
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.user,
+                actor=joiner,
+                type=Notification.TYPE_GROUP_JOIN_REQUEST_CANCELLED,
+            ).exists()
+        )
+
+    def test_group_update_and_delete_notify_active_members(self):
+        group = Group.objects.create(
+            name="Lifecycle notifications",
+            sport="running",
+            levels=["beginner"],
+            owner=self.user,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.user,
+            role=GroupMembership.ROLE_OWNER,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.other_user,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+
+        self.client.force_authenticate(self.user)
+        updated = self.client.patch(
+            f"/api/groups/{group.id}/",
+            {"description": "Updated description"},
+            format="json",
+        )
+        self.assertEqual(updated.status_code, 200)
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.other_user,
+                actor=self.user,
+                type=Notification.TYPE_GROUP_UPDATED,
+            ).exists()
+        )
+
+        deleted = self.client.delete(f"/api/groups/{group.id}/")
+        self.assertEqual(deleted.status_code, 204)
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.other_user,
+                actor=self.user,
+                type=Notification.TYPE_GROUP_DELETED,
+            ).exists()
+        )
+
+    def test_group_event_lifecycle_notifies_members(self):
+        group = Group.objects.create(
+            name="Event lifecycle notifications",
+            sport="running",
+            levels=["beginner"],
+            owner=self.user,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.user,
+            role=GroupMembership.ROLE_OWNER,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.other_user,
+            status=GroupMembership.STATUS_ACTIVE,
+        )
+
+        self.client.force_authenticate(self.user)
+        event_data = {
+            "title": "Group run",
+            "description": "Lifecycle test",
+            "sport": "running",
+            "level": "beginner",
+            "languages": ["en"],
+            "location_name": "Prater",
+            "location_address": "Vienna",
+            "latitude": 48.2,
+            "longitude": 16.4,
+            "start_at": "2026-09-01T18:00:00Z",
+            "end_at": "2026-09-01T20:00:00Z",
+            "max_slots": 12,
+            "visibility": "public",
+        }
+        created = self.client.post(
+            f"/api/groups/{group.id}/events/",
+            event_data,
+            format="json",
+        )
+        self.assertEqual(created.status_code, 201)
+        event = Event.objects.get(pk=created.data["id"])
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.other_user,
+                actor=self.user,
+                type=Notification.TYPE_GROUP_EVENT_CREATED,
+            ).exists()
+        )
+
+        updated = self.client.patch(
+            f"/api/events/{event.id}/",
+            {"description": "Updated lifecycle test"},
+            format="json",
+        )
+        self.assertEqual(updated.status_code, 200)
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.other_user,
+                actor=self.user,
+                type=Notification.TYPE_GROUP_EVENT_UPDATED,
+            ).exists()
+        )
+
+        deleted = self.client.delete(f"/api/events/{event.id}/")
+        self.assertEqual(deleted.status_code, 204)
+        self.assertTrue(
+            Notification.objects.filter(
+                recipient=self.other_user,
+                actor=self.user,
+                type=Notification.TYPE_GROUP_EVENT_DELETED,
+            ).exists()
+        )

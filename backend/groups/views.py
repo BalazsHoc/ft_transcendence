@@ -5,6 +5,8 @@ from rest_framework.exceptions import PermissionDenied, ValidationError
 
 from events.models import Event
 from events.serializers import EventSerializer
+from notifications.models import Notification
+from notifications.services import notify_group_admins, notify_group_members
 from .models import Group, GroupMembership
 from .serializers import GroupDetailSerializer, GroupSerializer, GroupMembershipSerializer
 
@@ -73,6 +75,28 @@ class GroupViewSet(viewsets.ModelViewSet):
                 status=GroupMembership.STATUS_ACTIVE,
             )
 
+    def perform_update(self, serializer):
+        with transaction.atomic():
+            group = serializer.save()
+            notify_group_members(
+                group=group,
+                actor=self.request.user,
+                notification_type=Notification.TYPE_GROUP_UPDATED,
+                payload={"group_id": str(group.pk)},
+                target_url=f"/groups/{group.pk}",
+            )
+
+    def perform_destroy(self, instance):
+        with transaction.atomic():
+            notify_group_members(
+                group=instance,
+                actor=self.request.user,
+                notification_type=Notification.TYPE_GROUP_DELETED,
+                payload={"group_id": str(instance.pk), "group_name": instance.name},
+                target_url="/groups",
+            )
+            instance.delete()
+
     @decorators.action(detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated])
     def join(self, request, pk=None):
         group = self.get_object()
@@ -99,6 +123,23 @@ class GroupViewSet(viewsets.ModelViewSet):
             membership = GroupMembership.objects.create(
                 group=group, user=request.user, status=membership_status
             )
+            notification_type = (
+                Notification.TYPE_GROUP_JOIN_REQUEST
+                if membership_status == GroupMembership.STATUS_PENDING
+                else Notification.TYPE_GROUP_MEMBER_JOINED
+            )
+            notify = notify_group_admins if membership_status == GroupMembership.STATUS_PENDING else notify_group_members
+            notify(
+                group=group,
+                actor=request.user,
+                notification_type=notification_type,
+                payload={
+                    "group_id": str(group.pk),
+                    "membership_id": membership.pk,
+                    "status": membership.status,
+                },
+                target_url=f"/groups/{group.pk}",
+            )
         return response.Response(
             GroupMembershipSerializer(membership, context={"request": request}).data,
             status=status.HTTP_201_CREATED,
@@ -112,7 +153,25 @@ class GroupViewSet(viewsets.ModelViewSet):
             raise ValidationError("You are not a member of this group.")
         if membership.role == GroupMembership.ROLE_OWNER:
             raise ValidationError("Transfer ownership before leaving this group.")
-        membership.delete()
+        with transaction.atomic():
+            notification_type = (
+                Notification.TYPE_GROUP_MEMBER_LEFT
+                if membership.status == GroupMembership.STATUS_ACTIVE
+                else Notification.TYPE_GROUP_JOIN_REQUEST_CANCELLED
+            )
+            notify = notify_group_members if membership.status == GroupMembership.STATUS_ACTIVE else notify_group_admins
+            notify(
+                group=group,
+                actor=request.user,
+                notification_type=notification_type,
+                payload={
+                    "group_id": str(group.pk),
+                    "membership_id": membership.pk,
+                    "status": membership.status,
+                },
+                target_url=f"/groups/{group.pk}",
+            )
+            membership.delete()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
 
     @decorators.action(detail=True, methods=["get"], permission_classes=[permissions.IsAuthenticated])
@@ -138,7 +197,15 @@ class GroupViewSet(viewsets.ModelViewSet):
                 raise PermissionDenied("Only the group owner can create group events.")
             serializer = EventSerializer(data=request.data, context={"request": request})
             serializer.is_valid(raise_exception=True)
-            serializer.save(creator=request.user, group=group)
+            with transaction.atomic():
+                event = serializer.save(creator=request.user, group=group)
+                notify_group_members(
+                    group=group,
+                    actor=request.user,
+                    notification_type=Notification.TYPE_GROUP_EVENT_CREATED,
+                    payload={"group_id": str(group.pk), "event_id": str(event.pk)},
+                    target_url=f"/events/{event.pk}",
+                )
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
         events = group.events.select_related("creator", "group").prefetch_related(
