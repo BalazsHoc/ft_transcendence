@@ -2,6 +2,8 @@ from django.db import transaction
 from django.db.models import Count, Q
 from rest_framework import viewsets, permissions, decorators, response, status
 from rest_framework.exceptions import NotFound
+from notifications.models import Notification
+from notifications.services import create_notification, notify_event_audience
 from .models import Event, EventParticipant
 from .serializers import EventSerializer
 from chat.models import Message
@@ -34,7 +36,48 @@ class EventViewSet(viewsets.ModelViewSet):
         if level: qs=qs.filter(level=level)
         if language: qs=qs.filter(languages__contains=[language])
         return qs
-    def perform_create(self, serializer): serializer.save(creator=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
+
+    def perform_update(self, serializer):
+        with transaction.atomic():
+            event = serializer.save()
+            notification_type = (
+                Notification.TYPE_GROUP_EVENT_UPDATED
+                if event.group_id
+                else Notification.TYPE_EVENT_UPDATED
+            )
+            notify_event_audience(
+                event=event,
+                actor=self.request.user,
+                notification_type=notification_type,
+                payload={
+                    "event_id": str(event.pk),
+                    "group_id": str(event.group_id) if event.group_id else None,
+                },
+                target_url=f"/events/{event.pk}",
+            )
+
+    def perform_destroy(self, instance):
+        with transaction.atomic():
+            notification_type = (
+                Notification.TYPE_GROUP_EVENT_DELETED
+                if instance.group_id
+                else Notification.TYPE_EVENT_DELETED
+            )
+            notify_event_audience(
+                event=instance,
+                actor=self.request.user,
+                notification_type=notification_type,
+                payload={
+                    "event_id": str(instance.pk),
+                    "event_title": instance.title,
+                    "group_id": str(instance.group_id) if instance.group_id else None,
+                },
+                target_url=(f"/groups/{instance.group_id}" if instance.group_id else "/discover"),
+            )
+            instance.delete()
+
     @decorators.action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def join(self, request, pk=None):
         event=self.get_object()
@@ -51,6 +94,18 @@ class EventViewSet(viewsets.ModelViewSet):
                 last=EventParticipant.objects.filter(event=event,status=EventParticipant.STATUS_WAITING).order_by('-queue_position').first()
                 next_pos=(last.queue_position+1) if last else 1
                 p=EventParticipant.objects.create(user=request.user,event=event,status=EventParticipant.STATUS_WAITING,queue_position=next_pos)
+            if event.creator_id != request.user.id:
+                create_notification(
+                    recipient=event.creator,
+                    actor=request.user,
+                    notification_type=Notification.TYPE_EVENT_PARTICIPANT_JOINED,
+                    payload={
+                        "event_id": str(event.pk),
+                        "participant_id": p.pk,
+                        "status": p.status,
+                    },
+                    target_url=f"/events/{event.pk}",
+                )
         return response.Response({'success':True,'status':p.status,'queue_position':p.queue_position}, status=201)
     @decorators.action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def leave(self, request, pk=None):
@@ -70,6 +125,33 @@ class EventViewSet(viewsets.ModelViewSet):
                     for i,item in enumerate(waiting,start=1):
                         if item.queue_position != i:
                             item.queue_position=i; item.save(update_fields=['queue_position'])
+                    promoted_user = next_w.user
+                else:
+                    promoted_user = None
+            else:
+                promoted_user = None
+            if event.creator_id != request.user.id:
+                create_notification(
+                    recipient=event.creator,
+                    actor=request.user,
+                    notification_type=Notification.TYPE_EVENT_PARTICIPANT_LEFT,
+                    payload={
+                        "event_id": str(event.pk),
+                        "participant_id": p.pk,
+                    },
+                    target_url=f"/events/{event.pk}",
+                )
+            if promoted_user is not None and promoted_user.pk != request.user.pk:
+                create_notification(
+                    recipient=promoted_user,
+                    actor=request.user,
+                    notification_type=Notification.TYPE_EVENT_PARTICIPANT_PROMOTED,
+                    payload={
+                        "event_id": str(event.pk),
+                        "participant_id": promoted_user.pk,
+                    },
+                    target_url=f"/events/{event.pk}",
+                )
         return response.Response({'success':True,'promoted_user_id':promoted_user_id})
     @decorators.action(detail=True, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def messages(self, request, pk=None):

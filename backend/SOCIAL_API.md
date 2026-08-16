@@ -85,8 +85,16 @@ public actor, JSON `payload`, optional `target_url`, `read_at`, and
 | --- | --- | --- |
 | `friend_request` | A user sends a friend request | `/profile#friends-incoming` |
 | `friend_accepted` | The recipient accepts the request | `/profile` |
+| `friend_rejected` / `friend_removed` | A request is rejected or an accepted friendship is removed | `/profile` |
 | `direct_message` | A friend sends a personal message | `/chats?conversationId=<uuid>` |
 | `group_message` | A member posts in a group chat | `/groups/<uuid>#group-chat` |
+| `group_updated` / `group_deleted` | A group is changed or deleted | `/groups/<uuid>` or `/groups` |
+| `group_event_created` / `group_event_updated` / `group_event_deleted` | A group event is created, changed, or deleted | `/events/<uuid>` or `/groups/<uuid>` |
+| `group_join_request` / `group_join_request_cancelled` | A user requests or cancels approval to join a group | `/groups/<uuid>` |
+| `group_member_joined` / `group_member_left` | A user joins or leaves an open group | `/groups/<uuid>` |
+| `event_updated` / `event_deleted` | An event with recipients is changed or deleted | `/events/<uuid>` or `/discover` |
+| `event_participant_joined` / `event_participant_left` | A user joins or leaves an event | `/events/<uuid>` |
+| `event_participant_promoted` | A waiting-list user is promoted after someone leaves | `/events/<uuid>` |
 
 `read-all` returns `{ "updated": <count> }`. The frontend header uses the
 list and unread-count endpoints with 30-second polling for the MVP.

@@ -25,10 +25,46 @@ function notificationMessage(
       return t("notifications.friendRequest", { actor });
     case "friend_accepted":
       return t("notifications.friendAccepted", { actor });
+    case "friend_rejected":
+      return t("notifications.friendRejected", { actor });
+    case "friend_removed":
+      return t("notifications.friendRemoved", { actor });
+    case "friend_rejected":
+      return t("notifications.friendRejected", { actor });
+    case "friend_removed":
+      return t("notifications.friendRemoved", { actor });
     case "direct_message":
       return t("notifications.directMessage", { actor });
     case "group_message":
       return t("notifications.groupMessage", { actor });
+    case "group_updated":
+      return t("notifications.groupUpdated", { actor });
+    case "group_deleted":
+      return t("notifications.groupDeleted", { actor });
+    case "group_event_created":
+      return t("notifications.groupEventCreated", { actor });
+    case "group_event_updated":
+      return t("notifications.groupEventUpdated", { actor });
+    case "group_event_deleted":
+      return t("notifications.groupEventDeleted", { actor });
+    case "group_join_request":
+      return t("notifications.groupJoinRequest", { actor });
+    case "group_join_request_cancelled":
+      return t("notifications.groupJoinRequestCancelled", { actor });
+    case "group_member_joined":
+      return t("notifications.groupMemberJoined", { actor });
+    case "group_member_left":
+      return t("notifications.groupMemberLeft", { actor });
+    case "event_updated":
+      return t("notifications.eventUpdated", { actor });
+    case "event_deleted":
+      return t("notifications.eventDeleted", { actor });
+    case "event_participant_joined":
+      return t("notifications.eventParticipantJoined", { actor });
+    case "event_participant_left":
+      return t("notifications.eventParticipantLeft", { actor });
+    case "event_participant_promoted":
+      return t("notifications.eventParticipantPromoted", { actor });
     default:
       return t("notifications.generic");
   }

@@ -31,8 +31,26 @@ export type UserPresence = {
 export type NotificationType =
   | "friend_request"
   | "friend_accepted"
+  | "friend_rejected"
+  | "friend_removed"
+  | "friend_rejected"
+  | "friend_removed"
   | "direct_message"
-  | "group_message";
+  | "group_message"
+  | "group_updated"
+  | "group_deleted"
+  | "group_event_created"
+  | "group_event_updated"
+  | "group_event_deleted"
+  | "group_join_request"
+  | "group_join_request_cancelled"
+  | "group_member_joined"
+  | "group_member_left"
+  | "event_updated"
+  | "event_deleted"
+  | "event_participant_joined"
+  | "event_participant_left"
+  | "event_participant_promoted";
 
 export type NotificationItem = {
   id: number;

@@ -1,5 +1,6 @@
 from django.db import IntegrityError, transaction
 
+from notifications.models import Notification
 from notifications.services import create_notification
 
 from .models import Friendship
@@ -98,14 +99,35 @@ def reject_friend_request(*, friendship, actor):
             raise FriendshipError("Only the recipient can reject this request.")
         friendship.status = Friendship.STATUS_REJECTED
         friendship.save(update_fields=["status", "updated_at"])
+        create_notification(
+            recipient=friendship.requested_by,
+            actor=actor,
+            notification_type=Notification.TYPE_FRIEND_REJECTED,
+            payload={"friendship_id": str(friendship.pk)},
+            target_url="/profile",
+        )
     return friendship
 
 
 def remove_friend(*, friendship, actor):
     with transaction.atomic():
-        friendship = Friendship.objects.select_for_update().get(pk=friendship.pk)
+        friendship = Friendship.objects.select_for_update().select_related(
+            "user_low", "user_high"
+        ).get(pk=friendship.pk)
         if friendship.status != Friendship.STATUS_ACCEPTED:
             raise FriendshipError("Only accepted friendships can be removed.")
         if actor.pk not in {friendship.user_low_id, friendship.user_high_id}:
             raise FriendshipError("You cannot remove this friendship.")
+        recipient = (
+            friendship.user_high
+            if actor.pk == friendship.user_low_id
+            else friendship.user_low
+        )
         friendship.delete()
+        create_notification(
+            recipient=recipient,
+            actor=actor,
+            notification_type=Notification.TYPE_FRIEND_REMOVED,
+            payload={"friendship_id": str(friendship.pk)},
+            target_url="/profile",
+        )

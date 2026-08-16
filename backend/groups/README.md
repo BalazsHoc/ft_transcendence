@@ -40,3 +40,10 @@ of its group. The group owner creates group events through
 
 Group messages create a recipient-only `group_message` notification for every
 other active member. Notifications link back to `/groups/{id}#group-chat`.
+
+Group lifecycle notifications are sent to active members (excluding the actor):
+group updates/deletions and group-event creation, updates, and deletions. Open
+group joins and leaves notify the other active members. Approval-policy join
+requests and cancellations notify active owners/admins only. Group-event
+notifications link to the event page; group lifecycle and membership
+notifications link to the group page.
