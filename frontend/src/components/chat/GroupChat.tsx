@@ -131,7 +131,7 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
         </button>
       </div>
 
-      {log && <pre>{log}</pre>}
+      {/* {log && <pre>{log}</pre>} */}
     </section>
   );
 }

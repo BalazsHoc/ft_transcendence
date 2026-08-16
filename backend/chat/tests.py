@@ -8,6 +8,7 @@ from core.asgi import application
 from notifications.models import Notification
 from groups.models import Group, GroupMembership
 from social.models import Friendship
+from accounts.models import PresenceSession
 
 from .models import DirectConversation, DirectMessage
 
@@ -184,3 +185,82 @@ class DirectMessagingApiTests(APITestCase):
             type=Notification.TYPE_GROUP_MESSAGE,
         )
         self.assertEqual(notification.payload["group_id"], str(group.pk))
+
+
+class PresenceWebsocketTests(APITestCase):
+    def setUp(self):
+        self.alex = User.objects.create_user(
+            username="presence-alex",
+            email="presence-alex@example.com",
+            password="secure-password",
+        )
+        self.bob = User.objects.create_user(
+            username="presence-bob",
+            email="presence-bob@example.com",
+            password="secure-password",
+        )
+        user_low, user_high = sorted(
+            (self.alex, self.bob),
+            key=lambda user: str(user.pk),
+        )
+        Friendship.objects.create(
+            user_low=user_low,
+            user_high=user_high,
+            requested_by=self.alex,
+            status=Friendship.STATUS_ACCEPTED,
+        )
+
+    def test_presence_websocket_tracks_session_and_heartbeat(self):
+        token = str(AccessToken.for_user(self.alex))
+
+        async def communicate():
+            communicator = WebsocketCommunicator(
+                application,
+                f"/ws/presence/?token={token}",
+            )
+            connected, _ = await communicator.connect()
+            initial = await communicator.receive_json_from()
+            await communicator.send_json_to({"type": "heartbeat"})
+            heartbeat = await communicator.receive_json_from()
+            await communicator.disconnect()
+            return connected, initial, heartbeat
+
+        connected, initial, heartbeat = async_to_sync(communicate)()
+        self.assertTrue(connected)
+        self.assertEqual(initial["type"], "presence_update")
+        self.assertEqual(initial["user_id"], str(self.alex.pk))
+        self.assertTrue(initial["is_online"])
+        self.assertTrue(heartbeat["is_online"])
+        self.assertFalse(PresenceSession.objects.filter(user=self.alex).exists())
+        self.alex.refresh_from_db()
+        self.assertIsNotNone(self.alex.last_seen)
+
+    def test_friends_receive_online_presence_updates(self):
+        alex_token = str(AccessToken.for_user(self.alex))
+        bob_token = str(AccessToken.for_user(self.bob))
+
+        async def communicate():
+            bob_communicator = WebsocketCommunicator(
+                application,
+                f"/ws/presence/?token={bob_token}",
+            )
+            bob_connected, _ = await bob_communicator.connect()
+            await bob_communicator.receive_json_from()
+
+            alex_communicator = WebsocketCommunicator(
+                application,
+                f"/ws/presence/?token={alex_token}",
+            )
+            alex_connected, _ = await alex_communicator.connect()
+            await alex_communicator.receive_json_from()
+            update = await bob_communicator.receive_json_from()
+
+            await alex_communicator.disconnect()
+            await bob_communicator.disconnect()
+            return bob_connected, alex_connected, update
+
+        bob_connected, alex_connected, update = async_to_sync(communicate)()
+        self.assertTrue(bob_connected)
+        self.assertTrue(alex_connected)
+        self.assertEqual(update["user_id"], str(self.alex.pk))
+        self.assertTrue(update["is_online"])

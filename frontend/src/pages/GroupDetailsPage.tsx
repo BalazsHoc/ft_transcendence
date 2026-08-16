@@ -472,9 +472,6 @@ export function GroupDetailsPage() {
           />
         ) : null}
 
-        {isActiveMember && (
-          <GroupChat groupId={group.id} groupName={group.name} />
-        )}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           <div className="lg:col-span-12">
@@ -498,9 +495,14 @@ export function GroupDetailsPage() {
               rsvpError={rsvpError}
               rsvpInfo={rsvpInfo}
               rsvpNeedsAuth={rsvpNeedsAuth}
-            />
+              />
           </div>
         </div>
+
+        {isActiveMember && (
+          <GroupChat groupId={group.id} groupName={group.name} />
+        )}
+
       </div>
     </div>
   );

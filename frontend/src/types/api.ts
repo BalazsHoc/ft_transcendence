@@ -15,9 +15,17 @@ export type User = {
   languages?: string[];
   interests?: string[];
   avatar?: string | null;
+  is_online?: boolean;
+  last_seen?: string | null;
   friendship_status?: FriendshipStatus;
   friendship_id?: number | null;
   created_at?: string;
+};
+
+export type UserPresence = {
+  user_id: string;
+  is_online: boolean;
+  last_seen: string | null;
 };
 
 export type NotificationType =

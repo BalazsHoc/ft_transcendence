@@ -312,6 +312,7 @@
     "joined": "Joined / waiting"
   },
   "chats": {
+    "backToList": "Back to chats",
     "title": "Chats",
     "selectEvent": "Select event",
     "placeholder": "Type message...",
@@ -361,6 +362,11 @@
     "loadError": "Unable to load friends.",
     "searchError": "Unable to search users.",
     "actionError": "Unable to update this friendship."
+  },
+  "presence": {
+    "online": "Online",
+    "offline": "Offline",
+    "lastSeen": "Last seen {{time}}"
   },
   "notifications": {
     "title": "Notifications",

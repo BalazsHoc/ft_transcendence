@@ -19,6 +19,8 @@ class PublicUserSerializer(UserPublicSerializer):
             "languages",
             "interests",
             "avatar",
+            "is_online",
+            "last_seen",
             "created_at",
         ]
         read_only_fields = fields

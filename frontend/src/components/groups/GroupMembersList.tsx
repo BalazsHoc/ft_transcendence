@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import type { GroupMembership } from "../../types/api";
 import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
+import { PresenceStatus } from "../shared/PresenceStatus";
 
 type GroupMembersListProps = {
   memberships: GroupMembership[];
@@ -80,6 +81,7 @@ export function GroupMembersList({
                     <p className="text-xs text-[var(--muted)]">
                       {roleLabel(membership.role, t)}
                     </p>
+                    <PresenceStatus user={membership.user} />
                   </div>
                 </Link>
               </li>

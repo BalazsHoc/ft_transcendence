@@ -630,6 +630,10 @@ pre {
     grid-template-columns: 1fr;
   }
 
+  .footer .contributors {
+    display: none;
+  }
+
   /* .hero h1 removed — unused, see note above */
 }
 

@@ -20,6 +20,7 @@ import type {
   DirectMessageItem,
 } from "../../types/api";
 import Button from "../shared/Button";
+import { PresenceStatus } from "../shared/PresenceStatus";
 
 const WS_URL = import.meta.env.VITE_WS_URL || "ws://127.0.0.1:8000";
 
@@ -142,9 +143,8 @@ export function DirectChat({ conversation }: { conversation: DirectConversationI
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate font-medium text-[var(--text)]">{conversation.peer.username}</p>
-          <p className="truncate text-xs text-[var(--muted)]">
-            {connected ? t("chats.connected") : t("chats.disconnected")}
-          </p>
+          <PresenceStatus user={conversation.peer} />
+          {!connected && <p className="truncate text-xs text-[var(--muted)]">{t("chats.disconnected")}</p>}
         </div>
       </header>
 

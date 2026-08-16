@@ -8,6 +8,7 @@ header. User search never returns email addresses.
 ```text
 GET /api/users/?search=<username-or-name>
 GET /api/users/<uuid>/
+GET /api/users/<uuid>/presence/
 ```
 
 Returns up to 50 public users, excluding the authenticated user. Each result
@@ -17,6 +18,18 @@ when a relationship exists. The detail endpoint is also available without
 authentication and returns one public profile; anonymous requests receive
 `friendship_status: none` and `friendship_id: null`. Neither endpoint exposes
 email or authentication fields.
+
+User payloads also include `is_online` and `last_seen`. The presence endpoint
+returns the same two fields without requiring authentication. Authenticated
+frontends keep a presence session alive through:
+
+```text
+WS /ws/presence/?token=<jwt>
+```
+
+The client sends `{ "type": "heartbeat" }` every 30 seconds. Presence events
+are broadcast to accepted friends only; stale sessions expire after 90 seconds
+so a dropped browser connection does not leave a user online indefinitely.
 
 ## Friendships
 
