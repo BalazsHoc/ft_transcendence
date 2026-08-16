@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Check, MessageCircle, UserPlus, X } from "lucide-react";
 
-import { getPublicUser, getUserActivities } from "../api/usersApi";
+import { getPublicUser, getUserActivities, getUserPresence } from "../api/usersApi";
 import {
   acceptFriendRequest,
   rejectFriendRequest,
@@ -135,6 +135,34 @@ export function UserProfilePage() {
       cancelled = true;
     };
   }, [i18n.language, profile?.id, t]);
+
+  useEffect(() => {
+    if (!profile?.id) return () => undefined;
+
+    let cancelled = false;
+    const refreshPresence = () => {
+      getUserPresence(profile.id)
+        .then((presence) => {
+          if (cancelled) return;
+          setProfile((current) =>
+            current
+              ? {
+                  ...current,
+                  is_online: presence.is_online,
+                  last_seen: presence.last_seen,
+                }
+              : current,
+          );
+        })
+        .catch(() => undefined);
+    };
+    const interval = window.setInterval(refreshPresence, 30_000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, [profile?.id]);
 
   const isOwnProfile = Boolean(profile && currentUser && profile.id === currentUser.id);
 

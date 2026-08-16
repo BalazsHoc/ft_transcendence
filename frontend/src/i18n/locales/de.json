@@ -312,6 +312,7 @@
     "joined": "Beigetreten / Warteliste"
   },
   "chats": {
+    "backToList": "Zurück zu den Chats",
     "title": "Chats",
     "selectEvent": "Event auswählen",
     "placeholder": "Nachricht eingeben...",
@@ -361,6 +362,11 @@
     "loadError": "Freunde konnten nicht geladen werden.",
     "searchError": "Benutzer konnten nicht gesucht werden.",
     "actionError": "Freundschaft konnte nicht aktualisiert werden."
+  },
+  "presence": {
+    "online": "Online",
+    "offline": "Offline",
+    "lastSeen": "Zuletzt gesehen {{time}}"
   },
   "notifications": {
     "title": "Benachrichtigungen",

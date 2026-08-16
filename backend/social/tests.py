@@ -178,7 +178,17 @@ class FriendshipApiTests(APITestCase):
         self.assertEqual(response.data["friendship_id"], Friendship.objects.get().pk)
         self.assertIn("created_at", response.data)
         self.assertIn("languages", response.data)
+        self.assertIn("is_online", response.data)
+        self.assertIn("last_seen", response.data)
         self.assertNotIn("email", response.data)
+
+    def test_public_profile_presence_endpoint_returns_current_state(self):
+        response = self.client.get(f"/api/users/{self.bob.pk}/presence/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["user_id"], str(self.bob.pk))
+        self.assertFalse(response.data["is_online"])
+        self.assertIsNone(response.data["last_seen"])
 
     def test_public_profile_is_available_without_authentication(self):
         self.client.force_authenticate(None)

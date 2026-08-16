@@ -5,6 +5,7 @@ from rest_framework import generics, permissions
 
 from events.models import Event, EventParticipant
 from events.serializers import EventSerializer
+from accounts.serializers import UserPresenceSerializer
 from .models import Friendship
 from .serializers import UserSearchSerializer
 
@@ -71,6 +72,14 @@ class UserProfileView(generics.RetrieveAPIView):
             if relation.user_low_id != relation.user_high_id
         }
         return context
+
+
+class UserPresenceView(generics.RetrieveAPIView):
+    """Return the current online state and last activity timestamp."""
+
+    queryset = User.objects.all()
+    serializer_class = UserPresenceSerializer
+    permission_classes = [permissions.AllowAny]
 
 
 class UserActivityView(generics.ListAPIView):

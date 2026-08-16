@@ -3,13 +3,17 @@ from django.contrib.auth.password_validation import validate_password
 from django.utils.text import slugify
 from rest_framework import serializers
 from core.districts import DISTRICT_CODES
+from .presence import is_user_online
 User=get_user_model()
 
 class UserPublicSerializer(serializers.ModelSerializer):
+    is_online=serializers.SerializerMethodField()
     class Meta:
         model=User
-        fields=['id','username','first_name','last_name','district','bio','languages','interests','avatar','created_at']
-        read_only_fields=['id','created_at']
+        fields=['id','username','first_name','last_name','district','bio','languages','interests','avatar','is_online','last_seen','created_at']
+        read_only_fields=['id','is_online','last_seen','created_at']
+    def get_is_online(self, obj) -> bool:
+        return is_user_online(obj.pk)
 
 class RegisterSerializer(serializers.ModelSerializer):
     name=serializers.CharField(source='first_name', write_only=True, max_length=150)
@@ -61,7 +65,21 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
 class MeSerializer(serializers.ModelSerializer):
+    is_online=serializers.SerializerMethodField()
     class Meta:
         model=User
-        fields=['id','username','email','first_name','last_name','district','bio','languages','interests','avatar','created_at']
-        read_only_fields=['id','username','email','created_at']
+        fields=['id','username','email','first_name','last_name','district','bio','languages','interests','avatar','is_online','last_seen','created_at']
+        read_only_fields=['id','username','email','is_online','last_seen','created_at']
+    def get_is_online(self, obj) -> bool:
+        return is_user_online(obj.pk)
+
+
+class UserPresenceSerializer(serializers.ModelSerializer):
+    user_id=serializers.UUIDField(source='id', read_only=True)
+    is_online=serializers.SerializerMethodField()
+    class Meta:
+        model=User
+        fields=['user_id','is_online','last_seen']
+        read_only_fields=fields
+    def get_is_online(self, obj) -> bool:
+        return is_user_online(obj.pk)

@@ -3,6 +3,7 @@ import { MapPin, Pencil } from "lucide-react";
 import { User } from "../../types/api";
 import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
 import { VIENNA_SKYLINE_IMAGE } from "../shared/backgroundImages";
+import { PresenceStatus } from "../shared/PresenceStatus";
 import Button from "../shared/Button";
 
 type ProfileHeroProps = {
@@ -47,6 +48,7 @@ export function ProfileHero({ user, onEditClick }: ProfileHeroProps) {
                 {user?.district || t("profile.noDistrict")}
                 {memberSince && <> • {t("profile.memberSince", { year: memberSince })}</>}
               </p>
+              <PresenceStatus user={user} className="mt-2" />
             </div>
 
             {user && onEditClick && (

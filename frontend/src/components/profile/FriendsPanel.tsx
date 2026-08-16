@@ -17,6 +17,7 @@ import { searchUsers } from "../../api/usersApi";
 import type { FriendshipStatus, User } from "../../types/api";
 import { useAuth } from "../../features/auth/AuthContext";
 import Button from "../shared/Button";
+import { PresenceStatus } from "../shared/PresenceStatus";
 
 const actionLinkClasses =
   "inline-flex items-center justify-center gap-2 rounded-[var(--radius-button)] bg-[var(--button-bg)] px-4 py-2 text-sm font-medium text-[var(--button-text)]";
@@ -176,6 +177,7 @@ export function FriendsPanel() {
                   <Link to={`/users/${result.id}`} className="font-medium text-[var(--text)] underline-offset-2 hover:underline">
                     {profileLabel(result)}
                   </Link>
+                  <PresenceStatus user={result} />
                   {status === "accepted" ? (
                     <Link to={`/chats?userId=${encodeURIComponent(result.id)}`} className={actionLinkClasses}>
                       <MessageCircle size={16} /> {t("friends.message")}
@@ -209,6 +211,7 @@ export function FriendsPanel() {
             <Link to={`/users/${request.friend.id}`} className="font-medium text-[var(--text)] underline-offset-2 hover:underline">
               {profileLabel(request.friend)}
             </Link>
+            <PresenceStatus user={request.friend} />
             <div className="flex flex-wrap gap-2">
               <Button variant="primary" size="sm" icon={<Check size={16} />} disabled={busyId === request.id} onClick={() => void answerRequest(request, "accept")}>
                 {t("friends.accept")}
@@ -228,6 +231,7 @@ export function FriendsPanel() {
             <Link to={`/users/${friendship.friend.id}`} className="font-medium text-[var(--text)] underline-offset-2 hover:underline">
               {profileLabel(friendship.friend)}
             </Link>
+            <PresenceStatus user={friendship.friend} />
             <div className="flex flex-wrap gap-2">
               <Link to={`/chats?userId=${encodeURIComponent(friendship.friend.id)}`} className={actionLinkClasses}>
                 <MessageCircle size={16} /> {t("friends.message")}
@@ -247,6 +251,7 @@ export function FriendsPanel() {
             <Link to={`/users/${request.friend.id}`} className="font-medium text-[var(--text)] underline-offset-2 hover:underline">
               {profileLabel(request.friend)}
             </Link>
+            <PresenceStatus user={request.friend} />
             <span className="ml-3 text-sm text-[var(--muted)]">{t("friends.requestSent")}</span>
           </div>
         ))}
@@ -254,4 +259,3 @@ export function FriendsPanel() {
     </section>
   );
 }
-

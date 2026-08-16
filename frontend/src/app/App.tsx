@@ -18,6 +18,8 @@ import { GroupDetailsPage } from "../pages/GroupDetailsPage";
 import { ApiTesterPage } from "../pages/ApiTesterPage";
 import { UiElementsTest } from "../pages/UiElementsTest";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { PrivacyPolicyPage } from "../pages/PrivacyPolicyPage";
+import { TermsOfServicePage } from "../pages/TermsOfServicePage";
 
 export function App() {
   return (
@@ -39,6 +41,8 @@ export function App() {
         <Route path="users/:userId" element={<UserProfilePage />} />
         <Route path="api-test" element={<ApiTesterPage />} />
         <Route path="ui-elements-test" element={<UiElementsTest />} />
+        <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="terms-of-service" element={<TermsOfServicePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />

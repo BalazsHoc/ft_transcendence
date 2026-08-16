@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from accounts.serializers import UserPublicSerializer
+from accounts.presence import is_user_online
 from .models import Friendship
 
 User = get_user_model()
@@ -12,6 +13,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
 
     friendship_status = serializers.SerializerMethodField()
     friendship_id = serializers.SerializerMethodField()
+    is_online = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -25,6 +27,8 @@ class UserSearchSerializer(serializers.ModelSerializer):
             "languages",
             "interests",
             "avatar",
+            "is_online",
+            "last_seen",
             "created_at",
             "friendship_status",
             "friendship_id",
@@ -46,6 +50,9 @@ class UserSearchSerializer(serializers.ModelSerializer):
     def get_friendship_id(self, obj):
         friendship = self.context.get("friendship_by_user", {}).get(obj.pk)
         return friendship.pk if friendship else None
+
+    def get_is_online(self, obj) -> bool:
+        return is_user_online(obj.pk)
 
 
 class FriendshipSerializer(serializers.ModelSerializer):
