@@ -1037,15 +1037,21 @@ pre {
    DISCOVER PAGE LAYOUT
 --------------------------*/
 .discover-layout {
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
-  padding: 24px 22px;
+  display: block;
+  padding: 32px 16px;
 }
 
 .discover-main {
   flex: 1;
   min-width: 0;
+}
+
+.events-level-filter > summary::-webkit-details-marker {
+  display: none;
+}
+
+.events-level-filter > summary::marker {
+  content: "";
 }
 
 .curated-for-you {
@@ -1066,6 +1072,11 @@ pre {
 }
 
 @media (min-width: 1024px) {
+  .discover-layout {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
   .curated-for-you__grid {
     grid-template-columns: 2fr 1fr;
   }
