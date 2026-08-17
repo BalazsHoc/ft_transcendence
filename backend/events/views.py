@@ -18,7 +18,6 @@ class IsCreatorOrReadOnly(permissions.BasePermission):
             return False
         return obj.group.memberships.filter(
             user=request.user,
-            status='active',
             role__in=['owner', 'admin'],
         ).exists()
 
@@ -28,7 +27,7 @@ class EventViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         qs=Event.objects.select_related('creator','group').prefetch_related('participants','participants__user').annotate(attending_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_ATTENDING)), waiting_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_WAITING)))
         if self.request.user.is_authenticated:
-            qs=qs.filter(Q(visibility=Event.VISIBILITY_PUBLIC) | Q(creator=self.request.user) | Q(group__memberships__user=self.request.user, group__memberships__status='active')).distinct()
+            qs=qs.filter(Q(visibility=Event.VISIBILITY_PUBLIC) | Q(creator=self.request.user) | Q(group__memberships__user=self.request.user)).distinct()
         else:
             qs=qs.filter(visibility=Event.VISIBILITY_PUBLIC)
         sport=self.request.query_params.get('sport'); level=self.request.query_params.get('level'); language=self.request.query_params.get('language')
@@ -81,7 +80,7 @@ class EventViewSet(viewsets.ModelViewSet):
     @decorators.action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def join(self, request, pk=None):
         event=self.get_object()
-        if event.visibility == Event.VISIBILITY_PRIVATE and event.group and not event.group.memberships.filter(user=request.user, status='active').exists():
+        if event.visibility == Event.VISIBILITY_PRIVATE and event.group and not event.group.memberships.filter(user=request.user).exists():
             return response.Response({'detail':'Join the group before joining this private event.'}, status=status.HTTP_403_FORBIDDEN)
         with transaction.atomic():
             event=Event.objects.select_for_update().get(pk=event.pk)

@@ -29,9 +29,9 @@ export function Header({ darkMode, onToggleDarkMode }: HeaderProps) {
     <header className="sticky top-0 w-full z-50 flex items-center justify-between gap-4 px-5 py-4 bg-[var(--surface)]/80 backdrop-blur-xl border-b border-[var(--surface-border)] shadow-sm">
       <div className="flex items-center gap-4 lg:gap-12 xl:gap-20 min-w-0">
         <HeaderBrand />
-        <HeaderNav />
       </div>
 
+        <HeaderNav />
       <div className="flex items-center gap-3 shrink-0">
         {/* {!isMinimalHeaderPage && <HeaderSearch value={search} onChange={setSearch} />} */}
 

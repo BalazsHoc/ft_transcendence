@@ -41,6 +41,8 @@ class Group(models.Model):
     description = models.TextField(blank=True)
     sport = models.CharField(max_length=50, choices=SPORT_CHOICES)
     levels = models.JSONField(default=list, blank=True)
+    # Legacy fields are kept in the database for backwards-compatible upgrades.
+    # They are no longer exposed by the API: all groups are public/open in the MVP.
     kind = models.CharField(max_length=20, choices=KIND_CHOICES, default=KIND_TRAINING)
     visibility = models.CharField(
         max_length=20,
@@ -84,6 +86,13 @@ class Group(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        # The MVP has one group visibility and one join workflow. Keep legacy
+        # columns consistent for code that still creates a Group directly.
+        self.visibility = self.VISIBILITY_PUBLIC
+        self.join_policy = self.JOIN_OPEN
+        return super().save(*args, **kwargs)
 
 
 class GroupMembership(models.Model):
@@ -132,3 +141,9 @@ class GroupMembership(models.Model):
 
     def __str__(self):
         return f"{self.user} -> {self.group} ({self.role})"
+
+    def save(self, *args, **kwargs):
+        # Membership approval was removed from the MVP. Normalize legacy or
+        # manually supplied pending values so every persisted membership is active.
+        self.status = self.STATUS_ACTIVE
+        return super().save(*args, **kwargs)

@@ -59,36 +59,36 @@ export function EventCard({
 			<div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
 
 			<div className="relative z-10 p-4">
+				<div className="mb-4 flex items-center justify-between gap-2">
+					<Badge
+						variant={
+							event.user_status?.status === "attending"
+								? "green"
+								: "default"
+						}
+					>
+						{event.user_status?.status === "attending"
+							? t("event.attending")
+							: t("event.notJoined")}
+					</Badge>
+					{event.group ? (
+						<Link
+							to={`/groups/${event.group.id}`}
+							className="mt-2 inline-flex"
+							aria-label={t("event.groupEvent")}
+						>
+							<Badge variant="yellow">
+								{t("event.groupEvent")}: {event.group.name}
+							</Badge>
+						</Link>
+					) : null}
+				</div>
+
 				<Link
 					to={`/events/${event.id}`}
 					className="block overflow-hidden"
 					aria-label={event.title}
 				>
-					<div className="mb-4 flex items-center justify-between gap-2">
-						<Badge
-							variant={
-								event.user_status?.status === "attending"
-									? "green"
-									: "default"
-							}
-						>
-							{event.user_status?.status === "attending"
-								? t("event.attending")
-								: t("event.notJoined")}
-						</Badge>
-						{event.group ? (
-							<Link
-								to={`/groups/${event.group.id}`}
-								className="mt-2 inline-flex"
-								aria-label={t("event.groupEvent")}
-							>
-								<Badge variant="yellow">
-									{t("event.groupEvent")}: {event.group.name}
-								</Badge>
-							</Link>
-						) : null}
-					</div>
-
 					<div className="min-h-[180px]" aria-hidden="true" />
 				</Link>
 

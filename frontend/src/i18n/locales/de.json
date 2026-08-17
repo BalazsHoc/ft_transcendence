@@ -251,9 +251,13 @@
     "location": "Ort",
     "address": "Adresse",
     "searchAddress": "Adresse suchen",
+    "image": "Eventbild",
+    "imagePreview": "Eventvorschau",
     "start": "Start",
     "end": "Ende",
     "maxSlots": "Max. Plätze",
+    "language": "Sprache",
+    "selectLanguage": "Sprache auswählen",
     "slots": "Slots",
     "waiting": "Warten",
     "attending": "Teilnehmend",
@@ -268,7 +272,17 @@
   "createEvent": {
     "title": "Event erstellen",
     "groupTitle": "Event für {{name}} erstellen",
-    "submit": "Event veröffentlichen"
+    "description": "Füge die wichtigsten Informationen für dein Event hinzu.",
+    "submit": "Event veröffentlichen",
+    "submitting": "Wird veröffentlicht...",
+    "cancel": "Abbrechen",
+    "required": "Titel, Sportart, Adresse, Start, Ende und Sprache sind erforderlich.",
+    "locationRequired": "Wähle eine Adresse aus den Vorschlägen, damit die Koordinaten automatisch gesetzt werden.",
+    "locationHint": "Wähle eine Straße und ergänze bei Bedarf eine Hausnummer für einen genaueren Ort.",
+    "futureDate": "Die Startzeit darf nicht in der Vergangenheit liegen.",
+    "endAfterStart": "Die Endzeit muss nach der Startzeit liegen.",
+    "maxSlotsRequired": "Die maximale Teilnehmerzahl muss eine ganze Zahl größer als null sein.",
+    "submitError": "Event konnte nicht gespeichert werden. Bitte prüfe das Formular."
   },
   "map": {
     "title": "Kartenansicht",
@@ -304,6 +318,8 @@
   },
   "editEvent": {
     "title": "Event bearbeiten",
+    "description": "Aktualisiere die Eventdetails.",
+    "loading": "Event wird geladen...",
     "submit": "Event aktualisieren"
   },
   "myEvents": {
@@ -462,8 +478,7 @@
     "owner": "Inhaber",
     "roleAdmin": "Admin",
     "roleMember": "Mitglied",
-    "membersEmpty": "Noch keine aktiven Mitglieder.",
-    "kind": "Gruppentyp",
+    "membersEmpty": "Noch keine Mitglieder.",
     "title": "Gruppen",
     "description": "Finde Communities und tritt Gruppen in Wien bei.",
     "upcomingEvents": "Kommende Events",
@@ -479,8 +494,6 @@
     "chatAuthRequired": "Melde dich an, um den Gruppenchat zu nutzen.",
     "applyFull": "Diese Gruppe ist voll — aktuell keine Plätze mehr.",
     "groupFull": "Gruppe voll",
-    "applyInviteOnly": "Diese Gruppe ist nur auf Einladung.",
-    "applyPending": "Anfrage gesendet — warte auf Freigabe.",
     "applyJoined": "Du bist in der Gruppe.",
     "applyError": "Beitritt fehlgeschlagen. Bitte erneut versuchen.",
     "applySignInRequired": "Bitte melde dich an oder erstelle ein Konto, um beizutreten.",
@@ -501,18 +514,6 @@
     "descriptionLabel": "Beschreibung",
     "sport": "Sportart",
     "levels": "Niveaus (durch Komma getrennt)",
-    "kind": "Gruppentyp",
-    "kindTraining": "Training",
-    "kindSocial": "Sozial",
-    "kindCompetitive": "Wettkampf",
-    "kindTeam": "Team",
-    "visibility": "Sichtbarkeit",
-    "public": "Öffentlich",
-    "private": "Privat",
-    "joinPolicy": "Beitrittsregel",
-    "open": "Offen",
-    "approval": "Genehmigung erforderlich",
-    "inviteOnly": "Nur auf Einladung",
     "maxMembers": "Maximale Mitglieder (0 = unbegrenzt)",
     "location": "Ort",
     "submit": "Gruppe erstellen",
@@ -521,7 +522,10 @@
     "empty": "Keine Gruppen gefunden.",
     "members": "Mitglieder",
     "loadError": "Gruppen konnten nicht geladen werden.",
-    "createError": "Gruppe konnte nicht erstellt werden."
+    "createError": "Gruppe konnte nicht erstellt werden.",
+    "required": "Name, Sportart und mindestens ein Niveau sind erforderlich.",
+    "invalidLevels": "Verwende nur Anfänger, Mittelstufe, Fortgeschritten oder alle Niveaus.",
+    "invalidMaxMembers": "Die maximale Mitgliederzahl muss eine ganze Zahl ab null sein."
   },
   "notFound": {
     "title": "Seite nicht gefunden"

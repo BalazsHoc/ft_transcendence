@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CalendarDays, Clock3, MapPin, PencilLine, Users } from "lucide-react";
 import { EventChat } from "../components/chat/EventChat";
-import { ApiLog } from "../components/shared/ApiLog";
 import { Badge } from "../components/shared/Badge";
 import Button from "../components/shared/Button";
 import { EventItem } from "../types/api";
@@ -29,7 +28,7 @@ export function EventDetailsPage() {
   const { eventId } = useParams();
   const { user } = useAuth();
   const [event, setEvent] = useState<EventItem | null>(null);
-  const [log, setLog] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [isGroupMember, setIsGroupMember] = useState(false);
 
   async function load() {
@@ -38,7 +37,7 @@ export function EventDetailsPage() {
     try {
       setEvent(await getEvent(eventId));
     } catch (e: any) {
-      setLog(e.message);
+      setError(e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -46,10 +45,11 @@ export function EventDetailsPage() {
     if (!eventId) return;
 
     try {
-      setLog(JSON.stringify(await joinEvent(eventId), null, 2));
+      await joinEvent(eventId);
+      setError(null);
       await load();
     } catch (e: any) {
-      setLog(e.message);
+      setError(e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -57,10 +57,11 @@ export function EventDetailsPage() {
     if (!eventId) return;
 
     try {
-      setLog(JSON.stringify(await leaveEvent(eventId), null, 2));
+      await leaveEvent(eventId);
+      setError(null);
       await load();
     } catch (e: any) {
-      setLog(e.message);
+      setError(e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -79,7 +80,7 @@ export function EventDetailsPage() {
     getGroup(groupId)
       .then((group) => {
         if (!cancelled) {
-          setIsGroupMember(group.current_user_membership?.status === "active");
+          setIsGroupMember(Boolean(group.current_user_membership));
         }
       })
       .catch(() => {
@@ -92,7 +93,17 @@ export function EventDetailsPage() {
   }, [event?.group?.id, user?.id]);
 
   if (!event || !eventId) {
-    return <ApiLog log={log || "Loading..."} />;
+    return (
+      <main className="mx-auto max-w-6xl px-4 py-8">
+        {error ? (
+          <p role="alert" className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </p>
+        ) : (
+          <p className="text-[var(--muted)]">Loading...</p>
+        )}
+      </main>
+    );
   }
 
   const userStatus = event.user_status?.status;
@@ -105,6 +116,12 @@ export function EventDetailsPage() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+      {error ? (
+        <p role="alert" className="mb-4 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      ) : null}
+
       <div className="overflow-hidden rounded-[28px] border border-[var(--surface-border)] bg-[var(--surface)] shadow-[0_12px_30px_rgba(15,23,42,0.08)]">
         <div className="relative h-72 overflow-hidden sm:h-80">
           <img
@@ -311,9 +328,6 @@ export function EventDetailsPage() {
         </div>
       )}
 
-      <div className="mt-8">
-        <ApiLog log={log} />
-      </div>
     </div>
   );
 }

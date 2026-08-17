@@ -77,3 +77,59 @@ class EventParticipantNotificationTests(APITestCase):
                 type=Notification.TYPE_EVENT_PARTICIPANT_PROMOTED,
             ).exists()
         )
+
+
+class EventValidationTests(APITestCase):
+    def setUp(self):
+        self.creator = User.objects.create_user(
+            username="event-validation-creator",
+            password="secure-password",
+        )
+        self.client.force_authenticate(self.creator)
+
+    def payload(self, **overrides):
+        start_at = timezone.now() + timedelta(days=2)
+        payload = {
+            "title": "Evening run",
+            "description": "A validation test event",
+            "sport": "running",
+            "level": "beginner",
+            "languages": ["en"],
+            "location_name": "Prater",
+            "location_address": "Prater Hauptallee, Vienna",
+            "latitude": 48.2167,
+            "longitude": 16.395,
+            "start_at": start_at.isoformat().replace("+00:00", "Z"),
+            "end_at": (start_at + timedelta(hours=2)).isoformat().replace("+00:00", "Z"),
+            "max_slots": 12,
+            "visibility": "public",
+        }
+        payload.update(overrides)
+        return payload
+
+    def test_event_rejects_missing_required_fields(self):
+        payload = self.payload()
+        payload.pop("location_address")
+        payload.pop("languages")
+        payload.pop("max_slots")
+
+        response = self.client.post("/api/events/", payload, format="json")
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("location_address", response.data)
+        self.assertIn("languages", response.data)
+        self.assertIn("max_slots", response.data)
+
+    def test_event_rejects_past_start_time(self):
+        start_at = timezone.now() - timedelta(minutes=1)
+        response = self.client.post(
+            "/api/events/",
+            self.payload(
+                start_at=start_at.isoformat().replace("+00:00", "Z"),
+                end_at=(start_at + timedelta(hours=2)).isoformat().replace("+00:00", "Z"),
+            ),
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("start_at", response.data)

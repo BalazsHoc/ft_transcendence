@@ -2,7 +2,8 @@
 
 The public API is a read-only integration surface for external clients. It is
 separate from the signed-in application API and never returns passwords, email
-addresses, private groups, private events, memberships or chat messages.
+addresses, private events, memberships or chat messages. Groups themselves are
+public in the MVP; event visibility is still respected.
 
 ## Authentication
 

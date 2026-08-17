@@ -1,67 +1,90 @@
 import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EventItem } from "../../types/api";
-import { EventPayload } from "../../api/eventsApi";
+
+import type { EventItem } from "../../types/api";
+import type { EventPayload } from "../../api/eventsApi";
 import { rememberSearch } from "../../api/geoApi";
-import { LocationAutocomplete } from "../geo/LocationAutocomplete";
-import styles from "../shared/FormCard.module.css";
+import { getStreetName, LocationAutocomplete } from "../geo/LocationAutocomplete";
 import { getDefaultEventImage, resolveMediaUrl } from "../../utils/media";
 import { useSports } from "../../hooks/useSports";
+import { PROFILE_LANGUAGE_CODES } from "../../data/profileLanguages";
+import Button from "../shared/Button";
+
+const LEVEL_OPTIONS = ["all", "beginner", "intermediate", "advanced"] as const;
 
 function toLocalInputValue(value?: string) {
   if (!value) return "";
   const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
   const offset = date.getTimezoneOffset();
   const local = new Date(date.getTime() - offset * 60000);
   return local.toISOString().slice(0, 16);
 }
 
-function shortStreetName(value?: string) {
-  if (!value) return "";
-  return value.split(",")[0]?.trim() || value.trim();
+function defaultDateTime(offsetMinutes: number) {
+  const date = new Date();
+  date.setSeconds(0, 0);
+  date.setMinutes(date.getMinutes() + offsetMinutes);
+  return toLocalInputValue(date.toISOString());
 }
+
+function compactStreetName(value?: string) {
+  if (!value) return "";
+  const compact = value.split(",")[0]?.trim() || value.trim();
+  return compact.replace(/\s+\d+[A-Za-z]?(?:[-/]\d+[A-Za-z]?)?$/i, "").trim() || compact;
+}
+
+function errorMessage(error: unknown, fallback: string) {
+  return error instanceof Error && error.message ? error.message : fallback;
+}
+
+const fieldClass =
+  "mt-1 w-full rounded-[var(--radius-button)] border border-[var(--control-border)] bg-[var(--control-bg)] px-3 py-2.5 text-[var(--control-text)] outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20";
+const labelClass = "grid gap-1.5 text-sm font-medium text-[var(--text)]";
 
 export function EventForm({
   initialEvent,
   onSubmit,
+  onCancel,
 }: {
   initialEvent?: EventItem;
   onSubmit: (payload: EventPayload, imageFile?: File | null) => Promise<void>;
+  onCancel?: () => void;
 }) {
   const { t } = useTranslation();
   const sports = useSports();
 
-  const [title, setTitle] = useState(initialEvent?.title || "Football in Prater");
-  const [description, setDescription] = useState(
-    initialEvent?.description || "Casual test event.",
-  );
+  const [title, setTitle] = useState(initialEvent?.title || "");
+  const [description, setDescription] = useState(initialEvent?.description || "");
   const [sport, setSport] = useState(initialEvent?.sport || "");
   const [level, setLevel] = useState(initialEvent?.level || "all");
   const [visibility, setVisibility] = useState<"public" | "private">(
     initialEvent?.visibility || "public",
   );
-  const [locationName, setLocationName] = useState(
-    initialEvent?.location_name || "Prater",
-  );
+  const [locationName, setLocationName] = useState(initialEvent?.location_name || "");
   const [locationAddress, setLocationAddress] = useState(
-    initialEvent?.location_address || "Prater, Vienna",
+    initialEvent?.location_address || "",
   );
-  const [latitude, setLatitude] = useState(String(initialEvent?.latitude ?? 48.2167));
-  const [longitude, setLongitude] = useState(String(initialEvent?.longitude ?? 16.395));
+  const [latitude, setLatitude] = useState<number | null>(
+    Number.isFinite(initialEvent?.latitude) ? initialEvent?.latitude ?? null : null,
+  );
+  const [longitude, setLongitude] = useState<number | null>(
+    Number.isFinite(initialEvent?.longitude) ? initialEvent?.longitude ?? null : null,
+  );
   const [startAt, setStartAt] = useState(
-    toLocalInputValue(initialEvent?.start_at) || "2026-06-20T18:00",
+    () => toLocalInputValue(initialEvent?.start_at) || defaultDateTime(15),
   );
   const [endAt, setEndAt] = useState(
-    toLocalInputValue(initialEvent?.end_at) || "2026-06-20T20:00",
+    () => toLocalInputValue(initialEvent?.end_at) || defaultDateTime(135),
   );
   const [maxSlots, setMaxSlots] = useState(String(initialEvent?.max_slots || 10));
-  const [languages, setLanguages] = useState(
-    (initialEvent?.languages || ["en", "de"]).join(","),
-  );
+  const [language, setLanguage] = useState(initialEvent?.languages?.[0] || "");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState(
     resolveMediaUrl(initialEvent?.image, getDefaultEventImage(initialEvent?.sport)),
   );
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!imageFile) {
@@ -71,79 +94,136 @@ export function EventForm({
 
     const previewUrl = URL.createObjectURL(imageFile);
     setImagePreview(previewUrl);
-
     return () => URL.revokeObjectURL(previewUrl);
   }, [imageFile, initialEvent?.image, sport]);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  function clearLocationSelection() {
+    setLocationName("");
+    setLocationAddress("");
+    setLatitude(null);
+    setLongitude(null);
+  }
 
-    const payload = {
-      title,
-      description,
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmitError(null);
+
+    const normalizedTitle = title.trim();
+    const normalizedDescription = description.trim();
+    const normalizedLocationName = locationName.trim();
+    const normalizedLocationAddress = locationAddress.trim();
+    const startDate = new Date(startAt);
+    const endDate = new Date(endAt);
+    const slots = Number(maxSlots);
+
+    if (!normalizedTitle || !sport || !normalizedLocationAddress || !language) {
+      setSubmitError(t("createEvent.required"));
+      return;
+    }
+    if (
+      latitude === null ||
+      longitude === null ||
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude)
+    ) {
+      setSubmitError(t("createEvent.locationRequired"));
+      return;
+    }
+    if (Number.isNaN(startDate.getTime()) || startDate.getTime() < Date.now()) {
+      setSubmitError(t("createEvent.futureDate"));
+      return;
+    }
+    if (Number.isNaN(endDate.getTime()) || endDate <= startDate) {
+      setSubmitError(t("createEvent.endAfterStart"));
+      return;
+    }
+    if (!Number.isInteger(slots) || slots < 1) {
+      setSubmitError(t("createEvent.maxSlotsRequired"));
+      return;
+    }
+
+    const payload: EventPayload = {
+      title: normalizedTitle,
+      description: normalizedDescription,
       sport,
       level,
-      languages: languages
-        .split(",")
-        .map((value) => value.trim())
-        .filter(Boolean),
-      location_name: locationName,
-      location_address: locationAddress,
-      latitude: Number(latitude),
-      longitude: Number(longitude),
-      start_at: new Date(startAt).toISOString(),
-      end_at: new Date(endAt).toISOString(),
-      max_slots: Number(maxSlots),
+      languages: [language],
+      location_name: normalizedLocationName || normalizedLocationAddress,
+      location_address: normalizedLocationAddress,
+      latitude,
+      longitude,
+      start_at: startDate.toISOString(),
+      end_at: endDate.toISOString(),
+      max_slots: slots,
       visibility,
       imageFile,
     };
 
-    await onSubmit(payload, imageFile);
+    setSubmitting(true);
+    try {
+      await onSubmit(payload, imageFile);
 
-    if (locationName.trim() && locationAddress.trim()) {
-      await rememberSearch({
-        query: locationName,
-        suggestion: {
-          id: `${locationName}-${locationAddress}`,
-          label: locationName,
-          address: locationAddress,
-          latitude: Number(latitude),
-          longitude: Number(longitude),
-          source: "manual",
-          raw: {},
-        },
-      }).catch(() => void 0);
+      if (normalizedLocationName && normalizedLocationAddress) {
+        await rememberSearch({
+          query: normalizedLocationName,
+          suggestion: {
+            id: `${normalizedLocationName}-${normalizedLocationAddress}`,
+            label: normalizedLocationName,
+            address: normalizedLocationAddress,
+            latitude,
+            longitude,
+            source: "manual",
+            raw: {},
+          },
+        }).catch(() => void 0);
+      }
+    } catch (error) {
+      setSubmitError(errorMessage(error, t("createEvent.submitError")));
+    } finally {
+      setSubmitting(false);
     }
   }
 
   return (
-    <form className={styles.formCard} onSubmit={handleSubmit}>
-      <label>
-        {t("event.title")}
+    <form
+      onSubmit={handleSubmit}
+      className="grid grid-cols-1 gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-sm md:grid-cols-2 md:p-6"
+    >
+      <label className={`${labelClass} md:col-span-2`}>
+        <span>{t("event.title")} *</span>
         <input
+          className={fieldClass}
           value={title}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
+          required
+          minLength={2}
+          autoComplete="off"
         />
       </label>
 
-      <label>
-        {t("event.description")}
+      <label className={`${labelClass} md:col-span-2`}>
+        <span>{t("event.description")}</span>
         <textarea
+          className={fieldClass}
           value={description}
-          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-            setDescription(e.target.value)
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+            setDescription(event.target.value)
           }
+          rows={4}
         />
       </label>
 
-      <label>
-        {t("event.sport")}
+      <label className={labelClass}>
+        <span>{t("event.sport")} *</span>
         <select
+          className={fieldClass}
           value={sport}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) => setSport(e.target.value)}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => setSport(event.target.value)}
           required
         >
-          <option value="" disabled>{t("event.selectSport")}</option>
+          <option value="" disabled>
+            {t("event.selectSport")}
+          </option>
           {sports.map((sportOption) => (
             <option key={sportOption.code} value={sportOption.code}>
               {t(`sports.${sportOption.code}`)}
@@ -152,50 +232,130 @@ export function EventForm({
         </select>
       </label>
 
-      <label>
-        Event image
+      <label className={labelClass}>
+        <span>{t("event.level")}</span>
+        <select
+          className={fieldClass}
+          value={level}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => setLevel(event.target.value)}
+        >
+          {LEVEL_OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {t(`discover.${option}`)}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className={`${labelClass} md:col-span-2`}>
+        <span>{t("event.image")}</span>
         <input
+          className={fieldClass}
           type="file"
           accept="image/*"
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setImageFile(e.target.files?.[0] || null)
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setImageFile(event.target.files?.[0] || null)
           }
         />
       </label>
 
-        <img
-          src={imagePreview}
-          alt="Event preview"
-          style={{
-            width: "100%",
-            maxHeight: "240px",
-            objectFit: "cover",
-            borderRadius: "12px",
-          }}
-        onError={(event: any) => {
+      <img
+        src={imagePreview}
+        alt={t("event.imagePreview")}
+        className="h-48 w-full rounded-2xl object-cover md:col-span-2"
+        onError={(event: { currentTarget: HTMLImageElement }) => {
           event.currentTarget.src = getDefaultEventImage(sport);
         }}
       />
 
-      <label>
-        {t("event.level")}
+      <div className="md:col-span-2">
+        <LocationAutocomplete
+          label={`${t("event.address")} *`}
+          placeholder={t("event.searchAddress")}
+          initialQuery={
+            initialEvent
+              ? compactStreetName(locationName || locationAddress)
+              : ""
+          }
+          required
+          onQueryChange={() => {
+            if (latitude !== null || longitude !== null || locationAddress) {
+              clearLocationSelection();
+            }
+          }}
+          onSelect={(suggestion) => {
+            setLocationName(getStreetName(suggestion));
+            setLocationAddress(suggestion.address || suggestion.label);
+            setLatitude(suggestion.latitude);
+            setLongitude(suggestion.longitude);
+          }}
+        />
+        <p className="mt-1 text-xs text-[var(--muted)]">{t("createEvent.locationHint")}</p>
+      </div>
+
+      <label className={labelClass}>
+        <span>{t("event.start")} *</span>
+        <input
+          className={fieldClass}
+          type="datetime-local"
+          value={startAt}
+          min={initialEvent ? undefined : defaultDateTime(0)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => setStartAt(event.target.value)}
+          required
+        />
+      </label>
+
+      <label className={labelClass}>
+        <span>{t("event.end")} *</span>
+        <input
+          className={fieldClass}
+          type="datetime-local"
+          value={endAt}
+          min={startAt || undefined}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => setEndAt(event.target.value)}
+          required
+        />
+      </label>
+
+      <label className={labelClass}>
+        <span>{t("event.maxSlots")} *</span>
+        <input
+          className={fieldClass}
+          type="number"
+          min="1"
+          step="1"
+          value={maxSlots}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => setMaxSlots(event.target.value)}
+          required
+        />
+      </label>
+
+      <label className={labelClass}>
+        <span>{t("event.language")} *</span>
         <select
-          value={level}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) => setLevel(e.target.value)}
+          className={fieldClass}
+          value={language}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => setLanguage(event.target.value)}
+          required
         >
-          <option value="all">all</option>
-          <option value="beginner">beginner</option>
-          <option value="intermediate">intermediate</option>
-          <option value="advanced">advanced</option>
+          <option value="" disabled>
+            {t("event.selectLanguage")}
+          </option>
+          {PROFILE_LANGUAGE_CODES.map((code) => (
+            <option key={code} value={code}>
+              {t(`languageNames.${code}`)}
+            </option>
+          ))}
         </select>
       </label>
 
-      <label>
-        {t("event.visibility")}
+      <label className={labelClass}>
+        <span>{t("event.visibility")}</span>
         <select
+          className={fieldClass}
           value={visibility}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            setVisibility(e.target.value as "public" | "private")
+          onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+            setVisibility(event.target.value as "public" | "private")
           }
         >
           <option value="public">{t("event.public")}</option>
@@ -203,96 +363,30 @@ export function EventForm({
         </select>
       </label>
 
-      <LocationAutocomplete
-        label={t("event.searchAddress")}
-        initialQuery={initialEvent ? shortStreetName(locationAddress || locationName) : ""}
-        onSelect={(suggestion) => {
-          setLocationName(suggestion.label);
-          setLocationAddress(suggestion.address);
-          setLatitude(String(suggestion.latitude));
-          setLongitude(String(suggestion.longitude));
-        }}
-      />
+      {submitError ? (
+        <p role="alert" className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700 md:col-span-2">
+          {submitError}
+        </p>
+      ) : null}
 
-      <label>
-        {t("event.address")}
-        <input
-          value={locationAddress}
-          readOnly
-          placeholder="Auto-filled from search"
-        />
-      </label>
-
-      <div className={styles.formGrid}>
-        <label>
-          Latitude
-          <input
-            value={latitude}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setLatitude(e.target.value)
-            }
-          />
-        </label>
-
-        <label>
-          Longitude
-          <input
-            value={longitude}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setLongitude(e.target.value)
-            }
-          />
-        </label>
+      <div className="flex flex-wrap items-center justify-end gap-3 md:col-span-2">
+        {onCancel ? (
+          <Button type="button" variant="outline" onClick={onCancel} disabled={submitting}>
+            {t("createEvent.cancel")}
+          </Button>
+        ) : null}
+        <Button
+          type="submit"
+          variant="primary"
+          disabled={submitting || !sport || sports.length === 0}
+        >
+          {submitting
+            ? t("createEvent.submitting")
+            : initialEvent
+              ? t("editEvent.submit")
+              : t("createEvent.submit")}
+        </Button>
       </div>
-
-      <div className={styles.formGrid}>
-        <label>
-          {t("event.start")}
-          <input
-            type="datetime-local"
-            value={startAt}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setStartAt(e.target.value)
-            }
-          />
-        </label>
-
-        <label>
-          {t("event.end")}
-          <input
-            type="datetime-local"
-            value={endAt}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEndAt(e.target.value)
-            }
-          />
-        </label>
-      </div>
-
-      <label>
-        {t("event.maxSlots")}
-        <input
-          type="number"
-          value={maxSlots}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setMaxSlots(e.target.value)
-          }
-        />
-      </label>
-
-      <label>
-        Languages comma-separated
-        <input
-          value={languages}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setLanguages(e.target.value)
-          }
-        />
-      </label>
-
-      <button type="submit" disabled={!sport || sports.length === 0}>
-        {initialEvent ? t("editEvent.submit") : t("createEvent.submit")}
-      </button>
     </form>
   );
 }

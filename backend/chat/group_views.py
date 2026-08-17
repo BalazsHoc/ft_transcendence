@@ -15,7 +15,7 @@ class GroupMessageListCreateView(generics.ListCreateAPIView):
             user=self.request.user,
         )
         if group is None:
-            raise NotFound("Only active group members can access this chat.")
+            raise NotFound("Only group members can access this chat.")
         return group
 
     def get_queryset(self):

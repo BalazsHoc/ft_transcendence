@@ -251,9 +251,13 @@
     "location": "Location",
     "address": "Address",
     "searchAddress": "Search address",
+    "image": "Event image",
+    "imagePreview": "Event preview",
     "start": "Start",
     "end": "End",
     "maxSlots": "Max slots",
+    "language": "Language",
+    "selectLanguage": "Select a language",
     "slots": "Slots",
     "waiting": "Waiting",
     "attending": "Attending",
@@ -268,7 +272,17 @@
   "createEvent": {
     "title": "Create event",
     "groupTitle": "Create event for {{name}}",
-    "submit": "Publish event"
+    "description": "Add the details people need to join your event.",
+    "submit": "Publish event",
+    "submitting": "Publishing...",
+    "cancel": "Cancel",
+    "required": "Title, sport, address, start time, end time and language are required.",
+    "locationRequired": "Select an address from the suggestions so its coordinates can be set automatically.",
+    "locationHint": "Select a street, then add a house number if you want a more precise location.",
+    "futureDate": "The start time cannot be in the past.",
+    "endAfterStart": "The end time must be later than the start time.",
+    "maxSlotsRequired": "Maximum slots must be a whole number greater than zero.",
+    "submitError": "Unable to save the event. Please check the form and try again."
   },
   "map": {
     "title": "Map view",
@@ -304,6 +318,8 @@
   },
   "editEvent": {
     "title": "Edit event",
+    "description": "Update the event details.",
+    "loading": "Loading event...",
     "submit": "Update event"
   },
   "myEvents": {
@@ -462,8 +478,7 @@
     "owner": "Owner",
     "roleAdmin": "Admin",
     "roleMember": "Member",
-    "membersEmpty": "No active members yet.",
-    "kind": "Group type",
+    "membersEmpty": "No members yet.",
     "title": "Groups",
     "description": "Find communities and join groups across Vienna.",
     "upcomingEvents": "Upcoming events",
@@ -479,8 +494,6 @@
     "chatAuthRequired": "Sign in to use the group chat.",
     "applyFull": "This group is full — no more spots right now.",
     "groupFull": "Group full",
-    "applyInviteOnly": "This group is invite only.",
-    "applyPending": "Request sent — waiting for approval.",
     "applyJoined": "You’re in the group.",
     "applyError": "Couldn’t join this group. Try again.",
     "applySignInRequired": "Please sign in or create an account to join this group.",
@@ -501,18 +514,6 @@
     "descriptionLabel": "Description",
     "sport": "Sport",
     "levels": "Levels (comma separated)",
-    "kind": "Group type",
-    "kindTraining": "Training",
-    "kindSocial": "Social",
-    "kindCompetitive": "Competitive",
-    "kindTeam": "Team",
-    "visibility": "Visibility",
-    "public": "Public",
-    "private": "Private",
-    "joinPolicy": "Join policy",
-    "open": "Open",
-    "approval": "Requires approval",
-    "inviteOnly": "Invite only",
     "maxMembers": "Maximum members (0 = unlimited)",
     "location": "Location",
     "submit": "Create group",
@@ -521,7 +522,10 @@
     "empty": "No groups found.",
     "members": "members",
     "loadError": "Unable to load groups.",
-    "createError": "Unable to create the group."
+    "createError": "Unable to create the group.",
+    "required": "Name, sport and at least one level are required.",
+    "invalidLevels": "Use only beginner, intermediate, advanced or all levels.",
+    "invalidMaxMembers": "Maximum members must be a whole number of zero or more."
   },
   "notFound": {
     "title": "Page not found"

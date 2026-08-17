@@ -52,7 +52,9 @@ def build_search_queries(query: str) -> list[str]:
     vienna_query = build_vienna_query(normalized)
     if vienna_query == normalized:
         return [normalized]
-    return [normalized, vienna_query]
+    # Vienna is the product's primary location. Ask for the local context
+    # first, then keep the original query as a fallback for other matches.
+    return [vienna_query, normalized]
 
 
 def rounded_coordinate(value: float) -> float:
@@ -276,11 +278,18 @@ def _suggestion_from_maptiler(feature: dict[str, Any]) -> GeoSuggestion:
 def _suggestion_from_geoapify(feature: dict[str, Any]) -> GeoSuggestion:
     lat = safe_float(feature.get("lat"))
     lon = safe_float(feature.get("lon"))
-    label = str(feature.get("formatted") or feature.get("name") or feature.get("address_line1") or "")
+    formatted = str(feature.get("formatted") or feature.get("address_line1") or "")
+    label = str(
+        feature.get("street")
+        or feature.get("road")
+        or feature.get("name")
+        or feature.get("address_line1")
+        or formatted
+    )
     return GeoSuggestion(
         id=str(feature.get("place_id") or feature.get("id") or label),
         label=label,
-        address=label,
+        address=formatted or label,
         latitude=lat,
         longitude=lon,
         source="geoapify",
@@ -291,16 +300,82 @@ def _suggestion_from_geoapify(feature: dict[str, Any]) -> GeoSuggestion:
 def _suggestion_from_nominatim(feature: dict[str, Any]) -> GeoSuggestion:
     lat = safe_float(feature.get("lat"))
     lon = safe_float(feature.get("lon"))
-    label = str(feature.get("display_name") or feature.get("name") or "")
+    address = feature.get("address")
+    address_data = address if isinstance(address, dict) else {}
+    label = str(
+        address_data.get("road")
+        or address_data.get("pedestrian")
+        or address_data.get("street")
+        or feature.get("name")
+        or str(feature.get("display_name") or "").split(",")[0]
+    )
+    full_address = str(feature.get("display_name") or label)
     return GeoSuggestion(
-        id=str(feature.get("place_id") or feature.get("osm_id") or label),
+        id=str(feature.get("place_id") or feature.get("osm_id") or full_address),
         label=label,
-        address=label,
+        address=full_address,
         latitude=lat,
         longitude=lon,
         source="nominatim",
         raw=feature,
     )
+
+
+def _mapping(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _suggestion_priority(suggestion: GeoSuggestion) -> int:
+    raw = _mapping(suggestion.raw)
+    properties = _mapping(raw.get("properties"))
+    address = _mapping(raw.get("address"))
+    city = " ".join(
+        str(value)
+        for value in (
+            raw.get("city"),
+            raw.get("town"),
+            raw.get("municipality"),
+            address.get("city"),
+            address.get("town"),
+            address.get("municipality"),
+        )
+        if value
+    ).casefold()
+    country = " ".join(
+        str(value)
+        for value in (
+            raw.get("country"),
+            address.get("country"),
+            properties.get("country"),
+        )
+        if value
+    ).casefold()
+    country_code = str(
+        raw.get("country_code")
+        or address.get("country_code")
+        or properties.get("country_code")
+        or properties.get("short_code")
+        or ""
+    ).casefold()
+    searchable_text = f"{suggestion.label} {suggestion.address} {city} {country}".casefold()
+
+    if re.search(r"\b(wien|vienna)\b", searchable_text):
+        return 0
+    if country_code.startswith("at") or re.search(
+        r"\b(austria|österreich|osterreich)\b", searchable_text
+    ):
+        return 1
+    return 2
+
+
+def _prioritize_suggestions(suggestions: list[GeoSuggestion]) -> list[GeoSuggestion]:
+    return [
+        suggestion
+        for _, suggestion in sorted(
+            enumerate(suggestions),
+            key=lambda item: (_suggestion_priority(item[1]), item[0]),
+        )
+    ]
 
 
 def _normalize_response(
@@ -314,7 +389,7 @@ def _normalize_response(
         "provider": provider,
         "query": query,
         "language": language,
-        "results": [suggestion.__dict__ for suggestion in suggestions],
+        "results": [suggestion.__dict__ for suggestion in _prioritize_suggestions(suggestions)],
     }
 
 

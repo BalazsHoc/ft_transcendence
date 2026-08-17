@@ -36,7 +36,6 @@ class PublicAPITests(APITestCase):
             description="Open running group",
             sport="running",
             levels=["beginner"],
-            visibility=Group.VISIBILITY_PUBLIC,
             owner=self.user,
         )
         GroupMembership.objects.create(
@@ -45,12 +44,10 @@ class PublicAPITests(APITestCase):
             role=GroupMembership.ROLE_OWNER,
             status=GroupMembership.STATUS_ACTIVE,
         )
-        self.private_group = Group.objects.create(
-            name="Private Runners",
+        self.event_group = Group.objects.create(
+            name="Advanced Runners",
             sport="running",
             levels=["advanced"],
-            visibility=Group.VISIBILITY_PRIVATE,
-            join_policy=Group.JOIN_INVITE_ONLY,
             owner=self.user,
         )
         start = timezone.now() + timedelta(days=1)
@@ -84,7 +81,7 @@ class PublicAPITests(APITestCase):
             end_at=start + timedelta(hours=1),
             max_slots=10,
             creator=self.user,
-            group=self.private_group,
+            group=self.event_group,
             visibility=Event.VISIBILITY_PRIVATE,
         )
 
@@ -118,7 +115,10 @@ class PublicAPITests(APITestCase):
         groups = self.get("/api/public/v1/groups/")
         self.assertEqual(groups.status_code, 200)
         self.assertIn("results", groups.data)
-        self.assertEqual([item["id"] for item in groups.data["results"]], [str(self.public_group.id)])
+        self.assertEqual(
+            {item["id"] for item in groups.data["results"]},
+            {str(self.public_group.id), str(self.event_group.id)},
+        )
 
         events = self.get("/api/public/v1/events/")
         self.assertEqual(events.status_code, 200)
@@ -132,8 +132,10 @@ class PublicAPITests(APITestCase):
 
         detail = self.get(f"/api/public/v1/groups/{self.public_group.id}/")
         self.assertEqual(detail.status_code, 200)
-        private_detail = self.get(f"/api/public/v1/groups/{self.private_group.id}/")
-        self.assertEqual(private_detail.status_code, 404)
+        open_detail = self.get(f"/api/public/v1/groups/{self.event_group.id}/")
+        self.assertEqual(open_detail.status_code, 200)
+        self.assertNotIn("visibility", detail.data)
+        self.assertNotIn("kind", detail.data)
 
     def test_public_filters_and_ordering_are_available(self):
         response = self.get("/api/public/v1/events/?sport=running&search=Public&ordering=-start_at")

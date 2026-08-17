@@ -220,7 +220,7 @@ export function HeaderNotifications() {
             </h2>
             <button
               type="button"
-              className="inline-flex items-center gap-1 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-50"
+              className="inline-flex items-center gap-1 text-xs font-medium text-[var(--button-text)] hover:text-[var(--text)] disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!unreadCount || markingAll}
               onClick={() => void readAll()}
             >
@@ -259,7 +259,7 @@ export function HeaderNotifications() {
                   <button
                     type="button"
                     role="menuitem"
-                    className="flex w-full items-start gap-3 bg-transparent p-0 text-left text-[var(--text)]"
+                    className="border-0 flex w-full  items-start gap-3 bg-transparent p-0 text-left text-[var(--text)]"
                     onClick={() => void openNotification(notification)}
                   >
                     <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--text)]/10 text-xs font-semibold uppercase">

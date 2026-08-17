@@ -29,7 +29,7 @@ class PublicUserSerializer(UserPublicSerializer):
 class PublicGroupSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ["id", "name", "sport", "visibility"]
+        fields = ["id", "name", "sport"]
         read_only_fields = fields
 
 
@@ -45,8 +45,6 @@ class PublicGroupSerializer(serializers.ModelSerializer):
             "description",
             "sport",
             "levels",
-            "kind",
-            "visibility",
             "languages",
             "location_name",
             "location_address",

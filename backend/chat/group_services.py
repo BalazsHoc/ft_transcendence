@@ -15,7 +15,6 @@ def active_group_for_user(*, group_id, user):
     return Group.objects.filter(
         pk=group_id,
         memberships__user=user,
-        memberships__status=GroupMembership.STATUS_ACTIVE,
     ).distinct().first()
 
 
@@ -24,9 +23,8 @@ def create_group_message(*, group, sender, text):
     if not GroupMembership.objects.filter(
         group=group,
         user=sender,
-        status=GroupMembership.STATUS_ACTIVE,
     ).exists():
-        raise GroupMessageError("Only active group members can send messages.")
+        raise GroupMessageError("Only group members can send messages.")
 
     cleaned_text = text.strip()
     if not cleaned_text:
@@ -40,7 +38,6 @@ def create_group_message(*, group, sender, text):
     target_url = f"/groups/{group.pk}#group-chat"
     members = GroupMembership.objects.filter(
         group=group,
-        status=GroupMembership.STATUS_ACTIVE,
     ).exclude(user=sender).select_related("user")
     for membership in members:
         create_notification(
