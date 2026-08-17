@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Sidebar } from "../components/layout/Sidebar";
 import { DiscoverMain } from "../components/discover/DiscoverMain";
 import {
   deleteEvent,
@@ -20,10 +19,9 @@ export function DiscoverPage() {
   const [sport, setSport] = useState("");
   const [levels, setLevels] = useState<string[]>([]);
   const [time, setTime] = useState("");
+  const [search, setSearch] = useState("");
 
   const [log, setLog] = useState("");
-
-  const levelParam = levels.join(",");
 
   function toggleLevel(value: string) {
     setLevels((prev) =>
@@ -35,7 +33,6 @@ export function DiscoverPage() {
     try {
       const data = await getEvents({
         sport,
-        level: levelParam,
       });
 
       const nextEvents = Array.isArray(data) ? data : [];
@@ -44,11 +41,25 @@ export function DiscoverPage() {
     } catch (e: any) {
       setLog(e.message);
     }
-  }, [levelParam, sport]);
+  }, [sport]);
 
   const filteredEvents = useMemo(
     () =>
       events.filter((event) => {
+        const query = search.trim().toLowerCase();
+        if (
+          query &&
+          ![event.title, event.description, event.location_name, event.location_address]
+            .filter(Boolean)
+            .some((value) => value.toLowerCase().includes(query))
+        ) {
+          return false;
+        }
+
+        if (levels.length > 0 && !levels.includes(event.level)) {
+          return false;
+        }
+
         if (!time) return true;
 
         const start = new Date(event.start_at);
@@ -90,7 +101,7 @@ export function DiscoverPage() {
 
         return true;
       }),
-    [events, time],
+    [events, levels, search, time],
   );
 
   async function doJoin(id: string) {
@@ -130,16 +141,19 @@ export function DiscoverPage() {
 
   return (
     <div className="discover-layout">
-      <Sidebar
+      <DiscoverMain
+        events={filteredEvents}
+        onCardClick={openEventPage}
+        search={search}
+        onSearch={setSearch}
         sport={sport}
         onSportChange={setSport}
-        level={levels}
+        levels={levels}
         onLevelChange={toggleLevel}
         time={time}
         onTimeChange={setTime}
         sports={sports}
       />
-      <DiscoverMain events={filteredEvents} onCardClick={openEventPage} />
     </div>
   );
 }

@@ -102,10 +102,10 @@ export function EventCard({
 						className={`${styles.badges} flex shrink-0 flex-wrap justify-end gap-2`}
 					>
 						<Badge className="border-white/20 bg-white/10 text-white backdrop-blur-md">
-							{event.sport}
+							{t(`sports.${event.sport}`)}
 						</Badge>
 						<Badge className="border-white/20 bg-white/10 text-white backdrop-blur-md">
-							{event.level}
+							{t(`discover.${event.level}`)}
 						</Badge>
 					</div>
 				</div>

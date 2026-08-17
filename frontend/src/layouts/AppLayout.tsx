@@ -15,6 +15,7 @@ export function AppLayout() {
   const isFullBleedPage =
     pathname === "/" ||
     pathname === "/discover" ||
+    pathname === "/groups" ||
     pathname === "/map" ||
     pathname === "/login" ||
     pathname === "/register" ||

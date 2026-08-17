@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
+import { ChevronDown, Search, SlidersHorizontal, Users } from "lucide-react";
 
 import { createGroup, getGroups } from "../api/groupsApi";
 import type { GroupItem, GroupPayload } from "../types/api";
@@ -7,9 +8,17 @@ import { useAuth } from "../features/auth/AuthContext";
 import { useSports } from "../hooks/useSports";
 import { CuratedGroupCard } from "../components/discover/CuratedGroupCard";
 import Button from "../components/shared/Button";
+import { PageHeading } from "../components/shared/PageHeading";
 import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
 
 const LEVEL_CODES = new Set(["beginner", "intermediate", "advanced", "all"]);
+type GroupLevel = GroupItem["levels"][number];
+const GROUP_LEVEL_OPTIONS: { value: GroupLevel; labelKey: string }[] = [
+  { value: "beginner", labelKey: "discover.beginner" },
+  { value: "intermediate", labelKey: "discover.intermediate" },
+  { value: "advanced", labelKey: "discover.advanced" },
+  { value: "all", labelKey: "discover.allLevels" },
+];
 
 type GroupFormState = {
   name: string;
@@ -34,6 +43,9 @@ export function GroupsPage() {
   const { user } = useAuth();
   const sports = useSports();
   const [groups, setGroups] = useState<GroupItem[]>([]);
+  const [groupSearch, setGroupSearch] = useState("");
+  const [groupSport, setGroupSport] = useState("");
+  const [groupLevels, setGroupLevels] = useState<GroupLevel[]>([]);
   const [form, setForm] = useState<GroupFormState>(initialForm);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -45,17 +57,54 @@ export function GroupsPage() {
     setLoading(true);
     setError(null);
     try {
-      setGroups(await getGroups());
+      setGroups(await getGroups({ sport: groupSport }));
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : t("groupsTest.loadError"));
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, [groupSport, t]);
 
   useEffect(() => {
     void loadGroups();
   }, [loadGroups]);
+
+  function toggleGroupLevel(value: GroupLevel) {
+    setGroupLevels((current) =>
+      current.includes(value)
+        ? current.filter((level) => level !== value)
+        : [...current, value],
+    );
+  }
+
+  const filteredGroups = useMemo(() => {
+    const query = groupSearch.trim().toLowerCase();
+
+    return groups.filter((group) => {
+      if (
+        query &&
+        ![
+          group.name,
+          group.description,
+          group.location_name,
+          group.location_address,
+        ]
+          .filter(Boolean)
+          .some((value) => value.toLowerCase().includes(query))
+      ) {
+        return false;
+      }
+
+      if (
+        groupLevels.length > 0 &&
+        !groupLevels.some((level) => group.levels.includes(level))
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [groupLevels, groupSearch, groups]);
 
   function updateForm(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
@@ -107,29 +156,94 @@ export function GroupsPage() {
   }
 
   return (
-    <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 md:py-10">
-      <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[var(--surface-border)] pb-6">
-        <div className="min-w-0 space-y-1">
-          <h1 className="font-display text-3xl font-bold text-[var(--text)] md:text-4xl">
-            {t("groupsTest.title")}
-          </h1>
-          <p className="max-w-xl text-sm text-[var(--muted)] md:text-base">
-            {t("groupsTest.description")}
-          </p>
+    <main className="mx-auto w-full max-w-6xl space-y-8 px-4 py-8 md:py-10">
+      <PageHeading
+        icon={Users}
+        title={t("groupsTest.title")}
+        description={t("groupsTest.description")}
+        actions={
+          user ? (
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => {
+                setShowForm((visible) => !visible);
+                setError(null);
+              }}
+            >
+              {showForm ? t("groupsTest.cancel") : t("groupsTest.create")}
+            </Button>
+          ) : null
+        }
+      />
+
+      <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-3 shadow-sm md:p-4">
+        <label className="relative min-w-[220px] flex-1">
+          <span className="sr-only">{t("groupsTest.searchGroups")}</span>
+          <Search
+            size={17}
+            aria-hidden="true"
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"
+          />
+          <input
+            type="search"
+            value={groupSearch}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => setGroupSearch(event.target.value)}
+            placeholder={t("groupsTest.searchGroups")}
+            className="pl-10"
+          />
+        </label>
+
+        <div className="flex items-center gap-2 text-sm font-medium text-[var(--muted)]">
+          <SlidersHorizontal size={17} aria-hidden="true" />
+          <span className="hidden sm:inline">{t("discover.filters")}</span>
         </div>
-        {user && (
-          <Button
-            type="button"
-            variant="primary"
-            onClick={() => {
-              setShowForm((visible) => !visible);
-              setError(null);
-            }}
+
+        <label className="min-w-[150px] flex-1 sm:flex-none">
+          <span className="sr-only">{t("discover.sport")}</span>
+          <select
+            value={groupSport}
+            onChange={(event: ChangeEvent<HTMLSelectElement>) => setGroupSport(event.target.value)}
           >
-            {showForm ? t("groupsTest.cancel") : t("groupsTest.create")}
-          </Button>
-        )}
-      </header>
+            <option value="">{t("discover.all")}</option>
+            {sports.map((sportOption) => (
+              <option key={sportOption.code} value={sportOption.code}>
+                {t(`sports.${sportOption.code}`)}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <details className="events-level-filter relative min-w-[180px] flex-1 sm:flex-none">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-[var(--radius-button)] border border-[var(--control-border)] bg-[var(--control-bg)] px-3 py-[10px] text-sm text-[var(--control-text)]">
+            <span className="truncate">
+              {groupLevels.length
+                ? t("discover.levelSelected", { count: groupLevels.length })
+                : t("discover.level")}
+            </span>
+            <ChevronDown size={16} aria-hidden="true" />
+          </summary>
+          <div className="absolute right-0 z-30 mt-2 w-56 space-y-1 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] p-2 shadow-lg">
+            {GROUP_LEVEL_OPTIONS.map((option) => {
+              const active = groupLevels.includes(option.value);
+              return (
+                <label
+                  key={option.value}
+                  className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm text-[var(--text)] transition-colors hover:bg-[var(--surface-border)]"
+                >
+                  <input
+                    type="checkbox"
+                    checked={active}
+                    onChange={() => toggleGroupLevel(option.value)}
+                    className="h-4 w-4 shrink-0"
+                  />
+                  <span>{t(option.labelKey)}</span>
+                </label>
+              );
+            })}
+          </div>
+        </details>
+      </div>
 
       {user && showForm && (
         <form
@@ -203,46 +317,42 @@ export function GroupsPage() {
       {error && <p role="alert">{error}</p>}
       {loading ? (
         <p className="text-[var(--muted)]">{t("groupsTest.loading")}</p>
-      ) : groups.length === 0 ? (
+      ) : filteredGroups.length === 0 ? (
         <p className="rounded-3xl border border-dashed border-[var(--surface-border)] px-6 py-16 text-center text-[var(--muted)]">
-          {t("groupsTest.empty")}
+          {groups.length === 0 ? t("groupsTest.empty") : t("groupsTest.noResults")}
         </p>
       ) : (
-        <div className="space-y-5 md:space-y-6">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
           <CuratedGroupCard
             variant="featured"
-            className="min-h-[380px] md:min-h-[420px]"
-            image={groups[0].cover_image || DEFAULT_GROUP_IMAGE_SRC}
-            title={groups[0].name}
-            description={groups[0].description}
-            categoryLabel={t(`sports.${groups[0].sport}`)}
+            className="min-h-[380px] sm:col-span-2 md:min-h-[420px]"
+            image={filteredGroups[0].cover_image || DEFAULT_GROUP_IMAGE_SRC}
+            title={filteredGroups[0].name}
+            description={filteredGroups[0].description}
+            categoryLabel={t(`sports.${filteredGroups[0].sport}`)}
             levelLabel={
-              groups[0].levels[0]
-                ? t(`discover.${groups[0].levels[0]}`)
+              filteredGroups[0].levels[0]
+                ? t(`discover.${filteredGroups[0].levels[0]}`)
                 : undefined
             }
-            memberCount={groups[0].member_count}
-            timeLabel={groups[0].location_name || undefined}
-            detailsTo={`/groups/${groups[0].id}`}
+            memberCount={filteredGroups[0].member_count}
+            timeLabel={filteredGroups[0].location_name || undefined}
+            detailsTo={`/groups/${filteredGroups[0].id}`}
           />
 
-          {groups.length > 1 ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 sm:gap-5">
-              {groups.slice(1).map((group) => (
-                <CuratedGroupCard
-                  key={group.id}
-                  variant="compact"
-                  className="min-h-[260px] sm:min-h-[280px]"
-                  image={group.cover_image || DEFAULT_GROUP_IMAGE_SRC}
-                  title={group.name}
-                  categoryLabel={t(`sports.${group.sport}`)}
-                  memberCount={group.member_count}
-                  timeLabel={group.location_name || undefined}
-                  detailsTo={`/groups/${group.id}`}
-                />
-              ))}
-            </div>
-          ) : null}
+          {filteredGroups.slice(1).map((group) => (
+            <CuratedGroupCard
+              key={group.id}
+              variant="compact"
+              className="min-h-[260px] sm:min-h-[280px]"
+              image={group.cover_image || DEFAULT_GROUP_IMAGE_SRC}
+              title={group.name}
+              categoryLabel={t(`sports.${group.sport}`)}
+              memberCount={group.member_count}
+              timeLabel={group.location_name || undefined}
+              detailsTo={`/groups/${group.id}`}
+            />
+          ))}
         </div>
       )}
     </main>
