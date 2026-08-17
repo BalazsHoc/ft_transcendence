@@ -61,7 +61,8 @@ export function HeaderNavLinks({
       </HeaderNavLink>
       <HeaderNavLink to="/map" onNavigate={onNavigate} className={linkClassName}>
         <span className="inline-flex items-center gap-1">
-          <Map size={16} /> {t("nav.map")}
+          {/* <Map size={16} /> */}
+           {t("nav.map")}
         </span>
       </HeaderNavLink>
       {user && (
@@ -75,7 +76,7 @@ export function HeaderNavLinks({
 
 export function HeaderNav() {
   return (
-    <nav className="hidden md:flex items-center gap-3 lg:gap-6 shrink-0">
+    <nav className="hidden md:flex items-center gap-5 lg:gap-6 shrink-0">
       <HeaderNavLinks />
     </nav>
   );

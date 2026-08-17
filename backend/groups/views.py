@@ -1,12 +1,12 @@
 from django.db import transaction
-from django.db.models import Count, Q
+from django.db.models import Count
 from rest_framework import decorators, permissions, response, status, viewsets
 from rest_framework.exceptions import PermissionDenied, ValidationError
 
 from events.models import Event
 from events.serializers import EventSerializer
 from notifications.models import Notification
-from notifications.services import notify_group_admins, notify_group_members
+from notifications.services import notify_group_members
 from .models import Group, GroupMembership
 from .serializers import GroupDetailSerializer, GroupSerializer, GroupMembershipSerializer
 
@@ -16,7 +16,6 @@ def user_is_group_admin(user, group):
         return False
     return group.memberships.filter(
         user=user,
-        status=GroupMembership.STATUS_ACTIVE,
         role__in=[GroupMembership.ROLE_OWNER, GroupMembership.ROLE_ADMIN],
     ).exists()
 
@@ -37,27 +36,16 @@ class GroupViewSet(viewsets.ModelViewSet):
         ).annotate(
             member_count=Count(
                 "memberships",
-                filter=Q(memberships__status=GroupMembership.STATUS_ACTIVE),
                 distinct=True,
             )
         )
-        if self.request.user.is_authenticated:
-            qs = qs.filter(
-                Q(visibility=Group.VISIBILITY_PUBLIC)
-                | Q(memberships__user=self.request.user)
-            ).distinct()
-        else:
-            qs = qs.filter(visibility=Group.VISIBILITY_PUBLIC)
 
         sport = self.request.query_params.get("sport")
         level = self.request.query_params.get("level")
-        kind = self.request.query_params.get("kind")
         if sport:
             qs = qs.filter(sport__iexact=sport)
         if level:
             qs = qs.filter(levels__contains=[level])
-        if kind:
-            qs = qs.filter(kind=kind)
         return qs.filter(is_active=True)
 
     def get_serializer_class(self):
@@ -72,7 +60,6 @@ class GroupViewSet(viewsets.ModelViewSet):
                 group=group,
                 user=self.request.user,
                 role=GroupMembership.ROLE_OWNER,
-                status=GroupMembership.STATUS_ACTIVE,
             )
 
     def perform_update(self, serializer):
@@ -105,38 +92,28 @@ class GroupViewSet(viewsets.ModelViewSet):
             existing = GroupMembership.objects.filter(group=group, user=request.user).first()
             if existing:
                 return response.Response(
-                    {"detail": "You already have a membership request for this group.", "status": existing.status},
+                    {
+                        "detail": "You are already a member of this group.",
+                        "id": existing.pk,
+                        "role": existing.role,
+                    },
                     status=status.HTTP_200_OK,
                 )
-            if group.join_policy == Group.JOIN_INVITE_ONLY:
-                raise PermissionDenied("This group is invite only.")
             member_count = GroupMembership.objects.filter(
-                group=group, status=GroupMembership.STATUS_ACTIVE
+                group=group,
             ).count()
             if group.max_members and member_count >= group.max_members:
                 raise ValidationError("This group has reached its member limit.")
-            membership_status = (
-                GroupMembership.STATUS_PENDING
-                if group.join_policy == Group.JOIN_APPROVAL
-                else GroupMembership.STATUS_ACTIVE
-            )
             membership = GroupMembership.objects.create(
-                group=group, user=request.user, status=membership_status
+                group=group, user=request.user,
             )
-            notification_type = (
-                Notification.TYPE_GROUP_JOIN_REQUEST
-                if membership_status == GroupMembership.STATUS_PENDING
-                else Notification.TYPE_GROUP_MEMBER_JOINED
-            )
-            notify = notify_group_admins if membership_status == GroupMembership.STATUS_PENDING else notify_group_members
-            notify(
+            notify_group_members(
                 group=group,
                 actor=request.user,
-                notification_type=notification_type,
+                notification_type=Notification.TYPE_GROUP_MEMBER_JOINED,
                 payload={
                     "group_id": str(group.pk),
                     "membership_id": membership.pk,
-                    "status": membership.status,
                 },
                 target_url=f"/groups/{group.pk}",
             )
@@ -154,20 +131,13 @@ class GroupViewSet(viewsets.ModelViewSet):
         if membership.role == GroupMembership.ROLE_OWNER:
             raise ValidationError("Transfer ownership before leaving this group.")
         with transaction.atomic():
-            notification_type = (
-                Notification.TYPE_GROUP_MEMBER_LEFT
-                if membership.status == GroupMembership.STATUS_ACTIVE
-                else Notification.TYPE_GROUP_JOIN_REQUEST_CANCELLED
-            )
-            notify = notify_group_members if membership.status == GroupMembership.STATUS_ACTIVE else notify_group_admins
-            notify(
+            notify_group_members(
                 group=group,
                 actor=request.user,
-                notification_type=notification_type,
+                notification_type=Notification.TYPE_GROUP_MEMBER_LEFT,
                 payload={
                     "group_id": str(group.pk),
                     "membership_id": membership.pk,
-                    "status": membership.status,
                 },
                 target_url=f"/groups/{group.pk}",
             )
@@ -177,10 +147,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     @decorators.action(detail=True, methods=["get"], permission_classes=[permissions.IsAuthenticated])
     def members(self, request, pk=None):
         group = self.get_object()
-        if group.visibility == Group.VISIBILITY_PRIVATE and not group.memberships.filter(
-            user=request.user, status=GroupMembership.STATUS_ACTIVE
-        ).exists():
-            raise PermissionDenied("Only members can view this group's member list.")
         memberships = group.memberships.select_related("user")
         return response.Response(GroupMembershipSerializer(memberships, many=True, context={"request": request}).data)
 
@@ -189,7 +155,6 @@ class GroupViewSet(viewsets.ModelViewSet):
         group = self.get_object()
         is_member = group.memberships.filter(
             user=request.user,
-            status=GroupMembership.STATUS_ACTIVE,
         ).exists() if request.user.is_authenticated else False
 
         if request.method == "POST":

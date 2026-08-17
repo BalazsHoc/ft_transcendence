@@ -21,7 +21,7 @@ export function HomeMyGroups() {
       .then((data) => {
         if (cancelled) return;
         const mine = (Array.isArray(data) ? data : [])
-          .filter((group) => group.current_user_membership?.status === "active")
+          .filter((group) => Boolean(group.current_user_membership))
           .slice(0, MAX_GROUPS);
         setGroups(mine);
       })

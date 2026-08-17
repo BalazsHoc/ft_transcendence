@@ -57,6 +57,6 @@ class GroupChatConsumer(AsyncWebsocketConsumer):
     def create_message(self, text):
         group = active_group_for_user(group_id=self.group_id, user=self.user)
         if group is None:
-            raise GroupMessageError("Only active group members can send messages.")
+            raise GroupMessageError("Only group members can send messages.")
         message = create_group_message(group=group, sender=self.user, text=text)
         return GroupMessageSerializer(message).data

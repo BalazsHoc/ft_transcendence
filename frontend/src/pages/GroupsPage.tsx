@@ -9,14 +9,13 @@ import { CuratedGroupCard } from "../components/discover/CuratedGroupCard";
 import Button from "../components/shared/Button";
 import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
 
+const LEVEL_CODES = new Set(["beginner", "intermediate", "advanced", "all"]);
+
 type GroupFormState = {
   name: string;
   description: string;
   sport: string;
   levels: string;
-  kind: GroupPayload["kind"];
-  visibility: GroupPayload["visibility"];
-  joinPolicy: GroupPayload["join_policy"];
   maxMembers: string;
   locationName: string;
 };
@@ -26,9 +25,6 @@ const initialForm: GroupFormState = {
   description: "",
   sport: "",
   levels: "beginner",
-  kind: "training",
-  visibility: "public",
-  joinPolicy: "open",
   maxMembers: "0",
   locationName: "",
 };
@@ -74,6 +70,19 @@ export function GroupsPage() {
       .filter(Boolean) as GroupPayload["levels"];
     const maxMembers = Number(form.maxMembers);
 
+    if (form.name.trim().length < 2 || !form.sport || levels.length === 0) {
+      setError(t("groupsTest.required"));
+      return;
+    }
+    if (levels.some((level) => !LEVEL_CODES.has(level)) || new Set(levels).size !== levels.length) {
+      setError(t("groupsTest.invalidLevels"));
+      return;
+    }
+    if (!Number.isInteger(maxMembers) || maxMembers < 0) {
+      setError(t("groupsTest.invalidMaxMembers"));
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
     try {
@@ -82,9 +91,6 @@ export function GroupsPage() {
         description: form.description,
         sport: form.sport,
         levels,
-        kind: form.kind,
-        visibility: form.visibility,
-        join_policy: form.joinPolicy,
         max_members: Number.isFinite(maxMembers) ? maxMembers : 0,
         location_name: form.locationName,
         coverImageFile,
@@ -115,7 +121,10 @@ export function GroupsPage() {
           <Button
             type="button"
             variant="primary"
-            onClick={() => setShowForm((visible) => !visible)}
+            onClick={() => {
+              setShowForm((visible) => !visible);
+              setError(null);
+            }}
           >
             {showForm ? t("groupsTest.cancel") : t("groupsTest.create")}
           </Button>
@@ -129,7 +138,7 @@ export function GroupsPage() {
         >
           <label className="md:col-span-2">
             {t("groupsTest.name")}
-            <input name="name" value={form.name} onChange={updateForm} required />
+            <input name="name" value={form.name} onChange={updateForm} required minLength={2} />
           </label>
           <label className="md:col-span-2">
             {t("groupsTest.descriptionLabel")}
@@ -159,30 +168,6 @@ export function GroupsPage() {
             <input name="levels" value={form.levels} onChange={updateForm} required />
           </label>
           <label>
-            {t("groupsTest.kind")}
-            <select name="kind" value={form.kind} onChange={updateForm}>
-              <option value="training">{t("groupsTest.kindTraining")}</option>
-              <option value="social">{t("groupsTest.kindSocial")}</option>
-              <option value="competitive">{t("groupsTest.kindCompetitive")}</option>
-              <option value="team">{t("groupsTest.kindTeam")}</option>
-            </select>
-          </label>
-          <label>
-            {t("groupsTest.visibility")}
-            <select name="visibility" value={form.visibility} onChange={updateForm}>
-              <option value="public">{t("groupsTest.public")}</option>
-              <option value="private">{t("groupsTest.private")}</option>
-            </select>
-          </label>
-          <label>
-            {t("groupsTest.joinPolicy")}
-            <select name="joinPolicy" value={form.joinPolicy} onChange={updateForm}>
-              <option value="open">{t("groupsTest.open")}</option>
-              <option value="approval">{t("groupsTest.approval")}</option>
-              <option value="invite_only">{t("groupsTest.inviteOnly")}</option>
-            </select>
-          </label>
-          <label>
             {t("groupsTest.maxMembers")}
             <input name="maxMembers" type="number" min="0" value={form.maxMembers} onChange={updateForm} />
           </label>
@@ -190,7 +175,20 @@ export function GroupsPage() {
             {t("groupsTest.location")}
             <input name="locationName" value={form.locationName} onChange={updateForm} />
           </label>
-          <div className="md:col-span-2">
+          <div className="flex flex-wrap justify-end gap-3 md:col-span-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setShowForm(false);
+                setForm(initialForm);
+                setCoverImageFile(null);
+                setError(null);
+              }}
+              disabled={submitting}
+            >
+              {t("groupsTest.cancel")}
+            </Button>
             <Button
               type="submit"
               variant="primary"

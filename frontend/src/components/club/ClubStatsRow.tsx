@@ -8,7 +8,7 @@ import {
 
 type ClubStatsRowProps = {
   members: string;
-  /** Middle tile — real field (kind/sport). Replaces fake club score when used for groups. */
+  /** Middle tile — a real group field (for example supported levels). */
   middleValue: string;
   middleLabel: string;
   /** Legacy club third tile */

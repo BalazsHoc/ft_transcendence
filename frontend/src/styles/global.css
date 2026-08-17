@@ -513,62 +513,7 @@ button.header-mobile-menu__action:hover {
   padding: 30px 22px;
 }
 
-/* The Discover page's sidebar layout needs the full viewport width,
-   not the narrow centered column used by regular pages (forms, hero
-   sections, etc.) — let it break out of .page-container's constraint. */
-.page-container:has(.discover-layout) {
-  max-width: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* The Map page needs an edge-to-edge canvas below the header instead of
-   the centered column, same escape hatch as the Discover layout above. */
-.page-container:has(.map-page-full) {
-  max-width: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* The logged-out landing page's hero needs to bleed edge-to-edge too;
-   its sections re-introduce their own centered max-width wrappers. */
-.page-container:has(.landing-page) {
-  max-width: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* Signed-in home hero should also bleed edge-to-edge; content below
-   keeps its own centered max-width wrapper. */
-.page-container:has(.home-page) {
-  max-width: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* The login page's photo backdrop should bleed edge-to-edge too; the form
-   card inside it stays centered via its own max-width. */
-.page-container:has(.login-page-full) {
-  max-width: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* The profile page's cover photo should bleed edge-to-edge too; the
-   sections below it stay centered via their own max-width. */
-.page-container:has(.profile-page-full) {
-  max-width: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.page-container:has(.club-page) {
+.page-container--full {
   max-width: none;
   width: 100%;
   margin: 0;

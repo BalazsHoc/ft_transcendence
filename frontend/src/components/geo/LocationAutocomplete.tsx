@@ -15,18 +15,48 @@ type Props = {
   label: string;
   placeholder?: string;
   initialQuery?: string;
+  required?: boolean;
+  onQueryChange?: (query: string) => void;
   onSelect: (suggestion: GeoSuggestion) => void;
 };
 
-function shortStreetName(value: string) {
-  const compact = value.split(",")[0]?.trim() || value.trim();
-  return compact;
+function asRecord(value: unknown): Record<string, unknown> {
+  return value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+}
+
+export function getStreetName(suggestion: GeoSuggestion) {
+  const raw = asRecord(suggestion.raw);
+  const address = asRecord(raw.address);
+  const properties = asRecord(raw.properties);
+  const candidate = [
+    address.road,
+    address.pedestrian,
+    address.street,
+    raw.street,
+    raw.road,
+    properties.street,
+    raw.text,
+    suggestion.label,
+    suggestion.address,
+  ].find((value) => typeof value === "string" && value.trim());
+  const compact = String(candidate || "").split(",")[0].trim();
+  return (
+    compact
+      .replace(/\s+\d+[A-Za-z]?(?:[-/]\d+[A-Za-z]?)?$/i, "")
+      .trim() || compact
+  );
+}
+
+function hasTrailingHouseNumber(value: string) {
+  return /\s\d+[A-Za-z]?(?:[-/]\d+[A-Za-z]?)?\s*$/i.test(value.trim());
 }
 
 export function LocationAutocomplete({
   label,
   placeholder = "Search an address or place",
   initialQuery = "",
+  required = false,
+  onQueryChange,
   onSelect,
 }: Props) {
   const [query, setQuery] = useState(initialQuery);
@@ -90,7 +120,13 @@ export function LocationAutocomplete({
   }, [error, loading, query, results.length]);
 
   function chooseSuggestion(suggestion: GeoSuggestion) {
-    setQuery(shortStreetName(suggestion.label || suggestion.address));
+    // A street-only search starts a two-step flow: keep just the street name
+    // first, then preserve the formatted address once a house number was used.
+    setQuery(
+      hasTrailingHouseNumber(query)
+        ? suggestion.address || suggestion.label
+        : getStreetName(suggestion),
+    );
     setResults([]);
     setOpen(false);
     onSelect(suggestion);
@@ -160,13 +196,16 @@ export function LocationAutocomplete({
         <input
           value={query}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setQuery(event.target.value);
+            const nextQuery = event.target.value;
+            setQuery(nextQuery);
+            onQueryChange?.(nextQuery);
             setOpen(true);
           }}
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
           onBlur={() => window.setTimeout(() => setOpen(false), 120)}
           placeholder={placeholder}
+          required={required}
           autoComplete="off"
           role="combobox"
           aria-expanded={open}
@@ -199,9 +238,9 @@ export function LocationAutocomplete({
                   onMouseDown={(event: MouseEvent<HTMLButtonElement>) => event.preventDefault()}
                   onClick={() => chooseSuggestion(result)}
                 >
-                  <strong>{highlightMatch(result.address, query)}</strong>
+                  <strong>{highlightMatch(result.label || result.address, query)}</strong>
                   {result.label && result.label !== result.address && (
-                    <span>{highlightMatch(result.label, query)}</span>
+                    <span>{highlightMatch(result.address, query)}</span>
                   )}
                 </button>
               ))}

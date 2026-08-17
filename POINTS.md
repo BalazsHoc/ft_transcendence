@@ -11,6 +11,8 @@
 | Minor | Use an ORM for the database | 1 |
 | Minor | Implement a complete notification system for all creation, update, and deletion actions | 1 |
 | Minor | Implement advanced search functionality with filters, sorting, and pagination | 1 |
+| Minor | Custom-made design system with reusable components, including a proper
+color palette, typography, and icons (minimum: 10 reusable components) | 1 |
 
 ## IV.2 Accessibility and Internationalization
 
@@ -36,4 +38,4 @@
 
 ## Total
 
-**19 points**
+**20 points**

@@ -25,8 +25,6 @@ class GroupApiTests(APITestCase):
                 "name": "Danube Runners",
                 "sport": "running",
                 "levels": ["beginner", "intermediate"],
-                "visibility": "public",
-                "join_policy": "open",
             },
             format="json",
         )
@@ -38,17 +36,39 @@ class GroupApiTests(APITestCase):
                 group=group,
                 user=self.user,
                 role=GroupMembership.ROLE_OWNER,
-                status=GroupMembership.STATUS_ACTIVE,
             ).exists()
         )
 
-    def test_private_group_is_hidden_from_non_members(self):
+    def test_group_rejects_missing_required_fields(self):
+        self.client.force_authenticate(self.user)
+        response = self.client.post(
+            "/api/groups/",
+            {
+                "name": " ",
+                "sport": "",
+                "levels": [],
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("name", response.data)
+        self.assertIn("sport", response.data)
+        self.assertIn("levels", response.data)
+
+        missing_levels = self.client.post(
+            "/api/groups/",
+            {"name": "Missing levels", "sport": "running"},
+            format="json",
+        )
+        self.assertEqual(missing_levels.status_code, 400)
+        self.assertIn("levels", missing_levels.data)
+
+    def test_groups_are_public_and_legacy_policy_fields_are_not_returned(self):
         group = Group.objects.create(
-            name="Private Climbers",
+            name="Public Climbers",
             sport="climbing",
             levels=["advanced"],
-            visibility=Group.VISIBILITY_PRIVATE,
-            join_policy=Group.JOIN_INVITE_ONLY,
             owner=self.user,
         )
         GroupMembership.objects.create(
@@ -58,15 +78,20 @@ class GroupApiTests(APITestCase):
         response = self.client.get("/api/groups/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, [])
+        self.assertEqual([item["id"] for item in response.data], [str(group.id)])
+        self.assertNotIn("visibility", response.data[0])
+        self.assertNotIn("join_policy", response.data[0])
+        self.assertNotIn("kind", response.data[0])
+        detail = self.client.get(f"/api/groups/{group.id}/")
+        self.assertEqual(detail.status_code, 200)
+        self.assertEqual(len(detail.data["memberships"]), 1)
+        self.assertNotIn("status", detail.data["memberships"][0])
 
-    def test_owner_can_create_private_group_event_hidden_from_non_members(self):
+    def test_private_group_event_is_hidden_from_non_members(self):
         group = Group.objects.create(
-            name="Private Climbers",
+            name="Climbers",
             sport="climbing",
             levels=["advanced"],
-            visibility=Group.VISIBILITY_PRIVATE,
-            join_policy=Group.JOIN_INVITE_ONLY,
             owner=self.user,
         )
         GroupMembership.objects.create(
@@ -86,8 +111,8 @@ class GroupApiTests(APITestCase):
                 "location_address": "Vienna",
                 "latitude": 48.2082,
                 "longitude": 16.3738,
-                "start_at": "2026-08-02T18:00:00Z",
-                "end_at": "2026-08-02T20:00:00Z",
+                "start_at": "2026-10-02T18:00:00Z",
+                "end_at": "2026-10-02T20:00:00Z",
                 "max_slots": 12,
                 "visibility": "private",
             },
@@ -106,21 +131,17 @@ class GroupApiTests(APITestCase):
             name="Saturday Swimmers",
             sport="swimming",
             levels=["intermediate"],
-            visibility=Group.VISIBILITY_PUBLIC,
-            join_policy=Group.JOIN_OPEN,
             owner=self.user,
         )
         GroupMembership.objects.create(
             group=group,
             user=self.user,
             role=GroupMembership.ROLE_OWNER,
-            status=GroupMembership.STATUS_ACTIVE,
         )
         GroupMembership.objects.create(
             group=group,
             user=self.other_user,
             role=GroupMembership.ROLE_MEMBER,
-            status=GroupMembership.STATUS_ACTIVE,
         )
 
         self.client.force_authenticate(self.other_user)
@@ -136,8 +157,8 @@ class GroupApiTests(APITestCase):
                 "location_address": "Vienna",
                 "latitude": 48.2082,
                 "longitude": 16.3738,
-                "start_at": "2026-08-03T18:00:00Z",
-                "end_at": "2026-08-03T20:00:00Z",
+                "start_at": "2026-10-03T18:00:00Z",
+                "end_at": "2026-10-03T20:00:00Z",
                 "max_slots": 8,
                 "visibility": "public",
             },
@@ -151,28 +172,16 @@ class GroupApiTests(APITestCase):
             name="Danube Runners",
             sport="running",
             levels=["beginner"],
-            visibility=Group.VISIBILITY_PUBLIC,
             owner=self.user,
         )
         GroupMembership.objects.create(
             group=group,
             user=self.user,
             role=GroupMembership.ROLE_OWNER,
-            status=GroupMembership.STATUS_ACTIVE,
         )
         GroupMembership.objects.create(
             group=group,
             user=self.other_user,
-            status=GroupMembership.STATUS_ACTIVE,
-        )
-        pending_user = get_user_model().objects.create_user(
-            username="pending",
-            password="secure-password",
-        )
-        GroupMembership.objects.create(
-            group=group,
-            user=pending_user,
-            status=GroupMembership.STATUS_PENDING,
         )
 
         self.client.force_authenticate(self.other_user)
@@ -204,9 +213,13 @@ class GroupApiTests(APITestCase):
             f"/groups/{group.id}#group-chat",
         )
 
-        self.client.force_authenticate(pending_user)
-        pending_response = self.client.get(f"/api/groups/{group.id}/messages/")
-        self.assertEqual(pending_response.status_code, 404)
+        outsider = get_user_model().objects.create_user(
+            username="outsider",
+            password="secure-password",
+        )
+        self.client.force_authenticate(outsider)
+        outsider_response = self.client.get(f"/api/groups/{group.id}/messages/")
+        self.assertEqual(outsider_response.status_code, 404)
 
     def test_group_join_and_leave_notify_active_members(self):
         group = Group.objects.create(
@@ -219,12 +232,10 @@ class GroupApiTests(APITestCase):
             group=group,
             user=self.user,
             role=GroupMembership.ROLE_OWNER,
-            status=GroupMembership.STATUS_ACTIVE,
         )
         GroupMembership.objects.create(
             group=group,
             user=self.other_user,
-            status=GroupMembership.STATUS_ACTIVE,
         )
         joiner = get_user_model().objects.create_user(
             username="joiner",
@@ -254,19 +265,17 @@ class GroupApiTests(APITestCase):
             2,
         )
 
-    def test_group_join_request_and_cancellation_notify_admins(self):
+    def test_group_join_is_immediate_and_notifies_members(self):
         group = Group.objects.create(
-            name="Approval notifications",
+            name="Open membership notifications",
             sport="cycling",
             levels=["all"],
-            join_policy=Group.JOIN_APPROVAL,
             owner=self.user,
         )
         GroupMembership.objects.create(
             group=group,
             user=self.user,
             role=GroupMembership.ROLE_OWNER,
-            status=GroupMembership.STATUS_ACTIVE,
         )
         joiner = get_user_model().objects.create_user(
             username="requester",
@@ -276,11 +285,20 @@ class GroupApiTests(APITestCase):
         self.client.force_authenticate(joiner)
         joined = self.client.post(f"/api/groups/{group.id}/join/")
         self.assertEqual(joined.status_code, 201)
+        self.assertEqual(joined.data["role"], GroupMembership.ROLE_MEMBER)
+        self.assertNotIn("status", joined.data)
+        self.assertTrue(
+            GroupMembership.objects.filter(
+                group=group,
+                user=joiner,
+                status=GroupMembership.STATUS_ACTIVE,
+            ).exists()
+        )
         self.assertTrue(
             Notification.objects.filter(
                 recipient=self.user,
                 actor=joiner,
-                type=Notification.TYPE_GROUP_JOIN_REQUEST,
+                type=Notification.TYPE_GROUP_MEMBER_JOINED,
             ).exists()
         )
 
@@ -290,7 +308,7 @@ class GroupApiTests(APITestCase):
             Notification.objects.filter(
                 recipient=self.user,
                 actor=joiner,
-                type=Notification.TYPE_GROUP_JOIN_REQUEST_CANCELLED,
+                type=Notification.TYPE_GROUP_MEMBER_LEFT,
             ).exists()
         )
 
@@ -305,12 +323,10 @@ class GroupApiTests(APITestCase):
             group=group,
             user=self.user,
             role=GroupMembership.ROLE_OWNER,
-            status=GroupMembership.STATUS_ACTIVE,
         )
         GroupMembership.objects.create(
             group=group,
             user=self.other_user,
-            status=GroupMembership.STATUS_ACTIVE,
         )
 
         self.client.force_authenticate(self.user)
@@ -349,12 +365,10 @@ class GroupApiTests(APITestCase):
             group=group,
             user=self.user,
             role=GroupMembership.ROLE_OWNER,
-            status=GroupMembership.STATUS_ACTIVE,
         )
         GroupMembership.objects.create(
             group=group,
             user=self.other_user,
-            status=GroupMembership.STATUS_ACTIVE,
         )
 
         self.client.force_authenticate(self.user)

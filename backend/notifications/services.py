@@ -75,14 +75,11 @@ def notify_group_members(
     target_url="",
     roles=None,
 ):
-    """Notify active group members, optionally limiting recipients by role."""
+    """Notify group members, optionally limiting recipients by role."""
 
     from groups.models import GroupMembership
 
-    memberships = GroupMembership.objects.filter(
-        group=group,
-        status=GroupMembership.STATUS_ACTIVE,
-    ).select_related("user")
+    memberships = GroupMembership.objects.filter(group=group).select_related("user")
     if roles:
         memberships = memberships.filter(role__in=roles)
     return notify_users(
@@ -102,7 +99,7 @@ def notify_group_admins(
     payload=None,
     target_url="",
 ):
-    """Notify active group owners and admins."""
+    """Notify group owners and admins."""
 
     from groups.models import GroupMembership
 
@@ -124,7 +121,7 @@ def notify_event_audience(
     payload=None,
     target_url="",
 ):
-    """Notify event participants and active members of an optional group."""
+    """Notify event participants and members of an optional group."""
 
     from groups.models import GroupMembership
 
@@ -132,7 +129,6 @@ def notify_event_audience(
     if event.group_id:
         memberships = GroupMembership.objects.filter(
             group_id=event.group_id,
-            status=GroupMembership.STATUS_ACTIVE,
         ).select_related("user")
         users.extend(membership.user for membership in memberships)
     return notify_users(

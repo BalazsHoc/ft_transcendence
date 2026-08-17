@@ -80,7 +80,6 @@ export type EventGroupSummary = {
   id: string;
   name: string;
   sport: string;
-  visibility: "public" | "private";
 };
 export type EventItem = {
   id: string;
@@ -163,7 +162,6 @@ export type GroupMembership = {
   id: number;
   user: User;
   role: "owner" | "admin" | "member";
-  status: "active" | "pending";
   joined_at: string;
 };
 
@@ -173,9 +171,6 @@ export type GroupItem = {
   description: string;
   sport: string;
   levels: Array<"beginner" | "intermediate" | "advanced" | "all">;
-  kind: "training" | "social" | "competitive" | "team";
-  visibility: "public" | "private";
-  join_policy: "open" | "approval" | "invite_only";
   max_members: number;
   languages: string[];
   location_name: string;
@@ -186,7 +181,6 @@ export type GroupItem = {
   member_count: number;
   current_user_membership: {
     role: "owner" | "admin" | "member";
-    status: "active" | "pending";
   } | null;
   memberships?: GroupMembership[];
   created_at: string;
@@ -198,9 +192,6 @@ export type GroupPayload = {
   description?: string;
   sport: string;
   levels: Array<"beginner" | "intermediate" | "advanced" | "all">;
-  kind?: "training" | "social" | "competitive" | "team";
-  visibility?: "public" | "private";
-  join_policy?: "open" | "approval" | "invite_only";
   max_members?: number;
   languages?: string[];
   location_name?: string;

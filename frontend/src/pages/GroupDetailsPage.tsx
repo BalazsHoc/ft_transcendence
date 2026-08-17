@@ -23,19 +23,6 @@ function levelLabel(level: EventItem["level"], t: (key: string) => string) {
   return translated === key ? level : translated;
 }
 
-function kindLabel(
-  kind: GroupItem["kind"],
-  t: (key: string, options?: Record<string, string>) => string,
-) {
-  const map: Record<GroupItem["kind"], string> = {
-    training: t("groupsTest.kindTraining"),
-    social: t("groupsTest.kindSocial"),
-    competitive: t("groupsTest.kindCompetitive"),
-    team: t("groupsTest.kindTeam"),
-  };
-  return map[kind] || kind;
-}
-
 function eventToRide(
   event: EventItem,
   locale: string,
@@ -187,14 +174,10 @@ export function GroupDetailsPage() {
     setApplyNeedsAuth(false);
     setApplySuccess(null);
     try {
-      const membership = await joinGroup(groupId);
+      await joinGroup(groupId);
       const refreshed = await getGroup(groupId);
       setGroup(refreshed);
-      if (membership?.status === "pending") {
-        setApplySuccess(t("groups.applyPending"));
-      } else {
-        setApplySuccess(t("groups.applyJoined"));
-      }
+      setApplySuccess(t("groups.applyJoined"));
     } catch (err) {
       const raw =
         err instanceof Error && err.message
@@ -209,10 +192,6 @@ export function GroupDetailsPage() {
       }
       if (/member limit|reached its member/i.test(raw)) {
         showApplyError(t("groups.applyFull"));
-        return;
-      }
-      if (/invite only/i.test(raw)) {
-        showApplyError(t("groups.applyInviteOnly"));
         return;
       }
       showApplyError(raw);
@@ -351,21 +330,23 @@ export function GroupDetailsPage() {
     group.owner.username;
   const isOwnProfile = Boolean(user && user.id === group.owner.id);
   const alreadyMember = Boolean(group.current_user_membership);
-  const isActiveMember = group.current_user_membership?.status === "active";
+  const isActiveMember = alreadyMember;
   const isGroupOwner =
     group.current_user_membership?.role === "owner";
   const canLeaveGroup = alreadyMember && !isGroupOwner;
-  const isPending =
-    group.current_user_membership?.status === "pending";
   const isFull =
     Boolean(group.max_members) && group.member_count >= group.max_members;
   const membersLabel =
     group.max_members > 0
       ? `${group.member_count}/${group.max_members}`
       : `${group.member_count}/∞`;
-  const activeMemberships = (group.memberships ?? []).filter(
-    (membership) => membership.status === "active",
-  );
+  const groupLevels = group.levels
+    .map((level) => {
+      const key = `discover.${level}`;
+      const translated = t(key);
+      return translated === key ? level : translated;
+    })
+    .join(", ");
 
   return (
     <div className="club-page relative">
@@ -415,7 +396,7 @@ export function GroupDetailsPage() {
       />
 
       <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-8">
-        {(applyNeedsAuth || applyError || applySuccess || isPending) && (
+        {(applyNeedsAuth || applyError || applySuccess) && (
           <div className="rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-3 text-sm">
             {applyNeedsAuth ? (
               <p role="alert" className="text-[var(--text)]">
@@ -445,16 +426,13 @@ export function GroupDetailsPage() {
             {applySuccess ? (
               <p className="text-[var(--text)]">{applySuccess}</p>
             ) : null}
-            {!applyNeedsAuth && !applyError && !applySuccess && isPending ? (
-              <p className="text-[var(--muted)]">{t("groups.applyPending")}</p>
-            ) : null}
           </div>
         )}
 
         <ClubStatsRow
           members={membersLabel}
-          middleValue={kindLabel(group.kind, t)}
-          middleLabel={t("groups.kind")}
+          middleValue={groupLevels || t("groups.levels")}
+          middleLabel={t("groups.levels")}
           owner={{
             name: ownerName,
             avatarUrl: group.owner.avatar,
@@ -467,7 +445,7 @@ export function GroupDetailsPage() {
 
         {membersOpen ? (
           <GroupMembersList
-            memberships={activeMemberships}
+            memberships={group.memberships ?? []}
             currentUserId={user?.id}
           />
         ) : null}

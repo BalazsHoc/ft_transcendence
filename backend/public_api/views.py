@@ -11,7 +11,7 @@ from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema,
 from core.districts import district_catalog
 from core.sports import sport_catalog
 from events.models import Event, EventParticipant
-from groups.models import Group, GroupMembership
+from groups.models import Group
 
 from .authentication import PublicAPIKeyAuthentication
 from .pagination import PublicAPIPagination
@@ -126,7 +126,7 @@ class PublicEventViewSet(PublicAPIEndpointMixin, viewsets.ReadOnlyModelViewSet):
             Event.objects.filter(visibility=Event.VISIBILITY_PUBLIC)
             .filter(
                 Q(group__isnull=True)
-                | Q(group__visibility=Group.VISIBILITY_PUBLIC, group__is_active=True)
+                | Q(group__is_active=True)
             )
             .select_related("creator", "group")
             .annotate(
@@ -167,7 +167,6 @@ class PublicEventViewSet(PublicAPIEndpointMixin, viewsets.ReadOnlyModelViewSet):
 PUBLIC_GROUP_PARAMETERS = [
     OpenApiParameter("sport", OpenApiTypes.STR, description="Filter by sport code."),
     OpenApiParameter("level", OpenApiTypes.STR, description="Filter by supported group level."),
-    OpenApiParameter("kind", OpenApiTypes.STR, description="Filter by group kind."),
     OpenApiParameter("search", OpenApiTypes.STR, description="Search group name or description."),
     OpenApiParameter("ordering", OpenApiTypes.STR, description="name, -name, created_at or -created_at."),
     OpenApiParameter("page", OpenApiTypes.INT),
@@ -192,25 +191,21 @@ class PublicGroupViewSet(PublicAPIEndpointMixin, viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = (
-            Group.objects.filter(is_active=True, visibility=Group.VISIBILITY_PUBLIC)
+            Group.objects.filter(is_active=True)
             .select_related("owner")
             .annotate(
                 member_count=Count(
                     "memberships",
-                    filter=Q(memberships__status=GroupMembership.STATUS_ACTIVE),
                     distinct=True,
                 )
             )
         )
         sport = self.request.query_params.get("sport")
         level = self.request.query_params.get("level")
-        kind = self.request.query_params.get("kind")
         if sport:
             queryset = queryset.filter(sport__iexact=sport)
         if level:
             queryset = _filter_json_array_contains(queryset, "levels", level)
-        if kind:
-            queryset = queryset.filter(kind=kind)
         return queryset
 
 
