@@ -1,7 +1,8 @@
 flowchart LR
   makeUp["make"] --> prepareEnv["create .env and SECRET_KEY"]
-  prepareEnv --> build["build three images"]
-  build --> dbHealth["backend migrate and daphne"]
+  prepareEnv --> build["build images"]
+  build --> pgHealth["postgres healthy"]
+  pgHealth --> dbHealth["backend migrate seed daphne"]
   build --> feHealth["frontend nginx"]
   dbHealth --> nginxUp["nginx TLS"]
   feHealth --> nginxUp

@@ -27,8 +27,7 @@ On Ubuntu, the system command is **`python3`**, not `python`. After the venv is 
 - **Python** 3.10+ (this machine: 3.12) — command is `python3`
 - **Node.js** 20.19+ (or 22.12+) and **npm** (nvm is fine)
 - **Git**
-
-No Docker or PostgreSQL for local dev (SQLite by default).
+- **Docker** — `start.sh` runs `make db` so Postgres is available on `localhost:5432`
 
 ---
 
@@ -49,7 +48,9 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env          # only if .env does not exist
+# from repo root: make db
 python manage.py migrate
+python manage.py seed_eval
 ```
 
 ### 2. Frontend
