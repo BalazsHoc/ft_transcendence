@@ -8,8 +8,24 @@
 
 
 ## Instructions
-- 🔴 containing any relevant information about compilation, installation, and/or execution.
-- 🔴 hould mention all the needed prerequisites (software, tools, versions, configuration like .env setup, etc.), and step-by-step instructions to run the project.
+
+The evaluated deployment is Docker. From the repository root:
+
+```bash
+./run.sh
+```
+
+Then open https://localhost and accept the self-signed certificate warning.
+
+`./run.sh` copies `.env.example` to `.env` if needed and runs `docker compose up --build -d`, or `docker-compose` if the v2 plugin is missing.
+
+Prerequisites: Docker Engine and Docker Compose (`docker compose` or `docker-compose`) on Ubuntu. Ports 80 and 443 must be free.
+
+The three containers are `nginx` (public HTTPS), `frontend` (SPA), and `backend` (Django/Daphne). The database is `backend/db.sqlite3` in git.
+
+Full architecture, data-sharing, and local Vite/Daphne notes: [DEVOPS.md](DEVOPS.md).
+
+Local development without Docker is still supported (Python venv + `npm run dev`). See [backend/README.md](backend/README.md) and [frontend/DEV.md](frontend/DEV.md).
 
 
 ## Resources
