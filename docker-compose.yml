@@ -1,0 +1,97 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 10s
+    env_file:
+      - .env
+    environment:
+      DEBUG: "False"
+      ALLOWED_HOSTS: localhost,127.0.0.1
+      CORS_ALLOWED_ORIGINS: https://localhost,https://127.0.0.1
+      CSRF_TRUSTED_ORIGINS: https://localhost,https://127.0.0.1
+    volumes:
+      - ./backend/db.sqlite3:/app/db.sqlite3
+      - ./backend/media:/app/media
+      - staticfiles:/app/staticfiles
+    expose:
+      - "8000"
+    networks:
+      - transcendence
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: https://localhost
+        VITE_WS_URL: wss://localhost
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 10s
+    expose:
+      - "80"
+    networks:
+      - transcendence
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  nginx:
+    build:
+      context: ./nginx
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 10s
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./backend/media:/var/www/media:ro
+      - staticfiles:/var/www/static:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+    networks:
+      - transcendence
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "-q",
+          "--spider",
+          "--no-check-certificate",
+          "https://127.0.0.1/",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  staticfiles:
+
+networks:
+  transcendence:
+    driver: bridge
