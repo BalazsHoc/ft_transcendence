@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { CuratedGroupCard } from "./CuratedGroupCard";
 import { getGroups } from "../../api/groupsApi";
 import type { GroupItem } from "../../types/api";
-import { DEFAULT_GROUP_IMAGE_SRC } from "../../utils/media";
+import { getDefaultGroupImage } from "../../utils/media";
 
 export function CuratedForYouSection() {
   const { t } = useTranslation();
@@ -59,7 +59,7 @@ export function CuratedForYouSection() {
       <div className="curated-for-you__grid">
         <CuratedGroupCard
           variant="featured"
-          image={featured.cover_image || DEFAULT_GROUP_IMAGE_SRC}
+          image={featured.cover_image || getDefaultGroupImage(featured.sport)}
           title={featured.name}
           description={featured.description}
           categoryLabel={t(`sports.${featured.sport}`)}
@@ -74,7 +74,7 @@ export function CuratedForYouSection() {
               <CuratedGroupCard
                 key={group.id}
                 variant="compact"
-                image={group.cover_image || DEFAULT_GROUP_IMAGE_SRC}
+                image={group.cover_image || getDefaultGroupImage(group.sport)}
                 title={group.name}
                 categoryLabel={t(`sports.${group.sport}`)}
                 timeLabel={

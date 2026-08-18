@@ -13,7 +13,7 @@ import { ClubUpcomingRides } from "../components/club/ClubUpcomingRides";
 import type { ClubRideItem } from "../components/club/ClubRideRow";
 import Button from "../components/shared/Button";
 import { ConfirmDialog } from "../components/shared/ConfirmDialog";
-import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
+import { getDefaultGroupImage } from "../utils/media";
 import { GroupChat } from "../components/chat/GroupChat";
 import { GroupMembersList } from "../components/groups/GroupMembersList";
 
@@ -362,7 +362,7 @@ export function GroupDetailsPage() {
       </div>
 
       <ClubHero
-        coverImage={group.cover_image || DEFAULT_GROUP_IMAGE_SRC}
+        coverImage={group.cover_image || getDefaultGroupImage(group.sport)}
         name={group.name}
         description={group.description || t("groups.noDescription")}
         sportLabel={t(`sports.${group.sport}`)}

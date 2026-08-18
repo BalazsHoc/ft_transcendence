@@ -1,35 +1,63 @@
 import { API_URL } from "../api/client";
 
 export const DEFAULT_AVATAR_SRC = "/default-avatar.svg";
-export const DEFAULT_EVENT_IMAGE_SRC = "/default-events/football.webp";
-export const DEFAULT_GROUP_IMAGE_SRC = "/default-group-image.png";
+export const DEFAULT_EVENT_IMAGE_SRC = "/defaultsEvents/football.png";
+export const DEFAULT_GROUP_IMAGE_SRC = "/defaultGroups/football.png";
 
 const EVENT_IMAGE_BY_SPORT: Record<string, string> = {
-  badminton: "/default-events/badminton.webp",
-  basketball: "/default-events/basketball.webp",
-  boxing: "/default-events/boxing.webp",
-  chess: "/default-events/chess.webp",
-  climbing: "/default-events/climbing.webp",
-  cycling: "/default-events/cycling.webp",
-  dance: "/default-events/dance.webp",
-  football: "/default-events/football.webp",
-  hiking: "/default-events/hiking.webp",
-  martial_arts: "/default-events/martial_arts.webp",
-  rowing: "/default-events/rowing.webp",
-  running: "/default-events/running.webp",
-  skiing: "/default-events/skiing.webp",
-  snowboarding: "/default-events/snowboarding.webp",
-  strength: "/default-events/strength.webp",
-  swimming: "/default-events/swimming.webp",
-  table_tennis: "/default-events/table_tennis.webp",
-  tennis: "/default-events/tennis.webp",
-  volleyball: "/default-events/volleyball.webp",
-  yoga: "/default-events/yoga.webp",
+  badminton: "/defaultsEvents/badminton.png",
+  basketball: "/defaultsEvents/basketball.png",
+  boxing: "/defaultsEvents/boxing.png",
+  chess: "/defaultsEvents/chess.png",
+  climbing: "/defaultsEvents/climbing.png",
+  cycling: "/defaultsEvents/cycling.png",
+  dance: "/defaultsEvents/dance.png",
+  football: "/defaultsEvents/football.png",
+  hiking: "/defaultsEvents/hiking.png",
+  martial_arts: "/defaultsEvents/martial_arts.png",
+  rowing: "/defaultsEvents/rowing.png",
+  running: "/defaultsEvents/running.png",
+  skiing: "/defaultsEvents/skiing.png",
+  snowboarding: "/defaultsEvents/snowboarding.png",
+  strength: "/defaultsEvents/strength.png",
+  swimming: "/defaultsEvents/swimming.png",
+  table_tennis: "/defaultsEvents/table_tennis.png",
+  tennis: "/defaultsEvents/tennis.png",
+  volleyball: "/defaultsEvents/volleyball.png",
+  yoga: "/defaultsEvents/yoga.png",
+};
+
+const GROUP_IMAGE_BY_SPORT: Record<string, string> = {
+  badminton: "/defaultGroups/badminton.png",
+  basketball: "/defaultGroups/basketball.png",
+  boxing: "/defaultGroups/boxing.png",
+  chess: "/defaultGroups/chess.png",
+  climbing: "/defaultGroups/climbing.png",
+  cycling: "/defaultGroups/cycling.png",
+  dance: "/defaultGroups/dance.png",
+  football: "/defaultGroups/football.png",
+  hiking: "/defaultGroups/hiking.png",
+  martial_arts: "/defaultGroups/martial_arts.png",
+  rowing: "/defaultGroups/rowing.png",
+  running: "/defaultGroups/running.png",
+  skiing: "/defaultGroups/skiing.png",
+  snowboarding: "/defaultGroups/snowboarding.png",
+  strength: "/defaultGroups/strength.png",
+  swimming: "/defaultGroups/swimming.png",
+  table_tennis: "/defaultGroups/table_tennis.png",
+  tennis: "/defaultGroups/tennis.png",
+  volleyball: "/defaultGroups/volleyball.png",
+  yoga: "/defaultGroups/yoga.png",
 };
 
 export function getDefaultEventImage(sport?: string | null) {
   if (!sport) return DEFAULT_EVENT_IMAGE_SRC;
   return EVENT_IMAGE_BY_SPORT[sport.toLowerCase()] ?? DEFAULT_EVENT_IMAGE_SRC;
+}
+
+export function getDefaultGroupImage(sport?: string | null) {
+  if (!sport) return DEFAULT_GROUP_IMAGE_SRC;
+  return GROUP_IMAGE_BY_SPORT[sport.toLowerCase()] ?? DEFAULT_GROUP_IMAGE_SRC;
 }
 
 export function resolveMediaUrl(
