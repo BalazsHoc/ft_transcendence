@@ -2,6 +2,8 @@
 
 Mandatory container deployment for Active Vienna (`ft_transcendence`). This is not an extra DevOps module (no ELK, Prometheus, or microservices).
 
+Architecture diagrams (containers, request path, data): [DOCKER.md](DOCKER.md).
+
 ## Architecture
 
 Three containers share a private Docker bridge network named `transcendence`. Only nginx is reachable from the host.
