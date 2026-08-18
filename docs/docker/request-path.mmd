@@ -3,7 +3,7 @@ sequenceDiagram
   participant Gateway as nginx gateway
   participant SPA as frontend SPA
   participant API as backend Daphne
-  participant DB as sqlite file
+  participant DB as postgres
   Browser->>Gateway: HTTP port 80
   Gateway-->>Browser: 301 to HTTPS
   Browser->>Gateway: HTTPS /

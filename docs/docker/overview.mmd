@@ -5,7 +5,6 @@ flowchart TB
 
   subgraph host [Host]
     makeCmd["make"]
-    sqliteFile["backend/db.sqlite3"]
     mediaDir["backend/media"]
     envFile[".env gitignored"]
   end
@@ -15,6 +14,7 @@ flowchart TB
     nginxHttps["nginx listen 443 TLS"]
     frontend["frontend nginx port 80"]
     backend["backend daphne port 8000"]
+    db["postgres port 5432"]
     staticVol["volume staticfiles"]
   end
 
@@ -24,7 +24,7 @@ flowchart TB
   nginxHttps -->|"api admin ws"| backend
   nginxHttps -->|"static"| staticVol
   nginxHttps -->|"media"| mediaDir
-  backend --> sqliteFile
+  backend --> db
   backend --> mediaDir
   backend --> staticVol
   envFile --> backend
