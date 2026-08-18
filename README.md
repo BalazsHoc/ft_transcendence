@@ -23,7 +23,7 @@ Prerequisites: `make`, Docker Engine, and Docker Compose on Ubuntu. Ports 80 and
 
 The three containers are `nginx` (public HTTPS), `frontend` (SPA), and `backend` (Django/Daphne). The database is `backend/db.sqlite3` in git.
 
-Full architecture, data-sharing, and local Vite/Daphne notes: [DEVOPS.md](DEVOPS.md).
+Architecture diagrams: [DOCKER.md](DOCKER.md). Commands, env, and troubleshooting: [DEVOPS.md](DEVOPS.md).
 
 Local development without Docker is still supported (Python venv + `npm run dev`). See [backend/README.md](backend/README.md) and [frontend/DEV.md](frontend/DEV.md).
 
