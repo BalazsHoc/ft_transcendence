@@ -6,71 +6,24 @@ Eval command: `make` from the repository root. Stop with `make down`. Open **htt
 
 Daily commands and troubleshooting: [DEVOPS.md](DEVOPS.md).
 
+Diagrams below are SVG images (they display in the editor and on GitHub). The Mermaid sources live in [docs/docker/](docs/docker/).
+
 ## Overview
 
 Three containers share a private bridge network named `transcendence`. **Only nginx publishes ports** (`80` and `443`). The frontend and backend have no host ports. SQLite is a file bind-mounted into the backend, not a fourth container.
 
-```mermaid
-flowchart TB
-  browsers["Browsers on this PC"]
-  browsers -->|"HTTP :80"| nginxHttp
-  browsers -->|"HTTPS :443"| nginxHttps
-
-  subgraph host [Host]
-    makeCmd["make"]
-    sqliteFile["backend/db.sqlite3"]
-    mediaDir["backend/media"]
-    envFile[".env gitignored"]
-  end
-
-  makeCmd -->|"docker compose up --build -d"| stack
-
-  subgraph stack [Docker network transcendence]
-    nginxHttp["nginx listen 80"]
-    nginxHttps["nginx listen 443 TLS"]
-    frontend["frontend nginx :80"]
-    backend["backend daphne :8000"]
-    staticVol["volume staticfiles"]
-  end
-
-  nginxHttp -->|"301"| nginxHttps
-  nginxHttps -->|"/ SPA"| frontend
-  nginxHttps -->|"/api /admin /ws"| backend
-  nginxHttps -->|"/static"| staticVol
-  nginxHttps -->|"/media"| mediaDir
-  backend --> sqliteFile
-  backend --> mediaDir
-  backend --> staticVol
-  envFile --> backend
-```
+![Docker overview: browsers to nginx, then frontend, backend, sqlite and media](docs/docker/overview.svg)
 
 ## Request path
 
 The browser never talks to Daphne or the SPA nginx directly. Everything goes through the gateway.
 
-```mermaid
-sequenceDiagram
-  participant Browser
-  participant Nginx as nginx_gateway
-  participant Frontend as frontend_SPA
-  participant Backend as backend_Daphne
-  participant SQLite as sqlite_file
+![Request path: HTTP redirect, HTTPS SPA, API, and WebSocket through nginx](docs/docker/request-path.svg)
 
-  Browser->>Nginx: HTTP :80 any path
-  Nginx-->>Browser: 301 to HTTPS
-  Browser->>Nginx: HTTPS :443 /
-  Nginx->>Frontend: HTTP frontend:80
-  Frontend-->>Browser: index.html and assets
-
-  Browser->>Nginx: HTTPS /api/...
-  Nginx->>Backend: HTTP backend:8000 /api/...
-  Backend->>SQLite: read or write
-  Backend-->>Browser: JSON
-
-  Browser->>Nginx: WSS /ws/...
-  Nginx->>Backend: HTTP Upgrade WebSocket
-  Backend-->>Browser: chat and presence frames
-```
+1. Port 80 only redirects to HTTPS.
+2. `/` is the React SPA from the frontend container.
+3. `/api/` and `/admin/` go to Daphne.
+4. `/ws/` is upgraded to a WebSocket for chat and presence.
 
 ## Containers
 
@@ -84,16 +37,7 @@ Startup order: Compose waits until `backend` and `frontend` are **healthy**, the
 
 Each service uses `init: true`, `restart: unless-stopped`, and `exec` so the real process receives SIGTERM. A crash exits the container; Compose starts it again.
 
-```mermaid
-flowchart LR
-  makeUp["make"] --> prepareEnv["create .env and SECRET_KEY"]
-  prepareEnv --> build["build three images"]
-  build --> dbHealth["backend migrate collectstatic daphne"]
-  build --> feHealth["frontend nginx :80"]
-  dbHealth --> nginxUp["nginx TLS"]
-  feHealth --> nginxUp
-  nginxUp --> site["https://localhost"]
-```
+![Startup: make, env, build, healthchecks, then nginx](docs/docker/startup.svg)
 
 ## Gateway routing
 
@@ -114,25 +58,7 @@ The frontend image is built with `VITE_API_URL=https://localhost` and `VITE_WS_U
 
 ## Data on the host
 
-```mermaid
-flowchart TB
-  subgraph gitTracked [Tracked in git]
-    sqlite["backend/db.sqlite3"]
-    media["backend/media"]
-  end
-  subgraph notGit [Not in git]
-    envFile[".env"]
-    certs["self-signed certs inside nginx"]
-    staticVol["volume staticfiles"]
-  end
-  backend["backend container"] --> sqlite
-  backend --> media
-  backend --> staticVol
-  nginx["nginx container"] --> media
-  nginx --> staticVol
-  nginx --> certs
-  backend --> envFile
-```
+![What is in git versus Docker volumes and secrets](docs/docker/data.svg)
 
 - **SQLite** is the database. Bind-mounted so Docker and local Daphne share the same file. Commit it (after stopping the backend) if teammates should see new events/chats/groups.
 - **Media** is user uploads. Bind-mounted read-write on backend, read-only on nginx.
@@ -151,3 +77,4 @@ There is no Postgres or Redis container. One Daphne process uses the in-memory c
 | [frontend/Dockerfile](frontend/Dockerfile) | Production SPA image |
 | [backend/Dockerfile](backend/Dockerfile) | Daphne image, migrate on start |
 | [.env.example](.env.example) | Template; real `.env` is gitignored |
+| [docs/docker/](docs/docker/) | Mermaid sources and rendered SVG diagrams |
