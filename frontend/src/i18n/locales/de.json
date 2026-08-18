@@ -40,6 +40,12 @@
     "refresh": "Aktualisieren",
     "toggleDarkMode": "Dunkelmodus umschalten"
   },
+  "pagination": {
+    "label": "Seitennavigation",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "pageOf": "Seite {{page}} von {{pages}}"
+  },
   "home": {
     "greeting": "Willkommen zurück, {{name}}",
     "subtitle": "Schön, dich wiederzusehen. Hier ist ein kurzer Überblick für dich.",
@@ -277,7 +283,8 @@
     "public": "Öffentlich",
     "private": "Privat",
     "groupEvent": "Gruppen-Event",
-    "viewGroup": "Gruppe ansehen"
+    "viewGroup": "Gruppe ansehen",
+    "back": "Zurück"
   },
   "createEvent": {
     "title": "Event erstellen",
@@ -319,6 +326,8 @@
     "waiting": "Auf der Warteliste",
     "selectEvent": "Wähle einen Punkt auf der Karte, um Details zu sehen.",
     "noEventsFilter": "Keine Events entsprechen diesen Filtern.",
+    "eventSwitcher": "Events an diesem Ort",
+    "viewDetails": "Details ansehen",
     "locateMe": "Meinen Standort verwenden",
     "zoomIn": "Vergrößern",
     "zoomOut": "Verkleinern",

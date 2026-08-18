@@ -11,23 +11,23 @@
 }
 
 .labelText {
-  color: #fff;
-  text-shadow:
+  color: #174b69;
+  /* text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
     1px 1px 0 #000,
-    0 0 3px #000;
+    0 0 3px #000; */
 }
 
 .pageTitle {
-  color: #fff;
-  text-shadow:
+  color: #174b69;
+  /* text-shadow:
     -1.5px -1.5px 0 #000,
     1.5px -1.5px 0 #000,
     -1.5px 1.5px 0 #000,
     1.5px 1.5px 0 #000,
-    0 0 4px #000;
+    0 0 4px #000; */
 }
 
 .formGrid {

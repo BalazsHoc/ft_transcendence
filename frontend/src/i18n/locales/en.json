@@ -40,6 +40,12 @@
     "refresh": "Refresh",
     "toggleDarkMode": "Toggle dark mode"
   },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{pages}}"
+  },
   "home": {
     "greeting": "Welcome back, {{name}}",
     "subtitle": "Good to see you again. Here's a quick look at your day.",
@@ -277,7 +283,8 @@
     "public": "Public",
     "private": "Private",
     "groupEvent": "Group event",
-    "viewGroup": "View group"
+    "viewGroup": "View group",
+    "back": "Back"
   },
   "createEvent": {
     "title": "Create event",
@@ -319,6 +326,8 @@
     "waiting": "On waitlist",
     "selectEvent": "Select a pin on the map to see details.",
     "noEventsFilter": "No events match these filters.",
+    "eventSwitcher": "Events at this location",
+    "viewDetails": "View details",
     "locateMe": "Use my location",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",

@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDown, Search, SlidersHorizontal, Users } from "lucide-react";
 
-import { createGroup, getGroups } from "../api/groupsApi";
+import { createGroup, getGroupsPage } from "../api/groupsApi";
 import type { GroupItem, GroupPayload } from "../types/api";
 import { useAuth } from "../features/auth/AuthContext";
 import { useSports } from "../hooks/useSports";
 import { CuratedGroupCard } from "../components/discover/CuratedGroupCard";
 import Button from "../components/shared/Button";
 import { PageHeading } from "../components/shared/PageHeading";
+import { PaginationControls } from "../components/shared/PaginationControls";
 import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
 
 const LEVEL_CODES = new Set(["beginner", "intermediate", "advanced", "all"]);
@@ -43,6 +44,8 @@ export function GroupsPage() {
   const { user } = useAuth();
   const sports = useSports();
   const [groups, setGroups] = useState<GroupItem[]>([]);
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
   const [groupSearch, setGroupSearch] = useState("");
   const [groupSport, setGroupSport] = useState("");
   const [groupLevels, setGroupLevels] = useState<GroupLevel[]>([]);
@@ -57,19 +60,30 @@ export function GroupsPage() {
     setLoading(true);
     setError(null);
     try {
-      setGroups(await getGroups({ sport: groupSport }));
+      const data = await getGroupsPage({
+        sport: groupSport,
+        level: groupLevels.join(","),
+        search: groupSearch.trim(),
+        page,
+        pageSize: 12,
+      });
+      setGroups(data.results);
+      const nextPageCount = Math.max(1, Math.ceil(data.count / 12));
+      setPageCount(nextPageCount);
+      if (page > nextPageCount) setPage(nextPageCount);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : t("groupsTest.loadError"));
     } finally {
       setLoading(false);
     }
-  }, [groupSport, t]);
+  }, [groupLevels, groupSearch, groupSport, page, t]);
 
   useEffect(() => {
     void loadGroups();
   }, [loadGroups]);
 
   function toggleGroupLevel(value: GroupLevel) {
+    setPage(1);
     setGroupLevels((current) =>
       current.includes(value)
         ? current.filter((level) => level !== value)
@@ -77,34 +91,19 @@ export function GroupsPage() {
     );
   }
 
-  const filteredGroups = useMemo(() => {
-    const query = groupSearch.trim().toLowerCase();
+  function changeGroupSearch(value: string) {
+    setPage(1);
+    setGroupSearch(value);
+  }
 
-    return groups.filter((group) => {
-      if (
-        query &&
-        ![
-          group.name,
-          group.description,
-          group.location_name,
-          group.location_address,
-        ]
-          .filter(Boolean)
-          .some((value) => value.toLowerCase().includes(query))
-      ) {
-        return false;
-      }
+  function changeGroupSport(value: string) {
+    setPage(1);
+    setGroupSport(value);
+  }
 
-      if (
-        groupLevels.length > 0 &&
-        !groupLevels.some((level) => group.levels.includes(level))
-      ) {
-        return false;
-      }
-
-      return true;
-    });
-  }, [groupLevels, groupSearch, groups]);
+  const hasGroupFilters = Boolean(
+    groupSearch.trim() || groupSport || groupLevels.length,
+  );
 
   function updateForm(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
@@ -188,7 +187,7 @@ export function GroupsPage() {
           <input
             type="search"
             value={groupSearch}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => setGroupSearch(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => changeGroupSearch(event.target.value)}
             placeholder={t("groupsTest.searchGroups")}
             className="pl-10"
           />
@@ -203,7 +202,7 @@ export function GroupsPage() {
           <span className="sr-only">{t("discover.sport")}</span>
           <select
             value={groupSport}
-            onChange={(event: ChangeEvent<HTMLSelectElement>) => setGroupSport(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLSelectElement>) => changeGroupSport(event.target.value)}
           >
             <option value="">{t("discover.all")}</option>
             {sports.map((sportOption) => (
@@ -317,30 +316,30 @@ export function GroupsPage() {
       {error && <p role="alert">{error}</p>}
       {loading ? (
         <p className="text-[var(--muted)]">{t("groupsTest.loading")}</p>
-      ) : filteredGroups.length === 0 ? (
+      ) : groups.length === 0 ? (
         <p className="rounded-3xl border border-dashed border-[var(--surface-border)] px-6 py-16 text-center text-[var(--muted)]">
-          {groups.length === 0 ? t("groupsTest.empty") : t("groupsTest.noResults")}
+          {hasGroupFilters ? t("groupsTest.noResults") : t("groupsTest.empty")}
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
           <CuratedGroupCard
             variant="featured"
             className="min-h-[380px] sm:col-span-2 md:min-h-[420px]"
-            image={filteredGroups[0].cover_image || DEFAULT_GROUP_IMAGE_SRC}
-            title={filteredGroups[0].name}
-            description={filteredGroups[0].description}
-            categoryLabel={t(`sports.${filteredGroups[0].sport}`)}
+            image={groups[0].cover_image || DEFAULT_GROUP_IMAGE_SRC}
+            title={groups[0].name}
+            description={groups[0].description}
+            categoryLabel={t(`sports.${groups[0].sport}`)}
             levelLabel={
-              filteredGroups[0].levels[0]
-                ? t(`discover.${filteredGroups[0].levels[0]}`)
+              groups[0].levels[0]
+                ? t(`discover.${groups[0].levels[0]}`)
                 : undefined
             }
-            memberCount={filteredGroups[0].member_count}
-            timeLabel={filteredGroups[0].location_name || undefined}
-            detailsTo={`/groups/${filteredGroups[0].id}`}
+            memberCount={groups[0].member_count}
+            timeLabel={groups[0].location_name || undefined}
+            detailsTo={`/groups/${groups[0].id}`}
           />
 
-          {filteredGroups.slice(1).map((group) => (
+          {groups.slice(1).map((group) => (
             <CuratedGroupCard
               key={group.id}
               variant="compact"
@@ -355,6 +354,12 @@ export function GroupsPage() {
           ))}
         </div>
       )}
+      <PaginationControls
+        page={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+        disabled={loading}
+      />
     </main>
   );
 }

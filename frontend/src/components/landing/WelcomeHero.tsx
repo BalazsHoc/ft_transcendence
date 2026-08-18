@@ -54,7 +54,7 @@ export function WelcomeHero({
           {heading}
         </h1>
         <p
-          className={`mx-auto max-w-2xl text-[var(--muted)] ${
+          className={`mx-auto max-w-2xl text-[var(--text)] ${
             showActions ? "mb-10 text-lg" : "mb-0 text-base sm:text-lg"
           }`}
         >

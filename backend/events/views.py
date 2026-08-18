@@ -1,13 +1,16 @@
 from django.db import transaction
 from django.db.models import Count, Q
+from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 from rest_framework import viewsets, permissions, decorators, response, status
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from notifications.models import Notification
 from notifications.services import create_notification, notify_event_audience
 from .models import Event, EventParticipant
 from .serializers import EventSerializer
 from chat.models import Message
 from chat.serializers import MessageSerializer
+from core.pagination import AppPagination
 
 class IsCreatorOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -24,17 +27,42 @@ class IsCreatorOrReadOnly(permissions.BasePermission):
 class EventViewSet(viewsets.ModelViewSet):
     serializer_class=EventSerializer
     permission_classes=[permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly]
+    pagination_class = AppPagination
     def get_queryset(self):
         qs=Event.objects.select_related('creator','group').prefetch_related('participants','participants__user').annotate(attending_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_ATTENDING)), waiting_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_WAITING)))
         if self.request.user.is_authenticated:
             qs=qs.filter(Q(visibility=Event.VISIBILITY_PUBLIC) | Q(creator=self.request.user) | Q(group__memberships__user=self.request.user)).distinct()
         else:
             qs=qs.filter(visibility=Event.VISIBILITY_PUBLIC)
+        if getattr(self, 'action', None) == 'list':
+            qs = qs.filter(start_at__gte=timezone.now())
         sport=self.request.query_params.get('sport'); level=self.request.query_params.get('level'); language=self.request.query_params.get('language')
         if sport: qs=qs.filter(sport__iexact=sport)
-        if level: qs=qs.filter(level=level)
+        levels = [item.strip() for item in (level or '').split(',') if item.strip()]
+        if levels: qs=qs.filter(level__in=levels)
         if language: qs=qs.filter(languages__contains=[language])
-        return qs
+        search = self.request.query_params.get('search', '').strip()
+        if search:
+            qs = qs.filter(
+                Q(title__icontains=search)
+                | Q(description__icontains=search)
+                | Q(location_name__icontains=search)
+                | Q(location_address__icontains=search)
+            )
+
+        for query_name, lookup in (
+            ('start_after', 'start_at__gte'),
+            ('start_before', 'start_at__lte'),
+        ):
+            value = self.request.query_params.get(query_name)
+            if not value:
+                continue
+            parsed = parse_datetime(value)
+            if parsed is None:
+                raise ValidationError({query_name: 'Use a valid ISO 8601 datetime.'})
+            qs = qs.filter(**{lookup: parsed})
+
+        return qs.order_by('start_at', 'pk')
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
 
@@ -147,7 +175,7 @@ class EventViewSet(viewsets.ModelViewSet):
                     notification_type=Notification.TYPE_EVENT_PARTICIPANT_PROMOTED,
                     payload={
                         "event_id": str(event.pk),
-                        "participant_id": promoted_user.pk,
+                        "participant_id": str(promoted_user.pk),
                     },
                     target_url=f"/events/{event.pk}",
                 )

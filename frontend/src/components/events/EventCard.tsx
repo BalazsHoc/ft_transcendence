@@ -84,7 +84,7 @@ export function EventCard({
 					{event.group ? (
 						<Link
 							to={`/groups/${event.group.id}`}
-							className="mt-2 inline-flex"
+							className="inline-flex"
 							aria-label={t("event.groupEvent")}
 						>
 							<Badge variant="yellow">
