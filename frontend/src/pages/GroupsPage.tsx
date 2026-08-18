@@ -239,9 +239,15 @@ the paused function becomes ready and resumes from the line after await when Jav
       // what could really happend in production is the website would crash
 
       setError(loadError instanceof Error ? loadError.message : t("groupsTest.loadError"));
+      // we always go to try block first but if no error we never go to catch block
+      // in our case in catch block we dont have return or exit so it will always continue executing the code
+      // in try catch structure even if we have return finally always executes (not our case)
     } finally {
       setLoading(false);
     }
+  // we call this [t] dependency, it is the same as [t] in the 2nd input of useCallback
+  // using this dependency we say, hey react if t changes (translation changes) we need to re-run the function
+  // so when we change from En to De it will re-run the function and remember the new one
   }, [t]);
 
   useEffect(() => {
