@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Docker architecture</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 1100px; margin: 2rem auto; padding: 0 1rem; line-height: 1.45; }
+    img { max-width: 100%; height: auto; border: 1px solid #ddd; background: #fff; }
+    h1, h2 { margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>Docker architecture</h1>
+  <p>Open this file in a browser if the graphs do not show inside the editor. Start the stack with <code>make</code>.</p>
+
+  <h2>Overview</h2>
+  <p>Only nginx is public. Frontend and backend stay on the private network. SQLite is a file on the host.</p>
+  <p><img src="overview.png" alt="Docker overview" /></p>
+
+  <h2>Request path</h2>
+  <p>HTTP redirects to HTTPS. The gateway then splits SPA, API, and WebSocket traffic.</p>
+  <p><img src="request-path.png" alt="Request path" /></p>
+
+  <h2>Startup</h2>
+  <p><img src="startup.png" alt="Startup order" /></p>
+
+  <h2>Data on the host</h2>
+  <p><img src="data.png" alt="Git versus volumes" /></p>
+</body>
+</html>
