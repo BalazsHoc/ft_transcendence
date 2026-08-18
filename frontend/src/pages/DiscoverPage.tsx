@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { DiscoverMain } from "../components/discover/DiscoverMain";
 import {
   deleteEvent,
-  getEvents,
+  getEventsPage,
   joinEvent,
   leaveEvent,
 } from "../api/eventsApi";
@@ -20,89 +20,102 @@ export function DiscoverPage() {
   const [levels, setLevels] = useState<string[]>([]);
   const [time, setTime] = useState("");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const [log, setLog] = useState("");
 
   function toggleLevel(value: string) {
+    setPage(1);
     setLevels((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
     );
   }
 
+  const timeBounds = useMemo(() => {
+    if (!time) return {};
+
+    const now = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+    const tomorrowStart = new Date(todayStart);
+    tomorrowStart.setDate(tomorrowStart.getDate() + 1);
+    const todayEnd = new Date(todayStart);
+    todayEnd.setHours(23, 59, 59, 999);
+    const tomorrowEnd = new Date(tomorrowStart);
+    tomorrowEnd.setHours(23, 59, 59, 999);
+    const next7DaysEnd = new Date(todayStart);
+    next7DaysEnd.setDate(next7DaysEnd.getDate() + 7);
+    next7DaysEnd.setHours(23, 59, 59, 999);
+    const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    nextMonthEnd.setHours(23, 59, 59, 999);
+
+    if (time === "today") {
+      return {
+        startAfter: todayStart.toISOString(),
+        startBefore: todayEnd.toISOString(),
+      };
+    }
+    if (time === "tomorrow") {
+      return {
+        startAfter: tomorrowStart.toISOString(),
+        startBefore: tomorrowEnd.toISOString(),
+      };
+    }
+    if (time === "next7Days") {
+      return {
+        startAfter: todayStart.toISOString(),
+        startBefore: next7DaysEnd.toISOString(),
+      };
+    }
+    if (time === "nextMonth") {
+      return {
+        startAfter: todayStart.toISOString(),
+        startBefore: nextMonthEnd.toISOString(),
+      };
+    }
+    return {};
+  }, [time]);
+
   const load = useCallback(async () => {
+    setLoading(true);
     try {
-      const data = await getEvents({
+      const data = await getEventsPage({
         sport,
+        level: levels.join(","),
+        search: search.trim(),
+        page,
+        pageSize: 12,
+        ...timeBounds,
       });
 
-      const nextEvents = Array.isArray(data) ? data : [];
-      setEvents(nextEvents);
-      setLog(`Loaded ${nextEvents.length} events.`);
+      setEvents(data.results);
+      const nextPageCount = Math.max(1, Math.ceil(data.count / 12));
+      setPageCount(nextPageCount);
+      if (page > nextPageCount) setPage(nextPageCount);
+      setLog(`Loaded ${data.results.length} events.`);
     } catch (e: any) {
       setLog(e.message);
+    } finally {
+      setLoading(false);
     }
-  }, [sport]);
+  }, [levels, page, search, sport, timeBounds]);
 
-  const filteredEvents = useMemo(
-    () =>
-      events.filter((event) => {
-        const query = search.trim().toLowerCase();
-        if (
-          query &&
-          ![event.title, event.description, event.location_name, event.location_address]
-            .filter(Boolean)
-            .some((value) => value.toLowerCase().includes(query))
-        ) {
-          return false;
-        }
+  function changeSearch(value: string) {
+    setPage(1);
+    setSearch(value);
+  }
 
-        if (levels.length > 0 && !levels.includes(event.level)) {
-          return false;
-        }
+  function changeSport(value: string) {
+    setPage(1);
+    setSport(value);
+  }
 
-        if (!time) return true;
-
-        const start = new Date(event.start_at);
-        if (Number.isNaN(start.getTime())) return false;
-
-        const now = new Date();
-        const todayStart = new Date(now);
-        todayStart.setHours(0, 0, 0, 0);
-
-        const tomorrowStart = new Date(todayStart);
-        tomorrowStart.setDate(tomorrowStart.getDate() + 1);
-
-        const next7DaysEnd = new Date(todayStart);
-        next7DaysEnd.setDate(next7DaysEnd.getDate() + 7);
-        next7DaysEnd.setHours(23, 59, 59, 999);
-
-        const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        nextMonthEnd.setHours(23, 59, 59, 999);
-
-        if (time === "today") {
-          const todayEnd = new Date(todayStart);
-          todayEnd.setHours(23, 59, 59, 999);
-          return start >= todayStart && start <= todayEnd;
-        }
-
-        if (time === "tomorrow") {
-          const tomorrowEnd = new Date(tomorrowStart);
-          tomorrowEnd.setHours(23, 59, 59, 999);
-          return start >= tomorrowStart && start <= tomorrowEnd;
-        }
-
-        if (time === "next7Days") {
-          return start >= todayStart && start <= next7DaysEnd;
-        }
-
-        if (time === "nextMonth") {
-          return start >= todayStart && start <= nextMonthEnd;
-        }
-
-        return true;
-      }),
-    [events, levels, search, time],
-  );
+  function changeTime(value: string) {
+    setPage(1);
+    setTime(value);
+  }
 
   async function doJoin(id: string) {
     try {
@@ -142,17 +155,21 @@ export function DiscoverPage() {
   return (
     <div className="discover-layout">
       <DiscoverMain
-        events={filteredEvents}
+        events={events}
         onCardClick={openEventPage}
         search={search}
-        onSearch={setSearch}
+        onSearch={changeSearch}
         sport={sport}
-        onSportChange={setSport}
+        onSportChange={changeSport}
         levels={levels}
         onLevelChange={toggleLevel}
         time={time}
-        onTimeChange={setTime}
+        onTimeChange={changeTime}
         sports={sports}
+        page={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+        loading={loading}
       />
     </div>
   );

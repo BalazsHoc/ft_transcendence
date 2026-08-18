@@ -79,6 +79,52 @@ class EventParticipantNotificationTests(APITestCase):
         )
 
 
+class EventListTests(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="event-list-user",
+            password="secure-password",
+        )
+        now = timezone.now()
+        Event.objects.create(
+            title="Past event",
+            description="Should not appear in the feed",
+            sport="running",
+            level="beginner",
+            languages=["en"],
+            location_name="Prater",
+            location_address="Vienna",
+            latitude=48.2,
+            longitude=16.4,
+            start_at=now - timedelta(days=1),
+            end_at=now - timedelta(hours=22),
+            max_slots=10,
+            creator=self.user,
+        )
+        Event.objects.create(
+            title="Future event",
+            description="Should appear in the feed",
+            sport="running",
+            level="beginner",
+            languages=["en"],
+            location_name="Prater",
+            location_address="Vienna",
+            latitude=48.2,
+            longitude=16.4,
+            start_at=now + timedelta(days=1),
+            end_at=now + timedelta(days=1, hours=2),
+            max_slots=10,
+            creator=self.user,
+        )
+
+    def test_feed_excludes_past_events(self):
+        response = self.client.get("/api/events/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["title"], "Future event")
+
+
 class EventValidationTests(APITestCase):
     def setUp(self):
         self.creator = User.objects.create_user(
