@@ -61,6 +61,14 @@ echo "Stopping anything already on :8000 and :5173..."
 kill_port 8000
 kill_port 5173
 
+echo "Starting Postgres (make db) and stopping Docker app containers if they are up..."
+(cd "$ROOT" && make db)
+if command -v docker >/dev/null 2>&1; then
+  (cd "$ROOT" && docker compose stop backend frontend nginx >/dev/null 2>&1) || true
+fi
+export POSTGRES_HOST="${POSTGRES_HOST:-127.0.0.1}"
+export POSTGRES_PORT="${POSTGRES_PORT:-5432}"
+
 if [[ ! -d "$BACKEND/.venv" ]]; then
   echo "Creating backend virtualenv..."
   python3 -m venv "$BACKEND/.venv"
@@ -93,6 +101,7 @@ fi
 
 echo "Migrating database..."
 (cd "$BACKEND" && python manage.py migrate --noinput)
+(cd "$BACKEND" && python manage.py seed_eval)
 
 echo "Starting backend (Daphne) on 127.0.0.1:8000..."
 (
@@ -122,6 +131,7 @@ Ready.
   Open:     http://localhost:5173
   Backend:  http://127.0.0.1:8000
   Docs:     http://127.0.0.1:8000/api/docs/
+  Postgres: localhost:5432 (docker)
 
   Login with EMAIL (not username):
     alex@example.com       testpass123

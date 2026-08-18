@@ -25,8 +25,7 @@ Main goals:
 * Python 3.10+
 * Django
 * Django REST Framework
-* PostgreSQL (production)
-* SQLite (development)
+* PostgreSQL
 * JWT Authentication
 * Django Channels
 * Daphne

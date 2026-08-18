@@ -12,10 +12,10 @@
 </head>
 <body>
   <h1>Docker architecture</h1>
-  <p>Open this file in a browser if the graphs do not show inside the editor. Start the stack with <code>make</code>.</p>
+  <p>Open this file in a browser if the graphs do not show inside the editor. Eval: <code>make</code>. Daily: <code>make db</code> then Vite.</p>
 
   <h2>Overview</h2>
-  <p>Only nginx is public. Frontend and backend stay on the private network. SQLite is a file on the host.</p>
+  <p>Only nginx is public on the eval stack. Frontend, backend, and Postgres stay on the private network. Daily <code>make db</code> publishes Postgres on localhost:5432.</p>
   <p><img src="overview.png" alt="Docker overview" /></p>
 
   <h2>Request path</h2>

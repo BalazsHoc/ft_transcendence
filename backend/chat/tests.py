@@ -1,7 +1,7 @@
 from asgiref.sync import async_to_sync
 from channels.testing import WebsocketCommunicator
 from django.contrib.auth import get_user_model
-from rest_framework.test import APITestCase
+from rest_framework.test import APITransactionTestCase
 from rest_framework_simplejwt.tokens import AccessToken
 
 from core.asgi import application
@@ -15,7 +15,7 @@ from .models import DirectConversation, DirectMessage
 User = get_user_model()
 
 
-class DirectMessagingApiTests(APITestCase):
+class DirectMessagingApiTests(APITransactionTestCase):
     def setUp(self):
         self.alex = User.objects.create_user(
             username="alex",
@@ -187,7 +187,7 @@ class DirectMessagingApiTests(APITestCase):
         self.assertEqual(notification.payload["group_id"], str(group.pk))
 
 
-class PresenceWebsocketTests(APITestCase):
+class PresenceWebsocketTests(APITransactionTestCase):
     def setUp(self):
         self.alex = User.objects.create_user(
             username="presence-alex",

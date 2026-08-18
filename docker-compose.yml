@@ -1,4 +1,30 @@
 services:
+  db:
+    image: postgres:16-alpine
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 10s
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-transcendence}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    networks:
+      - transcendence
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-transcendence}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
   backend:
     build:
       context: ./backend
@@ -12,12 +38,19 @@ services:
       ALLOWED_HOSTS: localhost,127.0.0.1
       CORS_ALLOWED_ORIGINS: https://localhost,https://127.0.0.1
       CSRF_TRUSTED_ORIGINS: https://localhost,https://127.0.0.1
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: ${POSTGRES_DB:-transcendence}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     volumes:
-      - ./backend/db.sqlite3:/app/db.sqlite3
       - ./backend/media:/app/media
       - staticfiles:/app/staticfiles
     expose:
       - "8000"
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - transcendence
     healthcheck:
@@ -30,8 +63,8 @@ services:
         ]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 25s
+      retries: 8
+      start_period: 60s
 
   frontend:
     build:
@@ -89,6 +122,7 @@ services:
 
 volumes:
   staticfiles:
+  pgdata:
 
 networks:
   transcendence:

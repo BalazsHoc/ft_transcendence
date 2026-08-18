@@ -7,18 +7,27 @@ Django backend for the Transcendence Sports MVP: users, JWT auth, events, partic
 - Django 5
 - Django REST Framework
 - SimpleJWT
-- SQLite for local development
-- PostgreSQL for Docker-based development
+- PostgreSQL (Docker; eval and daily local)
 - Django Channels
 - Daphne
 - drf-spectacular / Swagger
 - Docker Compose
 
-## Local Development Without Docker
+## Local Development
 
-This project uses SQLite by default in local development, so you can run it without PostgreSQL or Docker.
+PostgreSQL is the only database. Start it with `make db` from the repo root (publishes `localhost:5432`), then run Daphne and Vite on the host so frontend hot reload stays.
 
-### 1. Create and activate a virtual environment
+Do not run local Daphne at the same time as the Docker backend.
+
+### 1. Start Postgres
+
+From the repository root:
+
+```bash
+make db
+```
+
+### 2. Create and activate a virtual environment
 
 PowerShell:
 
@@ -34,13 +43,13 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 2. Install dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Create your environment file
+### 4. Create your environment file
 
 ```bash
 cp .env.example .env
@@ -52,13 +61,14 @@ If you are on PowerShell:
 Copy-Item .env.example .env
 ```
 
-### 4. Run migrations
+### 5. Run migrations
 
 ```bash
 python manage.py migrate
+python manage.py seed_eval
 ```
 
-### 5. Start the server
+### 6. Start the server
 
 ```bash
 python manage.py runserver
@@ -162,7 +172,7 @@ make
 
 Open https://localhost and accept the self-signed certificate warning.
 
-See [DEVOPS.md](../DEVOPS.md) for architecture, environment, and how the sqlite database is shared.
+See [DEVOPS.md](../DEVOPS.md) for architecture, daily `make db` vs eval `make`, and the seed snapshot.
 
 Create a superuser:
 
@@ -256,7 +266,7 @@ From the backend directory:
 python manage.py test core groups social chat public_api
 ```
 
-The repository currently keeps its test modules in those five app packages;
+Postgres must be running (`make db` from the repo root). The repository currently keeps its test modules in those five app packages;
 passing the labels explicitly runs the complete local suite.
 
 ## MVP Scope

@@ -6,17 +6,17 @@ Mandatory container deployment for Active Vienna. This is not an extra DevOps mo
 
 Eval command: `make`. Stop with `make down`. Open **https://localhost** and accept the self-signed certificate warning.
 
-Daily commands: [DEVOPS.md](DEVOPS.md).
+Daily coding: `make db`, then local Daphne + Vite. Details: [DEVOPS.md](DEVOPS.md).
 
 ## Overview
 
-Three containers share a private bridge network named `transcendence`. **Only nginx publishes ports** (`80` and `443`). The frontend and backend have no host ports. SQLite is a file bind-mounted into the backend, not a fourth container.
+Four containers share a private bridge network named `transcendence`. **Only nginx publishes ports** (`80` and `443`) on the eval stack. The frontend, backend, and Postgres have no host ports then. Daily `make db` publishes Postgres on `localhost:5432` so Vite/Daphne can use the same database.
 
 ![Docker overview](docs/docker/overview.png)
 
 ## Request path
 
-The browser never talks to Daphne or the SPA nginx directly. Everything goes through the gateway.
+The browser never talks to Daphne or the SPA nginx directly during eval. Everything goes through the gateway.
 
 ![Request path](docs/docker/request-path.png)
 
@@ -32,8 +32,9 @@ The browser never talks to Daphne or the SPA nginx directly. Everything goes thr
 | `nginx` | `nginx:1.27-alpine` + OpenSSL | `80`, `443` | `nginx` foreground | TLS, reverse proxy |
 | `frontend` | Node 22 build, then `nginx:1.27-alpine` | none | `nginx` foreground | Serves the Vite `dist` SPA |
 | `backend` | `python:3.12-slim` + Daphne | none | `daphne -b 0.0.0.0 -p 8000` | Django HTTP API and WebSockets |
+| `db` | `postgres:16-alpine` | none on eval; `5432` with `make db` | `postgres` | Database |
 
-Startup order: Compose waits until `backend` and `frontend` are **healthy**, then starts `nginx`.
+Startup order: Compose waits until `db` is healthy, then `backend` migrates and seeds if empty, then `nginx` starts after backend and frontend are healthy.
 
 ![Startup](docs/docker/startup.png)
 
@@ -58,19 +59,22 @@ The frontend image is built with `VITE_API_URL=https://localhost` and `VITE_WS_U
 
 ![Data on the host](docs/docker/data.png)
 
-- **SQLite** is the database. Bind-mounted so Docker and local Daphne share the same file. Commit it (after stopping the backend) if teammates should see new events/chats/groups.
+- **PostgreSQL** lives in the `pgdata` named volume. It is not in git. A fresh volume is seeded from [backend/fixtures/eval_snapshot.json](backend/fixtures/eval_snapshot.json).
 - **Media** is user uploads. Bind-mounted read-write on backend, read-only on nginx.
 - **staticfiles** is Django `collectstatic` output (admin CSS). Named volume, rebuilt on start.
 - **TLS** is a self-signed cert created at nginx start. Chrome shows `ERR_CERT_AUTHORITY_INVALID` until you click Advanced → Proceed.
 
-There is no Postgres or Redis container. One Daphne process uses the in-memory channel layer, which is enough for several browsers on this PC.
+There is no Redis container. One Daphne process uses the in-memory channel layer, which is enough for several browsers on this PC.
+
+Known snapshot logins: `alex@example.com` / `testpass123` and `carlito@example.com` / `12345678`.
 
 ## Files
 
 | Path | Purpose |
 | --- | --- |
-| [Makefile](Makefile) | `make` / `make down` / `make logs` / `make ps` |
-| [docker-compose.yml](docker-compose.yml) | Services, network, volumes, healthchecks |
+| [Makefile](Makefile) | `make` / `make db` / `make seed` / `make down` |
+| [docker-compose.yml](docker-compose.yml) | Eval services, private network, volumes, healthchecks |
+| [docker-compose.dev.yml](docker-compose.dev.yml) | Publishes Postgres `5432` for daily work |
 | [nginx/](nginx/) | Gateway image, TLS entrypoint, routing |
 | [docs/docker/index.html](docs/docker/index.html) | Diagrams in a browser |
 | [docs/docker/](docs/docker/) | PNG graphs and Mermaid sources |
