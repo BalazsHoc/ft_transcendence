@@ -150,3 +150,4 @@ Compose v1 vs v2 is chosen automatically by the Makefile.
 | Chat WebSocket fails | Use `https://localhost` (not HTTP, not `:5173` while Docker is up). |
 | `db.sqlite3` merge conflict | Stop servers, pick one file, commit. Do not merge sqlite as text. |
 | `make: command not found` | Install `make` (`sudo apt install make`) |
+| `permission denied` on `docker.sock` | Your user is not in the `docker` group. Run `sudo usermod -aG docker $USER`, then log out and back in. Until then, `sudo make` works. |
