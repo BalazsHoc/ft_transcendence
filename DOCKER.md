@@ -2,23 +2,23 @@
 
 Mandatory container deployment for Active Vienna. This is not an extra DevOps module.
 
-Eval command: `make` from the repository root. Stop with `make down`. Open **https://localhost** and accept the self-signed certificate warning.
+**To see the graphs:** open [docs/docker/index.html](docs/docker/index.html) in Chrome, or open the PNG files under [docs/docker/](docs/docker/). The `.md` source in the editor is only text.
 
-Daily commands and troubleshooting: [DEVOPS.md](DEVOPS.md).
+Eval command: `make`. Stop with `make down`. Open **https://localhost** and accept the self-signed certificate warning.
 
-Diagrams below are SVG images (they display in the editor and on GitHub). The Mermaid sources live in [docs/docker/](docs/docker/).
+Daily commands: [DEVOPS.md](DEVOPS.md).
 
 ## Overview
 
 Three containers share a private bridge network named `transcendence`. **Only nginx publishes ports** (`80` and `443`). The frontend and backend have no host ports. SQLite is a file bind-mounted into the backend, not a fourth container.
 
-![Docker overview: browsers to nginx, then frontend, backend, sqlite and media](docs/docker/overview.svg)
+![Docker overview](docs/docker/overview.png)
 
 ## Request path
 
 The browser never talks to Daphne or the SPA nginx directly. Everything goes through the gateway.
 
-![Request path: HTTP redirect, HTTPS SPA, API, and WebSocket through nginx](docs/docker/request-path.svg)
+![Request path](docs/docker/request-path.png)
 
 1. Port 80 only redirects to HTTPS.
 2. `/` is the React SPA from the frontend container.
@@ -35,9 +35,7 @@ The browser never talks to Daphne or the SPA nginx directly. Everything goes thr
 
 Startup order: Compose waits until `backend` and `frontend` are **healthy**, then starts `nginx`.
 
-Each service uses `init: true`, `restart: unless-stopped`, and `exec` so the real process receives SIGTERM. A crash exits the container; Compose starts it again.
-
-![Startup: make, env, build, healthchecks, then nginx](docs/docker/startup.svg)
+![Startup](docs/docker/startup.png)
 
 ## Gateway routing
 
@@ -58,12 +56,12 @@ The frontend image is built with `VITE_API_URL=https://localhost` and `VITE_WS_U
 
 ## Data on the host
 
-![What is in git versus Docker volumes and secrets](docs/docker/data.svg)
+![Data on the host](docs/docker/data.png)
 
 - **SQLite** is the database. Bind-mounted so Docker and local Daphne share the same file. Commit it (after stopping the backend) if teammates should see new events/chats/groups.
 - **Media** is user uploads. Bind-mounted read-write on backend, read-only on nginx.
 - **staticfiles** is Django `collectstatic` output (admin CSS). Named volume, rebuilt on start.
-- **TLS** is a self-signed cert created at nginx start (`CN=localhost`, SAN `localhost` and `127.0.0.1`). Chrome shows `ERR_CERT_AUTHORITY_INVALID` until you click Advanced → Proceed.
+- **TLS** is a self-signed cert created at nginx start. Chrome shows `ERR_CERT_AUTHORITY_INVALID` until you click Advanced → Proceed.
 
 There is no Postgres or Redis container. One Daphne process uses the in-memory channel layer, which is enough for several browsers on this PC.
 
@@ -74,7 +72,5 @@ There is no Postgres or Redis container. One Daphne process uses the in-memory c
 | [Makefile](Makefile) | `make` / `make down` / `make logs` / `make ps` |
 | [docker-compose.yml](docker-compose.yml) | Services, network, volumes, healthchecks |
 | [nginx/](nginx/) | Gateway image, TLS entrypoint, routing |
-| [frontend/Dockerfile](frontend/Dockerfile) | Production SPA image |
-| [backend/Dockerfile](backend/Dockerfile) | Daphne image, migrate on start |
-| [.env.example](.env.example) | Template; real `.env` is gitignored |
-| [docs/docker/](docs/docker/) | Mermaid sources and rendered SVG diagrams |
+| [docs/docker/index.html](docs/docker/index.html) | Diagrams in a browser |
+| [docs/docker/](docs/docker/) | PNG graphs and Mermaid sources |
