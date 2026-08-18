@@ -2,6 +2,7 @@ import { LocateFixed, Minus, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { IconButton } from "../shared/IconButton";
 import styles from "./MapZoomControls.module.css";
+import Button from "../test_ui/TestButton";
 
 type Props = {
   onZoomIn: () => void;
@@ -40,7 +41,8 @@ export function MapZoomControls({ onZoomIn, onZoomOut, onLocate, locating }: Pro
         onClick={onLocate}
         disabled={locating}
         className={styles.locateButton}
-      />
+        />
+        {t("map.locateMe")}
     </div>
   );
 }

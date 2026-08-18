@@ -176,7 +176,7 @@ export function HomeNotifications() {
             <li key={notification.id}>
               <button
                 type="button"
-                className="flex w-full items-start gap-3 rounded-2xl bg-[var(--bg)] px-4 py-3 text-left transition-colors hover:bg-[var(--surface-border)]/40"
+                className="flex w-full items-start gap-3 border border-[var(--surface-border)] rounded-2xl bg-[var(--bg)] px-4 py-3 text-left transition-colors hover:bg-[var(--surface-border)]/40"
                 onClick={() => void openNotification(notification)}
               >
                 <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--surface)] text-sm font-semibold uppercase text-[var(--muted)]">
