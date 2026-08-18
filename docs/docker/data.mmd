@@ -1,16 +1,18 @@
 flowchart TB
   subgraph gitTracked [Tracked in git]
-    sqlite["backend/db.sqlite3"]
+    fixture["backend/fixtures/eval_snapshot.json"]
     media["backend/media"]
   end
   subgraph notGit [Not in git]
     envFile[".env"]
     certs["self-signed certs"]
     staticVol["volume staticfiles"]
+    pgdata["volume pgdata"]
   end
-  backend["backend container"] --> sqlite
+  backend["backend container"] --> pgdata
   backend --> media
   backend --> staticVol
+  backend --> fixture
   nginx["nginx container"] --> media
   nginx --> staticVol
   nginx --> certs

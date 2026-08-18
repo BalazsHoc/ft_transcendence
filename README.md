@@ -21,7 +21,7 @@ Then open https://localhost and accept the self-signed certificate warning. Stop
 
 Prerequisites: `make`, Docker Engine, and Docker Compose on Ubuntu. Ports 80 and 443 must be free.
 
-The three containers are `nginx` (public HTTPS), `frontend` (SPA), and `backend` (Django/Daphne). The database is `backend/db.sqlite3` in git.
+The three containers plus Postgres are `nginx` (public HTTPS), `frontend` (SPA), `backend` (Django/Daphne), and `db` (PostgreSQL). Daily coding uses `make db` then Vite/Daphne; eval uses `make`.
 
 Architecture diagrams: [DOCKER.md](DOCKER.md). Commands, env, and troubleshooting: [DEVOPS.md](DEVOPS.md).
 
