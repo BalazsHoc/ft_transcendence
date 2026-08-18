@@ -18,6 +18,9 @@ __pycache__/
 /frontend/build
 /frontend/dist
 
+# Django collectstatic output
+/backend/staticfiles/
+
 # Ignore log files and databases
 /logs
 *.log
