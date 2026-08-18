@@ -145,7 +145,7 @@ Get-Content scripts/create_demo_data.py | python manage.py shell
 From the repository root (not this directory):
 
 ```bash
-./run.sh
+make
 ```
 
 Open https://localhost and accept the self-signed certificate warning.
