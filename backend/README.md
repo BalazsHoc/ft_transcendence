@@ -154,21 +154,20 @@ is provided. The generated profiles and events are for local testing only.
 
 ## Run With Docker
 
+From the repository root (not this directory):
+
 ```bash
-cp .env.example .env
-docker compose up --build
+make
 ```
+
+Open https://localhost and accept the self-signed certificate warning.
+
+See [DEVOPS.md](../DEVOPS.md) for architecture, environment, and how the sqlite database is shared.
 
 Create a superuser:
 
 ```bash
 docker compose exec backend python manage.py createsuperuser
-```
-
-Load demo data:
-
-```bash
-docker compose exec backend python manage.py shell < scripts/create_demo_data.py
 ```
 
 ## API Endpoints

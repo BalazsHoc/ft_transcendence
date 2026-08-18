@@ -1,0 +1,30 @@
+flowchart TB
+  browsers["Browsers on this PC"]
+  browsers -->|"HTTP port 80"| nginxHttp
+  browsers -->|"HTTPS port 443"| nginxHttps
+
+  subgraph host [Host]
+    makeCmd["make"]
+    sqliteFile["backend/db.sqlite3"]
+    mediaDir["backend/media"]
+    envFile[".env gitignored"]
+  end
+
+  subgraph net [transcendence network]
+    nginxHttp["nginx listen 80"]
+    nginxHttps["nginx listen 443 TLS"]
+    frontend["frontend nginx port 80"]
+    backend["backend daphne port 8000"]
+    staticVol["volume staticfiles"]
+  end
+
+  makeCmd -->|"compose up --build -d"| nginxHttps
+  nginxHttp -->|"301"| nginxHttps
+  nginxHttps -->|"SPA /"| frontend
+  nginxHttps -->|"api admin ws"| backend
+  nginxHttps -->|"static"| staticVol
+  nginxHttps -->|"media"| mediaDir
+  backend --> sqliteFile
+  backend --> mediaDir
+  backend --> staticVol
+  envFile --> backend
