@@ -5,8 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
+SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
+if not DEBUG and SECRET_KEY in ('', 'dev-secret-key', 'change-me-in-production'):
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured('Set a strong SECRET_KEY in .env when DEBUG is False.')
 ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if h.strip()]
 INSTALLED_APPS = [
     'daphne','django.contrib.admin','django.contrib.auth','django.contrib.contenttypes','django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
@@ -50,6 +53,13 @@ DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS=[o.strip() for o in os.getenv('CORS_ALLOWED_ORIGINS','http://localhost:5173').split(',') if o.strip()]
 CSRF_TRUSTED_ORIGINS=[o.strip() for o in os.getenv('CSRF_TRUSTED_ORIGINS','').split(',') if o.strip()]
 SECURE_PROXY_SSL_HEADER=('HTTP_X_FORWARDED_PROTO', 'https')
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+# HTTPS redirect stays on nginx. Django must keep serving HTTP on :8000
+# so container healthchecks and the proxy can reach Daphne.
 REST_FRAMEWORK={'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework_simplejwt.authentication.JWTAuthentication',),'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticatedOrReadOnly',),'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema','DEFAULT_THROTTLE_RATES':{'public_api':os.getenv('PUBLIC_API_RATE','60/minute'),'public_api_ip':os.getenv('PUBLIC_API_IP_RATE','120/minute')}}
 SIMPLE_JWT={'ACCESS_TOKEN_LIFETIME':timedelta(hours=2),'REFRESH_TOKEN_LIFETIME':timedelta(days=7),'AUTH_HEADER_TYPES':('Bearer',)}
 SPECTACULAR_SETTINGS={'TITLE':'Transcendence Sports MVP API','DESCRIPTION':'Authenticated application API plus a read-only, API-key protected public API.','VERSION':'0.1.0'}
