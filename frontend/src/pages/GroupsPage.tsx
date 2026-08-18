@@ -10,7 +10,7 @@ import { CuratedGroupCard } from "../components/discover/CuratedGroupCard";
 import Button from "../components/shared/Button";
 import { PageHeading } from "../components/shared/PageHeading";
 import { PaginationControls } from "../components/shared/PaginationControls";
-import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
+import { getDefaultGroupImage } from "../utils/media";
 
 const LEVEL_CODES = new Set(["beginner", "intermediate", "advanced", "all"]);
 type GroupLevel = GroupItem["levels"][number];
@@ -325,7 +325,7 @@ export function GroupsPage() {
           <CuratedGroupCard
             variant="featured"
             className="min-h-[380px] sm:col-span-2 md:min-h-[420px]"
-            image={groups[0].cover_image || DEFAULT_GROUP_IMAGE_SRC}
+            image={groups[0].cover_image || getDefaultGroupImage(groups[0].sport)}
             title={groups[0].name}
             description={groups[0].description}
             categoryLabel={t(`sports.${groups[0].sport}`)}
@@ -344,7 +344,7 @@ export function GroupsPage() {
               key={group.id}
               variant="compact"
               className="min-h-[260px] sm:min-h-[280px]"
-              image={group.cover_image || DEFAULT_GROUP_IMAGE_SRC}
+              image={group.cover_image || getDefaultGroupImage(group.sport)}
               title={group.name}
               categoryLabel={t(`sports.${group.sport}`)}
               memberCount={group.member_count}

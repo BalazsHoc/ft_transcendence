@@ -8,7 +8,7 @@ import { getGroups } from "../../api/groupsApi";
 import type { EventItem, GroupItem } from "../../types/api";
 import { EventCard } from "../events/EventCard";
 import { CuratedGroupCard } from "../discover/CuratedGroupCard";
-import { DEFAULT_GROUP_IMAGE_SRC } from "../../utils/media";
+import { getDefaultGroupImage } from "../../utils/media";
 
 const PREVIEW_COUNT = 3;
 
@@ -122,7 +122,7 @@ export function CuratedExperiences() {
                   key={group.id}
                   variant="compact"
                   className="min-h-[260px]"
-                  image={group.cover_image || DEFAULT_GROUP_IMAGE_SRC}
+                  image={group.cover_image || getDefaultGroupImage(group.sport)}
                   title={group.name}
                   categoryLabel={t(`sports.${group.sport}`)}
                   memberCount={group.member_count}

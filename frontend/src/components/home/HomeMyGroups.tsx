@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { getGroups } from "../../api/groupsApi";
 import type { GroupItem } from "../../types/api";
 import { CuratedGroupCard } from "../discover/CuratedGroupCard";
-import { DEFAULT_GROUP_IMAGE_SRC } from "../../utils/media";
+import { getDefaultGroupImage } from "../../utils/media";
 
 const MAX_GROUPS = 4;
 
@@ -65,7 +65,7 @@ export function HomeMyGroups() {
             <CuratedGroupCard
               key={group.id}
               variant="compact"
-              image={group.cover_image || DEFAULT_GROUP_IMAGE_SRC}
+              image={group.cover_image || getDefaultGroupImage(group.sport)}
               title={group.name}
               description={group.description}
               categoryLabel={t(`sports.${group.sport}`)}
