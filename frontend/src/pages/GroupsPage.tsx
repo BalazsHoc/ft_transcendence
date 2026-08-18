@@ -16,19 +16,21 @@ import Button from "../components/shared/Button";
 import { DEFAULT_GROUP_IMAGE_SRC } from "../utils/media";
 
 
+// list fields in the form and their types
 
 type GroupFormState = {
-  name: string;
+  name: string; 
   description: string;
   sport: string;
   levels: string;
-  kind: GroupPayload["kind"];
+  kind: GroupPayload["kind"]; // it called Indexed Access Type
   visibility: GroupPayload["visibility"];
   joinPolicy: GroupPayload["join_policy"];
   maxMembers: string;
   locationName: string;
 };
 
+// we initialize the form with the initial values
 const initialForm: GroupFormState = {
   name: "",
   description: "",
@@ -41,23 +43,201 @@ const initialForm: GroupFormState = {
   locationName: "",
 };
 
+// main function for the groups page
+// this function is responsible for the groups page and returns the groups page
+// we define a function in typescript like function name() { return (jsx) }
+// export mean this function is available to other files
+// we can import it like import { GroupsPage } from "../pages/GroupsPage";
+
 export function GroupsPage() {
+  /* it is shorter version of writing:
+     const result = useTranslation();
+     const t = result.t;
+
+     useTranslation(); returns an object look like:
+     {
+       t: translationFunction(key),
+       i18n: i18nObject,
+       ready: boolean,
+     }
+     this translationFunction is responsible to return the translated text based on the key
+     now instead we can call t(key) to get the translated text
+     imagine we want to print the title of the groups page in h1 tag:
+     <h1>
+       {t("groupsTest.title")}
+     </h1>
+  */
+
+  
   const { t } = useTranslation();
+  
+  /* 
+  - useSports() is a hook that returns the list of sports
+  - need to learn later what is the meaning calling a hook ? 
+  - for now we say it is like calling a function that returns a value
+  - sports is an array of objects returned from the useSports hook
+  */
   const sports = useSports();
+
+  /* 
+   - useState is a react hook that returns a tuple of two values:
+     - the current state value
+     - a function to update the state
+     - like this we say, hey react remember for me this
+  - <> is the typescript syntax for specifying a type
+     - useState<string> means the state is or will be a string
+  - GroupItem[]
+     - we imported GroupItem at the top of the file
+     - it is typescript type defined somewhere else
+  - [] is the typescript syntax for specifying an array
+     - GroupItem[] means an array of GroupItem objects
+  - () belongs to the function call -> useState()
+  - [] is the typescript syntax for specifying an array
+     - useState([]) means the initial value of the state is an empty array
+     - the input of useState means the starting value of the state
+     - by starting value we mean the value of the state when the component is first rendered
+
+     - so in total we say, hey react keep for me an empty array of GroupItem objects
+
+     - useState returns a tuple of two values:
+     [
+       currentValue,
+       functionToUpdateTheValue
+     ]
+     - [a, b] here in typescript syntax is called destructuring assignment
+     so it is the same as writing:
+     const result = useState([]);
+     const a = result[0];
+     const b = result[1];
+
+     so using syntax const [a, b]  we are making two variables a and b and assigning the first and second values of the returned
+     - for 3 variables we can write const [a, b, c] = exampleFunction();
+     
+  */
   const [groups, setGroups] = useState<GroupItem[]>([]);
+
+  /* 
+  
+    - at left we do the same thing:
+    - we say hey react keep a variable of type GroupFormState and assign it the initial value of initialForm
+    - the initialForm defined at the top of the file
+  */
   const [form, setForm] = useState<GroupFormState>(initialForm);
+
+  /*
+    - hey react keep a variable of type boolean and assign it the value false
+
+  */
   const [showForm, setShowForm] = useState(false);
+
+
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+
+  /*
+    - hey react keep a variable of type File | null and assign it the value null
+    - File | null means the variable can be a File object or null
+    - File is a typescript type for a file
+    - in typescript null is different from NULL in c.
+    - in typescript null is a value like NULL in c. but also it has its own type which is null
+    - so if we need a variable of type string that can hold null we should initialize it like:
+      const a: string | null = 'hello';
+    - in typescript instead of using if (a === null) for catching an error
+    we normally use a try catch block because normally when a function fails it throws an error.
+  */
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
+
   const [error, setError] = useState<string | null>(null);
+  
+/* 
+ - we store the function in a variable called loadGroups
+ - so later we can call loadGroups() instead of getGroups()
+
+ - useCallback is also a react hook its diffrence with useState is that useState remembers a value, but useCallback remembers a function.
+ - useCallback takes two inputs which are:
+   1- async () => { ... } -> this is the function we want to remember
+   2- [t] -> this is the input of the function we want to remember
+
+ - async () => { ... }  is an arrow function
+ - we already know about normal functions
+ 
+  - async keyword is used to make a function asynchronous
+  - async () => { ... } means a async arrow function that takes no arguments
+
+  - Normal Function vs Arrow Function
+Both are used to create functions.
+// Normal function
+function add(a, b) {
+    return a + b;
+}
+
+
+// Arrow function
+const add = (a, b) => {
+    return a + b;
+};
+Both are called the same way:
+add(2, 3);
+Both can be passed to another function:
+callFunction(add);
+Arrow functions are shorter and especially convenient when creating a function directly as an argument/callback:
+// Normal
+callFunction(function () {
+    return "hello";
+});
+
+
+// Arrow
+callFunction(() => {
+    return "hello";
+});
+This is why arrow functions are very common in React:
+onClick={() => setShowForm(true)}
+Important: They are not completely identical. Arrow functions behave differently with things like this, arguments, constructors, and hoisting. For our current React code, we don't need those differences yet.
+
+Simple rule for now:
+
+Arrow functions are a shorter way to write functions and are especially useful for small callback functions passed to other functions.
+
+------------------------------------------------------------------
+
+An async function runs normally until it reaches an await. 
+If the thing it is waiting for is not ready, 
+the function pauses at that line, 
+but the rest of the program does not pause, 
+so JavaScript continues running the lines after the function call and other work. 
+When the awaited operation finishes, 
+the paused function becomes ready and resumes from the line after await when JavaScript gets the chance.
+ This does not create two threads; JavaScript is basically switching between work instead of blocking everything while waiting.
+*/
 
   const loadGroups = useCallback(async () => {
+    // we set the loading that we just remembered above in the hook to true
     setLoading(true);
+    // we set the error to null to clear any previous errors
     setError(null);
     try {
+      // we just defined this to the hook above
+      // getGroups() is an api call to the backend to get the groups
+      // await means wait for the api call to finish
+      // because this we set this function to be asynchronous
+      // since getGroups() can fail (throw an error) we use a try catch block
       setGroups(await getGroups());
-    } catch (loadError) {
+    } catch (loadError) {  // we just named the error object we caught as loadError
+      // loadError -> the thrown we caught
+      // instanceof -> is an operator that checks if the object in the left is an instance of the object in the right
+      // Error -> is a typescript type for an error
+
+      // LoadError.message -> the message of the error we caught
+      // t("groupsTest.loadError") -> the translated text for the key "groupsTest.loadError"
+
+      // so if the error is an instance of Error we set the error message to the message of the error we caught
+      // if not we set the error message to the translated text for the key "groupsTest.loadError"
+      // how can it be an instance of Error and how can it be not an instance of Error?
+      // it is a defensive programming technique if anyhow we catch an object which is not an instance of Error and we didn't
+      // protected it, it would cause a runtime error
+      // what could really happend in production is the website would crash
+
       setError(loadError instanceof Error ? loadError.message : t("groupsTest.loadError"));
     } finally {
       setLoading(false);
