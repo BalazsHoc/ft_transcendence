@@ -36,6 +36,7 @@ const FALLBACK_MAP_STYLE: MapStyleResponse = {
 
 const INDIVIDUAL_EVENT_COLOR = "#2563eb";
 const GROUP_EVENT_COLOR = "#c026d3";
+const USER_LOCATION_COLOR = "#16a34a";
 
 function getCurrentMapTheme() {
   return document.body.classList.contains("dark") ? "dark" : "light";
@@ -90,14 +91,38 @@ function distanceKm(
   return 2 * radius * Math.asin(Math.sqrt(h));
 }
 
-function isToday(dateString: string) {
-  const date = new Date(dateString);
+function getTimeBounds(time: string) {
+  if (!time) return null;
+
   const now = new Date();
-  return (
-    date.getFullYear() === now.getFullYear() &&
-    date.getMonth() === now.getMonth() &&
-    date.getDate() === now.getDate()
-  );
+  const todayStart = new Date(now);
+  todayStart.setHours(0, 0, 0, 0);
+  const start = new Date(todayStart);
+  const end = new Date(todayStart);
+
+  if (time === "tomorrow") {
+    start.setDate(start.getDate() + 1);
+    end.setTime(start.getTime());
+  } else if (time === "next7Days") {
+    end.setDate(end.getDate() + 7);
+  } else if (time === "nextMonth") {
+    end.setMonth(end.getMonth() + 1, 0);
+  }
+
+  end.setHours(23, 59, 59, 999);
+  return { start, end };
+}
+
+function matchesTimeFilter(dateString: string, time: string) {
+  const bounds = getTimeBounds(time);
+  if (!bounds) return true;
+
+  const date = new Date(dateString);
+  return !Number.isNaN(date.getTime()) && date >= bounds.start && date <= bounds.end;
+}
+
+function markerKey(event: EventItem) {
+  return `${event.latitude.toFixed(5)}:${event.longitude.toFixed(5)}`;
 }
 
 export function MapPage() {
@@ -110,8 +135,8 @@ export function MapPage() {
   );
   const [locating, setLocating] = useState(false);
   const [sportFilter, setSportFilter] = useState("");
-  const [levelFilter, setLevelFilter] = useState("");
-  const [todayOnly, setTodayOnly] = useState(false);
+  const [levelFilters, setLevelFilters] = useState<string[]>([]);
+  const [timeFilter, setTimeFilter] = useState("");
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [actionBusy, setActionBusy] = useState(false);
   const [status, setStatus] = useState("Loading map...");
@@ -216,8 +241,12 @@ export function MapPage() {
     let list = events;
 
     if (sportFilter) list = list.filter((event) => event.sport === sportFilter);
-    if (levelFilter) list = list.filter((event) => event.level === levelFilter);
-    if (todayOnly) list = list.filter((event) => isToday(event.start_at));
+    if (levelFilters.length > 0) {
+      list = list.filter((event) => levelFilters.includes(event.level));
+    }
+    if (timeFilter) {
+      list = list.filter((event) => matchesTimeFilter(event.start_at, timeFilter));
+    }
 
     if (focusPoint) {
       list = list
@@ -228,7 +257,20 @@ export function MapPage() {
     }
 
     return list;
-  }, [events, sportFilter, levelFilter, todayOnly, focusPoint]);
+  }, [events, sportFilter, levelFilters, timeFilter, focusPoint]);
+
+  const eventGroups = useMemo(() => {
+    const groups = new Map<string, EventItem[]>();
+
+    visibleEvents.forEach((event) => {
+      const key = markerKey(event);
+      const group = groups.get(key) || [];
+      group.push(event);
+      groups.set(key, group);
+    });
+
+    return Array.from(groups.values());
+  }, [visibleEvents]);
 
   useEffect(() => {
     if (visibleEvents.length === 0) {
@@ -240,10 +282,22 @@ export function MapPage() {
     }
   }, [visibleEvents, selectedEventId]);
 
-  const selectedEvent = useMemo(
-    () => events.find((event) => event.id === selectedEventId) || null,
-    [events, selectedEventId],
+  const selectedGroup = useMemo(() => {
+    if (selectedEventId) {
+      const matchingGroup = eventGroups.find((group) =>
+        group.some((event) => event.id === selectedEventId),
+      );
+      if (matchingGroup) return matchingGroup;
+    }
+
+    return eventGroups[0] || [];
+  }, [eventGroups, selectedEventId]);
+
+  const selectedGroupIndex = Math.max(
+    selectedGroup.findIndex((event) => event.id === selectedEventId),
+    0,
   );
+  const selectedEvent = selectedGroup[selectedGroupIndex] || null;
 
   useEffect(() => {
     if (!mapRef.current || !layerRef.current || !window.L) return;
@@ -252,14 +306,30 @@ export function MapPage() {
     const layer = layerRef.current;
     layer.clearLayers();
 
-    const bounds: [number, number][] = [];
+    const eventBounds: [number, number][] = eventGroups.map((group) => [
+      group[0].latitude,
+      group[0].longitude,
+    ]);
 
-    visibleEvents.forEach((event: EventItem) => {
-      const isSelected = event.id === selectedEventId;
+    if (focusPoint) {
+      map.setView([focusPoint.latitude, focusPoint.longitude], 13);
+    } else if (eventBounds.length === 1) {
+      map.setView(eventBounds[0], 13);
+    } else if (eventBounds.length > 1) {
+      map.fitBounds(eventBounds as any, { padding: [60, 60] });
+    }
+
+    eventGroups.forEach((group: EventItem[]) => {
+      const event = group.find((item) => item.id === selectedEventId) || group[0];
+      const isSelected = group.some((item) => item.id === selectedEventId);
       const color = event.group ? GROUP_EVENT_COLOR : INDIVIDUAL_EVENT_COLOR;
       const icon = window.L.divIcon({
         className: isSelected ? "eventMarkerSelected" : "eventMarker",
-        html: `<span style="background:${color}"></span>`,
+        html: `<span style="background:${color}"></span>${
+          group.length > 1
+            ? `<strong class="eventMarkerCount">${group.length}</strong>`
+            : ""
+        }`,
         iconSize: isSelected ? [34, 34] : [26, 26],
         iconAnchor: isSelected ? [17, 34] : [13, 26],
         popupAnchor: [0, -26],
@@ -267,10 +337,9 @@ export function MapPage() {
 
       const marker = window.L.marker([event.latitude, event.longitude], { icon }).addTo(layer);
       marker.on("click", () => {
-        setSelectedEventId(event.id);
+        setSelectedEventId(group[0].id);
         map.setView([event.latitude, event.longitude], Math.max(map.getZoom(), 14));
       });
-      bounds.push([event.latitude, event.longitude]);
     });
 
     if (focusPoint) {
@@ -284,8 +353,6 @@ export function MapPage() {
         })
         .addTo(layer);
       focusMarker.bindPopup(`<strong>${focusPoint.label}</strong>`);
-      map.setView([focusPoint.latitude, focusPoint.longitude], 13);
-      bounds.push([focusPoint.latitude, focusPoint.longitude]);
     }
 
     if (userLocation) {
@@ -293,20 +360,15 @@ export function MapPage() {
         .circleMarker([userLocation.latitude, userLocation.longitude], {
           radius: 8,
           color: "#ffffff",
-          fillColor: "#2563eb",
+          fillColor: USER_LOCATION_COLOR,
           fillOpacity: 1,
           weight: 3,
         })
         .addTo(layer);
     }
 
-    if (!focusPoint && bounds.length === 1) {
-      map.setView(bounds[0], 13);
-    } else if (!focusPoint && bounds.length > 1) {
-      map.fitBounds(bounds as any, { padding: [60, 60] });
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleEvents, selectedEventId, focusPoint, userLocation, mapTheme]);
+  }, [eventGroups, selectedEventId, focusPoint, userLocation, mapTheme]);
 
   async function handleJoin(id: string) {
     setActionBusy(true);
@@ -358,6 +420,22 @@ export function MapPage() {
     );
   }
 
+  function toggleLevelFilter(value: string) {
+    setLevelFilters((current) =>
+      current.includes(value)
+        ? current.filter((level) => level !== value)
+        : [...current, value],
+    );
+  }
+
+  function moveWithinSelectedGroup(direction: -1 | 1) {
+    if (selectedGroup.length < 2) return;
+
+    const nextIndex = selectedGroupIndex + direction;
+    if (nextIndex < 0 || nextIndex >= selectedGroup.length) return;
+    setSelectedEventId(selectedGroup[nextIndex].id);
+  }
+
   return (
     <div className="mapPage map-page-full">
       <div ref={mapContainerRef} className="mapCanvas" />
@@ -365,6 +443,10 @@ export function MapPage() {
       <div className="panelOverlay">
         <MapEventPanel
           event={selectedEvent}
+          events={selectedGroup}
+          selectedIndex={selectedGroupIndex}
+          onPrevious={() => moveWithinSelectedGroup(-1)}
+          onNext={() => moveWithinSelectedGroup(1)}
           busy={actionBusy}
           onJoin={handleJoin}
           onLeave={handleLeave}
@@ -375,16 +457,22 @@ export function MapPage() {
         <MapFilterBar
           sport={sportFilter}
           onSportChange={setSportFilter}
-          level={levelFilter}
-          onLevelChange={setLevelFilter}
-          todayOnly={todayOnly}
-          onToggleToday={() => setTodayOnly((value) => !value)}
+          levels={levelFilters}
+          onLevelChange={toggleLevelFilter}
+          time={timeFilter}
+          onTimeChange={setTimeFilter}
           onLocationSelect={setFocusPoint}
           sports={sports}
         />
       </div>
 
       <div className="zoomOverlay">
+        <MapZoomControls
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+          onLocate={handleLocate}
+          locating={locating}
+        />
         <div className="mapLegend" aria-label={t("map.markerLegend")}>
           <span className="mapLegendItem">
             <span
@@ -403,12 +491,6 @@ export function MapPage() {
             {t("map.groupEvent")}
           </span>
         </div>
-        <MapZoomControls
-          onZoomIn={handleZoomIn}
-          onZoomOut={handleZoomOut}
-          onLocate={handleLocate}
-          locating={locating}
-        />
       </div>
 
       {status && <p className="mapStatus">{status}</p>}

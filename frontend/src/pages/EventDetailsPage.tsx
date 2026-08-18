@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { CalendarDays, Clock3, MapPin, PencilLine, Users } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock3, MapPin, PencilLine, Users } from "lucide-react";
 import { EventChat } from "../components/chat/EventChat";
 import { Badge } from "../components/shared/Badge";
 import Button from "../components/shared/Button";
@@ -25,6 +25,7 @@ const formatEventDateTime = (value: string) =>
 
 export function EventDetailsPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { eventId } = useParams();
   const { user } = useAuth();
   const [event, setEvent] = useState<EventItem | null>(null);
@@ -92,9 +93,20 @@ export function EventDetailsPage() {
     };
   }, [event?.group?.id, user?.id]);
 
+  function goBack() {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/discover");
+    }
+  }
+
   if (!event || !eventId) {
     return (
-      <main className="mx-auto max-w-6xl px-4 py-8">
+      <main className="mx-auto max-w-6xl space-y-4 px-4 py-8">
+        <Button variant="outline" size="sm" icon={<ArrowLeft size={16} />} onClick={goBack}>
+          {t("event.back")}
+        </Button>
         {error ? (
           <p role="alert" className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
@@ -116,6 +128,12 @@ export function EventDetailsPage() {
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mb-4">
+        <Button variant="outline" size="sm" icon={<ArrowLeft size={16} />} onClick={goBack}>
+          {t("event.back")}
+        </Button>
+      </div>
+
       {error ? (
         <p role="alert" className="mb-4 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
@@ -278,14 +296,16 @@ export function EventDetailsPage() {
                     </p>
                   ) : (
                     event.participants.map((participant) => (
-                      <div
+                      <Link
                         key={participant.id}
-                        className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2.5"
+                        to={`/users/${participant.user.id}`}
+                        className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2.5 outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-teal-500"
+                        aria-label={participant.user.username}
                       >
                         <div className="flex min-w-0 items-center gap-3">
                           <img
                             src={getParticipantAvatar(participant.user.avatar)}
-                            alt={participant.user.username}
+                            alt=""
                             className="h-9 w-9 rounded-full object-cover ring-2 ring-[var(--surface-border)]"
                             onError={(eventNode: any) => {
                               eventNode.currentTarget.src = DEFAULT_AVATAR_SRC;
@@ -306,7 +326,7 @@ export function EventDetailsPage() {
                         <Badge variant={participant.status === "attending" ? "green" : "default"}>
                           {participant.status}
                         </Badge>
-                      </div>
+                      </Link>
                     ))
                   )}
                 </div>

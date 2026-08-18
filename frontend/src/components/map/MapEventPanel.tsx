@@ -1,4 +1,5 @@
-import { MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { EventItem } from "../../types/api";
 import { DEFAULT_AVATAR_SRC, getDefaultEventImage, resolveMediaUrl } from "../../utils/media";
@@ -19,13 +20,27 @@ function formatTimeRange(startAt: string, endAt: string) {
 
 type Props = {
   event: EventItem | null;
+  events: EventItem[];
+  selectedIndex: number;
+  onPrevious: () => void;
+  onNext: () => void;
   busy?: boolean;
   onJoin: (id: string) => void;
   onLeave: (id: string) => void;
 };
 
-export function MapEventPanel({ event, busy, onJoin, onLeave }: Props) {
+export function MapEventPanel({
+  event,
+  events,
+  selectedIndex,
+  onPrevious,
+  onNext,
+  busy,
+  onJoin,
+  onLeave,
+}: Props) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   if (!event) {
     return (
@@ -58,7 +73,34 @@ export function MapEventPanel({ event, busy, onJoin, onLeave }: Props) {
       </div>
 
       <div className={styles.body}>
-        <h2 className={styles.title}>{event.title}</h2>
+        <div className={styles.titleRow}>
+          <h2 className={styles.title}>{event.title}</h2>
+          {events.length > 1 && (
+            <div className={styles.switcher} aria-label={t("map.eventSwitcher")}>
+              <span className={styles.switcherCount}>
+                {selectedIndex + 1} / {events.length}
+              </span>
+              <Button
+                variant="outline"
+                size="xs"
+                iconOnly
+                icon={<ArrowLeft size={14} />}
+                aria-label={t("pagination.previous")}
+                disabled={selectedIndex <= 0}
+                onClick={onPrevious}
+              />
+              <Button
+                variant="outline"
+                size="xs"
+                iconOnly
+                icon={<ArrowRight size={14} />}
+                aria-label={t("pagination.next")}
+                disabled={selectedIndex >= events.length - 1}
+                onClick={onNext}
+              />
+            </div>
+          )}
+        </div>
         <p className={styles.location}>
           <MapPin size={15} />
           <span>{event.location_address || event.location_name}</span>
@@ -108,6 +150,16 @@ export function MapEventPanel({ event, busy, onJoin, onLeave }: Props) {
       </div>
 
       <div className={styles.footer}>
+        <Button
+          variant="secondary"
+          size="md"
+          className={styles.detailsButton}
+          icon={<ExternalLink size={16} />}
+          onClick={() => navigate(`/events/${event.id}`)}
+        >
+          {t("map.viewDetails")}
+        </Button>
+
         {isAttending || isWaiting ? (
           <Button
             variant="outline"
