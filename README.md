@@ -12,14 +12,14 @@
 The evaluated deployment is Docker. From the repository root:
 
 ```bash
-./run.sh
+make
 ```
 
-Then open https://localhost and accept the self-signed certificate warning.
+Then open https://localhost and accept the self-signed certificate warning. Stop with `make down`. See `make help` for logs, status, and restart.
 
-`./run.sh` copies `.env.example` to `.env` if needed and runs `docker compose up --build -d`, or `docker-compose` if the v2 plugin is missing.
+`make` prepares `.env` and runs `docker compose up --build -d`, or `docker-compose` if the v2 plugin is missing.
 
-Prerequisites: Docker Engine and Docker Compose (`docker compose` or `docker-compose`) on Ubuntu. Ports 80 and 443 must be free.
+Prerequisites: `make`, Docker Engine, and Docker Compose on Ubuntu. Ports 80 and 443 must be free.
 
 The three containers are `nginx` (public HTTPS), `frontend` (SPA), and `backend` (Django/Daphne). The database is `backend/db.sqlite3` in git.
 

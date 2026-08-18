@@ -31,6 +31,7 @@ Internal HTTP between containers is allowed by the subject. Browsers only talk H
 
 - Docker Engine
 - Docker Compose v2 (`docker compose`) or Compose v1 (`docker-compose`)
+- `make`
 - Ubuntu is the evaluation target; any recent Docker install works
 - Ports `80` and `443` free on the machine
 
@@ -39,24 +40,30 @@ Internal HTTP between containers is allowed by the subject. Browsers only talk H
 From the repository root:
 
 ```bash
-./run.sh
+make
 ```
 
-That script:
+That is the eval command. It:
 
 1. Copies `.env.example` to `.env` if `.env` is missing
 2. Replaces the placeholder `SECRET_KEY` with a random value (keeps an existing real key)
 3. Uses `docker compose` when available, otherwise `docker-compose`
 4. Runs `up --build -d`
 
-Equivalent commands:
+Everyday commands:
 
 ```bash
-cp -n .env.example .env
-docker compose up --build -d
-# or
-docker-compose up --build -d
+make          # start (same as make up)
+make down     # stop containers; sqlite and media stay
+make logs     # follow logs
+make ps       # container status
+make restart  # restart without rebuild
+make re       # down, then up
+make clean    # down and remove the generated static volume (not sqlite)
+make help     # list targets
 ```
+
+`./run.sh` still works; it just runs `make up`.
 
 Open **https://localhost**. Chrome will warn about the self-signed certificate. Click through (Advanced → Proceed) once.
 
@@ -123,14 +130,14 @@ See [frontend/DEV.md](frontend/DEV.md) and [backend/README.md](backend/README.md
 ## Common commands
 
 ```bash
-./run.sh
-docker compose ps
-docker compose logs -f
-docker compose restart backend
-docker compose down
+make
+make ps
+make logs
+make restart
+make down
 ```
 
-If you only have Compose v1, replace `docker compose` with `docker-compose`.
+Compose v1 vs v2 is chosen automatically by the Makefile.
 
 ## Troubleshooting
 
@@ -138,8 +145,8 @@ If you only have Compose v1, replace `docker compose` with `docker-compose`.
 | --- | --- |
 | Port 80 or 443 already in use | Stop the other service, or see `ss -lntp \| grep -E ':80|:443'` |
 | Browser certificate warning | Expected for the self-signed cert. Proceed to localhost. |
-| Empty site after pull | Run `./run.sh` again so images rebuild. Hard-refresh the browser. |
-| Missing tables | Backend entrypoint runs `migrate` on start. Check `docker compose logs backend`. |
+| Empty site after pull | Run `make` again so images rebuild. Hard-refresh the browser. |
+| Missing tables | Backend entrypoint runs `migrate` on start. Check `make logs`. |
 | Chat WebSocket fails | Use `https://localhost` (not HTTP, not `:5173` while Docker is up). |
 | `db.sqlite3` merge conflict | Stop servers, pick one file, commit. Do not merge sqlite as text. |
-| Permission denied on `./run.sh` | `chmod +x run.sh` |
+| `make: command not found` | Install `make` (`sudo apt install make`) |
