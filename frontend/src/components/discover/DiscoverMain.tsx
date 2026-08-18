@@ -6,6 +6,7 @@ import type { EventItem, SportOption } from "../../types/api";
 import { useAuth } from "../../features/auth/AuthContext";
 import Button from "../shared/Button";
 import { PageHeading } from "../shared/PageHeading";
+import { PaginationControls } from "../shared/PaginationControls";
 import { EventsSection } from "./EventsSection";
 
 type DiscoverMainProps = {
@@ -20,6 +21,10 @@ type DiscoverMainProps = {
   time: string;
   onTimeChange: (value: string) => void;
   sports: SportOption[];
+  page: number;
+  pageCount: number;
+  onPageChange: (page: number) => void;
+  loading?: boolean;
 };
 
 export function DiscoverMain({
@@ -34,6 +39,10 @@ export function DiscoverMain({
   time,
   onTimeChange,
   sports,
+  page,
+  pageCount,
+  onPageChange,
+  loading = false,
 }: DiscoverMainProps) {
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -67,6 +76,12 @@ export function DiscoverMain({
         time={time}
         onTimeChange={onTimeChange}
         sports={sports}
+      />
+      <PaginationControls
+        page={page}
+        pageCount={pageCount}
+        onPageChange={onPageChange}
+        disabled={loading}
       />
       {/* <CuratedForYouSection /> */}
     </div>

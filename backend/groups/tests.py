@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from rest_framework.test import APITestCase
 
 from chat.models import GroupMessage
@@ -78,10 +81,11 @@ class GroupApiTests(APITestCase):
         response = self.client.get("/api/groups/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual([item["id"] for item in response.data], [str(group.id)])
-        self.assertNotIn("visibility", response.data[0])
-        self.assertNotIn("join_policy", response.data[0])
-        self.assertNotIn("kind", response.data[0])
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual([item["id"] for item in response.data["results"]], [str(group.id)])
+        self.assertNotIn("visibility", response.data["results"][0])
+        self.assertNotIn("join_policy", response.data["results"][0])
+        self.assertNotIn("kind", response.data["results"][0])
         detail = self.client.get(f"/api/groups/{group.id}/")
         self.assertEqual(detail.status_code, 200)
         self.assertEqual(len(detail.data["memberships"]), 1)
@@ -121,10 +125,108 @@ class GroupApiTests(APITestCase):
 
         self.assertEqual(created.status_code, 201)
         self.assertEqual(created.data["group"]["id"], str(group.id))
+        group_events = self.client.get(f"/api/groups/{group.id}/events/")
+        self.assertEqual(group_events.status_code, 200)
+        self.assertEqual(group_events.data["count"], 1)
+        self.assertEqual(len(group_events.data["results"]), 1)
         self.client.force_authenticate(None)
         hidden = self.client.get("/api/events/")
         self.assertEqual(hidden.status_code, 200)
-        self.assertEqual(hidden.data, [])
+        self.assertEqual(hidden.data["count"], 0)
+        self.assertEqual(hidden.data["results"], [])
+
+    def test_group_event_feed_excludes_past_events(self):
+        group = Group.objects.create(
+            name="Upcoming group events",
+            sport="running",
+            levels=["beginner"],
+            owner=self.user,
+        )
+        GroupMembership.objects.create(
+            group=group,
+            user=self.user,
+            role=GroupMembership.ROLE_OWNER,
+        )
+        now = timezone.now()
+        base = {
+            "description": "Group event",
+            "sport": "running",
+            "level": "beginner",
+            "languages": ["en"],
+            "location_name": "Prater",
+            "location_address": "Vienna",
+            "latitude": 48.2,
+            "longitude": 16.4,
+            "max_slots": 10,
+            "visibility": Event.VISIBILITY_PUBLIC,
+            "creator": self.user,
+            "group": group,
+        }
+        Event.objects.create(
+            title="Past group event",
+            start_at=now - timedelta(days=1),
+            end_at=now - timedelta(hours=22),
+            **base,
+        )
+        Event.objects.create(
+            title="Future group event",
+            start_at=now + timedelta(days=1),
+            end_at=now + timedelta(days=1, hours=2),
+            **base,
+        )
+
+        self.client.force_authenticate(self.user)
+        response = self.client.get(f"/api/groups/{group.id}/events/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["count"], 1)
+        self.assertEqual(response.data["results"][0]["title"], "Future group event")
+
+    def test_groups_list_is_paginated(self):
+        for index in range(13):
+            Group.objects.create(
+                name=f"Group {index:02d}",
+                sport="running",
+                levels=["beginner"],
+                owner=self.user,
+            )
+
+        first_page = self.client.get("/api/groups/?page_size=10")
+        second_page = self.client.get("/api/groups/?page_size=10&page=2")
+
+        self.assertEqual(first_page.status_code, 200)
+        self.assertEqual(first_page.data["count"], 13)
+        self.assertEqual(len(first_page.data["results"]), 10)
+        self.assertIsNotNone(first_page.data["next"])
+        self.assertEqual(len(second_page.data["results"]), 3)
+
+    def test_events_list_is_paginated(self):
+        for index in range(13):
+            Event.objects.create(
+                title=f"Event {index:02d}",
+                description="Test event",
+                sport="running",
+                level="beginner",
+                languages=["en"],
+                location_name="Prater",
+                location_address="Vienna",
+                latitude=48.2,
+                longitude=16.4,
+                start_at="2026-10-01T18:00:00Z",
+                end_at="2026-10-01T20:00:00Z",
+                max_slots=12,
+                visibility=Event.VISIBILITY_PUBLIC,
+                creator=self.user,
+            )
+
+        first_page = self.client.get("/api/events/?page_size=10")
+        second_page = self.client.get("/api/events/?page_size=10&page=2")
+
+        self.assertEqual(first_page.status_code, 200)
+        self.assertEqual(first_page.data["count"], 13)
+        self.assertEqual(len(first_page.data["results"]), 10)
+        self.assertIsNotNone(first_page.data["next"])
+        self.assertEqual(len(second_page.data["results"]), 3)
 
     def test_only_group_owner_can_create_group_event(self):
         group = Group.objects.create(

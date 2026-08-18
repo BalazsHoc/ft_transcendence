@@ -106,6 +106,14 @@ export type EventItem = {
   created_at: string;
   updated_at: string;
 };
+
+export type PaginatedResponse<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+};
+
 export type MessageItem = {
   id: string;
   event: string;

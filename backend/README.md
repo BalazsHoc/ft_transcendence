@@ -140,6 +140,18 @@ PowerShell:
 Get-Content scripts/create_demo_data.py | python manage.py shell
 ```
 
+To generate a larger local dataset for testing event and group pagination, run:
+
+```bash
+python manage.py seed_pagination_demo
+```
+
+The command is idempotent and creates demo profiles for 34 well-known athletes,
+one group per profile, three future events and one past archive event per
+profile, plus ten individual future events distributed around Vienna for map
+testing. Newly created demo accounts use `demo-pass-123` unless `--password`
+is provided. The generated profiles and events are for local testing only.
+
 ## Run With Docker
 
 From the repository root (not this directory):
@@ -193,6 +205,19 @@ GET    /api/events/{id}/messages/
 GET    /api/groups/{id}/events/
 POST   /api/groups/{id}/events/  # group owner only
 ```
+
+Event and group collection endpoints use page-number pagination. The default
+page size is 12 and clients may request up to 100 items with `page_size`:
+
+```text
+GET /api/events/?page=2&page_size=12
+GET /api/groups/?page=2&page_size=12
+```
+
+Responses contain `count`, `next`, `previous` and the current page in
+`results`. Event filters (`sport`, comma-separated `level`, `search`,
+`start_after`, `start_before`) and group filters (`sport`, comma-separated
+`level`, `search`) are applied before pagination.
 
 ### WebSocket Chat
 

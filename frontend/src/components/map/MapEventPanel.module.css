@@ -60,9 +60,33 @@
   gap: 10px;
 }
 
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .title {
   margin: 0;
   font-size: 21px;
+}
+
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.switcherCount {
+  min-width: 38px;
+  padding: 5px 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .location {
@@ -153,10 +177,14 @@
 .footer {
   position: sticky;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   padding: 14px 18px 18px;
   background: var(--surface);
 }
 
+.detailsButton,
 .reserveButton {
   width: 100%;
 }

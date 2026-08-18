@@ -1,5 +1,6 @@
-from django.db import transaction
-from django.db.models import Count
+from django.db import connection, transaction
+from django.db.models import Count, Q
+from django.utils import timezone
 from rest_framework import decorators, permissions, response, status, viewsets
 from rest_framework.exceptions import PermissionDenied, ValidationError
 
@@ -9,6 +10,7 @@ from notifications.models import Notification
 from notifications.services import notify_group_members
 from .models import Group, GroupMembership
 from .serializers import GroupDetailSerializer, GroupSerializer, GroupMembershipSerializer
+from core.pagination import AppPagination
 
 
 def user_is_group_admin(user, group):
@@ -29,6 +31,7 @@ class IsGroupAdminOrReadOnly(permissions.BasePermission):
 
 class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsGroupAdminOrReadOnly]
+    pagination_class = AppPagination
 
     def get_queryset(self):
         qs = Group.objects.select_related("owner").prefetch_related(
@@ -44,9 +47,26 @@ class GroupViewSet(viewsets.ModelViewSet):
         level = self.request.query_params.get("level")
         if sport:
             qs = qs.filter(sport__iexact=sport)
-        if level:
-            qs = qs.filter(levels__contains=[level])
-        return qs.filter(is_active=True)
+        levels = [item.strip() for item in (level or '').split(',') if item.strip()]
+        if levels:
+            level_query = Q()
+            for item in levels:
+                if connection.vendor == 'sqlite':
+                    level_query |= Q(levels__icontains=f'"{item}"')
+                else:
+                    level_query |= Q(levels__contains=[item])
+            qs = qs.filter(level_query)
+
+        search = self.request.query_params.get('search', '').strip()
+        if search:
+            qs = qs.filter(
+                Q(name__icontains=search)
+                | Q(description__icontains=search)
+                | Q(location_name__icontains=search)
+                | Q(location_address__icontains=search)
+            )
+
+        return qs.filter(is_active=True).order_by('name', 'pk')
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -178,4 +198,11 @@ class GroupViewSet(viewsets.ModelViewSet):
         )
         if not is_member:
             events = events.filter(visibility=Event.VISIBILITY_PUBLIC)
+        events = events.filter(start_at__gte=timezone.now())
+        events = events.order_by("start_at", "pk")
+        page = self.paginate_queryset(events)
+        if page is not None:
+            return self.get_paginated_response(
+                EventSerializer(page, many=True, context={"request": request}).data
+            )
         return response.Response(EventSerializer(events, many=True, context={"request": request}).data)

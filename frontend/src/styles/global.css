@@ -1239,6 +1239,7 @@ body.dark .filters {
 
 .eventMarker,
 .eventMarkerSelected {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1259,6 +1260,25 @@ body.dark .filters {
   height: 20px;
   border-width: 4px;
   box-shadow: 0 10px 22px rgba(15, 23, 42, 0.45);
+}
+
+.eventMarkerCount {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--surface);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 10px;
+  line-height: 1;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.24);
 }
 
 @media (max-width: 900px) {

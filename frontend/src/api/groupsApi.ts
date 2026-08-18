@@ -1,5 +1,10 @@
 import { apiRequest } from "./client";
-import type { EventItem, GroupItem, GroupPayload } from "../types/api";
+import type {
+  EventItem,
+  GroupItem,
+  GroupPayload,
+  PaginatedResponse,
+} from "../types/api";
 
 function appendFormValue(form: FormData, key: string, value: unknown) {
   if (value === undefined || value === null) return;
@@ -24,15 +29,29 @@ function toGroupFormData(payload: GroupPayload) {
   return form;
 }
 
-export function getGroups(params?: {
+export type GroupListParams = {
   sport?: string;
   level?: string;
-}) {
+  search?: string;
+  page?: number;
+  pageSize?: number;
+};
+
+export function getGroupsPage(params?: GroupListParams) {
   const query = new URLSearchParams();
   if (params?.sport) query.set("sport", params.sport);
   if (params?.level) query.set("level", params.level);
+  if (params?.search) query.set("search", params.search);
+  if (params?.page) query.set("page", String(params.page));
+  if (params?.pageSize) query.set("page_size", String(params.pageSize));
   const suffix = query.toString() ? `?${query.toString()}` : "";
-  return apiRequest<GroupItem[]>(`/api/groups/${suffix}`);
+  return apiRequest<PaginatedResponse<GroupItem>>(`/api/groups/${suffix}`);
+}
+
+/** Return the first API page as an array for compact/legacy consumers. */
+export async function getGroups(params?: GroupListParams) {
+  const page = await getGroupsPage({ pageSize: 100, ...params });
+  return page.results;
 }
 
 export function getGroup(id: string) {
@@ -58,6 +77,15 @@ export function leaveGroup(id: string) {
   return apiRequest<void>(`/api/groups/${id}/leave/`, { method: "POST" });
 }
 
-export function getGroupEvents(id: string) {
-  return apiRequest<EventItem[]>(`/api/groups/${id}/events/`);
+export function getGroupEventsPage(id: string, page?: number) {
+  const query = new URLSearchParams({ page_size: "100" });
+  if (page) query.set("page", String(page));
+  return apiRequest<PaginatedResponse<EventItem>>(
+    `/api/groups/${id}/events/?${query.toString()}`,
+  );
+}
+
+export async function getGroupEvents(id: string) {
+  const page = await getGroupEventsPage(id);
+  return page.results;
 }

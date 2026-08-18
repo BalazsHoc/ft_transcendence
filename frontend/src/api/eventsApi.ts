@@ -1,5 +1,5 @@
 import { apiRequest } from "./client";
-import { EventItem, MessageItem } from "../types/api";
+import type { EventItem, MessageItem, PaginatedResponse } from "../types/api";
 export type EventPayload = {
   title: string;
   description: string;
@@ -45,18 +45,36 @@ function toEventFormData(payload: Partial<EventPayload>) {
   return form;
 }
 
-export function getEvents(params?: {
+export type EventListParams = {
   sport?: string;
   level?: string;
   language?: string;
-}) {
+  search?: string;
+  startAfter?: string;
+  startBefore?: string;
+  page?: number;
+  pageSize?: number;
+};
+
+export function getEventsPage(params?: EventListParams) {
   const q = new URLSearchParams();
   if (params?.sport) q.set("sport", params.sport);
   if (params?.level) q.set("level", params.level);
   if (params?.language) q.set("language", params.language);
-  return apiRequest<EventItem[]>(
+  if (params?.search) q.set("search", params.search);
+  if (params?.startAfter) q.set("start_after", params.startAfter);
+  if (params?.startBefore) q.set("start_before", params.startBefore);
+  if (params?.page) q.set("page", String(params.page));
+  if (params?.pageSize) q.set("page_size", String(params.pageSize));
+  return apiRequest<PaginatedResponse<EventItem>>(
     `/api/events/${q.toString() ? `?${q.toString()}` : ""}`,
   );
+}
+
+/** Return the first API page as an array for compact/legacy consumers. */
+export async function getEvents(params?: EventListParams) {
+  const page = await getEventsPage({ pageSize: 100, ...params });
+  return page.results;
 }
 export function getEvent(id: string) {
   return apiRequest<EventItem>(`/api/events/${id}/`);
