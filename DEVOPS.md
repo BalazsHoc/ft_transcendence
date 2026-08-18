@@ -45,8 +45,9 @@ From the repository root:
 That script:
 
 1. Copies `.env.example` to `.env` if `.env` is missing
-2. Uses `docker compose` when available, otherwise `docker-compose`
-3. Runs `up --build -d`
+2. Replaces the placeholder `SECRET_KEY` with a random value (keeps an existing real key)
+3. Uses `docker compose` when available, otherwise `docker-compose`
+4. Runs `up --build -d`
 
 Equivalent commands:
 
@@ -73,6 +74,19 @@ Useful URLs after the stack is up:
 Root `.env` is gitignored. Start from `.env.example`. Compose injects HTTPS CORS/CSRF values for the containers. Local Vite/Daphne still use `backend/.env` and `frontend/.env` as before.
 
 Do not commit `.env` or TLS private keys.
+
+With `DEBUG=False` (Compose), Django also turns on secure cookies and `SECURE_CONTENT_TYPE_NOSNIFF`. It does **not** set `SECURE_SSL_REDIRECT`: nginx already redirects HTTP to HTTPS, and Daphne must keep answering plain HTTP on port 8000 for healthchecks and the proxy.
+
+## What we deliberately skip
+
+A typical “real production” write-up often adds PostgreSQL, Redis, backups, and a rollback runbook. Those are out of scope here:
+
+| Suggestion | Why we do not do it |
+| --- | --- |
+| PostgreSQL | Switching would drop the current events, chats, and groups. The subject asks for a database, not a database container. `backend/db.sqlite3` stays in git so the team and eval share the same data. |
+| Redis / `channels-redis` | Needed only if several Daphne workers share a channel layer. We run **one** backend replica, so `InMemoryChannelLayer` can fan out chat to every browser on that machine. |
+| Postgres backups and deploy rollback | That is the extra DevOps “health check / backups / disaster recovery” module. We are not claiming those points. |
+| Keep SQLite local-only | The team wants create-event → commit → pull so others see it. The sqlite file is the shared database. |
 
 ## Sharing data between developers
 
