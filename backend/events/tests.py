@@ -7,6 +7,7 @@ from rest_framework.test import APITestCase
 from notifications.models import Notification
 
 from .models import Event, EventParticipant
+from groups.models import Group, GroupMembership
 
 
 User = get_user_model()
@@ -179,3 +180,132 @@ class EventValidationTests(APITestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("start_at", response.data)
+
+
+class GroupEventCounterRegressionTests(APITestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(
+            username="group-owner",
+            password="secure-password",
+        )
+        self.viewer = User.objects.create_user(
+            username="group-viewer",
+            password="secure-password",
+        )
+        self.attendee_one = User.objects.create_user(
+            username="attendee-one",
+            password="secure-password",
+        )
+        self.attendee_two = User.objects.create_user(
+            username="attendee-two",
+            password="secure-password",
+        )
+        self.waiting_user = User.objects.create_user(
+            username="waiting-user",
+            password="secure-password",
+        )
+
+        self.group = Group.objects.create(
+            name="Counter Club",
+            description="Group for counter regressions",
+            sport="running",
+            levels=["beginner"],
+            max_members=50,
+            owner=self.owner,
+        )
+        GroupMembership.objects.create(
+            group=self.group,
+            user=self.owner,
+            role=GroupMembership.ROLE_OWNER,
+        )
+        GroupMembership.objects.create(
+            group=self.group,
+            user=self.viewer,
+            role=GroupMembership.ROLE_MEMBER,
+        )
+        for index in range(5):
+            member = User.objects.create_user(
+                username=f"extra-member-{index}",
+                password="secure-password",
+            )
+            GroupMembership.objects.create(
+                group=self.group,
+                user=member,
+                role=GroupMembership.ROLE_MEMBER,
+            )
+
+        start_at = timezone.now() + timedelta(days=3)
+        self.event = Event.objects.create(
+            title="Group counter event",
+            description="Regression event",
+            sport="running",
+            level="beginner",
+            languages=["en"],
+            location_name="Prater",
+            location_address="Vienna",
+            latitude=48.2,
+            longitude=16.4,
+            start_at=start_at,
+            end_at=start_at + timedelta(hours=2),
+            max_slots=2,
+            creator=self.owner,
+            group=self.group,
+            visibility=Event.VISIBILITY_PUBLIC,
+        )
+
+    def test_event_detail_count_is_not_multiplied_by_group_memberships(self):
+        EventParticipant.objects.create(
+            user=self.attendee_one,
+            event=self.event,
+            status=EventParticipant.STATUS_ATTENDING,
+            queue_position=0,
+        )
+        EventParticipant.objects.create(
+            user=self.attendee_two,
+            event=self.event,
+            status=EventParticipant.STATUS_ATTENDING,
+            queue_position=0,
+        )
+        EventParticipant.objects.create(
+            user=self.waiting_user,
+            event=self.event,
+            status=EventParticipant.STATUS_WAITING,
+            queue_position=1,
+        )
+
+        self.client.force_authenticate(self.viewer)
+        response = self.client.get(f"/api/events/{self.event.id}/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["attending_count"], 2)
+        self.assertEqual(response.data["waiting_count"], 1)
+
+    def test_group_events_counter_stays_stable_after_waiting_user_promotion(self):
+        self.client.force_authenticate(self.attendee_one)
+        self.assertEqual(
+            self.client.post(f"/api/events/{self.event.id}/join/").data["status"],
+            EventParticipant.STATUS_ATTENDING,
+        )
+
+        self.client.force_authenticate(self.attendee_two)
+        self.assertEqual(
+            self.client.post(f"/api/events/{self.event.id}/join/").data["status"],
+            EventParticipant.STATUS_ATTENDING,
+        )
+
+        self.client.force_authenticate(self.waiting_user)
+        self.assertEqual(
+            self.client.post(f"/api/events/{self.event.id}/join/").data["status"],
+            EventParticipant.STATUS_WAITING,
+        )
+
+        self.client.force_authenticate(self.attendee_one)
+        leave_response = self.client.post(f"/api/events/{self.event.id}/leave/")
+        self.assertEqual(leave_response.status_code, 200)
+
+        self.client.force_authenticate(self.viewer)
+        events_response = self.client.get(f"/api/groups/{self.group.id}/events/")
+        self.assertEqual(events_response.status_code, 200)
+        event_data = events_response.data["results"][0]
+        self.assertEqual(event_data["attending_count"], 2)
+        self.assertEqual(event_data["waiting_count"], 0)
