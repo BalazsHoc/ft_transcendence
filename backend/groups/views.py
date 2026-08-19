@@ -4,7 +4,7 @@ from django.utils import timezone
 from rest_framework import decorators, permissions, response, status, viewsets
 from rest_framework.exceptions import PermissionDenied, ValidationError
 
-from events.models import Event
+from events.models import Event, EventParticipant
 from events.serializers import EventSerializer
 from notifications.models import Notification
 from notifications.services import notify_group_members
@@ -195,6 +195,17 @@ class GroupViewSet(viewsets.ModelViewSet):
 
         events = group.events.select_related("creator", "group").prefetch_related(
             "participants", "participants__user"
+        ).annotate(
+            attending_count=Count(
+                "participants",
+                filter=Q(participants__status=EventParticipant.STATUS_ATTENDING),
+                distinct=True,
+            ),
+            waiting_count=Count(
+                "participants",
+                filter=Q(participants__status=EventParticipant.STATUS_WAITING),
+                distinct=True,
+            ),
         )
         if not is_member:
             events = events.filter(visibility=Event.VISIBILITY_PUBLIC)
