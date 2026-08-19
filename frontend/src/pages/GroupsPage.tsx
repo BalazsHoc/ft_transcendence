@@ -199,6 +199,7 @@ Simple rule for now:
 
 Arrow functions are a shorter way to write functions and are especially useful for small callback functions passed to other functions.
 
+
 ------------------------------------------------------------------
 
 An async function runs normally until it reaches an await. 
@@ -250,12 +251,111 @@ the paused function becomes ready and resumes from the line after await when Jav
   // so when we change from En to De it will re-run the function and remember the new one
   }, [t]);
 
+  /*
+    - useEffect is also a react hook 
+    - it takes two inputs which are:
+      1- () => { ... } -> this is the function we want to run
+      2- [t] -> this is the input of the function we want to run
+
+      - above we defined loadGroups
+      - here we say, hey react remember for me this function and run it when the component is mounted
+      - whenever loadGroups changes useEffect will re-run the function
+
+      as the first input why we didnt wrote loadGroups() but instead we wrote () => { loadGroups() } ?
+      loadGroups() means calling the function immediately and returning the result
+      so useEffect will recieve the returned result of loadGroups() 
+      but () => { loadGroups() } means calling the function and returning the function itself
+      
+      remember loadGroups was a async function so it returns a promise
+      promise mean when the function is waiting for await to finish it will return a promise
+      which is a object that say hey i am waiting for await to finish so you can use me later
+      in this case we need to pass function itself to useEffect instead of the result of the function
+      so it can wait for await to finish
+  */
   useEffect(() => {
     void loadGroups();
   }, [loadGroups]);
 
+  /*
+    - function updateForm() -> create a normal function called updateForm
+    - it will have one input which is an event
+    - event is an object that reflects changes as soon as they happen
+    - like typing in a input field, clicking a button, etc.
+    
+    - event carries information about the change
+    - user type something -> input field changes -> react creates an event object
+    -imagine we have a a input field, event of it will look like this:
+    {
+      target: {
+        name: "name",
+        onchange = {updateForm} 
+    }
+    
+    if we type football club this has happen:
+    event -> ChangeEvent object -> event.target -> the <input> -> event.target.name -> "name" -> event.target.value -> "Football Club"
+
+    - so target is what triggered the event
+
+    - reminder -> in typescript we define types for variables like this:
+      const a: string = "hello";
+
+      so by event: we also define the type of the event object which are:
+          - so target is what triggered the event
+     - reminder -> in typescript we set types for variables like this:
+      const a: string = "hello";
+      
+      so here by event: we are setting the type of the event to:
+      ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+
+      top of screen we import import { type ChangeEvent } from "react";
+      <> give the type more information
+      for changeEvent react need to know:
+      - a changedEvent from what type HTML element?
+        - HTMLInputElement ->  tells react the event is from an input field
+        - HTMLSelectElement ->  tells react the event is from a select field
+          - select field is a dropdown menu
+        - HTMLTextAreaElement ->  tells react the event is from a textarea field
+          - textarea field is a multi-line text input field
+      - so basically we are saying updateForm should expect an event from an input field or a select field or a textarea field
+  */
   function updateForm(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+    // event.target looks like this:
+    // {
+    //   name: "name",
+    //   value: "Football Club"
+    // }
+    // so we store the name in name and the value in value
     const { name, value } = event.target;
+
+    // setForm is a function that updates the form state
+    // current is the current state of the form
+
+    // remember we had const [form, setForm] = useState<GroupFormState>(initialForm);
+    // there by form is the current state of the form and setForm is the function that updates the form state
+
+    // so form first get current in as input to know the current state of the form
+    // ... call spread operator
+    // spread operator is a way to spread the properties of an object into a new object
+    // by spreading we mean we are making a new object by copying the properties of the current object
+    // so ...current means take all the properties of the current object and copy them to a new object
+
+    // so now our current look like this:
+    // {
+    //   name: "Football Club",
+    //   description: "",
+    //   sport: "",
+    //   levels: "beginner",
+    //   kind: "training",
+    //   visibility: "public",
+    //   joinPolicy: "open",
+    //   maxMembers: "0",
+    //   locationName: "",
+    // }
+
+    // so above we saved the name and value of event.target to name and value
+    // so here by [name] : value we are finding the property of the object we created which has the same name
+    // to name we stored from event.target.name and replace the value with the value we stored from event.target.value
+    
     setForm((current) => ({ ...current, [name]: value }));
   }
 
