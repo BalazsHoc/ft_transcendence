@@ -29,7 +29,7 @@ class EventViewSet(viewsets.ModelViewSet):
     permission_classes=[permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly]
     pagination_class = AppPagination
     def get_queryset(self):
-        qs=Event.objects.select_related('creator','group').prefetch_related('participants','participants__user').annotate(attending_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_ATTENDING)), waiting_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_WAITING)))
+        qs=Event.objects.select_related('creator','group').prefetch_related('participants','participants__user').annotate(attending_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_ATTENDING), distinct=True), waiting_count=Count('participants', filter=Q(participants__status=EventParticipant.STATUS_WAITING), distinct=True))
         if self.request.user.is_authenticated:
             qs=qs.filter(Q(visibility=Event.VISIBILITY_PUBLIC) | Q(creator=self.request.user) | Q(group__memberships__user=self.request.user)).distinct()
         else:
