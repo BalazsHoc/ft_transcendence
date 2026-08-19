@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
@@ -78,6 +78,13 @@ export function GroupDetailsPage() {
   const [membersOpen, setMembersOpen] = useState(false);
   const applyErrorTimer = useRef<number | null>(null);
 
+  const loadRides = useCallback(async () => {
+    if (!groupId) return [] as ClubRideItem[];
+    const events = await getGroupEvents(groupId);
+    const list = Array.isArray(events) ? events : [];
+    return list.map((event) => eventToRide(event, i18n.language, t));
+  }, [groupId, i18n.language, t]);
+
   useEffect(() => {
     return () => {
       if (applyErrorTimer.current) window.clearTimeout(applyErrorTimer.current);
@@ -129,13 +136,9 @@ export function GroupDetailsPage() {
     setRsvpNeedsAuth(false);
     setRsvpBusyId(null);
 
-    getGroupEvents(groupId)
-      .then((events) => {
-        if (cancelled) return;
-        const list = Array.isArray(events) ? events : [];
-        setRides(
-          list.map((event) => eventToRide(event, i18n.language, t)),
-        );
+    loadRides()
+      .then((nextRides) => {
+        if (!cancelled) setRides(nextRides);
       })
       .catch(() => {
         if (!cancelled) setRides([]);
@@ -147,7 +150,7 @@ export function GroupDetailsPage() {
     return () => {
       cancelled = true;
     };
-  }, [groupId, user?.id, i18n.language, t]);
+  }, [groupId, user?.id, loadRides]);
 
   async function handleApply() {
     if (!groupId || joining) return;
@@ -242,38 +245,14 @@ export function GroupDetailsPage() {
     try {
       if (isLeaving) {
         await leaveEvent(ride.eventId);
-        setRides((current) =>
-          current.map((item) => {
-            if (item.id !== ride.id) return item;
-            const wasAttending = item.userStatus === "attending";
-            return {
-              ...item,
-              userStatus: null,
-              attendingCount: wasAttending
-                ? Math.max(0, (item.attendingCount ?? 1) - 1)
-                : item.attendingCount,
-            };
-          }),
-        );
+        setRides(await loadRides());
       } else {
         const result = await joinEvent(ride.eventId);
         const nextStatus =
           result.status === "attending" || result.status === "waiting"
             ? result.status
             : "attending";
-        setRides((current) =>
-          current.map((item) => {
-            if (item.id !== ride.id) return item;
-            return {
-              ...item,
-              userStatus: nextStatus,
-              attendingCount:
-                nextStatus === "attending"
-                  ? (item.attendingCount ?? 0) + 1
-                  : item.attendingCount,
-            };
-          }),
-        );
+        setRides(await loadRides());
         if (nextStatus === "waiting") {
           setRsvpInfo(t("club.rides.waitlistJoined"));
         }
