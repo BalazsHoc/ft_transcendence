@@ -57,6 +57,17 @@ load_node() {
   fi
 }
 
+load_backend_env() {
+  if [[ -f "$BACKEND/.env" ]]; then
+    set -a
+    # shellcheck disable=SC1091
+    source "$BACKEND/.env"
+    set +a
+  fi
+  export POSTGRES_HOST="${POSTGRES_HOST:-127.0.0.1}"
+  export POSTGRES_PORT="${POSTGRES_PORT:-5432}"
+}
+
 echo "Stopping anything already on :8000 and :5173..."
 kill_port 8000
 kill_port 5173
@@ -66,8 +77,8 @@ echo "Starting Postgres (make db) and stopping Docker app containers if they are
 if command -v docker >/dev/null 2>&1; then
   (cd "$ROOT" && docker compose stop backend frontend nginx >/dev/null 2>&1) || true
 fi
-export POSTGRES_HOST="${POSTGRES_HOST:-127.0.0.1}"
-export POSTGRES_PORT="${POSTGRES_PORT:-5432}"
+load_backend_env
+find "$BACKEND/core" -name '__pycache__' -type d -exec rm -rf {} + 2>/dev/null || true
 
 if [[ ! -d "$BACKEND/.venv" ]]; then
   echo "Creating backend virtualenv..."
@@ -100,12 +111,21 @@ if [[ ! -x "$FRONTEND/node_modules/.bin/vite" ]]; then
 fi
 
 echo "Migrating database..."
-(cd "$BACKEND" && python manage.py migrate --noinput)
-(cd "$BACKEND" && python manage.py seed_eval)
+(
+  cd "$BACKEND"
+  load_backend_env
+  python manage.py migrate --noinput
+)
+(
+  cd "$BACKEND"
+  load_backend_env
+  python manage.py seed_eval
+)
 
 echo "Starting backend (Daphne) on 127.0.0.1:8000..."
 (
   cd "$BACKEND"
+  load_backend_env
   # shellcheck disable=SC1091
   . .venv/bin/activate
   exec daphne -b 127.0.0.1 -p 8000 core.asgi:application
