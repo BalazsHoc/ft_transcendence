@@ -103,22 +103,21 @@ export function EventCard({
 				</Link>
 
 				<div className={styles.infoPanel}>
+					<div className={`${styles.badges} flex shrink-0 flex-wrap justify-start gap-2`}>
+						<Badge className="border-white/20 bg-white/10 text-white backdrop-blur-md">
+							{t(`sports.${event.sport}`)}
+						</Badge>
+
+						<Badge className="border-white/20 bg-white/10 text-white backdrop-blur-md">
+							{t(`discover.${event.level}`)}
+						</Badge>
+					</div>
 					<div className={styles.titleRow}>
 						<h3 className={styles.title}>
 							<Link to={`/events/${event.id}`}>
 								{event.title}
 							</Link>
 						</h3>
-
-						<div className={`${styles.badges} flex shrink-0 flex-wrap justify-end gap-2`}>
-							<Badge className="border-white/20 bg-white/10 text-white backdrop-blur-md">
-								{t(`sports.${event.sport}`)}
-							</Badge>
-
-							<Badge className="border-white/20 bg-white/10 text-white backdrop-blur-md">
-								{t(`discover.${event.level}`)}
-							</Badge>
-						</div>
 					</div>
 
 					<div className={styles.details}>
