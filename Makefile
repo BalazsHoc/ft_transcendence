@@ -7,7 +7,7 @@ COMPOSE := $(shell command -v docker-compose >/dev/null 2>&1 && echo "docker-com
 endif
 DEV_COMPOSE := $(COMPOSE) -f docker-compose.yml -f docker-compose.dev.yml
 
-.PHONY: all up down logs ps restart re clean help prepare-env db seed
+.PHONY: all up down logs ps restart re clean fclean help prepare-env db seed
 
 all: up
 
@@ -16,12 +16,14 @@ help:
 	@echo "make up       Same as make"
 	@echo "make db       Start only Postgres on localhost:5432 (daily Daphne + Vite)"
 	@echo "make seed     Reset the database to the committed snapshot"
-	@echo "make down     Stop containers (keeps Postgres volume and media)"
+	@echo "make down     Stop containers (keeps volumes)"
 	@echo "make logs     Follow container logs"
 	@echo "make ps       Show container status"
 	@echo "make restart  Restart running containers"
-	@echo "make re       down then up"
-	@echo "make clean    Stop containers and delete Postgres + static volumes"
+	@echo "make re       Clean containers, rebuild images, and start"
+	@echo "make clean    Stop/remove containers (keeps volumes)"
+	@echo "make fclean   Stop/remove containers AND delete all Compose volumes"
+	@echo "make prepare-env  Create .env and generate SECRET_KEY if needed"
 
 prepare-env:
 	@if [ ! -f .env ]; then cp .env.example .env; echo "Created .env from .env.example"; fi
@@ -48,7 +50,7 @@ up: prepare-env
 		exit 1; \
 	fi
 	@echo "Using: $(COMPOSE)"
-	$(COMPOSE) up --build -d
+	$(COMPOSE) up -d
 	@echo "Application is starting at https://localhost"
 	@echo "Accept the self-signed certificate warning in the browser if prompted."
 
@@ -80,9 +82,29 @@ seed: prepare-env
 		$(COMPOSE) run --rm --no-deps --entrypoint python backend manage.py seed_eval --flush; \
 	fi
 
+# Stop and REMOVE the containers, but keep named/anonymous volumes.
+# This is the non-destructive cleanup used by `make re`.
+clean:
+	@if [ -z "$(COMPOSE)" ]; then \
+		echo "Docker Compose is not installed. Install docker compose or docker-compose." >&2; \
+		exit 1; \
+	fi
+	$(COMPOSE) down
+	@echo "Containers removed. Volumes were kept."
+
+# Stop/remove containers AND remove Compose-managed volumes.
+# Use this when you explicitly want to reset persistent data.
+fclean:
+	@if [ -z "$(COMPOSE)" ]; then \
+		echo "Docker Compose is not installed. Install docker compose or docker-compose." >&2; \
+		exit 1; \
+	fi
+	$(COMPOSE) down -v
+	@echo "Containers and Compose volumes removed."
+
 down:
 	@if [ -z "$(COMPOSE)" ]; then \
-		echo "Docker Compose is not installed." >&2; \
+		echo "Docker Compose is not installed. Install docker compose or docker-compose." >&2; \
 		exit 1; \
 	fi
 	$(COMPOSE) down
@@ -96,8 +118,13 @@ ps:
 restart:
 	$(COMPOSE) restart
 
-re: down up
-
-clean: down
-	@if [ -n "$(COMPOSE)" ]; then $(COMPOSE) down -v; fi
-	@echo "Containers stopped. Postgres volume was deleted; media files are kept."
+# Rebuild images from scratch after removing the old containers.
+# Volumes are preserved, so database/media data survives.
+re: clean
+	@if [ -z "$(COMPOSE)" ]; then \
+		echo "Docker Compose is not installed. Install docker compose or docker-compose." >&2; \
+		exit 1; \
+	fi
+	@echo "Rebuilding images..."
+	$(COMPOSE) build --no-cache
+	$(MAKE) up
