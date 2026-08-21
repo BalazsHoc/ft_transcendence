@@ -336,17 +336,19 @@ export function EventDetailsPage() {
         </div>
       </div>
 
-      {isLoggedIn && isJoined && (
-        <div className="mt-8">
-          <section className="rounded-[28px] border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-[0_12px_30px_rgba(15,23,42,0.03)] sm:p-6">
-            <h2 className="mt-0 mb-4 text-xl font-semibold text-[var(--text)]">
-              {t("event.messages")}
-            </h2>
-
-            <EventChat eventId={eventId} />
-          </section>
+  {isLoggedIn && isJoined && (
+    <div className="mt-8">
+      <section className="rounded-[28px] border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-[0_12px_30px_rgba(15,23,42,0.03)] sm:p-6">
+        <h2 className="mt-0 mb-4 text-xl font-semibold text-[var(--text)]">
+          {t("event.messages")}
+        </h2>
+        
+        <div className="h-[500px] overflow-y-auto rounded-2xl border border-[var(--surface-border)] bg-[var(--panel)] p-3 scrollbar-thin">
+          <EventChat eventId={eventId} />
         </div>
-      )}
+      </section>
+    </div>
+  )}
 
     </div>
   );
