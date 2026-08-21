@@ -1,6 +1,47 @@
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.db import IntegrityError, transaction
 
 from .models import Notification
+from .serializers import NotificationSerializer
+
+
+NOTIFICATION_GROUP_PREFIX = "notifications_user_"
+
+
+def _broadcast_notification(notification_id, recipient_id):
+    """Push a committed notification to the recipient's WebSocket group."""
+
+    channel_layer = get_channel_layer()
+    if channel_layer is None:
+        return
+
+    try:
+        notification = Notification.objects.select_related("actor").get(
+            pk=notification_id,
+        )
+    except Notification.DoesNotExist:
+        return
+
+    async_to_sync(channel_layer.group_send)(
+        f"{NOTIFICATION_GROUP_PREFIX}{recipient_id}",
+        {
+            "type": "notification_created",
+            "notification": NotificationSerializer(notification).data,
+        },
+    )
+
+
+def _queue_notification_broadcast(notification, *, created):
+    if not created:
+        return
+
+    transaction.on_commit(
+        lambda: _broadcast_notification(
+            notification.pk,
+            notification.recipient_id,
+        ),
+    )
 
 
 def create_notification(
@@ -21,14 +62,17 @@ def create_notification(
         "target_url": target_url,
     }
     if dedupe_key is None:
-        return Notification.objects.create(recipient=recipient, **defaults)
+        notification = Notification.objects.create(recipient=recipient, **defaults)
+        _queue_notification_broadcast(notification, created=True)
+        return notification
     try:
         with transaction.atomic():
-            notification, _ = Notification.objects.get_or_create(
+            notification, created = Notification.objects.get_or_create(
                 recipient=recipient,
                 dedupe_key=dedupe_key,
                 defaults=defaults,
             )
+            _queue_notification_broadcast(notification, created=created)
             return notification
     except IntegrityError:
         return Notification.objects.get(recipient=recipient, dedupe_key=dedupe_key)

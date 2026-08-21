@@ -7,9 +7,8 @@ import {
   getUnreadNotificationCount,
   markNotificationRead,
 } from "../../api/notificationsApi";
+import { useAuth } from "../../features/auth/AuthContext";
 import type { NotificationItem } from "../../types/api";
-
-const POLL_INTERVAL_MS = 30_000;
 
 function actorLabel(notification: NotificationItem, fallback: string) {
   return notification.actor?.username || fallback;
@@ -84,6 +83,7 @@ function formatNotificationDate(value: string) {
 export function HomeNotifications() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { notificationRefreshKey } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
   const [items, setItems] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -117,11 +117,7 @@ export function HomeNotifications() {
 
   useEffect(() => {
     void load();
-    const interval = window.setInterval(() => {
-      void load(true);
-    }, POLL_INTERVAL_MS);
-    return () => window.clearInterval(interval);
-  }, [load]);
+  }, [load, notificationRefreshKey]);
 
   async function openNotification(notification: NotificationItem) {
     if (!notification.read_at) {
