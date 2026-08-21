@@ -95,5 +95,28 @@ public actor, JSON `payload`, optional `target_url`, `read_at`, and
 | `event_participant_joined` / `event_participant_left` | A user joins or leaves an event | `/events/<uuid>` |
 | `event_participant_promoted` | A waiting-list user is promoted after someone leaves | `/events/<uuid>` |
 
-`read-all` returns `{ "updated": <count> }`. The frontend header uses the
-list and unread-count endpoints with 30-second polling for the MVP.
+`read-all` returns `{ "updated": <count> }`. Authenticated clients receive a
+`notification` event over the existing presence socket as soon as a notification
+is committed:
+
+```text
+WS /ws/presence/?token=<jwt>
+```
+
+```json
+{
+  "type": "notification",
+  "notification": {
+    "id": 42,
+    "type": "friend_request",
+    "actor": { "id": "<uuid>", "username": "alex" },
+    "payload": {},
+    "target_url": "/profile#friends-incoming",
+    "read_at": null,
+    "created_at": "2026-08-19T12:00:00Z"
+  }
+}
+```
+
+The REST list and unread-count endpoints remain the recovery path on initial
+load and after a WebSocket reconnect.

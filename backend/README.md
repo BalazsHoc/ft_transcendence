@@ -252,11 +252,14 @@ GET/POST /api/messages/
 GET/POST /api/notifications/
 GET/POST /api/groups/{id}/messages/
 WS       /ws/groups/{id}/?token=<jwt>
+WS       /ws/presence/?token=<jwt>  # presence and notifications
 ```
 
 Friend requests and direct messages create recipient-only notifications. The
-frontend polls the notification list and unread count every 30 seconds and
-marks notifications as read when the user opens them.
+authenticated frontend receives new notifications immediately through the
+user's `/ws/presence/` WebSocket. The REST list and unread-count endpoints are
+still used on initial load and after reconnects, while notifications are marked
+as read when the user opens them.
 
 ## Run Tests
 

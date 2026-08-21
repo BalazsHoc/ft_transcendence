@@ -1,11 +1,13 @@
 from asgiref.sync import async_to_sync
 from channels.testing import WebsocketCommunicator
+from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITransactionTestCase
 from rest_framework_simplejwt.tokens import AccessToken
 
 from core.asgi import application
 from notifications.models import Notification
+from notifications.services import create_notification
 from groups.models import Group, GroupMembership
 from social.models import Friendship
 from accounts.models import PresenceSession
@@ -234,6 +236,34 @@ class PresenceWebsocketTests(APITransactionTestCase):
         self.assertFalse(PresenceSession.objects.filter(user=self.alex).exists())
         self.alex.refresh_from_db()
         self.assertIsNotNone(self.alex.last_seen)
+
+    def test_connected_user_receives_notification_push(self):
+        bob_token = str(AccessToken.for_user(self.bob))
+
+        async def communicate():
+            communicator = WebsocketCommunicator(
+                application,
+                f"/ws/presence/?token={bob_token}",
+            )
+            connected, _ = await communicator.connect()
+            await communicator.receive_json_from()
+
+            await database_sync_to_async(create_notification)(
+                recipient=self.bob,
+                actor=self.alex,
+                notification_type=Notification.TYPE_FRIEND_REQUEST,
+                payload={"friendship_id": 1},
+                target_url="/friends/requests",
+            )
+            pushed = await communicator.receive_json_from()
+            await communicator.disconnect()
+            return connected, pushed
+
+        connected, pushed = async_to_sync(communicate)()
+        self.assertTrue(connected)
+        self.assertEqual(pushed["type"], "notification")
+        self.assertEqual(pushed["notification"]["type"], Notification.TYPE_FRIEND_REQUEST)
+        self.assertEqual(pushed["notification"]["actor"]["username"], self.alex.username)
 
     def test_friends_receive_online_presence_updates(self):
         alex_token = str(AccessToken.for_user(self.alex))

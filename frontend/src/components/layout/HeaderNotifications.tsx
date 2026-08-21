@@ -13,8 +13,6 @@ import type { NotificationItem } from "../../types/api";
 import { useAuth } from "../../features/auth/AuthContext";
 import { IconButton } from "../shared/IconButton";
 
-const POLL_INTERVAL_MS = 30_000;
-
 function actorLabel(notification: NotificationItem, fallback: string) {
   return notification.actor?.username || fallback;
 }
@@ -84,7 +82,11 @@ function formatNotificationDate(value: string) {
 export function HeaderNotifications() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const {
+    user,
+    loading: authLoading,
+    notificationRefreshKey,
+  } = useAuth();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -124,12 +126,7 @@ export function HeaderNotifications() {
     if (authLoading || !user) return;
 
     void loadNotifications();
-    const interval = window.setInterval(() => {
-      void loadNotifications();
-    }, POLL_INTERVAL_MS);
-
-    return () => window.clearInterval(interval);
-  }, [authLoading, loadNotifications, user]);
+  }, [authLoading, loadNotifications, notificationRefreshKey, user]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
