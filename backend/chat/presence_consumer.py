@@ -11,6 +11,7 @@ from accounts.presence import (
     touch_presence_session,
     user_presence,
 )
+from notifications.services import NOTIFICATION_GROUP_PREFIX
 from social.models import Friendship
 
 
@@ -24,7 +25,9 @@ class PresenceConsumer(AsyncWebsocketConsumer):
             return
 
         self.presence_group = f"presence_user_{self.user.pk}"
+        self.notification_group = f"{NOTIFICATION_GROUP_PREFIX}{self.user.pk}"
         await self.channel_layer.group_add(self.presence_group, self.channel_name)
+        await self.channel_layer.group_add(self.notification_group, self.channel_name)
         self.session_id, became_online = await self.open_session()
         await self.accept()
         await self.send_presence()
@@ -35,6 +38,10 @@ class PresenceConsumer(AsyncWebsocketConsumer):
         if not hasattr(self, "presence_group"):
             return
         await self.channel_layer.group_discard(self.presence_group, self.channel_name)
+        await self.channel_layer.group_discard(
+            self.notification_group,
+            self.channel_name,
+        )
         if hasattr(self, "session_id"):
             became_offline = await self.close_session()
             if became_offline:
@@ -60,6 +67,14 @@ class PresenceConsumer(AsyncWebsocketConsumer):
                 "user_id": event["user_id"],
                 "is_online": event["is_online"],
                 "last_seen": event["last_seen"],
+            }
+        )
+
+    async def notification_created(self, event):
+        await self.send_json(
+            {
+                "type": "notification",
+                "notification": event["notification"],
             }
         )
 

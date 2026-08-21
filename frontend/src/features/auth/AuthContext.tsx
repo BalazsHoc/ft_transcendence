@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { User } from "../../types/api";
+import type { NotificationItem, User } from "../../types/api";
 import { clearTokens, getAccessToken, setTokens } from "../../api/client";
 import * as authApi from "../../api/authApi";
 
@@ -27,6 +27,7 @@ type AuthContextValue = {
   logout: () => void;
   presenceByUser: Record<string, PresenceSnapshot>;
   getPresence: (user: User | null | undefined) => PresenceSnapshot;
+  notificationRefreshKey: number;
 };
 const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -34,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [access, setAccess] = useState(getAccessToken());
   const [loading, setLoading] = useState(false);
   const [presenceByUser, setPresenceByUser] = useState<Record<string, PresenceSnapshot>>({});
+  const [notificationRefreshKey, setNotificationRefreshKey] = useState(0);
   async function refreshMe() {
     if (!getAccessToken()) return;
     setLoading(true);
@@ -116,6 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       );
       socket.onopen = () => {
         reconnectAttempt = 0;
+        setNotificationRefreshKey((current) => current + 1);
         heartbeatTimer = window.setInterval(() => {
           if (socket?.readyState === WebSocket.OPEN) {
             socket.send(JSON.stringify({ type: "heartbeat" }));
@@ -129,7 +132,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             user_id?: string;
             is_online?: boolean;
             last_seen?: string | null;
+            notification?: NotificationItem;
           };
+          if (data.type === "notification") {
+            if (data.notification?.id) {
+              setNotificationRefreshKey((current) => current + 1);
+            }
+            return;
+          }
           if (
             data.type !== "presence_update" ||
             !data.user_id ||
@@ -186,8 +196,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logout,
       presenceByUser,
       getPresence,
+      notificationRefreshKey,
     }),
-    [user, access, loading, presenceByUser],
+    [user, access, loading, presenceByUser, notificationRefreshKey],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
