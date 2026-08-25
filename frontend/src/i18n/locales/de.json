@@ -558,5 +558,140 @@
   },
   "notFound": {
     "title": "Seite nicht gefunden"
+  },
+  "privacyPolicy": {
+    "back": "Zurück",
+    "title": "Datenschutzerklärung",
+    "lastUpdated": "Zuletzt aktualisiert: 25. August 2026",
+    "sections": [
+      {
+        "title": "Über dieses Projekt",
+        "paragraphs": [
+          "Vienna Active ist eine von Studierenden im Rahmen des 42-Projekts ft_transcendence entwickelte Lernanwendung. Nutzer können Sportaktivitäten in Wien finden, Veranstaltungen und Gruppen erstellen oder ihnen beitreten, Profile verwalten, Kontakte knüpfen und Chats verwenden.",
+          "Diese Erklärung beschreibt die Verarbeitung von Informationen in der aktuellen Anwendung. Da Vienna Active ein Studierendenprojekt ist, können Anwendungsdaten während der Entwicklung oder Evaluierung neu gestartet oder zurückgesetzt werden."
+        ]
+      },
+      {
+        "title": "Kontodaten",
+        "paragraphs": [
+          "Bei einer Registrierung mit E-Mail und Passwort speichert Vienna Active die Daten, die zur Erstellung und Nutzung des Kontos erforderlich sind.",
+          "Passwörter werden mit dem Authentifizierungssystem von Django gehasht und nicht als lesbarer Klartext gespeichert."
+        ],
+        "bullets": [
+          "E-Mail-Adresse, Name, generierter Benutzername und interne Konto-ID.",
+          "Gewählter Wiener Bezirk sowie angegebene Sprachen und Interessen.",
+          "Erstellungsdaten des Kontos und ein sicherer Hash des Passworts."
+        ]
+      },
+      {
+        "title": "Google-Anmeldung",
+        "paragraphs": [
+          "Bei der Anmeldung mit Google erhält Vienna Active die Google-Konto-ID (sub), die bestätigte E-Mail-Adresse, grundlegende Profildaten wie den Namen und die Bestätigung, dass Google die E-Mail-Adresse verifiziert hat.",
+          "Vienna Active erhält oder speichert niemals das Google-Passwort. Angefordert werden nur OpenID, E-Mail und grundlegende Profildaten. Es wird kein Zugriff auf Gmail, Drive, Calendar, Contacts oder andere unabhängige Google-Dienste angefordert.",
+          "Google-Daten werden nur zur Anmeldung und zum Erstellen, Erkennen oder Verknüpfen des Vienna-Active-Kontos verwendet. Google-OAuth-Zugriffs- und Refresh-Tokens werden nicht in der Vienna-Active-Datenbank gespeichert. Temporäre OAuth-State-, PKCE- und Einmal-Ticket-Daten werden bei der Anmeldung verbraucht oder laufen nach kurzer Zeit ab. Für Google gelten die eigenen Datenschutzbestimmungen."
+        ]
+      },
+      {
+        "title": "Profil-, Sozial- und Anwendungsdaten",
+        "paragraphs": [
+          "Je nach Nutzung verarbeitet Vienna Active Profildaten, Freundschaften und Blockierungen, Gruppen und Mitgliedschaften, Veranstaltungen und Teilnahmen, Direkt-, Gruppen- und Eventnachrichten, Benachrichtigungen, Online-Status, Zuletzt-online-Angaben sowie Erstellungs- und Änderungszeitpunkte.",
+          "Benutzername, Name, Avatar, Bezirk, Biografie, Sprachen, Interessen, Online-Status, Zuletzt-online-Zeit und Kontodatum können für andere Nutzer sichtbar sein. Bestimmte Profile sowie aktive Gruppen und öffentliche Events sind auch über die mit API-Schlüssel geschützte, schreibgeschützte öffentliche API verfügbar. E-Mail-Adressen, Passwortdaten, Google-IDs, private Events, Mitgliedschaften und Chats werden dort nicht ausgegeben."
+        ]
+      },
+      {
+        "title": "Standorte und hochgeladene Inhalte",
+        "paragraphs": [
+          "Events und Gruppen können Ortsnamen, Adressen, Breiten- und Längengrade enthalten. Bei der Adresssuche können Suchtext, Sprache, Adresse oder Koordinaten an den konfigurierten Dienst MapTiler, Geoapify oder OpenStreetMap Nominatim gesendet werden. Ergebnisse können zwischengespeichert werden. Vienna Active verfolgt den Gerätestandort nicht fortlaufend.",
+          "Avatare, Eventbilder, Gruppenbilder, Beschreibungen, Biografien und Nachrichten werden für die jeweiligen Funktionen gespeichert. Lade nur Inhalte hoch, die du teilen darfst, und vermeide sensible Informationen in Profilen, öffentlichen Events, Gruppen, Bildern oder Chats."
+        ]
+      },
+      {
+        "title": "Technische Daten und Zwecke",
+        "paragraphs": [
+          "Vienna Active verarbeitet Anmelde-, Sitzungs-, API-, WebSocket-, Präsenz-, Anfrage-, Fehler- und Dateiinformationen, die für Authentifizierung, Betrieb, Ratenbegrenzung, Zugriffsschutz und Fehlersuche nötig sind. Vienna-Active-Zugriffs- und Refresh-Tokens werden im Local Storage des Browsers gespeichert und beim Abmelden aus diesem Browser entfernt.",
+          "Die Daten dienen Konten und Anmeldung, Profilen und sozialen Funktionen, Events und Gruppen, Nachrichten, Benachrichtigungen, Präsenz, Standortsuche, der schreibgeschützten API, Sicherheit und technischem Betrieb. Vienna Active verkauft keine personenbezogenen Daten und nutzt sie nicht für zielgerichtete Werbung."
+        ]
+      },
+      {
+        "title": "Dienste Dritter",
+        "paragraphs": ["Vienna Active kann Google zur Anmeldung und MapTiler, Geoapify oder Nominatim für Karten und Geocoding verwenden. Für diese Anbieter gelten deren eigene Bedingungen und Datenschutzerklärungen."]
+      },
+      {
+        "title": "Entwicklungsdaten und deine Möglichkeiten",
+        "paragraphs": [
+          "Daten werden gespeichert, solange sie für die vorhandenen Funktionen oder die Entwicklungsumgebung benötigt werden. Dienst, Datenbank, Uploads und Testkonten können während Entwicklung oder Evaluierung zurückgesetzt werden. Vienna Active ist daher kein dauerhafter Speicher. Derzeit gibt es keine selbst bedienbare Kontolöschung.",
+          "Du kannst unterstützte Profilfelder ändern, Events oder Gruppen verlassen, Freundschaften und Blockierungen verwalten, dich abmelden und den Vienna-Active-Zugriff im Google-Konto widerrufen. Der Google-Widerruf löscht das Vienna-Active-Konto nicht automatisch.",
+          "Bei Fragen zu deinen Daten oder für eine Löschanfrage kannst du die studentischen Mitwirkenden über die E-Mail-Links in der Fußzeile kontaktieren. Anfragen können manuell bearbeitet werden. Diese Erklärung kann mit dem Projekt aktualisiert werden."
+        ]
+      }
+    ]
+  },
+  "termsOfService": {
+    "back": "Zurück",
+    "title": "Nutzungsbedingungen",
+    "lastUpdated": "Zuletzt aktualisiert: 25. August 2026",
+    "sections": [
+      {
+        "title": "Über Vienna Active",
+        "paragraphs": [
+          "Vienna Active ist eine von Studierenden im Rahmen des 42-Projekts ft_transcendence entwickelte Lernanwendung. Sie bietet Funktionen zum Finden von Sportaktivitäten in Wien, Erstellen und Beitreten von Events und Gruppen, Verwalten eines Profils, Vernetzen und Chatten.",
+          "Mit der Erstellung eines Kontos oder der Nutzung von Vienna Active erklärst du dich mit einer verantwortungsvollen Nutzung einverstanden."
+        ]
+      },
+      {
+        "title": "Lern- und Demonstrationsbetrieb",
+        "paragraphs": ["Vienna Active ist ein Studierendenprojekt und kein dauerhaftes kommerzielles Angebot. Funktionen können geändert, entfernt oder vorübergehend unbrauchbar sein. Dienst, Datenbank, Uploads oder Konten können während Entwicklung und Evaluierung zurückgesetzt werden. Bewahre wichtige Informationen nicht ausschließlich in Vienna Active auf."]
+      },
+      {
+        "title": "Konten, Profile und soziale Funktionen",
+        "paragraphs": [
+          "Du kannst dich mit E-Mail und Passwort registrieren oder Google verwenden. Du bist für angemessen richtige Kontodaten, den Schutz deines Kontos, ein nicht weitergegebenes Passwort und das Abmelden auf gemeinsam genutzten Geräten verantwortlich.",
+          "Du darfst nicht auf fremde Konten zugreifen, andere imitieren, bewusst irreführende Konten erstellen, Kontozugänge teilen oder die Anmeldung umgehen. Vienna Active erhält dein Google-Passwort nicht.",
+          "Einige Profil- und Präsenzdaten sind für andere Nutzer und über die mit API-Schlüssel geschützte, schreibgeschützte öffentliche API sichtbar. Trage keine privaten oder sensiblen Daten in öffentliche Profilfelder ein."
+        ]
+      },
+      {
+        "title": "Events, Gruppen und körperliche Aktivität",
+        "paragraphs": [
+          "Nutzer können Sportevents und Gruppen erstellen, bearbeiten, ihnen beitreten oder sie verlassen. Ersteller sind für zutreffende Angaben, erlaubte Bilder und Orte, wichtige Mitteilungen, faire Behandlung und die Vermeidung rechtswidriger oder bewusst unsicherer Aktivitäten verantwortlich.",
+          "Vienna Active stellt Koordinationswerkzeuge bereit; das Studierendenteam organisiert, prüft, beaufsichtigt oder versichert nutzergenerierte Aktivitäten nicht. Sport und persönliche Treffen können Verletzungen, Krankheiten, Sachschäden, falsche Angaben und Begegnungen mit unbekannten Personen mit sich bringen. Prüfe vor der Teilnahme Gesundheit, Erfahrung, Ausrüstung und Bedingungen.",
+          "Kontaktiere in Notfällen den zuständigen Notdienst. Verlasse dich dafür nicht auf Vienna-Active-Chats oder Benachrichtigungen."
+        ]
+      },
+      {
+        "title": "Nachrichten und Nutzerinhalte",
+        "paragraphs": [
+          "Vienna Active bietet Direktnachrichten zwischen bestätigten Freunden sowie Event- und Gruppenchats. Sei respektvoll, belästige oder bedrohe niemanden, sende keinen Spam und teile private Daten anderer nicht ohne Erlaubnis.",
+          "Du bleibst für Profile, Bilder, Beschreibungen, Orte und Nachrichten verantwortlich. Reiche nur eigene oder erlaubte Inhalte ein. Du erlaubst Vienna Active, diese für die Funktionen der Anwendung zu speichern, zu verarbeiten und anzuzeigen. Inhalte können bei einem Entwicklungsreset gelöscht werden."
+        ]
+      },
+      {
+        "title": "Zulässige Nutzung",
+        "paragraphs": ["Du darfst Vienna Active nicht für Folgendes verwenden:"],
+        "bullets": [
+          "Andere belästigen, bedrohen, diskriminieren oder missbrauchen.",
+          "Illegale oder bewusst gefährliche Aktivitäten organisieren.",
+          "Schadsoftware, schädlichen Code oder automatisierten Spam verbreiten.",
+          "Die Anwendung ohne Erlaubnis untersuchen oder stören.",
+          "Authentifizierung, Berechtigungen, Ratenbegrenzungen, Blockierungen oder Sicherheitskontrollen umgehen.",
+          "Zugangsdaten oder Tokens anderer beschaffen, Nutzerdaten scrapen, Datensätze manipulieren oder die öffentliche API missbrauchen.",
+          "Rechtswidrige oder unerlaubt verwendete Inhalte hochladen."
+        ]
+      },
+      {
+        "title": "Dienste Dritter und Verfügbarkeit",
+        "paragraphs": [
+          "Vienna Active verwendet externe Dienste für Google-Anmeldung, Karten und Geocoding. Für sie gelten eigene Bedingungen, und sie können ausfallen.",
+          "Das Team bemüht sich um eine funktionale und angemessen sichere Lernanwendung, verspricht aber keine dauerhafte Verfügbarkeit, Fehlerfreiheit, dauerhafte Speicherung oder Eignung für eine bestimmte Aktivität. Nutzer bleiben für Konten, Inhalte, Entscheidungen, Interaktionen und die Teilnahme an Aktivitäten verantwortlich."
+        ]
+      },
+      {
+        "title": "Datenschutz, Änderungen und Kontakt",
+        "paragraphs": [
+          "Für die Nutzung gilt auch die Datenschutzerklärung von Vienna Active. Diese Bedingungen können mit dem Projekt aktualisiert werden.",
+          "Fragen können über die E-Mail-Links in der Fußzeile an die studentischen Mitwirkenden gesendet werden."
+        ]
+      }
+    ]
   }
 }

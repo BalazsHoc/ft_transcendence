@@ -558,5 +558,144 @@
   },
   "notFound": {
     "title": "Page not found"
+  },
+  "privacyPolicy": {
+    "back": "Back",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: 25 August 2026",
+    "sections": [
+      {
+        "title": "About this project",
+        "paragraphs": [
+          "Vienna Active is an educational application created by students as part of the 42 ft_transcendence project. It helps users discover sports activities in Vienna, create and join events and groups, maintain a profile, connect with other users, and communicate through chats.",
+          "This policy describes the information processed by the current application. Because Vienna Active is a student project, its application data may be restarted or reset during development and evaluation."
+        ]
+      },
+      {
+        "title": "Account information",
+        "paragraphs": [
+          "When you register with email and password, Vienna Active stores the information needed to create and operate your account.",
+          "Passwords are hashed using Django's authentication system and are not stored as readable plaintext."
+        ],
+        "bullets": [
+          "Your email address, name, generated username, and internal account identifier.",
+          "Your selected Vienna district and any languages or interests you provide.",
+          "Account creation information and a securely hashed version of your password."
+        ]
+      },
+      {
+        "title": "Google sign-in",
+        "paragraphs": [
+          "If you sign in with Google, Vienna Active receives your Google account identifier (sub), verified email address, basic profile information such as your name, and confirmation that Google verified your email.",
+          "Vienna Active never receives or stores your Google password. It requests only OpenID, email, and basic profile access. It does not request Gmail, Drive, Calendar, Contacts, or other unrelated Google services.",
+          "Google information is used only to authenticate you and create, identify, or link your Vienna Active account. Google OAuth access and refresh tokens are not stored in the Vienna Active database. Temporary OAuth state, PKCE information, and one-time login tickets are consumed during authentication or expire after a short period. Google's own privacy policy applies to its service."
+        ]
+      },
+      {
+        "title": "Profile, social, and application data",
+        "paragraphs": [
+          "Depending on how you use the application, Vienna Active processes profile details, friendships and blocks, groups and memberships, events and participation, direct and group/event messages, notifications, online presence, last-seen information, and creation or update timestamps.",
+          "Profile fields such as your username, name, avatar, district, biography, languages, interests, online status, last-seen time, and account date may be visible to other users. Designated profile, active-group, and public-event information is also available through the API-key-protected read-only public API. Email addresses, password information, Google identifiers, private events, memberships, and chats are not exposed by that API."
+        ]
+      },
+      {
+        "title": "Locations and uploaded content",
+        "paragraphs": [
+          "Events and groups can contain location names, addresses, latitude, and longitude. Address searches may send a search term, language, address, or coordinates to the configured MapTiler, Geoapify, or OpenStreetMap Nominatim service. Results may be cached. Vienna Active does not continuously track your device location.",
+          "Avatars, event images, group covers, descriptions, biographies, and messages are stored so the relevant features work. Upload only content you may share, and avoid putting sensitive information into profiles, public events, groups, images, or chats."
+        ]
+      },
+      {
+        "title": "Technical information and purposes",
+        "paragraphs": [
+          "Vienna Active processes login, session, API, WebSocket, presence, request, error, and file information needed to authenticate users, operate the application, apply rate limits, prevent unauthorized access, and diagnose problems. Vienna Active access and refresh tokens are stored in your browser's local storage and removed from that browser when you log out.",
+          "This information is used for account creation and authentication, profiles and social features, events and groups, messaging, notifications, presence, location search, the read-only API, security, and technical operation. Vienna Active does not sell personal information or use it for targeted advertising."
+        ]
+      },
+      {
+        "title": "Third-party services",
+        "paragraphs": [
+          "Vienna Active may communicate with Google for authentication and with MapTiler, Geoapify, or Nominatim for maps and geocoding. These providers operate under their own terms and privacy policies."
+        ]
+      },
+      {
+        "title": "Development data and your choices",
+        "paragraphs": [
+          "Information is kept while needed for the implemented features or development environment. The service, database, uploads, and test accounts may be reset during development or evaluation, so Vienna Active should not be treated as permanent storage. The current application does not provide self-service account deletion.",
+          "You can edit supported profile fields, leave events or groups, manage friendships and blocks, log out, and revoke Vienna Active access through your Google Account. Revoking Google access does not itself delete your Vienna Active account.",
+          "For questions about your information or a deletion request, contact the student contributors through the email links in the application footer. Requests may be handled manually by the project team. This policy may be updated as the project changes."
+        ]
+      }
+    ]
+  },
+  "termsOfService": {
+    "back": "Back",
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: 25 August 2026",
+    "sections": [
+      {
+        "title": "About Vienna Active",
+        "paragraphs": [
+          "Vienna Active is an educational application developed by students as part of the 42 ft_transcendence project. It provides tools for discovering sports activities in Vienna, creating and joining events and groups, maintaining a profile, connecting with users, and communicating through chats.",
+          "By creating an account or using Vienna Active, you agree to use the application responsibly."
+        ]
+      },
+      {
+        "title": "Educational and demonstration use",
+        "paragraphs": [
+          "Vienna Active is a student project rather than a permanent commercial service. Features may change, stop working, or be removed. The service may be restarted, and its database, uploads, or accounts may be reset during development or evaluation. Do not use Vienna Active as the only place where you keep important information."
+        ]
+      },
+      {
+        "title": "Accounts, profiles, and social features",
+        "paragraphs": [
+          "You may register with email and password or sign in with Google. You are responsible for reasonably accurate account information, protecting your account, using a password you do not share, and logging out on shared devices.",
+          "You must not access another person's account, impersonate someone, create deliberately misleading accounts, share account access, or bypass login. Vienna Active does not receive your Google password.",
+          "Some profile and presence information is visible to other users and through the API-key-protected read-only public API. Do not add private or sensitive information to public profile fields."
+        ]
+      },
+      {
+        "title": "Events, groups, and physical activity",
+        "paragraphs": [
+          "Users may create, edit, join, leave, or participate in sports events and groups. Creators are responsible for accurate information, permitted images and locations, communicating important changes, treating participants fairly, and avoiding unlawful or deliberately unsafe activities.",
+          "Vienna Active supplies coordination tools; the student team does not organize, inspect, supervise, or insure user-created activities. Sports and in-person meetings can involve injury, illness, property damage, inaccurate information, and interaction with people you do not know. Consider your health, experience, equipment, and conditions before participating.",
+          "In an emergency, contact the appropriate emergency service. Do not rely on Vienna Active chats or notifications for emergency communication."
+        ]
+      },
+      {
+        "title": "Messaging and user content",
+        "paragraphs": [
+          "Vienna Active includes direct messages between accepted friends and chats for events and groups. Be respectful, do not harass or threaten others, do not send spam, and do not share another person's private information without permission.",
+          "You remain responsible for profiles, images, descriptions, locations, and messages you submit. Submit only content you created or may use. By submitting it, you allow Vienna Active to store, process, and display it as needed for the application's features. Content may be deleted during a development reset."
+        ]
+      },
+      {
+        "title": "Acceptable use",
+        "paragraphs": ["You must not use Vienna Active to:"],
+        "bullets": [
+          "Harass, threaten, discriminate against, or abuse another person.",
+          "Organize illegal or deliberately dangerous activities.",
+          "Publish malware, harmful code, or automated spam.",
+          "Probe or interfere with the application without authorization.",
+          "Bypass authentication, authorization, rate limits, blocking, or other security controls.",
+          "Obtain another user's credentials or tokens, scrape user information, manipulate records, or misuse the public API.",
+          "Upload unlawful content or content you do not have permission to use."
+        ]
+      },
+      {
+        "title": "Third-party services and availability",
+        "paragraphs": [
+          "Vienna Active uses third-party services for Google authentication, maps, and geocoding. They operate under their own terms and may be unavailable.",
+          "The team aims to make Vienna Active functional and reasonably secure for its educational purpose, but cannot promise permanent availability, error-free operation, permanent storage, or suitability for a particular activity. Users remain responsible for their accounts, content, decisions, interactions, and participation in activities."
+        ]
+      },
+      {
+        "title": "Privacy, changes, and contact",
+        "paragraphs": [
+          "Use of Vienna Active also involves the processing described in the Vienna Active Privacy Policy. These terms may be updated as the project changes.",
+          "Questions can be sent to the student contributors through the email links in the application footer."
+        ]
+      }
+    ]
   }
 }
