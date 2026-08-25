@@ -28,6 +28,7 @@ type AuthContextValue = {
   presenceByUser: Record<string, PresenceSnapshot>;
   getPresence: (user: User | null | undefined) => PresenceSnapshot;
   notificationRefreshKey: number;
+  completeGoogleLogin: (ticket: string) => Promise<void>;
 };
 const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -58,6 +59,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTokens(data.access, data.refresh);
     setAccess(data.access);
     await refreshMe();
+  }
+  async function completeGoogleLogin(ticket: string) {
+    const data = await authApi.exchangeGoogleTicket(ticket);
+
+    setTokens(data.access, data.refresh);
+    setAccess(data.access);
+
+    if (data.user) {
+      setUser(data.user);
+    } else {
+      await refreshMe();
+    }
   }
   async function doRegister(payload: {
     email: string;
@@ -192,6 +205,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       login: doLogin,
       register: doRegister,
+      completeGoogleLogin,
       refreshMe,
       logout,
       presenceByUser,

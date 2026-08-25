@@ -1,3 +1,4 @@
+import { API_URL } from "./client";
 import { apiRequest } from "./client";
 import { User } from "../types/api";
 export type AuthResponse = { access: string; refresh: string; user?: User };
@@ -55,4 +56,17 @@ export function updateMe(
     method: "PATCH",
     body: form,
   });
+}
+
+
+export function exchangeGoogleTicket(ticket: string) {
+  return apiRequest<AuthResponse>("/api/auth/google/exchange/", {
+    method: "POST",
+    body: JSON.stringify({ ticket }),
+  });
+}
+
+
+export function getGoogleLoginUrl() {
+  return `${API_URL}/api/auth/google/start/`;
 }

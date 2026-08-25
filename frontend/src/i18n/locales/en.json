@@ -114,7 +114,11 @@
     "noAccount": "New here?",
     "registerLink": "Create an account",
     "haveAccount": "Already have an account?",
-    "loginLink": "Log in"
+    "loginLink": "Log in",
+    "or": "or",
+    "continueWithGoogle": "Continue with Google",
+    "googleLoginFailed": "Google login failed",
+    "completingGoogleLogin": "Completing Google login…"
   },
   "sports": {
     "badminton": "Badminton",

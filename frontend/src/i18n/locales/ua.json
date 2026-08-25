@@ -114,7 +114,11 @@
     "noAccount": "Вперше тут?",
     "registerLink": "Створити акаунт",
     "haveAccount": "Вже є акаунт?",
-    "loginLink": "Увійти"
+    "loginLink": "Увійти",
+    "or": "або",
+    "continueWithGoogle": "Продовжити з Google",
+    "googleLoginFailed": "Не вдалося увійти через Google",
+    "completingGoogleLogin": "Завершення входу через Google…"
   },
   "sports": {
     "badminton": "Бадмінтон",

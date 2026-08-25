@@ -20,6 +20,7 @@ import { UiElementsTest } from "../pages/UiElementsTest";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PrivacyPolicyPage } from "../pages/PrivacyPolicyPage";
 import { TermsOfServicePage } from "../pages/TermsOfServicePage";
+import { GoogleCallbackPage } from "../pages/auth/GoogleCallbackPage";
 
 export function App() {
   return (
@@ -45,6 +46,7 @@ export function App() {
         <Route path="terms-of-service" element={<TermsOfServicePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="auth/google/callback" element={<GoogleCallbackPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

@@ -5,6 +5,7 @@ import { useAuth } from "../../features/auth/AuthContext";
 import { PhotoBackdrop } from "../../components/shared/PhotoBackdrop";
 import Button from "../../components/shared/Button";
 import styles from "../../components/shared/FormCard.module.css";
+import { getGoogleLoginUrl } from "../../api/authApi";
 
 export function LoginPage() {
   const { t } = useTranslation();
@@ -58,6 +59,18 @@ export function LoginPage() {
             {t("auth.submitLogin")}
           </Button>
         </form>
+        <div className="my-5 flex items-center gap-3">
+          <div className="h-px flex-1 bg-white/20" />
+          <span className="text-sm text-white/70">{t("auth.or")}</span>
+          <div className="h-px flex-1 bg-white/20" />
+        </div>
+        <Button
+          type="button"
+          variant="secondary"
+          className="w-full"
+          onClick={() => {window.location.assign(getGoogleLoginUrl());}}>
+          {t("auth.continueWithGoogle")}
+        </Button>
         {error && (
           <p className="mt-4 text-center text-sm text-white">{error}</p>
         )}
