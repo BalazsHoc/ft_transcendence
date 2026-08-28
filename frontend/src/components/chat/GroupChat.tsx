@@ -1,15 +1,30 @@
-import { useEffect, useRef, useState, type ChangeEvent, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent,
+} from "react";
 import { useTranslation } from "react-i18next";
-import { Users, Send } from "lucide-react";
+import { Send, Users } from "lucide-react";
+
 import { getGroupMessages, sendGroupMessage } from "../../api/groupMessagesApi";
 import { getAccessToken } from "../../api/client";
 import type { GroupMessageItem } from "../../types/api";
 import { useAuth } from "../../features/auth/AuthContext";
 import Button from "../shared/Button";
 
+import styles from "./GroupChat.module.css";
+
 const WS_URL = import.meta.env.VITE_WS_URL || "ws://127.0.0.1:8000";
 
-export function GroupChat({ groupId, groupName }: { groupId: string; groupName: string }) {
+export function GroupChat({
+  groupId,
+  groupName,
+}: {
+  groupId: string;
+  groupName: string;
+}) {
   const { t } = useTranslation();
   const { user: currentUser } = useAuth();
 
@@ -27,6 +42,7 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
 
     setMessages([]);
     setStatusMessage("");
+    setConnected(false);
 
     getGroupMessages(groupId)
       .then((data) => {
@@ -127,6 +143,7 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
 
     try {
       const message = await sendGroupMessage(groupId, trimmed);
+
       setMessages((previous) => [...previous, message]);
       setText("");
     } catch (error: unknown) {
@@ -142,29 +159,29 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
     <section
       id="group-chat"
       aria-label={t("groups.chatTitle")}
-      className="flex h-[500px] flex-col overflow-hidden rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] shadow-sm"
+      className={styles.chatPanel}
     >
       {/* Header */}
-      <header className="flex items-center gap-3 border-b border-[var(--surface-border)] bg-gradient-to-r from-[var(--bg)] to-transparent p-4">
-        <div className="relative shrink-0">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--bg)] text-[var(--text)] ring-2 ring-[var(--surface)]">
+      <header className={styles.header}>
+        <div className={styles.headerIconWrapper}>
+          <span className={styles.headerIcon}>
             <Users size={18} />
           </span>
 
           <span
-            className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--surface)] ${
-              connected ? "bg-emerald-500" : "bg-[var(--muted)]"
+            className={`${styles.connectionIndicator} ${
+              connected ? styles.connected : styles.disconnected
             }`}
             aria-hidden="true"
           />
         </div>
 
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-medium text-[var(--text)]">
+        <div className={styles.headerContent}>
+          <p className={styles.groupName}>
             {groupName}
           </p>
 
-          <p className="truncate text-xs text-[var(--muted)]">
+          <p className={styles.connectionStatus}>
             {connected
               ? t("groups.chatConnected")
               : t("groups.chatDisconnected")}
@@ -173,15 +190,16 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
       </header>
 
       {/* Messages */}
-      <div className="min-h-0 flex-1 overflow-y-auto p-4">
+      <div className={styles.messages}>
         {messages.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-2 text-center">
+          <div className={styles.emptyState}>
             <Users
               size={28}
-              className="text-[var(--muted)] opacity-40"
+              className={styles.emptyIcon}
+              aria-hidden="true"
             />
 
-            <p className="text-sm text-[var(--muted)]">
+            <p className={styles.emptyText}>
               {t("groups.chatEmpty")}
             </p>
           </div>
@@ -212,21 +230,25 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
               <div
                 key={message.id}
                 className={[
-                  "flex animate-message-in flex-col",
-                  isOwn ? "items-end" : "items-start",
-                  isFirstInGroup ? "mt-3" : "mt-0.5",
+                  styles.messageRow,
+                  isOwn
+                    ? styles.messageRowOwn
+                    : styles.messageRowOther,
+                  isFirstInGroup
+                    ? styles.messageRowFirst
+                    : styles.messageRowContinued,
                 ].join(" ")}
               >
                 <div
                   className={[
-                    "max-w-[75%] px-4 py-2 text-sm shadow-sm",
+                    styles.messageBubble,
                     isOwn
-                      ? "rounded-2xl rounded-br-md bg-[var(--button-bg)] text-[var(--button-text)]"
-                      : "rounded-2xl rounded-bl-md border border-[var(--surface-border)] bg-[var(--bg)] text-[var(--text)]",
+                      ? styles.ownBubble
+                      : styles.otherBubble,
                   ].join(" ")}
                 >
                   {!isOwn && isFirstInGroup && (
-                    <p className="mb-0.5 text-xs font-medium text-[var(--muted)]">
+                    <p className={styles.senderName}>
                       {message.sender?.username || groupName}
                     </p>
                   )}
@@ -235,7 +257,7 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
                 </div>
 
                 {isLastInGroup && (
-                  <span className="mt-1 px-1 text-[11px] text-[var(--muted)]">
+                  <span className={styles.timestamp}>
                     {time}
                   </span>
                 )}
@@ -247,18 +269,18 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
         <div ref={bottomRef} />
       </div>
 
-      {/* Error/status */}
+      {/* Status */}
       {statusMessage && (
         <p
           role="alert"
-          className="px-4 pb-2 text-xs text-red-600"
+          className={styles.statusMessage}
         >
           {statusMessage}
         </p>
       )}
 
       {/* Input */}
-      <div className="flex items-center gap-2 border-t border-[var(--surface-border)] p-3">
+      <div className={styles.inputRow}>
         <input
           ref={inputRef}
           value={text}
@@ -272,7 +294,7 @@ export function GroupChat({ groupId, groupName }: { groupId: string; groupName: 
           }}
           placeholder={t("groups.chatPlaceholder")}
           aria-label={t("groups.chatPlaceholder")}
-          className="min-w-0 flex-1 rounded-full"
+          className={styles.input}
         />
 
         <Button

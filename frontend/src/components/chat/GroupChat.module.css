@@ -62,7 +62,7 @@
   flex: 1;
 }
 
-.eventName {
+.groupName {
   margin: 0;
   overflow: hidden;
   color: var(--text);
@@ -138,8 +138,8 @@
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  overflow-wrap: anywhere;
   box-shadow: 0 1px 3px rgb(15 23 42 / 0.08);
+  overflow-wrap: anywhere;
 }
 
 .ownBubble {
@@ -193,6 +193,10 @@
   min-width: 0;
   flex: 1;
   border-radius: 9999px;
+}
+
+.sendButton {
+  flex-shrink: 0;
 }
 
 @keyframes messageIn {

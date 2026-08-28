@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type ChangeEvent, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type KeyboardEvent,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { CalendarDays, Send } from "lucide-react";
 
@@ -8,64 +14,103 @@ import { useAuth } from "../../features/auth/AuthContext";
 import type { MessageItem } from "../../types/api";
 import Button from "../shared/Button";
 
+import styles from "./EventChat.module.css";
+
 const WS_URL = import.meta.env.VITE_WS_URL || "ws://127.0.0.1:8000";
 
-export function EventChat({ eventId, eventTitle }: { eventId: string; eventTitle?: string }) {
+export function EventChat({
+  eventId,
+  eventTitle,
+}: {
+  eventId: string;
+  eventTitle?: string;
+}) {
   const { t } = useTranslation();
   const { user: currentUser } = useAuth();
+
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [text, setText] = useState("");
   const [connected, setConnected] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
+
   const wsRef = useRef<WebSocket | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+
     setMessages([]);
     setStatusMessage("");
+    setConnected(false);
 
     getEventMessages(eventId)
       .then((data) => {
-        if (!cancelled) setMessages(data);
+        if (!cancelled) {
+          setMessages(data);
+        }
       })
       .catch((loadError: unknown) => {
         if (!cancelled) {
-          setStatusMessage(loadError instanceof Error ? loadError.message : t("chats.loadError"));
+          setStatusMessage(
+            loadError instanceof Error
+              ? loadError.message
+              : t("chats.loadError"),
+          );
         }
       });
 
     const token = getAccessToken();
+
     if (!token) {
       setStatusMessage(t("chats.authRequired"));
+
       return () => {
         cancelled = true;
       };
     }
 
-    const ws = new WebSocket(`${WS_URL}/ws/events/${eventId}/?token=${encodeURIComponent(token)}`);
+    const ws = new WebSocket(
+      `${WS_URL}/ws/events/${eventId}/?token=${encodeURIComponent(token)}`,
+    );
+
     wsRef.current = ws;
 
     ws.onopen = () => {
-      if (!cancelled) setConnected(true);
+      if (!cancelled) {
+        setConnected(true);
+      }
     };
+
     ws.onmessage = (event) => {
-      const data = JSON.parse(event.data) as { type?: string; detail?: string } & Partial<MessageItem>;
+      const data = JSON.parse(event.data) as {
+        type?: string;
+        detail?: string;
+      } & Partial<MessageItem>;
+
       if (data.type === "message" && data.id && data.sender && data.text) {
         setMessages((previous) => {
-          if (previous.some((message) => message.id === data.id)) return previous;
+          if (previous.some((message) => message.id === data.id)) {
+            return previous;
+          }
+
           return [...previous, data as MessageItem];
         });
       } else if (data.detail) {
         setStatusMessage(data.detail);
       }
     };
+
     ws.onclose = () => {
-      if (!cancelled) setConnected(false);
+      if (!cancelled) {
+        setConnected(false);
+      }
     };
+
     ws.onerror = () => {
-      if (!cancelled) setStatusMessage(t("chats.wsError"));
+      if (!cancelled) {
+        setStatusMessage(t("chats.wsError"));
+      }
     };
 
     return () => {
@@ -76,7 +121,9 @@ export function EventChat({ eventId, eventTitle }: { eventId: string; eventTitle
   }, [eventId, t]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ block: "nearest" });
+    bottomRef.current?.scrollIntoView({
+      block: "nearest",
+    });
   }, [messages]);
 
   useEffect(() => {
@@ -85,107 +132,167 @@ export function EventChat({ eventId, eventTitle }: { eventId: string; eventTitle
 
   async function sendMessage() {
     const trimmed = text.trim();
+
     if (!trimmed) return;
+
     if (wsRef.current?.readyState !== WebSocket.OPEN) {
       setStatusMessage(t("chats.wsError"));
       return;
     }
-    wsRef.current.send(JSON.stringify({ text: trimmed }));
+
+    wsRef.current.send(
+      JSON.stringify({
+        text: trimmed,
+      }),
+    );
+
     setText("");
   }
 
   return (
     <section
       aria-label={t("chats.eventChats")}
-      className="flex h-full flex-col overflow-hidden rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] shadow-sm"
+      className={styles.chatPanel}
     >
-      <header className="flex items-center gap-3 border-b border-[var(--surface-border)] bg-gradient-to-r from-[var(--bg)] to-transparent p-4">
-        <div className="relative shrink-0">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--bg)] text-[var(--text)] ring-2 ring-[var(--surface)]">
+      {/* Header */}
+      <header className={styles.header}>
+        <div className={styles.headerIconWrapper}>
+          <span className={styles.headerIcon}>
             <CalendarDays size={18} />
           </span>
+
           <span
-            className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--surface)] ${connected ? "bg-emerald-500" : "bg-[var(--muted)]"}`}
+            className={`${styles.connectionIndicator} ${
+              connected
+                ? styles.connected
+                : styles.disconnected
+            }`}
             aria-hidden="true"
           />
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-medium text-[var(--text)]">{eventTitle || t("chats.eventChats")}</p>
-          <p className="truncate text-xs text-[var(--muted)]">
-            {connected ? t("chats.connected") : t("chats.disconnected")}
+
+        <div className={styles.headerContent}>
+          <p className={styles.eventName}>
+            {eventTitle || t("chats.eventChats")}
+          </p>
+
+          <p className={styles.connectionStatus}>
+            {connected
+              ? t("chats.connected")
+              : t("chats.disconnected")}
           </p>
         </div>
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto p-4">
+      {/* Messages */}
+      <div className={styles.messages}>
         {messages.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-2 text-center">
-            <CalendarDays size={28} className="text-[var(--muted)] opacity-40" />
-            <p className="text-sm text-[var(--muted)]">{t("chats.noMessages")}</p>
+          <div className={styles.emptyState}>
+            <CalendarDays
+              size={28}
+              className={styles.emptyIcon}
+              aria-hidden="true"
+            />
+
+            <p className={styles.emptyText}>
+              {t("chats.noMessages")}
+            </p>
           </div>
         ) : (
           messages.map((message, index) => {
-            const isOwn = message.sender?.id === currentUser?.id;
+            const isOwn =
+              message.sender?.id === currentUser?.id;
+
             const previousMessage = messages[index - 1];
             const nextMessage = messages[index + 1];
-            const isFirstInGroup = !previousMessage || previousMessage.sender?.id !== message.sender?.id;
-            const isLastInGroup = !nextMessage || nextMessage.sender?.id !== message.sender?.id;
-            const time = new Date(message.created_at).toLocaleTimeString([], {
+
+            const isFirstInGroup =
+              !previousMessage ||
+              previousMessage.sender?.id !== message.sender?.id;
+
+            const isLastInGroup =
+              !nextMessage ||
+              nextMessage.sender?.id !== message.sender?.id;
+
+            const time = new Date(
+              message.created_at,
+            ).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             });
+
             return (
               <div
                 key={message.id}
                 className={[
-                  "flex animate-message-in flex-col",
-                  isOwn ? "items-end" : "items-start",
-                  isFirstInGroup ? "mt-3" : "mt-0.5",
+                  styles.messageRow,
+                  isOwn
+                    ? styles.messageRowOwn
+                    : styles.messageRowOther,
+                  isFirstInGroup
+                    ? styles.messageRowFirst
+                    : styles.messageRowContinued,
                 ].join(" ")}
               >
                 <div
                   className={[
-                    "max-w-[75%] px-4 py-2 text-sm shadow-sm",
+                    styles.messageBubble,
                     isOwn
-                      ? "rounded-2xl rounded-br-md bg-[var(--button-bg)] text-[var(--button-text)]"
-                      : "rounded-2xl rounded-bl-md border border-[var(--surface-border)] bg-[var(--bg)] text-[var(--text)]",
+                      ? styles.ownBubble
+                      : styles.otherBubble,
                   ].join(" ")}
                 >
                   {!isOwn && isFirstInGroup && (
-                    <p className="mb-0.5 text-xs font-medium text-[var(--muted)]">
-                      {message.sender?.username || t("chats.eventChats")}
+                    <p className={styles.senderName}>
+                      {message.sender?.username ||
+                        t("chats.eventChats")}
                     </p>
                   )}
+
                   {message.text}
                 </div>
+
                 {isLastInGroup && (
-                  <span className="mt-1 px-1 text-[11px] text-[var(--muted)]">{time}</span>
+                  <span className={styles.timestamp}>
+                    {time}
+                  </span>
                 )}
               </div>
             );
           })
         )}
+
         <div ref={bottomRef} />
       </div>
 
+      {/* Status */}
       {statusMessage && (
-        <p role="alert" className="px-4 pb-2 text-xs text-red-600">
+        <p
+          role="alert"
+          className={styles.statusMessage}
+        >
           {statusMessage}
         </p>
       )}
 
-      <div className="flex items-center gap-2 border-t border-[var(--surface-border)] p-3">
+      {/* Input */}
+      <div className={styles.inputRow}>
         <input
           ref={inputRef}
           value={text}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => setText(event.target.value)}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setText(event.target.value)
+          }
           onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === "Enter") void sendMessage();
+            if (event.key === "Enter") {
+              void sendMessage();
+            }
           }}
           placeholder={t("chats.placeholder")}
           aria-label={t("chats.placeholder")}
-          className="min-w-0 flex-1 rounded-full"
+          className={styles.input}
         />
+
         <Button
           variant="primary"
           size="sm"

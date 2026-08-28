@@ -342,10 +342,11 @@ export function EventDetailsPage() {
         <h2 className="mt-0 mb-4 text-xl font-semibold text-[var(--text)]">
           {t("event.messages")}
         </h2>
-        
-        <div className="h-[500px] overflow-y-auto rounded-2xl border border-[var(--surface-border)] bg-[var(--panel)] p-3 scrollbar-thin">
-          <EventChat eventId={eventId} />
-        </div>
+  
+        <EventChat
+          eventId={eventId}
+          eventTitle={event.title}
+        />
       </section>
     </div>
   )}
