@@ -457,9 +457,16 @@ export function GroupDetailsPage() {
         </div>
 
         {isActiveMember && (
-          <GroupChat groupId={group.id} groupName={group.name} />
+          <section className="rounded-[28px] border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-[0_12px_30px_rgba(15,23,42,0.03)] sm:p-6">
+            <h2 className="mt-0 mb-4 text-xl font-semibold text-[var(--text)]">
+              {t("event.messages")}
+            </h2>
+            <GroupChat
+              groupId={group.id}
+              groupName={group.name}
+            />
+          </section>
         )}
-
       </div>
     </div>
   );
