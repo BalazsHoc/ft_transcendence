@@ -24,9 +24,6 @@ class Command(BaseCommand):
         call_command("loaddata", "eval_snapshot")
         self._reset_sequences()
         self.stdout.write(self.style.SUCCESS("Eval snapshot is loaded."))
-        self.stdout.write("Known logins (email / password):")
-        self.stdout.write("  alex@example.com     testpass123")
-        self.stdout.write("  carlito@example.com  12345678")
 
     def _reset_sequences(self):
         from django.apps import apps
