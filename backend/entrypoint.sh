@@ -36,6 +36,8 @@ PY
 
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
-python manage.py seed_eval
+if [ "${NO_SEED:-0}" != "1" ]; then
+  python manage.py seed_eval
+fi
 
 exec daphne -b 0.0.0.0 -p 8000 core.asgi:application

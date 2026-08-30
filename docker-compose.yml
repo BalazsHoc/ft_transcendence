@@ -47,6 +47,7 @@ services:
       GOOGLE_OAUTH_CLIENT_SECRET: ${GOOGLE_OAUTH_CLIENT_SECRET}
       GOOGLE_OAUTH_REDIRECT_URI: ${GOOGLE_OAUTH_REDIRECT_URI}
       FRONTEND_URL: ${FRONTEND_URL}
+      NO_SEED: ${NO_SEED:-0}
     volumes:
       - ./backend/media:/app/media
       - staticfiles:/app/staticfiles

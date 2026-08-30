@@ -7,13 +7,14 @@ COMPOSE := $(shell command -v docker-compose >/dev/null 2>&1 && echo "docker-com
 endif
 DEV_COMPOSE := $(COMPOSE) -f docker-compose.yml -f docker-compose.dev.yml
 
-.PHONY: all up down logs ps restart re clean fclean help prepare-env db seed
+.PHONY: all up empty down logs ps restart re clean fclean help prepare-env db seed
 
 all: up
 
 help:
 	@echo "make          Build and start the eval stack (HTTPS at https://localhost)"
 	@echo "make up       Same as make"
+	@echo "make empty    Same as make, but migrate only — no sample users/events"
 	@echo "make db       Start only Postgres on localhost:5432 (daily Daphne + Vite)"
 	@echo "make seed     Reset the database to the committed snapshot"
 	@echo "make down     Stop containers (keeps volumes)"
@@ -52,6 +53,16 @@ up: prepare-env
 	@echo "Using: $(COMPOSE)"
 	$(COMPOSE) up -d
 	@echo "Application is starting at https://localhost"
+	@echo "Accept the self-signed certificate warning in the browser if prompted."
+
+empty: prepare-env
+	@if [ -z "$(COMPOSE)" ]; then \
+		echo "Docker Compose is not installed. Install docker compose or docker-compose." >&2; \
+		exit 1; \
+	fi
+	@echo "Using: $(COMPOSE) (no sample data)"
+	NO_SEED=1 $(COMPOSE) up -d
+	@echo "Application is starting at https://localhost (empty database, no sample data)"
 	@echo "Accept the self-signed certificate warning in the browser if prompted."
 
 db: prepare-env
