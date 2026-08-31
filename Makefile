@@ -11,9 +11,12 @@ endif
 DEV_COMPOSE := $(COMPOSE) -f docker-compose.yml -f docker-compose.dev.yml
 UI := bash scripts/make-ui.sh
 
-.PHONY: all up empty down logs ps restart re clean fclean help prepare-env db seed test-ui
+.PHONY: all up empty down logs ps restart re clean fclean help prepare-env db seed test-ui test-eval
 
 all: up
+
+test-eval:
+	@bash tester/run.sh $(ARGS)
 
 test-ui:
 	@bash scripts/test-make-ui.sh
