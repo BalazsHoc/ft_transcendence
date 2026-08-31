@@ -250,7 +250,7 @@ export function GroupsPage() {
           className="grid grid-cols-1 gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-sm md:grid-cols-2 md:p-6"
         >
           <label className="md:col-span-2">
-            {t("groupsTest.name")}
+            <span>{t("groupsTest.name")} *</span>
             <input name="name" value={form.name} onChange={updateForm} required minLength={2} />
           </label>
           <label className="md:col-span-2">
@@ -266,7 +266,7 @@ export function GroupsPage() {
             />
           </label>
           <label>
-            {t("groupsTest.sport")}
+            <span>{t("groupsTest.sport")} *</span>
             <select name="sport" value={form.sport} onChange={updateForm} required>
               <option value="" disabled>{t("groupsTest.selectSport")}</option>
               {sports.map((sportOption) => (
@@ -277,7 +277,7 @@ export function GroupsPage() {
             </select>
           </label>
           <label>
-            {t("groupsTest.levels")}
+            <span>{t("groupsTest.levels")} *</span>
             <input name="levels" value={form.levels} onChange={updateForm} required />
           </label>
           <label>

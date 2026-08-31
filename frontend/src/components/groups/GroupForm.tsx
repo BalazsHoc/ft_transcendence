@@ -117,7 +117,7 @@ export function GroupForm({
       className="grid grid-cols-1 gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-sm md:grid-cols-2 md:p-6"
     >
       <label className={`${labelClass} md:col-span-2`}>
-        {t("groupsTest.name")}
+        <span>{t("groupsTest.name")} *</span>
         <input
           className={fieldClass}
           value={name}
@@ -156,7 +156,7 @@ export function GroupForm({
       </div>
 
       <label className={labelClass}>
-        {t("groupsTest.sport")}
+        <span>{t("groupsTest.sport")} *</span>
         <select
           className={fieldClass}
           value={sport}
@@ -175,7 +175,7 @@ export function GroupForm({
       </label>
 
       <label className={labelClass}>
-        {t("groupsTest.levels")}
+        <span>{t("groupsTest.levels")} *</span>
         <input
           className={fieldClass}
           value={levels}
