@@ -345,6 +345,14 @@
     "loading": "Loading event...",
     "submit": "Update event"
   },
+  "editGroup": {
+    "title": "Edit group",
+    "description": "Update the group details.",
+    "loading": "Loading group...",
+    "submit": "Update group",
+    "submitting": "Updating...",
+    "submitError": "Unable to update the group."
+  },
   "myEvents": {
     "title": "My events",
     "description": "Keep track of events you created and joined.",

@@ -15,6 +15,7 @@ import { ProfilePage } from "../pages/ProfilePage";
 import { UserProfilePage } from "../pages/UserProfilePage";
 import { GroupsPage } from "../pages/GroupsPage";
 import { GroupDetailsPage } from "../pages/GroupDetailsPage";
+import { EditGroupPage } from "../pages/EditGroupPage";
 import { ApiTesterPage } from "../pages/ApiTesterPage";
 import { UiElementsTest } from "../pages/UiElementsTest";
 import { NotFoundPage } from "../pages/NotFoundPage";
@@ -31,6 +32,7 @@ export function App() {
         <Route path="clubs" element={<Navigate to="/groups" replace />} />
         <Route path="groups" element={<GroupsPage />} />
         <Route path="groups/:groupId" element={<GroupDetailsPage />} />
+        <Route path="groups/:groupId/edit" element={<EditGroupPage />} />
         <Route path="map" element={<MapPage />} />
         <Route path="events/new" element={<CreateEventPage />} />
         <Route path="events/:eventId" element={<EventDetailsPage />} />

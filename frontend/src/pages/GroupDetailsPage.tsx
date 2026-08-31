@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PencilLine } from "lucide-react";
 
 import { getGroup, getGroupEvents, joinGroup, leaveGroup } from "../api/groupsApi";
 import { joinEvent, leaveEvent } from "../api/eventsApi";
@@ -312,6 +312,9 @@ export function GroupDetailsPage() {
   const isActiveMember = alreadyMember;
   const isGroupOwner =
     group.current_user_membership?.role === "owner";
+  const isGroupAdmin =
+    group.current_user_membership?.role === "admin";
+  const canEditGroup = isGroupOwner || isGroupAdmin;
   const canLeaveGroup = alreadyMember && !isGroupOwner;
   const isFull =
     Boolean(group.max_members) && group.member_count >= group.max_members;
@@ -329,7 +332,7 @@ export function GroupDetailsPage() {
 
   return (
     <div className="club-page relative">
-      <div className="absolute left-4 top-4 z-20 md:left-6 md:top-5">
+      <div className="absolute left-4 top-4 z-20 flex flex-wrap gap-2 md:left-6 md:top-5">
         <Button
           variant="primary"
           size="sm"
@@ -338,6 +341,16 @@ export function GroupDetailsPage() {
         >
           {t("groups.back")}
         </Button>
+        {canEditGroup ? (
+          <Link to={`/groups/${group.id}/edit`}>
+            <Button variant="secondary" size="sm">
+              <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                <PencilLine size={16} aria-hidden="true" />
+                {t("common.edit")}
+              </span>
+            </Button>
+          </Link>
+        ) : null}
       </div>
 
       <ClubHero
