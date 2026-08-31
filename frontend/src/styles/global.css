@@ -52,6 +52,11 @@ body {
   --control-border: #cbd5e1;
   --control-text: #111827;
 
+  /* Dropdown options — mirrors the native <select> popup: white list, the
+     highlighted row blue with white text. */
+  --option-active-bg: #2563eb;
+  --option-active-text: #ffffff;
+
   /* Buttons (primary system) */
   --button-bg: #174b69;
   --button-text: #ffffff;
@@ -98,6 +103,9 @@ body.dark {
   --control-bg: #0f172a;
   --control-border: #334155;
   --control-text: #e5e7eb;
+
+  --option-active-bg: #3b82f6;
+  --option-active-text: #ffffff;
 
   --button-bg: #1f2937;
   --button-border: #374151;
