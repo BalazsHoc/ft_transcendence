@@ -30,6 +30,32 @@ else
         "command -v google-chrome" "browser suite (console errors) needs Chrome"
 fi
 
+# Detect the browser matrix used by the cross-browser suite (22). Missing
+# browsers are informational — cross-browser skips them with a warning.
+detected_browsers=""
+declare -A _BROWSER_BINS=(
+    [chrome]="google-chrome google-chrome-stable"
+    [chromium]="chromium chromium-browser"
+    [edge]="microsoft-edge microsoft-edge-stable msedge"
+    [firefox]="firefox firefox-esr"
+)
+for bkind in chrome chromium edge firefox; do
+    bpath=""
+    for bin in ${_BROWSER_BINS[$bkind]}; do
+        bpath="$(command -v "$bin" 2>/dev/null || true)"
+        [ -n "$bpath" ] && break
+    done
+    [ -n "$bpath" ] && detected_browsers="$detected_browsers $bkind"
+done
+detected_browsers="$(echo "$detected_browsers" | xargs 2>/dev/null || true)"
+n_browsers="$(echo "$detected_browsers" | wc -w)"
+if [ "$n_browsers" -ge 2 ]; then
+    t_pass "PRE-browsers" "multiple browsers available for cross-browser smoke: $detected_browsers"
+else
+    t_warn "PRE-browsers" "only ${detected_browsers:-none} detected" \
+        "install a second browser (e.g. microsoft-edge or chromium) for cross-browser coverage (suite 22)"
+fi
+
 # Verify this is the expected repository (eval sheet: right repo, no alias tricks)
 origin="$(cd "$REPO_DIR" && git remote get-url origin 2>/dev/null)"
 case "$origin" in
