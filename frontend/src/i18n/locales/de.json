@@ -345,6 +345,14 @@
     "loading": "Event wird geladen...",
     "submit": "Event aktualisieren"
   },
+  "editGroup": {
+    "title": "Gruppe bearbeiten",
+    "description": "Aktualisiere die Gruppendetails.",
+    "loading": "Gruppe wird geladen...",
+    "submit": "Gruppe aktualisieren",
+    "submitting": "Wird aktualisiert...",
+    "submitError": "Die Gruppe konnte nicht aktualisiert werden."
+  },
   "myEvents": {
     "title": "Meine Events",
     "description": "Behalte deine erstellten und besuchten Events im Blick.",

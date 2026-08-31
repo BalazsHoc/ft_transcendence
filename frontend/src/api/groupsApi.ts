@@ -15,7 +15,7 @@ function appendFormValue(form: FormData, key: string, value: unknown) {
   form.append(key, String(value));
 }
 
-function toGroupFormData(payload: GroupPayload) {
+function toGroupFormData(payload: Partial<GroupPayload>) {
   const form = new FormData();
   appendFormValue(form, "name", payload.name);
   appendFormValue(form, "description", payload.description);
@@ -61,6 +61,13 @@ export function getGroup(id: string) {
 export function createGroup(payload: GroupPayload) {
   return apiRequest<GroupItem>("/api/groups/", {
     method: "POST",
+    body: toGroupFormData(payload),
+  });
+}
+
+export function updateGroup(id: string, payload: Partial<GroupPayload>) {
+  return apiRequest<GroupItem>(`/api/groups/${id}/`, {
+    method: "PATCH",
     body: toGroupFormData(payload),
   });
 }
