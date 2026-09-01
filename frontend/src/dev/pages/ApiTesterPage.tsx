@@ -1,8 +1,8 @@
 import { useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { apiRequest } from "../api/client";
-import { ApiLog } from "../components/shared/ApiLog";
-import styles from "../components/shared/FormCard.module.css";
+import { apiRequest } from "../../api/client";
+import { ApiLog } from "../components/ApiLog";
+import styles from "../../components/shared/FormCard.module.css";
 
 const routes = [
   ["GET", "/"],

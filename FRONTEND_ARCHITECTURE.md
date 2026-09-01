@@ -190,13 +190,16 @@ frontend/
         pages/
           LandingPage.tsx
 
-      devtools/
+      dev/
         components/
-          ApiTester.tsx
-          UiElementsPreview.tsx
+          ApiLog.tsx
+          test_ui/
+            TestBadge.tsx
+            TestButton.tsx
         pages/
           ApiTesterPage.tsx
-          UiElementsTestPage.tsx
+          GroupsTestPage.tsx
+          UiElementsTest.jsx
 
     hooks/
       useAsync.ts
@@ -255,9 +258,10 @@ frontend/
 | `ProfilePage` | `/profile` | User profile details and preferences. |
 | `LoginPage` | `/login` | Existing user authentication. |
 | `RegisterPage` | `/register` | New user registration. |
-| `ApiTesterPage` | `/api-test` | Development-only API testing. |
-| `UiElementsTestPage` | `/ui-elements-test` | Development-only UI component preview. |
 | `NotFoundPage` | `*` | Unknown route fallback. |
+
+Development-only pages are kept under `src/dev/` for reference and are not
+part of the production route tree.
 
 ## Component List
 
@@ -495,10 +499,9 @@ Private routes should include:
 - `/chats`
 - `/profile`
 
-Development-only routes should be hidden from production navigation:
-
-- `/api-test`
-- `/ui-elements-test`
+Development-only pages are kept under `src/dev/` and intentionally omitted
+from `src/app/App.tsx`. The former `/api-test` and `/ui-elements-test` paths
+therefore resolve to the normal not-found route in production.
 
 ## Error, Loading, And Empty States
 
@@ -540,4 +543,3 @@ Use shared components for this instead of one-off paragraphs on each page.
 - Accessible controls with labels and keyboard support.
 - Predictable styling rules.
 - Development-only tools separated from production navigation.
-

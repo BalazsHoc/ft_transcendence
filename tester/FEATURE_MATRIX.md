@@ -37,8 +37,8 @@ Legend:
 | R-14 | `/chats?userId=` | ChatsPage (deep link) | yes | Opens/creates DM with user | multi-user `send-dm` | — |
 | R-15 | `/profile` | ProfilePage | yes | Own profile + edit + friends | journey `profile-interact` (visit only) | P0 edit |
 | R-16 | `/users/:userId` | UserProfilePage | no | Public profile, add friend/message | journey `visit-user-profile` | — |
-| R-17 | `/api-test` | ApiTesterPage | — | Dev API playground | none | P2 (dev) |
-| R-18 | `/ui-elements-test` | UiElementsTest | — | Dev component gallery | none | P2 (dev) |
+| R-17 | — | `src/dev/pages/ApiTesterPage` | — | Development-only API playground; no production route | none | P2 (dev) |
+| R-18 | — | `src/dev/pages/UiElementsTest` | — | Development-only component gallery; no production route | none | P2 (dev) |
 | R-19 | `/privacy-policy` | PrivacyPolicyPage | no | Legal content | `BR-legal-*`, journey `footer-privacy` | — |
 | R-20 | `/terms-of-service` | TermsOfServicePage | no | Legal content | `BR-legal-*`, journey `footer-terms` | — |
 | R-21 | `/auth/google/callback` | GoogleCallbackPage | no | Exchanges ticket → tokens | none (needs real Google) | P2 (HUMAN) |

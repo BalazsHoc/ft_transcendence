@@ -16,8 +16,6 @@ import { UserProfilePage } from "../pages/UserProfilePage";
 import { GroupsPage } from "../pages/GroupsPage";
 import { GroupDetailsPage } from "../pages/GroupDetailsPage";
 import { EditGroupPage } from "../pages/EditGroupPage";
-import { ApiTesterPage } from "../pages/ApiTesterPage";
-import { UiElementsTest } from "../pages/UiElementsTest";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PrivacyPolicyPage } from "../pages/PrivacyPolicyPage";
 import { TermsOfServicePage } from "../pages/TermsOfServicePage";
@@ -42,8 +40,6 @@ export function App() {
         <Route path="friends" element={<Navigate to="/profile" replace />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="users/:userId" element={<UserProfilePage />} />
-        <Route path="api-test" element={<ApiTesterPage />} />
-        <Route path="ui-elements-test" element={<UiElementsTest />} />
         <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="terms-of-service" element={<TermsOfServicePage />} />
         <Route path="login" element={<LoginPage />} />

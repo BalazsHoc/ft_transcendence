@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowRight, Plus, Save, Star, Trash2 } from "lucide-react";
-import Button from "../components/shared/Button";
+import Button from "../../components/shared/Button";
 import Badge from "../components/test_ui/TestBadge";
 
 const buttonVariants = [
