@@ -103,7 +103,12 @@ See [frontend/DEV.md](frontend/DEV.md) and [backend/README.md](backend/README.md
 
 ## Environment
 
-Root `.env` is gitignored. Start from `.env.example`. Compose injects HTTPS CORS/CSRF values and `POSTGRES_HOST=db` for the backend container. Local Vite/Daphne use `backend/.env` and `frontend/.env`.
+Root `.env` is gitignored. Start from `.env.example`. For the evaluation
+deployment this root file is the single source of environment values: Compose
+loads it for the backend and uses its `VITE_API_URL`/`VITE_WS_URL` values when
+building the frontend. Compose still injects HTTPS CORS/CSRF values and
+`POSTGRES_HOST=db` for the backend container. Local Vite/Daphne may keep their
+service-specific `backend/.env` and `frontend/.env` files for HTTP development.
 
 Do not commit `.env` or TLS private keys.
 

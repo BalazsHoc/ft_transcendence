@@ -136,7 +136,7 @@ http://localhost:8000/admin/
 python manage.py createsuperuser
 ```
 
-### 7. Load demo data
+### 7. Load sample data
 
 macOS/Linux:
 
@@ -156,11 +156,12 @@ To generate a larger local dataset for testing event and group pagination, run:
 python manage.py seed_pagination_demo
 ```
 
-The command is idempotent and creates demo profiles for 34 well-known athletes,
-one group per profile, three future events and one past archive event per
-profile, plus ten individual future events distributed around Vienna for map
-testing. Newly created demo accounts use `demo-pass-123` unless `--password`
-is provided. The generated profiles and events are for local testing only.
+The command is idempotent and creates profiles for 34 well-known athletes, one
+sport-specific community group per profile, three future events and one past
+replay per profile, plus ten individual future events distributed around Vienna
+for map testing. Newly created sample accounts use `demo-pass-123` unless
+`--password` is provided. The generated profiles and events are for local
+testing only.
 
 ## Run With Docker
 
