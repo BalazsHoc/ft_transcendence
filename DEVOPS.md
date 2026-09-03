@@ -75,7 +75,7 @@ make help     # list targets
 
 `./run.sh` still works; it just runs `make up`.
 
-Open **https://localhost**. Chrome will warn about the self-signed certificate. Click through (Advanced → Proceed) once. WebSocket errors in the console before that are the cert, not the database.
+Open **https://localhost** in a private/incognito window. Chrome will warn about the self-signed certificate. Click through (Advanced → Proceed) once. WebSocket errors in the console before that are the cert, not the database. Incognito keeps extensions and password Autofill from polluting the console during eval.
 
 Useful URLs after the eval stack is up:
 

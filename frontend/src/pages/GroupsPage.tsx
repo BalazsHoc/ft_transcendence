@@ -247,27 +247,52 @@ export function GroupsPage() {
       {user && showForm && (
         <form
           onSubmit={submitGroup}
+          autoComplete="off"
           className="grid grid-cols-1 gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-sm md:grid-cols-2 md:p-6"
         >
-          <label className="md:col-span-2">
+          <label className="md:col-span-2" htmlFor="create-group-name">
             <span>{t("groupsTest.name")} *</span>
-            <input name="name" value={form.name} onChange={updateForm} required minLength={2} />
+            <input
+              id="create-group-name"
+              name="name"
+              type="text"
+              autoComplete="off"
+              value={form.name}
+              onChange={updateForm}
+              required
+              minLength={2}
+            />
           </label>
-          <label className="md:col-span-2">
+          <label className="md:col-span-2" htmlFor="create-group-description">
             {t("groupsTest.descriptionLabel")}
-            <textarea name="description" value={form.description} onChange={updateForm} />
+            <textarea
+              id="create-group-description"
+              name="description"
+              autoComplete="off"
+              value={form.description}
+              onChange={updateForm}
+            />
           </label>
-          <label>
+          <label htmlFor="create-group-cover">
             {t("groups.image")}
             <input
+              id="create-group-cover"
+              name="coverImage"
               type="file"
               accept="image/*"
               onChange={(event: ChangeEvent<HTMLInputElement>) => setCoverImageFile(event.target.files?.[0] || null)}
             />
           </label>
-          <label>
+          <label htmlFor="create-group-sport">
             <span>{t("groupsTest.sport")} *</span>
-            <select name="sport" value={form.sport} onChange={updateForm} required>
+            <select
+              id="create-group-sport"
+              name="sport"
+              autoComplete="off"
+              value={form.sport}
+              onChange={updateForm}
+              required
+            >
               <option value="" disabled>{t("groupsTest.selectSport")}</option>
               {sports.map((sportOption) => (
                 <option key={sportOption.code} value={sportOption.code}>
@@ -276,17 +301,40 @@ export function GroupsPage() {
               ))}
             </select>
           </label>
-          <label>
+          <label htmlFor="create-group-levels">
             <span>{t("groupsTest.levels")} *</span>
-            <input name="levels" value={form.levels} onChange={updateForm} required />
+            <input
+              id="create-group-levels"
+              name="levels"
+              type="text"
+              autoComplete="off"
+              value={form.levels}
+              onChange={updateForm}
+              required
+            />
           </label>
-          <label>
+          <label htmlFor="create-group-max-members">
             {t("groupsTest.maxMembers")}
-            <input name="maxMembers" type="number" min="0" value={form.maxMembers} onChange={updateForm} />
+            <input
+              id="create-group-max-members"
+              name="maxMembers"
+              type="number"
+              min="0"
+              autoComplete="off"
+              value={form.maxMembers}
+              onChange={updateForm}
+            />
           </label>
-          <label>
+          <label htmlFor="create-group-location">
             {t("groupsTest.location")}
-            <input name="locationName" value={form.locationName} onChange={updateForm} />
+            <input
+              id="create-group-location"
+              name="locationName"
+              type="text"
+              autoComplete="off"
+              value={form.locationName}
+              onChange={updateForm}
+            />
           </label>
           <div className="flex flex-wrap justify-end gap-3 md:col-span-2">
             <Button

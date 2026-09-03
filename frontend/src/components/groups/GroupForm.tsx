@@ -114,11 +114,16 @@ export function GroupForm({
   return (
     <form
       onSubmit={handleSubmit}
+      autoComplete="off"
       className="grid grid-cols-1 gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)] p-5 shadow-sm md:grid-cols-2 md:p-6"
     >
-      <label className={`${labelClass} md:col-span-2`}>
+      <label className={`${labelClass} md:col-span-2`} htmlFor="group-form-name">
         <span>{t("groupsTest.name")} *</span>
         <input
+          id="group-form-name"
+          name="groupName"
+          type="text"
+          autoComplete="off"
           className={fieldClass}
           value={name}
           onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
@@ -127,9 +132,12 @@ export function GroupForm({
         />
       </label>
 
-      <label className={`${labelClass} md:col-span-2`}>
+      <label className={`${labelClass} md:col-span-2`} htmlFor="group-form-description">
         {t("groupsTest.descriptionLabel")}
         <textarea
+          id="group-form-description"
+          name="groupDescription"
+          autoComplete="off"
           className={fieldClass}
           value={description}
           onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -146,6 +154,8 @@ export function GroupForm({
           className="mt-2 h-40 w-full rounded-2xl object-cover"
         />
         <input
+          id="group-form-cover"
+          name="groupCover"
           type="file"
           accept="image/*"
           className="mt-2 block w-full text-sm"
@@ -155,9 +165,12 @@ export function GroupForm({
         />
       </div>
 
-      <label className={labelClass}>
+      <label className={labelClass} htmlFor="group-form-sport">
         <span>{t("groupsTest.sport")} *</span>
         <select
+          id="group-form-sport"
+          name="groupSport"
+          autoComplete="off"
           className={fieldClass}
           value={sport}
           onChange={(event: ChangeEvent<HTMLSelectElement>) => setSport(event.target.value)}
@@ -174,9 +187,13 @@ export function GroupForm({
         </select>
       </label>
 
-      <label className={labelClass}>
+      <label className={labelClass} htmlFor="group-form-levels">
         <span>{t("groupsTest.levels")} *</span>
         <input
+          id="group-form-levels"
+          name="groupLevels"
+          type="text"
+          autoComplete="off"
           className={fieldClass}
           value={levels}
           onChange={(event: ChangeEvent<HTMLInputElement>) => setLevels(event.target.value)}
@@ -184,12 +201,15 @@ export function GroupForm({
         />
       </label>
 
-      <label className={labelClass}>
+      <label className={labelClass} htmlFor="group-form-max-members">
         {t("groupsTest.maxMembers")}
         <input
+          id="group-form-max-members"
+          name="groupMaxMembers"
           className={fieldClass}
           type="number"
           min="0"
+          autoComplete="off"
           value={maxMembers}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             setMaxMembers(event.target.value)
@@ -197,9 +217,13 @@ export function GroupForm({
         />
       </label>
 
-      <label className={labelClass}>
+      <label className={labelClass} htmlFor="group-form-location">
         {t("groupsTest.location")}
         <input
+          id="group-form-location"
+          name="groupLocation"
+          type="text"
+          autoComplete="off"
           className={fieldClass}
           value={locationName}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
