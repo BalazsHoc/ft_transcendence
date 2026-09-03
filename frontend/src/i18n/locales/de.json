@@ -67,7 +67,7 @@
       "ctaLearnMore": "Mehr erfahren"
     },
     "curated": {
-      "title": "Ausgewählte Erlebnisse",
+      "title": "In deiner Nähe in Wien",
       "subtitle": "Finde deine nächste Leidenschaft im Herzen der Stadt.",
       "attending": "Nehmen teil",
       "events": "Events",
@@ -195,7 +195,8 @@
     "curatedEventOneTitle": "Morning Flow & Focus",
     "curatedEventOneTime": "Sa, 8:00 Uhr",
     "curatedEventTwoTitle": "Strength & Conditioning",
-    "curatedEventTwoTime": "So, 18:00 Uhr"
+    "curatedEventTwoTime": "So, 18:00 Uhr",
+    "sportSuggestions": "Sportvorschläge"
   },
   "club": {
     "hero": {

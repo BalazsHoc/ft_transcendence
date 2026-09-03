@@ -20,6 +20,9 @@ export function DiscoverPage() {
   const [levels, setLevels] = useState<string[]>([]);
   const [time, setTime] = useState("");
   const [search, setSearch] = useState("");
+  // The input updates on every keystroke so typing stays instant, but the
+  // request waits until you pause — otherwise every letter refetches the list.
+  const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -32,6 +35,11 @@ export function DiscoverPage() {
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
     );
   }
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setSearchQuery(search.trim()), 300);
+    return () => window.clearTimeout(timeout);
+  }, [search]);
 
   const timeBounds = useMemo(() => {
     if (!time) return {};
@@ -84,7 +92,7 @@ export function DiscoverPage() {
       const data = await getEventsPage({
         sport,
         level: levels.join(","),
-        search: search.trim(),
+        search: searchQuery,
         page,
         pageSize: 12,
         ...timeBounds,
@@ -100,7 +108,7 @@ export function DiscoverPage() {
     } finally {
       setLoading(false);
     }
-  }, [levels, page, search, sport, timeBounds]);
+  }, [levels, page, searchQuery, sport, timeBounds]);
 
   function changeSearch(value: string) {
     setPage(1);
