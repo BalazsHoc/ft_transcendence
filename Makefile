@@ -1,28 +1,58 @@
-# Single-command deploy for the subject / eval sheet: `make`
-# Detect Compose v2 plugin first, then the v1 binary.
-
-# Makefile targets — hide "Entering directory" noise from nested make calls.
+# Single-command deploy for the subject: `make` starts the full Docker stack.
 MAKEFLAGS += --no-print-directory
+
+# ---------------------------------------------------------------------------
+# Tools
+# Pick Docker Compose (v2 plugin preferred, then v1 binary).
+# ---------------------------------------------------------------------------
 
 COMPOSE := $(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || true)
 ifeq ($(strip $(COMPOSE)),)
 COMPOSE := $(shell command -v docker-compose >/dev/null 2>&1 && echo "docker-compose" || true)
 endif
-DEV_COMPOSE := $(COMPOSE) -f docker-compose.yml -f docker-compose.dev.yml
-UI := bash scripts/make-ui.sh
 
-.PHONY: all up empty down logs ps restart re clean fclean help prepare-env db seed test-ui test-eval
+DEV_COMPOSE := $(COMPOSE) -f docker-compose.yml -f docker-compose.dev.yml
+Q := >/dev/null 2>&1
+
+.PHONY: all help require-compose prepare-env \
+	up empty db seed \
+	logs ps restart \
+	down clean fclean re \
+	test-eval
 
 all: up
 
-test-eval:
-	@bash tester/run.sh $(ARGS)
-
-test-ui:
-	@bash scripts/test-make-ui.sh
+# ---------------------------------------------------------------------------
+# Help
+# List available make targets.
+# ---------------------------------------------------------------------------
 
 help:
-	@$(UI) help "Make targets" "Available commands" -- true
+	@echo "Targets:"
+	@echo "  make            build and start the stack (with seed)"
+	@echo "  make up         same as make"
+	@echo "  make empty      wipe volumes, start without seed"
+	@echo "  make db         postgres on localhost:5432"
+	@echo "  make seed       reset the eval snapshot"
+	@echo "  make down       stop containers, keep volumes"
+	@echo "  make logs       follow container logs"
+	@echo "  make ps         container status"
+	@echo "  make restart    restart running containers"
+	@echo "  make re         no-cache rebuild and start"
+	@echo "  make clean      same as down"
+	@echo "  make fclean     stop containers and delete volumes"
+	@echo "  make test-eval  run the eval tester (ARGS=...)"
+
+# ---------------------------------------------------------------------------
+# Setup
+# Make sure Compose exists and .env is ready before starting services.
+# ---------------------------------------------------------------------------
+
+require-compose:
+	@if [ -z "$(COMPOSE)" ]; then \
+		echo "Docker Compose is not installed. Install docker compose or docker-compose." >&2; \
+		exit 1; \
+	fi
 
 prepare-env:
 	@if [ ! -f .env ]; then cp .env.example .env; fi
@@ -42,74 +72,92 @@ prepare-env:
 			mv "$$tmp" .env ;; \
 	esac
 
-define CHECK_COMPOSE
-if [ -z "$(COMPOSE)" ]; then \
-	echo "Docker Compose is not installed. Install docker compose or docker-compose." >&2; \
-	exit 1; \
-fi
-endef
+# ---------------------------------------------------------------------------
+# Start
+# Bring the stack (or just the database) up.
+# ---------------------------------------------------------------------------
 
-up: prepare-env
-	@$(CHECK_COMPOSE)
-	@$(UI) up "Starting stack" "Building and launching services" -- $(COMPOSE) up -d
+up: prepare-env require-compose
+	@echo "Starting stack..."
+	@$(COMPOSE) up -d $(Q)
 
-empty: prepare-env
-	@$(CHECK_COMPOSE)
-	@$(UI) empty "Starting empty stack" "Removing volumes and booting without seed" -- \
-		bash -c '$(COMPOSE) down -v && $(COMPOSE) build backend && NO_SEED=1 $(COMPOSE) up -d'
+empty: prepare-env require-compose
+	@echo "Starting empty stack (no seed)..."
+	@$(COMPOSE) down -v $(Q)
+	@$(COMPOSE) build backend $(Q)
+	@NO_SEED=1 $(COMPOSE) up -d $(Q)
 
-db: prepare-env
-	@$(CHECK_COMPOSE)
-	@$(UI) db "Starting database" "Waiting for Postgres on port 5432" -- \
-		bash -c '$(DEV_COMPOSE) up -d db && i=0; \
-		until $(DEV_COMPOSE) exec -T db pg_isready -U postgres >/dev/null 2>&1; do \
+db: prepare-env require-compose
+	@echo "Starting database..."
+	@$(DEV_COMPOSE) up -d db $(Q)
+	@i=0; \
+	until $(DEV_COMPOSE) exec -T db pg_isready -U postgres $(Q); do \
+		i=$$((i+1)); \
+		if [ $$i -ge 30 ]; then echo "Postgres did not become ready." >&2; exit 1; fi; \
+		sleep 1; \
+	done
+
+seed: prepare-env require-compose
+	@echo "Loading sample data..."
+	@running=$$($(COMPOSE) ps -q --status running backend 2>/dev/null || true); \
+	if [ -n "$$running" ]; then \
+		$(COMPOSE) exec -T backend python manage.py seed_eval --flush $(Q); \
+	else \
+		$(DEV_COMPOSE) up -d db $(Q); \
+		i=0; \
+		until $(DEV_COMPOSE) exec -T db pg_isready -U postgres $(Q); do \
 			i=$$((i+1)); \
 			if [ $$i -ge 30 ]; then echo "Postgres did not become ready." >&2; exit 1; fi; \
 			sleep 1; \
-		done'
+		done; \
+		$(COMPOSE) run --rm --no-deps --entrypoint python backend manage.py seed_eval --flush $(Q); \
+	fi
 
-seed: prepare-env
-	@$(CHECK_COMPOSE)
-	@$(UI) seed "Loading sample data" "Restoring eval snapshot" -- \
-		bash -c 'running=$$($(COMPOSE) ps -q --status running backend 2>/dev/null || true); \
-		if [ -n "$$running" ]; then \
-			$(COMPOSE) exec -T backend python manage.py seed_eval --flush; \
-		else \
-			$(DEV_COMPOSE) up -d db; \
-			i=0; \
-			until $(DEV_COMPOSE) exec -T db pg_isready -U postgres >/dev/null 2>&1; do \
-				i=$$((i+1)); \
-				if [ $$i -ge 30 ]; then echo "Postgres did not become ready." >&2; exit 1; fi; \
-				sleep 1; \
-			done; \
-			$(COMPOSE) run --rm --no-deps --entrypoint python backend manage.py seed_eval --flush; \
-		fi'
+# ---------------------------------------------------------------------------
+# Inspect
+# Look at running containers and their logs.
+# ---------------------------------------------------------------------------
 
-clean:
-	@$(CHECK_COMPOSE)
-	@$(UI) clean "Removing containers" "Keeping volumes intact" -- $(COMPOSE) down
+logs: require-compose
+	@echo "Following logs (Ctrl+C to stop)..."
+	@$(COMPOSE) logs -f
 
-fclean:
-	@$(CHECK_COMPOSE)
-	@$(UI) fclean "Removing everything" "Containers and all volumes" -- $(COMPOSE) down -v
+ps: require-compose
+	@echo "Container status:"
+	@$(COMPOSE) ps
 
-down:
-	@$(CHECK_COMPOSE)
-	@$(UI) down "Stopping stack" "Keeping volumes intact" -- $(COMPOSE) down
+restart: require-compose
+	@echo "Restarting containers..."
+	@$(COMPOSE) restart $(Q)
 
-logs:
-	@$(CHECK_COMPOSE)
-	@MAKE_UI_STREAM=1 $(UI) logs "Opening logs" "Press Ctrl+C to exit" -- $(COMPOSE) logs -f
+# ---------------------------------------------------------------------------
+# Stop / reset
+# Stop the stack, or wipe volumes / rebuild from scratch.
+# ---------------------------------------------------------------------------
 
-ps:
-	@$(CHECK_COMPOSE)
-	@MAKE_UI_OUTPUT=1 $(UI) ps "Checking status" "Reading container state" -- $(COMPOSE) ps
+down: require-compose
+	@echo "Stopping stack..."
+	@$(COMPOSE) down $(Q)
 
-restart:
-	@$(CHECK_COMPOSE)
-	@$(UI) restart "Restarting services" "Recycling all containers" -- $(COMPOSE) restart
+clean: require-compose
+	@echo "Stopping stack..."
+	@$(COMPOSE) down $(Q)
 
-re: prepare-env
-	@$(CHECK_COMPOSE)
-	@$(UI) re "Rebuilding stack" "No-cache image rebuild and launch" -- \
-		bash -c '$(COMPOSE) down && $(COMPOSE) build --no-cache && $(COMPOSE) up -d'
+fclean: require-compose
+	@echo "Removing containers and volumes..."
+	@$(COMPOSE) down -v $(Q)
+
+re: prepare-env require-compose
+	@echo "Rebuilding stack (no cache)..."
+	@$(COMPOSE) down $(Q)
+	@$(COMPOSE) build --no-cache $(Q)
+	@$(COMPOSE) up -d $(Q)
+
+# ---------------------------------------------------------------------------
+# Tests
+# Run the evaluation tester.
+# ---------------------------------------------------------------------------
+
+test-eval:
+	@echo "Running eval tester..."
+	@bash tester/run.sh $(ARGS)
