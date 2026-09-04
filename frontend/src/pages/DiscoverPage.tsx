@@ -19,6 +19,7 @@ export function DiscoverPage() {
   const [sport, setSport] = useState("");
   const [levels, setLevels] = useState<string[]>([]);
   const [time, setTime] = useState("");
+  const [sort, setSort] = useState("");
   const [search, setSearch] = useState("");
   // The input updates on every keystroke so typing stays instant, but the
   // request waits until you pause — otherwise every letter refetches the list.
@@ -93,6 +94,7 @@ export function DiscoverPage() {
         sport,
         level: levels.join(","),
         search: searchQuery,
+        sort,
         page,
         pageSize: 12,
         ...timeBounds,
@@ -108,7 +110,7 @@ export function DiscoverPage() {
     } finally {
       setLoading(false);
     }
-  }, [levels, page, searchQuery, sport, timeBounds]);
+  }, [levels, page, searchQuery, sort, sport, timeBounds]);
 
   function changeSearch(value: string) {
     setPage(1);
@@ -123,6 +125,11 @@ export function DiscoverPage() {
   function changeTime(value: string) {
     setPage(1);
     setTime(value);
+  }
+
+  function changeSort(value: string) {
+    setPage(1);
+    setSort(value);
   }
 
   async function doJoin(id: string) {
@@ -173,6 +180,8 @@ export function DiscoverPage() {
         onLevelChange={toggleLevel}
         time={time}
         onTimeChange={changeTime}
+        sort={sort}
+        onSortChange={changeSort}
         sports={sports}
         page={page}
         pageCount={pageCount}

@@ -50,6 +50,8 @@ export type EventListParams = {
   level?: string;
   language?: string;
   search?: string;
+  /** "az" | "za" | "recent" | "oldest"; omit for the default soonest-first order. */
+  sort?: string;
   startAfter?: string;
   startBefore?: string;
   page?: number;
@@ -62,6 +64,7 @@ export function getEventsPage(params?: EventListParams) {
   if (params?.level) q.set("level", params.level);
   if (params?.language) q.set("language", params.language);
   if (params?.search) q.set("search", params.search);
+  if (params?.sort) q.set("sort", params.sort);
   if (params?.startAfter) q.set("start_after", params.startAfter);
   if (params?.startBefore) q.set("start_before", params.startBefore);
   if (params?.page) q.set("page", String(params.page));

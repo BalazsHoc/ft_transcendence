@@ -1,5 +1,6 @@
 from django.db import transaction
 from django.db.models import Count, Q
+from django.db.models.functions import Lower
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
 from rest_framework import viewsets, permissions, decorators, response, status
@@ -62,7 +63,16 @@ class EventViewSet(viewsets.ModelViewSet):
                 raise ValidationError({query_name: 'Use a valid ISO 8601 datetime.'})
             qs = qs.filter(**{lookup: parsed})
 
-        return qs.order_by('start_at', 'pk')
+        # Sorting. 'pk' is the tiebreaker everywhere so paging stays stable
+        # when two events share a title or an update timestamp.
+        sort = self.request.query_params.get('sort', '').strip()
+        orderings = {
+            'az': (Lower('title'), 'pk'),
+            'za': (Lower('title').desc(), 'pk'),
+            'recent': ('-updated_at', 'pk'),
+            'oldest': ('updated_at', 'pk'),
+        }
+        return qs.order_by(*orderings.get(sort, ('start_at', 'pk')))
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
 

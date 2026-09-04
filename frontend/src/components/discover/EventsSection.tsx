@@ -42,6 +42,8 @@ type EventsSectionProps = {
   onLevelChange: (value: string) => void;
   time: string;
   onTimeChange: (value: string) => void;
+  sort: string;
+  onSortChange: (value: string) => void;
   sports: SportOption[];
 };
 
@@ -56,6 +58,8 @@ export function EventsSection({
   onLevelChange,
   time,
   onTimeChange,
+  sort,
+  onSortChange,
   sports,
 }: EventsSectionProps) {
   const { t } = useTranslation();
@@ -224,9 +228,10 @@ export function EventsSection({
           <span className="hidden sm:inline">{t("discover.filters")}</span>
         </div>
 
-        <label className="min-w-[150px] flex-1 sm:flex-none">
+        <label className="min-w-[150px] flex-1 sm:w-[150px] sm:flex-none">
           <span className="sr-only">{t("discover.sport")}</span>
           <select
+            className="truncate"
             value={sport}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => onSportChange(event.target.value)}
           >
@@ -239,9 +244,10 @@ export function EventsSection({
           </select>
         </label>
 
-        <label className="min-w-[150px] flex-1 sm:flex-none">
+        <label className="min-w-[150px] flex-1 sm:w-[150px] sm:flex-none">
           <span className="sr-only">{t("discover.time")}</span>
           <select
+            className="truncate"
             value={time}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => onTimeChange(event.target.value)}
           >
@@ -253,7 +259,22 @@ export function EventsSection({
           </select>
         </label>
 
-        <details className="events-level-filter relative min-w-[180px] flex-1 sm:flex-none">
+        <label className="min-w-[170px] flex-1 sm:w-[190px] sm:flex-none">
+          <span className="sr-only">{t("discover.sortBy")}</span>
+          <select
+            className="truncate"
+            value={sort}
+            onChange={(event: ChangeEvent<HTMLSelectElement>) => onSortChange(event.target.value)}
+          >
+            <option value="">{t("discover.sortSoonest")}</option>
+            <option value="az">{t("discover.sortAz")}</option>
+            <option value="za">{t("discover.sortZa")}</option>
+            <option value="recent">{t("discover.sortRecent")}</option>
+            <option value="oldest">{t("discover.sortOldest")}</option>
+          </select>
+        </label>
+
+        <details className="events-level-filter relative min-w-[180px] flex-1 sm:w-[180px] sm:flex-none">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-[var(--radius-button)] border border-[var(--control-border)] bg-[var(--control-bg)] px-3 py-[10px] text-sm text-[var(--control-text)]">
             <span className="truncate">{levelSummary}</span>
             <ChevronDown size={16} aria-hidden="true" />

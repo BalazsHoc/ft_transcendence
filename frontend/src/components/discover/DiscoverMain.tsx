@@ -20,6 +20,8 @@ type DiscoverMainProps = {
   onLevelChange: (value: string) => void;
   time: string;
   onTimeChange: (value: string) => void;
+  sort: string;
+  onSortChange: (value: string) => void;
   sports: SportOption[];
   page: number;
   pageCount: number;
@@ -38,6 +40,8 @@ export function DiscoverMain({
   onLevelChange,
   time,
   onTimeChange,
+  sort,
+  onSortChange,
   sports,
   page,
   pageCount,
@@ -75,6 +79,8 @@ export function DiscoverMain({
         onLevelChange={onLevelChange}
         time={time}
         onTimeChange={onTimeChange}
+        sort={sort}
+        onSortChange={onSortChange}
         sports={sports}
       />
       <PaginationControls
