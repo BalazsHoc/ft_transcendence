@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { DiscoverMain } from "../components/discover/DiscoverMain";
 import {
@@ -10,8 +11,10 @@ import {
 } from "../api/eventsApi";
 import { EventItem } from "../types/api";
 import { useSports } from "../hooks/useSports";
+import { useNotification } from "../components/shared/NotificationProvider";
 
 export function DiscoverPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [events, setEvents] = useState<EventItem[]>([]);
   const sports = useSports();
@@ -29,6 +32,7 @@ export function DiscoverPage() {
   const [loading, setLoading] = useState(false);
 
   const [log, setLog] = useState("");
+  const notify = useNotification();
 
   function toggleLevel(value: string) {
     setPage(1);
@@ -135,6 +139,7 @@ export function DiscoverPage() {
   async function doJoin(id: string) {
     try {
       await joinEvent(id);
+      try { notify(t("joined"), "success"); } catch {}
       await load();
     } catch (e: any) {
       setLog(e.message);
@@ -144,6 +149,7 @@ export function DiscoverPage() {
   async function doLeave(id: string) {
     try {
       await leaveEvent(id);
+      try { notify(t("left"), "success"); } catch {}
       await load();
     } catch (e: any) {
       setLog(e.message);

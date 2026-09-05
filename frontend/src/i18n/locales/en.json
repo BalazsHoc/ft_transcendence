@@ -93,6 +93,8 @@
       }
     }
   },
+  "joined": "You're in",
+  "left": "You left",
   "auth": {
     "loginTitle": "Login",
     "registerTitle": "Register",
@@ -334,6 +336,7 @@
     "reserveSpot": "Reserve Spot",
     "leaveSpot": "Leave",
     "joined": "You're in",
+    "left": "You left",
     "waiting": "On waitlist",
     "selectEvent": "Select a pin on the map to see details.",
     "noEventsFilter": "No events match these filters.",

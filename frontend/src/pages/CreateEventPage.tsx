@@ -7,6 +7,7 @@ import { createEvent, createGroupEvent, type EventPayload } from "../api/eventsA
 import { getGroup } from "../api/groupsApi";
 import type { GroupItem } from "../types/api";
 import Button from "../components/shared/Button";
+ 
 
 export function CreateEventPage() {
   const { t } = useTranslation();

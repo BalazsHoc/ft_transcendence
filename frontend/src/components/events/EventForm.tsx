@@ -9,6 +9,7 @@ import { getDefaultEventImage, resolveMediaUrl } from "../../utils/media";
 import { useSports } from "../../hooks/useSports";
 import { PROFILE_LANGUAGE_CODES } from "../../data/profileLanguages";
 import Button from "../shared/Button";
+import { useNotification } from "../shared/NotificationProvider";
 
 const LEVEL_OPTIONS = ["all", "beginner", "intermediate", "advanced"] as const;
 
@@ -85,6 +86,7 @@ export function EventForm({
   );
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const notify = useNotification();
 
   useEffect(() => {
     if (!imageFile) {
@@ -162,6 +164,14 @@ export function EventForm({
     setSubmitting(true);
     try {
       await onSubmit(payload, imageFile);
+      try {
+        const message = initialEvent
+          ? `${t("editEvent.submit")}: ${normalizedTitle}`
+          : `${t("createEvent.submit")}: ${normalizedTitle}`;
+        notify(message, "success");
+      } catch (e) {
+        // ignore if notify fails
+      }
 
       if (normalizedLocationName && normalizedLocationAddress) {
         await rememberSearch({

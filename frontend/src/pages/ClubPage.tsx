@@ -7,6 +7,7 @@ import { ClubRecruitingCard } from "../components/club/ClubRecruitingCard";
 import { ClubMemberSpotlight } from "../components/club/ClubMemberSpotlight";
 import type { ClubRideItem } from "../components/club/ClubRideRow";
 import { getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
+import { useNotification } from "../components/shared/NotificationProvider";
 import type { EventItem } from "../types/api";
 
 const CLUB_COVER_IMAGE =
@@ -46,6 +47,7 @@ export function ClubPage() {
   const ridesRef = useRef<HTMLDivElement | null>(null);
   const [rides, setRides] = useState<ClubRideItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const notify = useNotification();
 
   useEffect(() => {
     let cancelled = false;
@@ -102,8 +104,18 @@ export function ClubPage() {
     try {
       if (ride.userStatus === "attending" || ride.userStatus === "waiting") {
         await leaveEvent(ride.eventId);
+        try { notify(t("left"), "success"); } catch {}
       } else {
-        await joinEvent(ride.eventId);
+        const result = await joinEvent(ride.eventId);
+        const nextStatus =
+          result.status === "attending" || result.status === "waiting"
+            ? result.status
+            : "attending";
+        if (nextStatus === "waiting") {
+          notify(t("club.rides.waitlistJoined"), "success");
+        } else {
+          notify(t("joined"), "success");
+        }
       }
     } catch {
       // Auth or capacity errors — quiet for MVP

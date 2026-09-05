@@ -7,6 +7,7 @@ import { GroupForm } from "../components/groups/GroupForm";
 import type { GroupItem, GroupPayload } from "../types/api";
 import { getGroup, updateGroup } from "../api/groupsApi";
 import Button from "../components/shared/Button";
+import { useNotification } from "../components/shared/NotificationProvider";
 
 export function EditGroupPage() {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ export function EditGroupPage() {
   const navigate = useNavigate();
   const [group, setGroup] = useState<GroupItem | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const notify = useNotification();
 
   useEffect(() => {
     if (!groupId) return;
@@ -29,6 +31,9 @@ export function EditGroupPage() {
   async function submit(payload: GroupPayload) {
     if (!groupId) return;
     const updated = await updateGroup(groupId, payload);
+    try {
+      notify(`${t("editGroup.submit")}: ${payload.name}`, "success");
+    } catch {}
     navigate(`/groups/${updated.id}`);
   }
 

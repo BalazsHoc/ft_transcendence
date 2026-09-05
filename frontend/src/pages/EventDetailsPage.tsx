@@ -5,11 +5,13 @@ import { ArrowLeft, CalendarDays, Clock3, MapPin, PencilLine, Users } from "luci
 import { EventChat } from "../components/chat/EventChat";
 import { Badge } from "../components/shared/Badge";
 import Button from "../components/shared/Button";
+import { ConfirmDialog } from "../components/shared/ConfirmDialog";
 import { EventItem } from "../types/api";
 import { getEvent, joinEvent, leaveEvent } from "../api/eventsApi";
 import { getGroup } from "../api/groupsApi";
 import { DEFAULT_AVATAR_SRC, getDefaultEventImage, resolveMediaUrl } from "../utils/media";
 import { useAuth } from "../features/auth/AuthContext";
+import { useNotification } from "../components/shared/NotificationProvider";
 
 const getParticipantAvatar = (avatar?: string | null) =>
   resolveMediaUrl(avatar, DEFAULT_AVATAR_SRC);
@@ -31,6 +33,8 @@ export function EventDetailsPage() {
   const [event, setEvent] = useState<EventItem | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isGroupMember, setIsGroupMember] = useState(false);
+  const notify = useNotification();
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
   async function load() {
     if (!eventId) return;
@@ -48,7 +52,14 @@ export function EventDetailsPage() {
     try {
       await joinEvent(eventId);
       setError(null);
-      await load();
+      const updated = await getEvent(eventId);
+      setEvent(updated);
+      const status = updated.user_status?.status;
+      if (status === "waiting") {
+        notify(t("club.rides.waitlistJoined"), "success");
+      } else {
+        notify(t("joined"), "success");
+      }
     } catch (e: any) {
       setError(e instanceof Error ? e.message : String(e));
     }
@@ -60,6 +71,9 @@ export function EventDetailsPage() {
     try {
       await leaveEvent(eventId);
       setError(null);
+      try {
+        notify(t("left"), "success");
+      } catch {}
       await load();
     } catch (e: any) {
       setError(e instanceof Error ? e.message : String(e));
@@ -182,9 +196,22 @@ export function EventDetailsPage() {
 
             <div className="ml-auto flex flex-wrap gap-3">
               {isLoggedIn && isJoined && (
-                <Button variant="primary" onClick={leave}>
-                  {t("common.leave")}
-                </Button>
+                <>
+                  <Button variant="primary" onClick={() => setLeaveConfirmOpen(true)}>
+                    {t("common.leave")}
+                  </Button>
+                  <ConfirmDialog
+                    open={leaveConfirmOpen}
+                    title={t("club.rides.leaveConfirmTitle")}
+                    message={t("club.rides.leaveConfirm", { title: event.title })}
+                    confirmLabel={t("club.rides.leave")}
+                    onConfirm={() => {
+                      setLeaveConfirmOpen(false);
+                      void leave();
+                    }}
+                    onCancel={() => setLeaveConfirmOpen(false)}
+                  />
+                </>
               )}
 
               {isLoggedIn && !isJoined && canJoinEvent && (

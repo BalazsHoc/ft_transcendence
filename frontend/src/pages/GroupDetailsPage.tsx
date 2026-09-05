@@ -16,6 +16,7 @@ import { ConfirmDialog } from "../components/shared/ConfirmDialog";
 import { getDefaultGroupImage } from "../utils/media";
 import { GroupChat } from "../components/chat/GroupChat";
 import { GroupMembersList } from "../components/groups/GroupMembersList";
+import { useNotification } from "../components/shared/NotificationProvider";
 
 function levelLabel(level: EventItem["level"], t: (key: string) => string) {
   const key = `discover.${level}` as const;
@@ -77,6 +78,7 @@ export function GroupDetailsPage() {
   const [rsvpNeedsAuth, setRsvpNeedsAuth] = useState(false);
   const [membersOpen, setMembersOpen] = useState(false);
   const applyErrorTimer = useRef<number | null>(null);
+  const notify = useNotification();
 
   const loadRides = useCallback(async () => {
     if (!groupId) return [] as ClubRideItem[];
@@ -246,6 +248,9 @@ export function GroupDetailsPage() {
       if (isLeaving) {
         await leaveEvent(ride.eventId);
         setRides(await loadRides());
+        try {
+          notify(t("left"), "success");
+        } catch {}
       } else {
         const result = await joinEvent(ride.eventId);
         const nextStatus =
@@ -255,6 +260,9 @@ export function GroupDetailsPage() {
         setRides(await loadRides());
         if (nextStatus === "waiting") {
           setRsvpInfo(t("club.rides.waitlistJoined"));
+          notify(t("club.rides.waitlistJoined"), "success");
+        } else {
+          notify(t("joined"), "success");
         }
       }
     } catch (err) {

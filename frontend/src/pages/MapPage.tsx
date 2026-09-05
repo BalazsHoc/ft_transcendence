@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getEvents, joinEvent, leaveEvent } from "../api/eventsApi";
+import { useNotification } from "../components/shared/NotificationProvider";
 import { getMapStyle, MapStyleResponse } from "../api/geoApi";
 import { GeoSuggestion, EventItem } from "../types/api";
 import { MapEventPanel } from "../components/map/MapEventPanel";
@@ -140,6 +141,7 @@ export function MapPage() {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [actionBusy, setActionBusy] = useState(false);
   const [status, setStatus] = useState("Loading map...");
+  const notify = useNotification();
   const [mapStyle, setMapStyle] = useState<MapStyleResponse>(FALLBACK_MAP_STYLE);
   const [mapTheme, setMapTheme] = useState<"light" | "dark">(() =>
     typeof document === "undefined" ? "light" : getCurrentMapTheme(),
@@ -374,6 +376,7 @@ export function MapPage() {
     setActionBusy(true);
     try {
       await joinEvent(id);
+      try { notify(t("joined"), "success"); } catch {}
       await loadEvents();
     } catch (error: any) {
       setStatus(error.message);
@@ -386,6 +389,7 @@ export function MapPage() {
     setActionBusy(true);
     try {
       await leaveEvent(id);
+      try { notify(t("left"), "success"); } catch {}
       await loadEvents();
     } catch (error: any) {
       setStatus(error.message);

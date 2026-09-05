@@ -93,6 +93,8 @@
       }
     }
   },
+  "joined": "Du bist dabei",
+  "left": "Du hast die Veranstaltung verlassen",
   "auth": {
     "loginTitle": "Login",
     "registerTitle": "Registrieren",
@@ -334,6 +336,7 @@
     "reserveSpot": "Platz reservieren",
     "leaveSpot": "Verlassen",
     "joined": "Du bist dabei",
+    "left": "Du hast die Veranstaltung verlassen",
     "waiting": "Auf der Warteliste",
     "selectEvent": "Wähle einen Punkt auf der Karte, um Details zu sehen.",
     "noEventsFilter": "Keine Events entsprechen diesen Filtern.",

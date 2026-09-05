@@ -11,6 +11,7 @@ import Button from "../components/shared/Button";
 import { PageHeading } from "../components/shared/PageHeading";
 import { PaginationControls } from "../components/shared/PaginationControls";
 import { getDefaultGroupImage } from "../utils/media";
+import { useNotification } from "../components/shared/NotificationProvider";
 
 const LEVEL_CODES = new Set(["beginner", "intermediate", "advanced", "all"]);
 type GroupLevel = GroupItem["levels"][number];
@@ -43,6 +44,7 @@ export function GroupsPage() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const sports = useSports();
+  const notify = useNotification();
   const [groups, setGroups] = useState<GroupItem[]>([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -147,8 +149,11 @@ export function GroupsPage() {
       setCoverImageFile(null);
       setShowForm(false);
       await loadGroups();
+      notify(t("groupsTest.create") + " — " + form.name, "success");
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : t("groupsTest.createError"));
+      const raw = submitError instanceof Error ? submitError.message : t("groupsTest.createError");
+      setError(raw);
+      notify(raw, "error");
     } finally {
       setSubmitting(false);
     }
