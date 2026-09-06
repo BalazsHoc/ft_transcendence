@@ -1,9 +1,14 @@
-# Single-command deploy for the subject: `make` starts the full Docker stack.
-MAKEFLAGS += --no-print-directory
+# =============================================================================
+# Makefile — one place to start / stop / reset the whole Docker project.
+#
+# Idea: instead of typing long docker compose commands, you run simple targets
+# like `make`, `make down`, or `make fclean`. Everything below just wraps
+# Docker Compose so the stack is easy to launch on evaluation day.
+#
+# =============================================================================
 
 # ---------------------------------------------------------------------------
-# Tools
-# Pick Docker Compose (v2 plugin preferred, then v1 binary).
+# here we decide whether to use docker compose or docker-compose
 # ---------------------------------------------------------------------------
 
 COMPOSE := $(shell docker compose version >/dev/null 2>&1 && echo "docker compose" || true)
@@ -11,20 +16,31 @@ ifeq ($(strip $(COMPOSE)),)
 COMPOSE := $(shell command -v docker-compose >/dev/null 2>&1 && echo "docker-compose" || true)
 endif
 
+# ---------------------------------------------------------------------------
+# here we define the compose command and the quiet flag
+# ---------------------------------------------------------------------------
+
 DEV_COMPOSE := $(COMPOSE) -f docker-compose.yml -f docker-compose.dev.yml
 Q := >/dev/null 2>&1
+
+# ---------------------------------------------------------------------------
+# Declared targets + default
+#
+# prepare-env: create .env from .env.example if needed
+# require-compose: fail early with a clear message if Compose is missing.
+# ---------------------------------------------------------------------------
 
 .PHONY: all help require-compose prepare-env \
 	up empty db seed \
 	logs ps restart \
-	down clean fclean re \
-	test-eval
+	down clean fclean re
 
 all: up
 
 # ---------------------------------------------------------------------------
-# Help
-# List available make targets.
+# Help — print what each make target does
+#
+# Run `make help` if you forget which command starts, stops, or resets things.
 # ---------------------------------------------------------------------------
 
 help:
@@ -41,11 +57,13 @@ help:
 	@echo "  make re         no-cache rebuild and start"
 	@echo "  make clean      same as down"
 	@echo "  make fclean     stop containers and delete volumes"
-	@echo "  make test-eval  run the eval tester (ARGS=...)"
 
 # ---------------------------------------------------------------------------
-# Setup
-# Make sure Compose exists and .env is ready before starting services.
+# Setup — safety checks before we touch Docker
+#
+# require-compose: fail early with a clear message if Compose is missing.
+# prepare-env: create .env from .env.example if needed, and replace a weak /
+# placeholder SECRET_KEY with a real random one (python3 or openssl).
 # ---------------------------------------------------------------------------
 
 require-compose:
@@ -53,6 +71,24 @@ require-compose:
 		echo "Docker Compose is not installed. Install docker compose or docker-compose." >&2; \
 		exit 1; \
 	fi
+
+# ---------------------------------------------------------------------------
+# prepare-env — only touches .env / SECRET_KEY (nothing else)
+#
+# .env.example = template (safe to commit, placeholder values)
+# .env         = real settings file the app/Docker actually use
+#
+# What it does:
+# 1) If .env is missing, copy .env.example -> .env
+# 2) Read SECRET_KEY from .env
+# 3) If SECRET_KEY is empty or a known weak placeholder
+#    (change-me-in-production / dev-secret-key), generate a random one
+#    (python3, or openssl) and write it into .env
+#
+# SECRET_KEY is a long random string Django uses to sign sessions, cookies,
+# and other security tokens. A weak/public key is unsafe.
+#
+# ---------------------------------------------------------------------------
 
 prepare-env:
 	@if [ ! -f .env ]; then cp .env.example .env; fi
@@ -73,8 +109,13 @@ prepare-env:
 	esac
 
 # ---------------------------------------------------------------------------
-# Start
-# Bring the stack (or just the database) up.
+# Start — bring the app (or only the database) up
+#
+# up:     normal start — build/start the full stack in the background.
+# empty:  wipe volumes first, then start with NO_SEED=1 (clean DB, no sample data).
+# db:     start only Postgres (dev compose) and wait until it accepts connections.
+# seed:   load/reset the evaluation sample data. Uses a running backend if one
+#         exists; otherwise starts the DB temporarily and runs seed via compose.
 # ---------------------------------------------------------------------------
 
 up: prepare-env require-compose
@@ -114,8 +155,11 @@ seed: prepare-env require-compose
 	fi
 
 # ---------------------------------------------------------------------------
-# Inspect
-# Look at running containers and their logs.
+# Inspect — check what is running
+#
+# logs:    stream container output (Ctrl+C to stop following).
+# ps:      show container status like docker compose ps.
+# restart: restart containers that are already up (no full rebuild).
 # ---------------------------------------------------------------------------
 
 logs: require-compose
@@ -131,8 +175,11 @@ restart: require-compose
 	@$(COMPOSE) restart $(Q)
 
 # ---------------------------------------------------------------------------
-# Stop / reset
-# Stop the stack, or wipe volumes / rebuild from scratch.
+# Stop / reset — shut down or wipe and rebuild
+#
+# down / clean: stop containers but keep Docker volumes (data stays).
+# fclean:       stop containers AND delete volumes (full wipe).
+# re:           stop, rebuild images with --no-cache, then start again.
 # ---------------------------------------------------------------------------
 
 down: require-compose
@@ -152,12 +199,3 @@ re: prepare-env require-compose
 	@$(COMPOSE) down $(Q)
 	@$(COMPOSE) build --no-cache $(Q)
 	@$(COMPOSE) up -d $(Q)
-
-# ---------------------------------------------------------------------------
-# Tests
-# Run the evaluation tester.
-# ---------------------------------------------------------------------------
-
-test-eval:
-	@echo "Running eval tester..."
-	@bash tester/run.sh $(ARGS)
