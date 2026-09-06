@@ -138,6 +138,17 @@ db: prepare-env require-compose
 		sleep 1; \
 	done
 
+# ---------------------------------------------------------------------------
+# Seed — load sample data
+#
+# seed:   load/reset the evaluation sample data. Uses a running backend if one
+#         exists; otherwise starts the DB temporarily and runs seed via compose.
+# 
+#         it run backend/public_api/management/commands/seed_eval.py
+#         this python script will load and parse the json file and insert the data into the database.
+#         the actual sample files is in backend/fixtures/eval_snapshot.json
+# ---------------------------------------------------------------------------
+
 seed: prepare-env require-compose
 	@echo "Loading sample data..."
 	@running=$$($(COMPOSE) ps -q --status running backend 2>/dev/null || true); \
