@@ -224,21 +224,23 @@ export function UserProfilePage() {
     <div className="profile-page-full flex items-start">
       <ProfileSideNav />
       <div className="min-w-0 flex-1 pb-16">
-        <div className="mx-auto max-w-6xl px-4 pt-5">
-          <Button
-            variant="outline"
-            size="sm"
-            icon={<ArrowLeft size={16} aria-hidden="true" />}
-            onClick={goBack}
-          >
-            {t("userProfile.back")}
-          </Button>
-        </div>
+        <div className="relative">
+          <div className="absolute left-4 top-4 z-20 md:left-6 md:top-5">
+            <Button
+              variant="primary"
+              size="sm"
+              icon={<ArrowLeft size={16} aria-hidden="true" />}
+              onClick={goBack}
+            >
+              {t("userProfile.back")}
+            </Button>
+          </div>
 
-        <ProfileHero
-          user={profile}
-          onEditClick={isOwnProfile ? () => setEditing(true) : undefined}
-        />
+          <ProfileHero
+            user={profile}
+            onEditClick={isOwnProfile ? () => setEditing(true) : undefined}
+          />
+        </div>
 
         {!isOwnProfile && (
           <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 pt-5">
