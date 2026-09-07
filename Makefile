@@ -56,7 +56,7 @@ help:
 	@echo "  make restart    restart running containers"
 	@echo "  make re         no-cache rebuild and start"
 	@echo "  make clean      same as down"
-	@echo "  make fclean     stop containers and delete volumes"
+	@echo "  make fclean     delete containers, images, volumes, and orphan containers"
 
 # ---------------------------------------------------------------------------
 # Setup — safety checks before we touch Docker
@@ -189,7 +189,7 @@ restart: require-compose
 # Stop / reset — shut down or wipe and rebuild
 #
 # down / clean: stop containers but keep Docker volumes (data stays).
-# fclean:       stop containers AND delete volumes (full wipe).
+# fclean:       delete project containers, images, volumes, and orphan containers.
 # re:           stop, rebuild images with --no-cache, then start again.
 # ---------------------------------------------------------------------------
 
@@ -202,8 +202,8 @@ clean: require-compose
 	@$(COMPOSE) down $(Q)
 
 fclean: require-compose
-	@echo "Removing containers and volumes..."
-	@$(COMPOSE) down -v $(Q)
+	@echo "Removing project containers, images, volumes, and orphan containers..."
+	@$(COMPOSE) down -v --rmi all --remove-orphans $(Q)
 
 re: prepare-env require-compose
 	@echo "Rebuilding stack (no cache)..."
