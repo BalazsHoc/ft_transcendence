@@ -6,6 +6,26 @@ Vienna Active is a multilingual social sports platform for discovering activitie
 
 The project was developed as `ft_transcendence`, the final group project of the 42 Common Core.
 
+## Table of Contents
+
+- [Description](#description)
+- [Key Features](#key-features)
+- [Team Information](#team-information)
+- [Project Management](#project-management)
+- [Technical Stack](#technical-stack)
+- [Architecture](#architecture)
+- [Database Schema](#database-schema)
+- [Feature Ownership](#feature-ownership)
+- [Chosen Modules](#chosen-modules)
+- [Individual Contributions](#individual-contributions)
+- [Instructions](#instructions)
+- [Evaluation Data](#evaluation-data)
+- [Resources](#resources)
+- [Use of AI](#use-of-ai)
+- [Challenges and Solutions](#challenges-and-solutions)
+- [Known Limitations](#known-limitations)
+- [License and Educational Use](#license-and-educational-use)
+
 ## Description
 
 Vienna Active brings local sports activities, groups, events, and social features into one responsive web application.
