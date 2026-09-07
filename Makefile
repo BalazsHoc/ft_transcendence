@@ -205,8 +205,7 @@ fclean: require-compose
 	@echo "Removing project containers, images, volumes, and orphan containers..."
 	@$(COMPOSE) down -v --rmi all --remove-orphans $(Q)
 
-re: prepare-env require-compose
+re: prepare-env require-compose fclean
 	@echo "Rebuilding stack (no cache)..."
-	@$(COMPOSE) down $(Q)
 	@$(COMPOSE) build --no-cache $(Q)
 	@$(COMPOSE) up -d $(Q)
