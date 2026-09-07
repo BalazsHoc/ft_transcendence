@@ -6,6 +6,7 @@ import type { EventPayload } from "../../api/eventsApi";
 import { rememberSearch } from "../../api/geoApi";
 import { getStreetName, LocationAutocomplete } from "../geo/LocationAutocomplete";
 import { getDefaultEventImage, resolveMediaUrl } from "../../utils/media";
+import { isImageFileTooLarge } from "../../utils/fileValidation";
 import { useSports } from "../../hooks/useSports";
 import { PROFILE_LANGUAGE_CODES } from "../../data/profileLanguages";
 import Button from "../shared/Button";
@@ -106,9 +107,26 @@ export function EventForm({
     setLongitude(null);
   }
 
+  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const nextFile = event.target.files?.[0] || null;
+    if (isImageFileTooLarge(nextFile)) {
+      event.currentTarget.value = "";
+      setImageFile(null);
+      setSubmitError(t("uploads.imageTooLarge"));
+      return;
+    }
+    setSubmitError(null);
+    setImageFile(nextFile);
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitError(null);
+
+    if (isImageFileTooLarge(imageFile)) {
+      setSubmitError(t("uploads.imageTooLarge"));
+      return;
+    }
 
     const normalizedTitle = title.trim();
     const normalizedDescription = description.trim();
@@ -273,9 +291,7 @@ export function EventForm({
           className={fieldClass}
           type="file"
           accept="image/*"
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setImageFile(event.target.files?.[0] || null)
-          }
+          onChange={handleImageChange}
         />
       </label>
 

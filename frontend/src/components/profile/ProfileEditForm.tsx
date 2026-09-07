@@ -7,6 +7,7 @@ import { DEFAULT_AVATAR_SRC, resolveMediaUrl } from "../../utils/media";
 import { useDistricts } from "../../hooks/useDistricts";
 import { useSports } from "../../hooks/useSports";
 import { PROFILE_LANGUAGE_CODES } from "../../data/profileLanguages";
+import { isImageFileTooLarge } from "../../utils/fileValidation";
 
 const fieldLabelClasses = "mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--muted)]";
 
@@ -49,6 +50,10 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
   }, [avatarFile, user?.avatar]);
 
   async function save() {
+    if (isImageFileTooLarge(avatarFile)) {
+      setError(t("uploads.imageTooLarge"));
+      return;
+    }
     try {
       await updateMe({
         district,
@@ -61,6 +66,18 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
     } catch (e: any) {
       setError(e.message);
     }
+  }
+
+  function handleAvatarChange(event: ChangeEvent<HTMLInputElement>) {
+    const nextFile = event.target.files?.[0] || null;
+    if (isImageFileTooLarge(nextFile)) {
+      event.currentTarget.value = "";
+      setAvatarFile(null);
+      setError(t("uploads.imageTooLarge"));
+      return;
+    }
+    setError("");
+    setAvatarFile(nextFile);
   }
 
   return (
@@ -85,7 +102,7 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setAvatarFile(e.target.files?.[0] || null)}
+              onChange={handleAvatarChange}
             />
           </label>
         </div>

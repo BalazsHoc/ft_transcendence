@@ -11,6 +11,7 @@ import Button from "../components/shared/Button";
 import { PageHeading } from "../components/shared/PageHeading";
 import { PaginationControls } from "../components/shared/PaginationControls";
 import { getDefaultGroupImage } from "../utils/media";
+import { isImageFileTooLarge } from "../utils/fileValidation";
 import { useNotification } from "../components/shared/NotificationProvider";
 
 const LEVEL_CODES = new Set(["beginner", "intermediate", "advanced", "all"]);
@@ -112,8 +113,24 @@ export function GroupsPage() {
     setForm((current) => ({ ...current, [name]: value }));
   }
 
+  function handleCoverImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const nextFile = event.target.files?.[0] || null;
+    if (isImageFileTooLarge(nextFile)) {
+      event.currentTarget.value = "";
+      setCoverImageFile(null);
+      setError(t("uploads.imageTooLarge"));
+      return;
+    }
+    setError(null);
+    setCoverImageFile(nextFile);
+  }
+
   async function submitGroup(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (isImageFileTooLarge(coverImageFile)) {
+      setError(t("uploads.imageTooLarge"));
+      return;
+    }
     const levels = form.levels
       .split(",")
       .map((level) => level.trim())
@@ -291,7 +308,7 @@ export function GroupsPage() {
               name="coverImage"
               type="file"
               accept="image/*"
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setCoverImageFile(event.target.files?.[0] || null)}
+              onChange={handleCoverImageChange}
             />
           </label>
           <label htmlFor="create-group-sport">

@@ -40,6 +40,9 @@
     "refresh": "Refresh",
     "toggleDarkMode": "Toggle dark mode"
   },
+  "uploads": {
+    "imageTooLarge": "Image must be 10 MB or smaller."
+  },
   "pagination": {
     "label": "Pagination",
     "previous": "Previous",

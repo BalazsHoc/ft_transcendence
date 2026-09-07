@@ -40,6 +40,9 @@
     "refresh": "Aktualisieren",
     "toggleDarkMode": "Dunkelmodus umschalten"
   },
+  "uploads": {
+    "imageTooLarge": "Das Bild darf höchstens 10 MB groß sein."
+  },
   "pagination": {
     "label": "Seitennavigation",
     "previous": "Zurück",

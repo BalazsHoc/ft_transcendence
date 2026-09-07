@@ -40,6 +40,9 @@
     "refresh": "Оновити",
     "toggleDarkMode": "Перемкнути темний режим"
   },
+  "uploads": {
+    "imageTooLarge": "Зображення має бути не більшим за 10 МБ."
+  },
   "pagination": {
     "label": "Навігація сторінками",
     "previous": "Назад",

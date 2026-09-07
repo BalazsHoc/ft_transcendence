@@ -60,7 +60,7 @@ The frontend image is built with `VITE_API_URL=https://localhost` and `VITE_WS_U
 ![Data on the host](docs/docker/data.png)
 
 - **PostgreSQL** lives in the `pgdata` named volume. It is not in git. A fresh volume is seeded from [backend/fixtures/eval_snapshot.json](backend/fixtures/eval_snapshot.json).
-- **Media** is user uploads. Bind-mounted read-write on backend, read-only on nginx.
+- **Media** is user uploads. Bind-mounted read-write on backend, read-only on nginx. Image uploads are limited to 10 MB per file; nginx allows multipart overhead and returns a JSON 413 response when the request is still too large.
 - **staticfiles** is Django `collectstatic` output (admin CSS). Named volume, rebuilt on start.
 - **TLS** is a self-signed cert created at nginx start. Chrome shows `ERR_CERT_AUTHORITY_INVALID` until you click Advanced → Proceed.
 

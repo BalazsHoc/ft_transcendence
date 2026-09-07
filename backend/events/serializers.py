@@ -4,6 +4,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from accounts.serializers import UserPublicSerializer
 from core.languages import LANGUAGE_CODES
+from core.upload_limits import image_size_error
 from groups.serializers import GroupSummarySerializer
 from .models import Event, EventParticipant
 
@@ -32,6 +33,12 @@ class EventSerializer(serializers.ModelSerializer):
         if not request or not request.user.is_authenticated: return None
         p=obj.participants.filter(user=request.user).first()
         return None if not p else {'status':p.status,'queue_position':p.queue_position}
+
+    def validate_image(self, value):
+        error = image_size_error(value)
+        if error:
+            raise serializers.ValidationError(error)
+        return value
 
     def validate_title(self, value):
         value = value.strip()

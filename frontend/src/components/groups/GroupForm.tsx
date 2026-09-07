@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import type { GroupItem, GroupPayload } from "../../types/api";
 import { getDefaultGroupImage, resolveMediaUrl } from "../../utils/media";
+import { isImageFileTooLarge } from "../../utils/fileValidation";
 import { useSports } from "../../hooks/useSports";
 import Button from "../shared/Button";
 
@@ -65,6 +66,11 @@ export function GroupForm({
     event.preventDefault();
     setSubmitError(null);
 
+    if (isImageFileTooLarge(coverImageFile)) {
+      setSubmitError(t("uploads.imageTooLarge"));
+      return;
+    }
+
     const parsedLevels = levels
       .split(",")
       .map((level) => level.trim())
@@ -109,6 +115,18 @@ export function GroupForm({
     } finally {
       setSubmitting(false);
     }
+  }
+
+  function handleCoverImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const nextFile = event.target.files?.[0] || null;
+    if (isImageFileTooLarge(nextFile)) {
+      event.currentTarget.value = "";
+      setCoverImageFile(null);
+      setSubmitError(t("uploads.imageTooLarge"));
+      return;
+    }
+    setSubmitError(null);
+    setCoverImageFile(nextFile);
   }
 
   return (
@@ -159,9 +177,7 @@ export function GroupForm({
           type="file"
           accept="image/*"
           className="mt-2 block w-full text-sm"
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setCoverImageFile(event.target.files?.[0] || null)
-          }
+          onChange={handleCoverImageChange}
         />
       </div>
 

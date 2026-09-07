@@ -3,6 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.utils.text import slugify
 from rest_framework import serializers
 from core.districts import DISTRICT_CODES
+from core.upload_limits import image_size_error
 from .presence import is_user_online
 User=get_user_model()
 
@@ -72,6 +73,12 @@ class MeSerializer(serializers.ModelSerializer):
         read_only_fields=['id','username','email','is_online','last_seen','created_at']
     def get_is_online(self, obj) -> bool:
         return is_user_online(obj.pk)
+
+    def validate_avatar(self, value):
+        error = image_size_error(value)
+        if error:
+            raise serializers.ValidationError(error)
+        return value
 
 
 class UserPresenceSerializer(serializers.ModelSerializer):

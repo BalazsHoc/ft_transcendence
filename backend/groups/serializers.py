@@ -2,6 +2,7 @@ from django.db.models import Count, Q
 from rest_framework import serializers
 
 from accounts.serializers import UserPublicSerializer
+from core.upload_limits import image_size_error
 from .models import Group, GroupMembership
 
 
@@ -43,6 +44,12 @@ class GroupSerializer(serializers.ModelSerializer):
         if not membership:
             return None
         return {"role": membership.role}
+
+    def validate_cover_image(self, value):
+        error = image_size_error(value)
+        if error:
+            raise serializers.ValidationError(error)
+        return value
 
     def validate_name(self, name):
         name = name.strip()
