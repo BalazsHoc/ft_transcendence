@@ -12,6 +12,8 @@ import { GeoSuggestion } from "../../types/api";
 import styles from "./LocationAutocomplete.module.css";
 
 type Props = {
+  id?: string;
+  name?: string;
   label: string;
   placeholder?: string;
   initialQuery?: string;
@@ -52,6 +54,8 @@ function hasTrailingHouseNumber(value: string) {
 }
 
 export function LocationAutocomplete({
+  id = "location-autocomplete",
+  name = "location",
   label,
   placeholder = "Search an address or place",
   initialQuery = "",
@@ -194,6 +198,8 @@ export function LocationAutocomplete({
       <label>
         {label}
         <input
+          id={id}
+          name={name}
           value={query}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             const nextQuery = event.target.value;

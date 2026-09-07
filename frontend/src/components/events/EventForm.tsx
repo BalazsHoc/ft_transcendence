@@ -202,6 +202,8 @@ export function EventForm({
       <label className={`${labelClass} md:col-span-2`}>
         <span>{t("event.title")} *</span>
         <input
+          id="event-title"
+          name="title"
           className={fieldClass}
           value={title}
           onChange={(event: ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
@@ -214,6 +216,8 @@ export function EventForm({
       <label className={`${labelClass} md:col-span-2`}>
         <span>{t("event.description")}</span>
         <textarea
+          id="event-description"
+          name="description"
           className={fieldClass}
           value={description}
           onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -226,6 +230,8 @@ export function EventForm({
       <label className={labelClass}>
         <span>{t("event.sport")} *</span>
         <select
+          id="event-sport"
+          name="sport"
           className={fieldClass}
           value={sport}
           onChange={(event: ChangeEvent<HTMLSelectElement>) => setSport(event.target.value)}
@@ -245,6 +251,8 @@ export function EventForm({
       <label className={labelClass}>
         <span>{t("event.level")}</span>
         <select
+          id="event-level"
+          name="level"
           className={fieldClass}
           value={level}
           onChange={(event: ChangeEvent<HTMLSelectElement>) => setLevel(event.target.value)}
@@ -260,6 +268,8 @@ export function EventForm({
       <label className={`${labelClass} md:col-span-2`}>
         <span>{t("event.image")}</span>
         <input
+          id="event-image"
+          name="image"
           className={fieldClass}
           type="file"
           accept="image/*"
@@ -280,6 +290,8 @@ export function EventForm({
 
       <div className="md:col-span-2">
         <LocationAutocomplete
+          id="event-location"
+          name="location_address"
           label={`${t("event.address")} *`}
           placeholder={t("event.searchAddress")}
           initialQuery={
@@ -306,6 +318,8 @@ export function EventForm({
       <label className={labelClass}>
         <span>{t("event.start")} *</span>
         <input
+          id="event-start"
+          name="start_at"
           className={fieldClass}
           type="datetime-local"
           value={startAt}
@@ -318,6 +332,8 @@ export function EventForm({
       <label className={labelClass}>
         <span>{t("event.end")} *</span>
         <input
+          id="event-end"
+          name="end_at"
           className={fieldClass}
           type="datetime-local"
           value={endAt}
@@ -330,6 +346,8 @@ export function EventForm({
       <label className={labelClass}>
         <span>{t("event.maxSlots")} *</span>
         <input
+          id="event-max-slots"
+          name="max_slots"
           className={fieldClass}
           type="number"
           min="1"
@@ -343,6 +361,8 @@ export function EventForm({
       <label className={labelClass}>
         <span>{t("event.language")} *</span>
         <select
+          id="event-language"
+          name="language"
           className={fieldClass}
           value={language}
           onChange={(event: ChangeEvent<HTMLSelectElement>) => setLanguage(event.target.value)}
@@ -362,6 +382,8 @@ export function EventForm({
       <label className={labelClass}>
         <span>{t("event.visibility")}</span>
         <select
+          id="event-visibility"
+          name="visibility"
           className={fieldClass}
           value={visibility}
           onChange={(event: ChangeEvent<HTMLSelectElement>) =>

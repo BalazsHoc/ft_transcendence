@@ -17,7 +17,10 @@ export function HeaderSearch({ value, onChange }: HeaderSearchProps) {
         className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
       />
       <input
+        id="header-search"
+        name="search"
         type="text"
+        autoComplete="off"
         placeholder={t("nav.search")}
         value={value}
         onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}

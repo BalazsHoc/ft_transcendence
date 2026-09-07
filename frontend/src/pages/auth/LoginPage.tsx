@@ -37,6 +37,8 @@ export function LoginPage() {
           <label>
             <span className={styles.labelText}>{t("auth.email")}</span>
             <input
+              id="login-email"
+              name="email"
               type="email"
               value={email}
               required
@@ -47,6 +49,8 @@ export function LoginPage() {
           <label>
             <span className={styles.labelText}>{t("auth.password")}</span>
             <input
+              id="login-password"
+              name="password"
               type="password"
               value={password}
               required

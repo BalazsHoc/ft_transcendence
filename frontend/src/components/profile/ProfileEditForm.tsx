@@ -80,6 +80,8 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
           <label className="cursor-pointer text-xs font-medium uppercase tracking-wider text-[var(--muted)] hover:text-[var(--text)]">
             {t("profile.logo")}
             <input
+              id="profile-avatar"
+              name="avatar"
               type="file"
               accept="image/*"
               className="hidden"
@@ -92,6 +94,8 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
           <label className="sm:col-span-2">
             <span className={fieldLabelClasses}>{t("profile.district")}</span>
             <select
+              id="profile-district"
+              name="district"
               value={district}
               disabled={districts.length === 0}
               onChange={(e: ChangeEvent<HTMLSelectElement>) => setDistrict(e.target.value)}
@@ -106,7 +110,13 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
           </label>
           <label className="sm:col-span-2">
             <span className={fieldLabelClasses}>{t("profile.bio")}</span>
-            <textarea value={bio} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBio(e.target.value)} rows={4} />
+            <textarea
+              id="profile-bio"
+              name="bio"
+              value={bio}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBio(e.target.value)}
+              rows={4}
+            />
           </label>
           <fieldset>
             <legend className={fieldLabelClasses}>{t("profile.languages")}</legend>
@@ -114,6 +124,8 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
               {PROFILE_LANGUAGE_CODES.map((code) => (
                 <label key={code} className="flex cursor-pointer items-center gap-2 text-sm text-[var(--text)]">
                   <input
+                    id={`profile-language-${code}`}
+                    name="languages"
                     type="checkbox"
                     className="!h-4 !w-4 !p-0"
                     checked={languages.includes(code)}
@@ -137,6 +149,8 @@ export function ProfileEditForm({ user, onSaved, onCancel }: ProfileEditFormProp
                 sports.map((sportOption) => (
                   <label key={sportOption.code} className="flex cursor-pointer items-center gap-2 text-sm text-[var(--text)]">
                     <input
+                      id={`profile-sport-${sportOption.code}`}
+                      name="interests"
                       type="checkbox"
                       className="!h-4 !w-4 !p-0"
                       checked={sportsSelection.includes(sportOption.code)}

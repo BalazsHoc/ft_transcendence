@@ -190,6 +190,8 @@ export function GroupsPage() {
             className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"
           />
           <input
+            id="groups-search"
+            name="group_search"
             type="search"
             value={groupSearch}
             onChange={(event: ChangeEvent<HTMLInputElement>) => changeGroupSearch(event.target.value)}
@@ -206,6 +208,8 @@ export function GroupsPage() {
         <label className="min-w-[150px] flex-1 sm:flex-none">
           <span className="sr-only">{t("discover.sport")}</span>
           <select
+            id="groups-sport"
+            name="group_sport"
             value={groupSport}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => changeGroupSport(event.target.value)}
           >
@@ -236,6 +240,8 @@ export function GroupsPage() {
                   className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm text-[var(--text)] transition-colors hover:bg-[var(--surface-border)]"
                 >
                   <input
+                    id={`groups-level-${option.value}`}
+                    name="group_levels"
                     type="checkbox"
                     checked={active}
                     onChange={() => toggleGroupLevel(option.value)}

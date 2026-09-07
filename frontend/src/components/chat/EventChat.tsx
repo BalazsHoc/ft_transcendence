@@ -278,7 +278,10 @@ export function EventChat({
       {/* Input */}
       <div className={styles.inputRow}>
         <input
+          id={`event-message-${eventId}`}
+          name="message"
           ref={inputRef}
+          autoComplete="off"
           value={text}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             setText(event.target.value)

@@ -56,7 +56,10 @@ export function SportSelector({
         <label className="sport-selector__summary-search">
           <Search size={16} aria-hidden="true" />
           <input
+            id="sport-selector-search"
+            name="sport_search"
             type="search"
+            autoComplete="off"
             value={query}
             onFocus={() => setExpanded(true)}
             onChange={(event: ChangeEvent<HTMLInputElement>) => {

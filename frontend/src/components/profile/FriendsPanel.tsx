@@ -155,6 +155,8 @@ export function FriendsPanel() {
 
       <form onSubmit={submitSearch} className="flex flex-wrap gap-3">
         <input
+          id="friends-search"
+          name="friend_search"
           value={query}
           onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
           placeholder={t("friends.searchPlaceholder")}

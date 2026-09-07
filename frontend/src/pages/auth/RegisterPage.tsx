@@ -70,6 +70,8 @@ export function RegisterPage() {
           <label>
             <span className={styles.labelText}>{t("auth.name")}</span>
             <input
+              id="register-name"
+              name="name"
               value={name}
               required
               minLength={2}
@@ -81,6 +83,8 @@ export function RegisterPage() {
           <label>
             <span className={styles.labelText}>{t("auth.email")}</span>
             <input
+              id="register-email"
+              name="email"
               value={email}
               type="email"
               required
@@ -91,6 +95,8 @@ export function RegisterPage() {
           <label>
             <span className={styles.labelText}>{t("auth.password")}</span>
             <input
+              id="register-password"
+              name="password"
               type="password"
               value={password}
               required
@@ -102,6 +108,8 @@ export function RegisterPage() {
           <label>
             <span className={styles.labelText}>{t("auth.passwordConfirm")}</span>
             <input
+              id="register-password-confirm"
+              name="password_confirm"
               type="password"
               value={passwordConfirm}
               required
@@ -113,6 +121,8 @@ export function RegisterPage() {
           <label>
             <span className={styles.labelText}>{t("auth.district")}</span>
             <select
+              id="register-district"
+              name="district"
               value={district}
               required
               disabled={districts.length === 0}

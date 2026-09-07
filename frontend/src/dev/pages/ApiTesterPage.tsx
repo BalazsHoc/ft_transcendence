@@ -31,14 +31,14 @@ export function ApiTesterPage() {
     <>
       <h1>{t("apiTest.title")}</h1>
       <section className={styles.formCard}>
-        <select value={method} onChange={(e: ChangeEvent<HTMLSelectElement>) => setMethod(e.target.value)}>
+        <select id="api-tester-method" name="method" value={method} onChange={(e: ChangeEvent<HTMLSelectElement>) => setMethod(e.target.value)}>
           <option>GET</option>
           <option>POST</option>
           <option>PATCH</option>
           <option>DELETE</option>
         </select>
-        <input value={path} onChange={(e: ChangeEvent<HTMLInputElement>) => setPath(e.target.value)} />
-        <textarea value={body} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBody(e.target.value)} />
+        <input id="api-tester-path" name="path" value={path} onChange={(e: ChangeEvent<HTMLInputElement>) => setPath(e.target.value)} />
+        <textarea id="api-tester-body" name="body" value={body} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setBody(e.target.value)} />
         <button onClick={run}>Run</button>
         <div className="row">
           {routes.map(([m, p]) => (

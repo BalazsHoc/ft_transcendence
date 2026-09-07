@@ -202,7 +202,10 @@ export function DirectChat({ conversation }: { conversation: DirectConversationI
 
       <div className="flex items-center gap-2 border-t border-[var(--surface-border)] p-3">
         <input
+          id={`direct-message-${conversation.id}`}
+          name="message"
           ref={inputRef}
+          autoComplete="off"
           value={text}
           onChange={(event: ChangeEvent<HTMLInputElement>) => setText(event.target.value)}
           onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {

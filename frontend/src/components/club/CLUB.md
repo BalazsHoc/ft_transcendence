@@ -1,17 +1,14 @@
-# Club Profile — Component Ownership
+# Club-style Components — Ownership
 
-Club profile page inspired by Velo Vienna. Backend has **no Club model** — identity/stats/recruiting/spotlight use fake data; upcoming rides may load real cycling events.
+There is no standalone Club page or Club model in the MVP. The reusable club-style components below are used by the group details page; the old `ClubPage.tsx` demo has been removed. Group identity/stats use real group data, while upcoming rides may load real events.
 
 ```text
-ClubPage
+GroupDetailsPage
 ├── ClubHero
 ├── ClubStatsRow
 │   └── ClubStatCard (×3)
-└── club-bento
-    ├── ClubUpcomingRides
-    │   └── ClubRideRow (mapped)
-    ├── ClubRecruitingCard
-    └── ClubMemberSpotlight
+└── ClubUpcomingRides
+    └── ClubRideRow (mapped)
 ```
 
 | Component | File | Shows |

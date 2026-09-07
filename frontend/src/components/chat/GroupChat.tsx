@@ -282,7 +282,10 @@ export function GroupChat({
       {/* Input */}
       <div className={styles.inputRow}>
         <input
+          id={`group-message-${groupId}`}
+          name="message"
           ref={inputRef}
+          autoComplete="off"
           value={text}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             setText(event.target.value)

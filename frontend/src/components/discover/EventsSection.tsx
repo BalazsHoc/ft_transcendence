@@ -163,6 +163,8 @@ export function EventsSection({
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]"
             />
             <input
+              id="discover-events-search"
+              name="event_search"
               type="search"
               value={search}
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
@@ -231,6 +233,8 @@ export function EventsSection({
         <label className="min-w-[150px] flex-1 sm:w-[150px] sm:flex-none">
           <span className="sr-only">{t("discover.sport")}</span>
           <select
+            id="discover-events-sport"
+            name="event_sport"
             className="truncate"
             value={sport}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => onSportChange(event.target.value)}
@@ -247,6 +251,8 @@ export function EventsSection({
         <label className="min-w-[150px] flex-1 sm:w-[150px] sm:flex-none">
           <span className="sr-only">{t("discover.time")}</span>
           <select
+            id="discover-events-time"
+            name="event_time"
             className="truncate"
             value={time}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => onTimeChange(event.target.value)}
@@ -262,6 +268,8 @@ export function EventsSection({
         <label className="min-w-[170px] flex-1 sm:w-[190px] sm:flex-none">
           <span className="sr-only">{t("discover.sortBy")}</span>
           <select
+            id="discover-events-sort"
+            name="event_sort"
             className="truncate"
             value={sort}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => onSortChange(event.target.value)}
@@ -288,6 +296,8 @@ export function EventsSection({
                   className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm text-[var(--text)] transition-colors hover:bg-[var(--surface-border)]"
                 >
                   <input
+                    id={`discover-event-level-${option.value}`}
+                    name="event_levels"
                     type="checkbox"
                     checked={active}
                     onChange={() => onLevelChange(option.value)}

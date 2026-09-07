@@ -48,6 +48,8 @@ export function MapFilterBar({
           className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-[var(--muted)]"
         />
         <LocationAutocomplete
+          id="map-location"
+          name="map_location"
           label=""
           placeholder={t("map.searchPlaceholder")}
           onSelect={onLocationSelect}
@@ -62,6 +64,8 @@ export function MapFilterBar({
       <label className="min-w-[150px] flex-1 sm:flex-none">
         <span className="sr-only">{t("discover.sport")}</span>
         <select
+          id="map-sport"
+          name="map_sport"
           value={sport}
           onChange={(event: ChangeEvent<HTMLSelectElement>) => onSportChange(event.target.value)}
         >
@@ -77,6 +81,8 @@ export function MapFilterBar({
       <label className="min-w-[150px] flex-1 sm:flex-none">
         <span className="sr-only">{t("discover.time")}</span>
         <select
+          id="map-time"
+          name="map_time"
           value={time}
           onChange={(event: ChangeEvent<HTMLSelectElement>) => onTimeChange(event.target.value)}
         >
@@ -102,6 +108,8 @@ export function MapFilterBar({
                 className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm text-[var(--text)] transition-colors hover:bg-[var(--surface-border)]"
               >
                 <input
+                  id={`map-event-level-${option.value}`}
+                  name="map_event_levels"
                   type="checkbox"
                   checked={active}
                   onChange={() => onLevelChange(option.value)}
