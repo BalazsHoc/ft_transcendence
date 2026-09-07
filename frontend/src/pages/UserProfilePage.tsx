@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Check, MessageCircle, UserPlus, X } from "lucide-react";
+import { ArrowLeft, Check, MessageCircle, UserPlus, X } from "lucide-react";
 
 import { getPublicUser, getUserActivities, getUserPresence } from "../api/usersApi";
 import {
@@ -193,6 +193,14 @@ export function UserProfilePage() {
     }
   }
 
+  function goBack() {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/discover");
+    }
+  }
+
   if (loading) {
     return <main className="mx-auto max-w-6xl px-4 py-12 text-[var(--muted)]">{t("userProfile.loading")}</main>;
   }
@@ -201,7 +209,13 @@ export function UserProfilePage() {
     return (
       <main className="mx-auto max-w-3xl space-y-4 px-4 py-12">
         <p role="alert">{error || t("userProfile.notFound")}</p>
-        <Button variant="outline" onClick={() => navigate(-1)}>{t("userProfile.back")}</Button>
+        <Button
+          variant="outline"
+          icon={<ArrowLeft size={16} aria-hidden="true" />}
+          onClick={goBack}
+        >
+          {t("userProfile.back")}
+        </Button>
       </main>
     );
   }
@@ -210,6 +224,17 @@ export function UserProfilePage() {
     <div className="profile-page-full flex items-start">
       <ProfileSideNav />
       <div className="min-w-0 flex-1 pb-16">
+        <div className="mx-auto max-w-6xl px-4 pt-5">
+          <Button
+            variant="outline"
+            size="sm"
+            icon={<ArrowLeft size={16} aria-hidden="true" />}
+            onClick={goBack}
+          >
+            {t("userProfile.back")}
+          </Button>
+        </div>
+
         <ProfileHero
           user={profile}
           onEditClick={isOwnProfile ? () => setEditing(true) : undefined}
