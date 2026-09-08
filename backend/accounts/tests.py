@@ -113,6 +113,34 @@ class AuthenticationApiTests(APITestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn('email', response.data)
 
+    def test_refresh_endpoint_returns_a_usable_access_token(self):
+        get_user_model().objects.create_user(
+            username='refresh-user',
+            email='refresh@example.com',
+            password='secure-password-123',
+        )
+
+        login = self.client.post(
+            '/api/auth/login/',
+            {'email': 'refresh@example.com', 'password': 'secure-password-123'},
+            format='json',
+        )
+        self.assertEqual(login.status_code, 200)
+
+        refreshed = self.client.post(
+            '/api/auth/refresh/',
+            {'refresh': login.data['refresh']},
+            format='json',
+        )
+        self.assertEqual(refreshed.status_code, 200)
+        self.assertIn('access', refreshed.data)
+
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Bearer {refreshed.data['access']}"
+        )
+        me = self.client.get('/api/auth/me/')
+        self.assertEqual(me.status_code, 200)
+
 
 @override_settings(
     GOOGLE_OAUTH_CLIENT_ID='google-client-id',
