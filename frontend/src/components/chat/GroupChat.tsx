@@ -26,7 +26,7 @@ export function GroupChat({
   groupName: string;
 }) {
   const { t } = useTranslation();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, access } = useAuth();
 
   const [messages, setMessages] = useState<GroupMessageItem[]>([]);
   const [text, setText] = useState("");
@@ -118,7 +118,7 @@ export function GroupChat({
       ws.close();
       wsRef.current = null;
     };
-  }, [groupId, t]);
+  }, [groupId, access, t]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({

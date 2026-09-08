@@ -1,6 +1,13 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { NotificationItem, User } from "../../types/api";
-import { clearTokens, getAccessToken, setTokens } from "../../api/client";
+import {
+  AUTH_SESSION_EXPIRED_EVENT,
+  AUTH_TOKEN_REFRESHED_EVENT,
+  clearTokens,
+  getAccessToken,
+  refreshAccessToken,
+  setTokens,
+} from "../../api/client";
 import * as authApi from "../../api/authApi";
 
 const WS_URL = import.meta.env.VITE_WS_URL || "ws://127.0.0.1:8000";
@@ -109,6 +116,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const handleTokenRefreshed = (event: Event) => {
+      const accessToken = (event as CustomEvent<{ access?: string }>).detail
+        ?.access;
+      if (accessToken) setAccess(accessToken);
+    };
+    const handleSessionExpired = () => {
+      setAccess("");
+      setUser(null);
+      setPresenceByUser({});
+    };
+
+    window.addEventListener(AUTH_TOKEN_REFRESHED_EVENT, handleTokenRefreshed);
+    window.addEventListener(AUTH_SESSION_EXPIRED_EVENT, handleSessionExpired);
+    return () => {
+      window.removeEventListener(
+        AUTH_TOKEN_REFRESHED_EVENT,
+        handleTokenRefreshed,
+      );
+      window.removeEventListener(
+        AUTH_SESSION_EXPIRED_EVENT,
+        handleSessionExpired,
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     if (!access || typeof WebSocket === "undefined") return undefined;
 
     let cancelled = false;
@@ -174,7 +207,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       socket.onclose = (event) => {
         clearTimers();
         socket = null;
-        if (cancelled || event.code === 4001) return;
+        if (cancelled) return;
+        if (event.code === 4001) {
+          void refreshAccessToken();
+          return;
+        }
         const delay = Math.min(1000 * 2 ** reconnectAttempt, 10_000);
         reconnectAttempt += 1;
         reconnectTimer = window.setTimeout(connect, delay);

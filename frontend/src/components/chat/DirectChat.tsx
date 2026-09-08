@@ -26,7 +26,7 @@ const WS_URL = import.meta.env.VITE_WS_URL || "ws://127.0.0.1:8000";
 
 export function DirectChat({ conversation }: { conversation: DirectConversationItem }) {
   const { t } = useTranslation();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, access } = useAuth();
   const [messages, setMessages] = useState<DirectMessageItem[]>([]);
   const [text, setText] = useState("");
   const [connected, setConnected] = useState(false);
@@ -92,7 +92,7 @@ export function DirectChat({ conversation }: { conversation: DirectConversationI
       ws.close();
       wsRef.current = null;
     };
-  }, [conversation.id, t]);
+  }, [conversation.id, access, t]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: "nearest" });

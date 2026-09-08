@@ -26,7 +26,7 @@ export function EventChat({
   eventTitle?: string;
 }) {
   const { t } = useTranslation();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, access } = useAuth();
 
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [text, setText] = useState("");
@@ -118,7 +118,7 @@ export function EventChat({
       ws.close();
       wsRef.current = null;
     };
-  }, [eventId, t]);
+  }, [eventId, access, t]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
