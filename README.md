@@ -402,23 +402,23 @@ Features evolved through collaboration and integration. The table lists the prim
 | Feature | Functionality | Primary contributors |
 | --- | --- | --- |
 | Core backend, REST API, and database | Django models, serializers, permissions, migrations, validation, and API behavior | `oshcheho` |
-| Email authentication | Registration, email login, password hashing, JWTs, district validation, and forms | `oshcheho`, `cjuarez` |
+| Email authentication | Registration, email login, password hashing, JWTs, district validation, and forms | `oshcheho` |
 | Google OAuth | OAuth/OIDC authorization-code flow, PKCE, account linking, ID-token verification, one-time ticket exchange, and failure-path tests | `cjuarez` |
 | Profiles and avatars | Editable profiles, image uploads, public profiles, preferences, presence, and activity history | `oshcheho`, `mhoushma` |
-| Events | Event CRUD, participation, waiting lists, visibility, event chat, cards, details, and My Events | `oshcheho`, `bhocsak`, `mhoushma` |
+| Events | Event CRUD, participation, waiting lists, visibility, event chat, cards, details, and My Events | `oshcheho`, `bhocsak` |
 | Groups | Group CRUD, memberships, group pages, group events, group chat, and group UI | `pghajard`, `oshcheho` |
 | Friendships | Search, requests, accept/reject/remove/block actions, and profile links | `oshcheho` |
-| Direct messaging | Friend-only conversations, persistence, REST endpoints, WebSockets, and UI | `oshcheho`, `mhoushma`, `cjuarez` |
-| Group and event chat | Persistent messages, membership/participation permissions, WebSockets, and chat UI | `oshcheho`, `mhoushma`, `cjuarez` |
+| Direct messaging | Friend-only conversations, persistence, REST endpoints, WebSockets, and UI | `oshcheho`, `mhoushma` |
+| Group and event chat | Persistent messages, membership/participation permissions, WebSockets, and chat UI | `oshcheho`, `bhocsak` |
 | Notifications | Friend, message, group, event, membership, read/unread, and WebSocket delivery | `oshcheho`, `pghajard` |
 | Map and geocoding | Map UI, address search, reverse geocoding, caching, markers, filters, and event navigation | `oshcheho`, `mhoushma` |
 | Welcome and discovery | Guest landing page, curated sections, filters, cards, and discovery experience | `mhoushma`, `bhocsak`, `pghajard` |
-| Logged-in home | Greeting, upcoming events, joined groups, notifications, and quick links | `pghajard` |
+| Logged-in home | Greeting, upcoming events, joined groups, notifications, and quick links | `mhoushma`, `pghajard` |
 | Header, sidebar, and footer | Navigation, responsive menu, search, language selection, theme controls, and legal links | `mhoushma`, `bhocsak` |
 | Internationalization | English, German, and Ukrainian translations and language switching | `bhocsak`, `mhoushma`, `oshcheho`, `cjuarez` |
-| Design system and theme | Reusable controls, cards, icons, colors, responsive layout, and dark/light mode | `bhocsak`, `mhoushma`, `pghajard` |
+| Design system and theme | Reusable controls, cards, icons, colors, responsive layout, and dark/light mode | `bhocsak`, `mhoushma`, `pghajard` , `oshcheho`|
 | Public API | API keys, hashing, revocation, throttling, serializers, pagination, OpenAPI, and Swagger | `oshcheho` |
-| Docker and HTTPS deployment | Compose services, Dockerfiles, PostgreSQL, nginx, health checks, volumes, and diagrams | `pghajard`, `bhocsak` |
+| Docker and HTTPS deployment | Compose services, Dockerfiles, PostgreSQL, nginx, health checks, volumes, and diagrams | `pghajard` |
 | Makefile workflow | Environment preparation and evaluation/development commands | `pghajard`, `cjuarez`, `bhocsak` |
 | Testing | Authentication, OAuth, events, groups, social behavior, chats, notifications, geocoding, and public API | `oshcheho`, `bhocsak`, `cjuarez`, `pghajard` |
 | Documentation | Architecture, workflows, APIs, Docker, OAuth, frontend components, legal pages, and root README | All members; coordinated by `cjuarez` |
@@ -430,8 +430,8 @@ The team claims 20 module points.
 | Category | Module | Type | Points | Implementation | Main contributors |
 | --- | --- | ---: | ---: | --- | --- |
 | Web | Framework for frontend and backend | Major | 2 | React/TypeScript frontend and Django/DRF backend | All |
-| Web | Real-time features | Major | 2 | Channels/Daphne WebSockets for direct, event, and group chats, presence, and notifications | `oshcheho`, `cjuarez` |
-| Web | User interaction | Major | 2 | Profiles, friendships, direct messages, group/event chats, and online status | `oshcheho`, `mhoushma`, `cjuarez` |
+| Web | Real-time features | Major | 2 | Channels/Daphne WebSockets for direct, event, and group chats, presence, and notifications | `oshcheho` |
+| Web | User interaction | Major | 2 | Profiles, friendships, direct messages, group/event chats, and online status | `oshcheho`, `mhoushma` |
 | Web | Public API | Major | 2 | API-key-protected read-only API with rate limiting, documentation, and more than five resource endpoints | `oshcheho` |
 | Web | ORM | Minor | 1 | Django ORM, migrations, relations, constraints, and indexes | `oshcheho` |
 | Web | Notification system | Minor | 1 | Persistent and real-time notifications for social, group, event, message, and membership actions | `oshcheho`, `pghajard` |
@@ -442,7 +442,7 @@ The team claims 20 module points.
 | User Management | Standard user management | Major | 2 | Secure registration/login, profile editing, avatars, friends, profiles, presence, and online status | `oshcheho`, `mhoushma` |
 | User Management | OAuth 2.0 | Minor | 1 | Google OAuth 2.0 and OpenID Connect with PKCE and secure local-account linking | `cjuarez` |
 | Module of choice | Interactive map and location system | Major | 2 | Event map, address search, reverse geocoding, multiple providers, cache, filters, marker semantics, and theme-aware tiles | `oshcheho`, `mhoushma` |
-| Module of choice | Dark/light theme | Minor | 1 | Persistent theme selection, reusable color tokens, responsive components, and matching map styles | `bhocsak`, `mhoushma` |
+| Module of choice | Dark/light theme | Minor | 1 | Persistent theme selection, reusable color tokens, responsive components, and matching map styles | `bhocsak`, `mhoushma`, `pghajard`|
 |  | **Total** |  | **20** |  |  |
 
 ### Module-of-choice justification: map and location system
