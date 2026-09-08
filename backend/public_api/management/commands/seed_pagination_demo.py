@@ -13,40 +13,40 @@ from groups.models import Group, GroupMembership
 
 
 ATHLETES = (
-    ("lionel_messi_demo", "Lionel", "Messi", "football"),
-    ("cristiano_ronaldo_demo", "Cristiano", "Ronaldo", "football"),
-    ("kylian_mbappe_demo", "Kylian", "Mbappé", "football"),
-    ("erling_haaland_demo", "Erling", "Haaland", "football"),
-    ("lebron_james_demo", "LeBron", "James", "basketball"),
-    ("stephen_curry_demo", "Stephen", "Curry", "basketball"),
-    ("luka_doncic_demo", "Luka", "Dončić", "basketball"),
-    ("giannis_antetokounmpo_demo", "Giannis", "Antetokounmpo", "basketball"),
-    ("novak_djokovic_demo", "Novak", "Djokovic", "tennis"),
-    ("rafael_nadal_demo", "Rafael", "Nadal", "tennis"),
-    ("serena_williams_demo", "Serena", "Williams", "tennis"),
-    ("coco_gauff_demo", "Coco", "Gauff", "tennis"),
-    ("usain_bolt_demo", "Usain", "Bolt", "running"),
-    ("eliud_kipchoge_demo", "Eliud", "Kipchoge", "running"),
-    ("faith_kipyegon_demo", "Faith", "Kipyegon", "running"),
-    ("michael_phelps_demo", "Michael", "Phelps", "swimming"),
-    ("katie_ledecky_demo", "Katie", "Ledecky", "swimming"),
-    ("tadej_pogacar_demo", "Tadej", "Pogačar", "cycling"),
-    ("jonas_vingegaard_demo", "Jonas", "Vingegaard", "cycling"),
-    ("canelo_alvarez_demo", "Canelo", "Álvarez", "boxing"),
-    ("oleksandr_usyk_demo", "Oleksandr", "Usyk", "boxing"),
-    ("truls_moregard_demo", "Truls", "Möregårdh", "table_tennis"),
-    ("fan_zhendong_demo", "Fan", "Zhendong", "table_tennis"),
-    ("mikaela_shiffrin_demo", "Mikaela", "Shiffrin", "skiing"),
-    ("chloe_kim_demo", "Chloe", "Kim", "snowboarding"),
-    ("janja_garnbret_demo", "Janja", "Garnbret", "climbing"),
-    ("magnus_carlsen_demo", "Magnus", "Carlsen", "chess"),
-    ("viktor_axelsen_demo", "Viktor", "Axelsen", "badminton"),
-    ("gabi_guimaraes_demo", "Gabi", "Guimarães", "volleyball"),
-    ("olaf_tufte_demo", "Olaf", "Tufte", "rowing"),
-    ("teddy_riner_demo", "Teddy", "Riner", "martial_arts"),
-    ("misty_copeland_demo", "Misty", "Copeland", "dance"),
-    ("kilian_jornet_demo", "Kilian", "Jornet", "hiking"),
-    ("arnold_schwarzenegger_demo", "Arnold", "Schwarzenegger", "strength"),
+    ("lionel_messi", "Lionel", "Messi", "football"),
+    ("cristiano_ronaldo", "Cristiano", "Ronaldo", "football"),
+    ("kylian_mbappe", "Kylian", "Mbappé", "football"),
+    ("erling_haaland", "Erling", "Haaland", "football"),
+    ("lebron_james", "LeBron", "James", "basketball"),
+    ("stephen_curry", "Stephen", "Curry", "basketball"),
+    ("luka_doncic", "Luka", "Dončić", "basketball"),
+    ("giannis_antetokounmpo", "Giannis", "Antetokounmpo", "basketball"),
+    ("novak_djokovic", "Novak", "Djokovic", "tennis"),
+    ("rafael_nadal", "Rafael", "Nadal", "tennis"),
+    ("serena_williams", "Serena", "Williams", "tennis"),
+    ("coco_gauff", "Coco", "Gauff", "tennis"),
+    ("usain_bolt", "Usain", "Bolt", "running"),
+    ("eliud_kipchoge", "Eliud", "Kipchoge", "running"),
+    ("faith_kipyegon", "Faith", "Kipyegon", "running"),
+    ("michael_phelps", "Michael", "Phelps", "swimming"),
+    ("katie_ledecky", "Katie", "Ledecky", "swimming"),
+    ("tadej_pogacar", "Tadej", "Pogačar", "cycling"),
+    ("jonas_vingegaard", "Jonas", "Vingegaard", "cycling"),
+    ("canelo_alvarez", "Canelo", "Álvarez", "boxing"),
+    ("oleksandr_usyk", "Oleksandr", "Usyk", "boxing"),
+    ("truls_moregard", "Truls", "Möregårdh", "table_tennis"),
+    ("fan_zhendong", "Fan", "Zhendong", "table_tennis"),
+    ("mikaela_shiffrin", "Mikaela", "Shiffrin", "skiing"),
+    ("chloe_kim", "Chloe", "Kim", "snowboarding"),
+    ("janja_garnbret", "Janja", "Garnbret", "climbing"),
+    ("magnus_carlsen", "Magnus", "Carlsen", "chess"),
+    ("viktor_axelsen", "Viktor", "Axelsen", "badminton"),
+    ("gabi_guimaraes", "Gabi", "Guimarães", "volleyball"),
+    ("olaf_tufte", "Olaf", "Tufte", "rowing"),
+    ("teddy_riner", "Teddy", "Riner", "martial_arts"),
+    ("misty_copeland", "Misty", "Copeland", "dance"),
+    ("kilian_jornet", "Kilian", "Jornet", "hiking"),
+    ("arnold_schwarzenegger", "Arnold", "Schwarzenegger", "strength"),
 )
 
 INDIVIDUAL_ATHLETE_INDICES = (0, 4, 8, 12, 15, 17, 19, 21, 24, 26)
@@ -532,7 +532,7 @@ class Command(BaseCommand):
         """Remove rows created by older versions before writing creative copy.
 
         The old command used the title/description text as its only marker. We
-        limit cleanup to the dedicated ``*_demo`` accounts so a local user's
+        limit cleanup to the dedicated athlete accounts so a local user's
         own groups and events are never touched.
         """
 

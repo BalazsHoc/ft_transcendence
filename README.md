@@ -132,7 +132,12 @@ Vienna Active provides a read-only integration API with:
 - Swagger documentation; and
 - public profile, event, group, sport, district, and health endpoints.
 
-The Public API deliberately uses `GET` endpoints and excludes email addresses, authentication data, private events, memberships, and chats.
+The Public API deliberately uses `GET` endpoints and excludes email addresses,
+authentication data, private events, memberships, and chats. It is an
+integration/read API rather than a mutation API: granting `POST`, `PUT`, or
+`DELETE` permissions to a reusable API key would increase the impact of a
+leaked key and could bypass the user-facing permission and consent flows.
+Changes therefore stay behind the authenticated application API.
 
 API documentation is available at:
 
@@ -185,8 +190,8 @@ Collection responses are paginated as `{count, next, previous, results}`.
 `page_size` is capped at 100. Events support `sport`, `level`, `language`,
 `start_after`, `start_before`, `search`, and `ordering`; groups support
 `sport`, `level`, `search`, and `ordering`; users support `search` and
-`ordering`. The complete contract is maintained in
-[backend/PUBLIC_API.md](backend/PUBLIC_API.md).
+`ordering`. The complete contract is described in this Public API section and
+is also available from the generated OpenAPI schema.
 
 ## Team Information
 
@@ -341,7 +346,8 @@ The evaluation stack contains four services:
 | `backend` | Django REST APIs, WebSockets, migrations, static collection, and seeding |
 | `db` | PostgreSQL database |
 
-More detailed diagrams are available in [DOCKER.md](DOCKER.md) and [docs/docker/index.html](docs/docker/index.html).
+The service topology is described above and is implemented by
+`docker-compose.yml`, the service Dockerfiles, and the nginx configuration.
 
 ## Database Schema
 
@@ -421,7 +427,7 @@ Features evolved through collaboration and integration. The table lists the prim
 | Docker and HTTPS deployment | Compose services, Dockerfiles, PostgreSQL, nginx, health checks, volumes, and diagrams | `pghajard` |
 | Makefile workflow | Environment preparation and evaluation/development commands | `pghajard`, `cjuarez`, `bhocsak` |
 | Testing | Authentication, OAuth, events, groups, social behavior, chats, notifications, geocoding, and public API | `oshcheho`, `bhocsak`, `cjuarez`, `pghajard` |
-| Documentation | Architecture, workflows, APIs, Docker, OAuth, frontend components, legal pages, and root README | All members; coordinated by `cjuarez` |
+| Documentation | README sections covering architecture, workflows, APIs, Docker, OAuth, frontend components, legal pages, and evaluation | All members; coordinated by `cjuarez` |
 
 ## Chosen Modules
 
@@ -438,7 +444,7 @@ The team claims 20 module points.
 | Web | Advanced search | Minor | 1 | Search, filters, ordering, and pagination for events, groups, users, and public API resources | `oshcheho`, `mhoushma` |
 | Web | Custom design system | Minor | 1 | Shared buttons, icon buttons, badges, headings, dialogs, pagination, cards, inputs, themes, typography, and icons | `bhocsak`, `mhoushma`, `pghajard` |
 | Accessibility and Internationalization | Multiple languages | Minor | 1 | English, German, and Ukrainian translations with a UI language switcher | `bhocsak`, `mhoushma`, `oshcheho`, `cjuarez` |
-| Accessibility and Internationalization | Additional browsers | Minor | 1 | Modern Chrome, Firefox, Edge, Safari, and iOS Safari compatibility target and documented smoke-test matrix | All |
+| Accessibility and Internationalization | Additional browsers | Minor | 1 | Smoke-tested in Chrome, Firefox, and Edge; Safari and iOS Safari remain compatibility targets | All |
 | User Management | Standard user management | Major | 2 | Secure registration/login, profile editing, avatars, friends, profiles, presence, and online status | `oshcheho`, `mhoushma` |
 | User Management | OAuth 2.0 | Minor | 1 | Google OAuth 2.0 and OpenID Connect with PKCE and secure local-account linking | `cjuarez` |
 | Module of choice | Interactive map and location system | Major | 2 | Event map, address search, reverse geocoding, multiple providers, cache, filters, marker semantics, and theme-aware tiles | `oshcheho`, `mhoushma` |
@@ -541,7 +547,7 @@ Primary contributions:
 - PostgreSQL integration and seed workflow;
 - service health checks and persistent volumes;
 - Makefile commands and local/evaluation workflows;
-- Docker architecture diagrams and deployment documentation;
+- Docker architecture diagrams and deployment workflow;
 - sample users, groups, events, and default images.
 
 A major challenge was making local development and evaluation use the same PostgreSQL-backed application while keeping the evaluation startup simple. This was solved with separate Compose overlays, health checks, migrations, conditional seed loading, persistent volumes, and a single root `make` command.
@@ -652,13 +658,15 @@ make ps         # Show container status
 make logs       # Follow logs
 make restart    # Restart running services
 make down       # Stop containers and preserve volumes
-make re         # Rebuild containers and preserve database volumes
+make re         # Full reset: delete volumes, rebuild without cache, and start
 make clean      # Remove containers and preserve volumes
 make fclean     # Remove containers and delete Compose volumes
 make seed       # Reset PostgreSQL to the committed evaluation snapshot
 ```
 
-`make fclean` deletes the PostgreSQL volume and should be used only when a full data reset is intended.
+`make re` is also destructive: it removes containers, images, and Compose
+volumes before rebuilding without cache. Use `make down` or `make clean`
+when containers should stop while PostgreSQL data is preserved.
 
 ### Local development
 
@@ -731,26 +739,10 @@ A fresh PostgreSQL volume is populated from:
 backend/fixtures/eval_snapshot.json
 ```
 
-Sample accounts, events, groups, friendships, and images are provided for evaluation.
-
-Known sample accounts are documented in [DOCKER.md](DOCKER.md).
+The committed fixture contains sample accounts, events, groups, friendships,
+chat messages, notifications, and media references for evaluation.
 
 ## Resources
-
-### Project documentation
-
-- [Docker architecture](DOCKER.md)
-- [Development and deployment workflow](DEVOPS.md)
-- [Backend documentation](backend/README.md)
-- [Frontend development guide](frontend/DEV.md)
-- [Frontend architecture](FRONTEND_ARCHITECTURE.md)
-- [Frontend design system](frontend/DESIGN_SYSTEM.md)
-- [Browser support](frontend/BROWSER_SUPPORT.md)
-- [Public API](backend/PUBLIC_API.md)
-- [Social API](backend/SOCIAL_API.md)
-- [Groups API](backend/groups/README.md)
-- [Google OAuth](backend/accounts/GOOGLE_AUTH.md)
-- [Sports catalog API](backend/core/SPORTS_API.md)
 
 ### External references
 
@@ -831,7 +823,7 @@ Weekly meetings, Discord communication, branches, pull requests, merge review, s
 - Uploaded files and database data can be reset during development or evaluation.
 - Account deletion and data export are not currently self-service features.
 - The public API is read-only.
-- Cross-browser smoke tests should be repeated on the exact browser versions used for release.
+- Chrome, Firefox, and Edge smoke tests were completed; repeat them after release-image changes.
 - Map and geocoding behavior depends on the configured third-party provider.
 
 ## License and Educational Use

@@ -6,10 +6,10 @@
     "password": "pbkdf2_sha256$1000000$nakCAKciz713fTYLpYYxsm$V86eJGxO4Z3evaP1ORFyZnmANbBtofcEM9nhg1WCPlA=",
     "last_login": null,
     "is_superuser": false,
-    "username": "kylian_mbappe_demo",
+    "username": "kylian_mbappe",
     "first_name": "Kylian",
     "last_name": "Mbappé",
-    "email": "kylian_mbappe_demo@example.test",
+    "email": "kylian_mbappe@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:32.186Z",
@@ -35,10 +35,10 @@
     "password": "pbkdf2_sha256$1000000$3sF3hFZFukmnlnKUPVGZPQ$9Izy40V1gkNMkRvPjEnvgLxMck0EezKDWexlJmYXT84=",
     "last_login": null,
     "is_superuser": false,
-    "username": "canelo_alvarez_demo",
+    "username": "canelo_alvarez",
     "first_name": "Canelo",
     "last_name": "Álvarez",
-    "email": "canelo_alvarez_demo@example.test",
+    "email": "canelo_alvarez@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:42.491Z",
@@ -64,10 +64,10 @@
     "password": "pbkdf2_sha256$1000000$bKWnDKylMcmfWNk7LKCsBT$LDR+ekHW1r3cpKMg9cEVI2mZSBgm8H0ycM212fxcJgk=",
     "last_login": null,
     "is_superuser": false,
-    "username": "teddy_riner_demo",
+    "username": "teddy_riner",
     "first_name": "Teddy",
     "last_name": "Riner",
-    "email": "teddy_riner_demo@example.test",
+    "email": "teddy_riner@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:47.796Z",
@@ -93,10 +93,10 @@
     "password": "pbkdf2_sha256$1000000$mh7TIDmT4AORcJztruj8Z8$0SYq/BZK9GC6QVsiquhUmfZJmXKqX1EusA9HFp75HsE=",
     "last_login": null,
     "is_superuser": false,
-    "username": "serena_williams_demo",
+    "username": "serena_williams",
     "first_name": "Serena",
     "last_name": "Williams",
-    "email": "serena_williams_demo@example.test",
+    "email": "serena_williams@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:37.991Z",
@@ -122,10 +122,10 @@
     "password": "pbkdf2_sha256$1000000$AqsWFhQrRHypFPnLU5gDy1$G40cGoTos896ZzhjyLowN9vF0J/0YuGhxXJ0jlZd+Co=",
     "last_login": null,
     "is_superuser": false,
-    "username": "lionel_messi_demo",
+    "username": "lionel_messi",
     "first_name": "Lionel",
     "last_name": "Messi",
-    "email": "lionel_messi_demo@example.test",
+    "email": "lionel_messi@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:31.049Z",
@@ -151,10 +151,10 @@
     "password": "pbkdf2_sha256$1000000$aCjn2Y8YKibgyr1MNadIZe$WecvTIRohSXIeki5Wgs4mEdWKteYb5mmE4oKIMI84+g=",
     "last_login": null,
     "is_superuser": false,
-    "username": "truls_moregard_demo",
+    "username": "truls_moregard",
     "first_name": "Truls",
     "last_name": "Möregårdh",
-    "email": "truls_moregard_demo@example.test",
+    "email": "truls_moregard@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:43.522Z",
@@ -180,10 +180,10 @@
     "password": "pbkdf2_sha256$1000000$K2L48aQplpUgI1xg1BYKv8$K/LoKhiH9Sz0PFucV+Z9jI+Uv42Q/JAYCPriuFpP72g=",
     "last_login": null,
     "is_superuser": false,
-    "username": "mikaela_shiffrin_demo",
+    "username": "mikaela_shiffrin",
     "first_name": "Mikaela",
     "last_name": "Shiffrin",
-    "email": "mikaela_shiffrin_demo@example.test",
+    "email": "mikaela_shiffrin@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:44.450Z",
@@ -209,10 +209,10 @@
     "password": "pbkdf2_sha256$1000000$DwyfkKst1XVOszFwP0Eiau$yAB9TsLb9aytEjOEKeICCc2TaHvK8xNN0SIvt+oFivw=",
     "last_login": null,
     "is_superuser": false,
-    "username": "coco_gauff_demo",
+    "username": "coco_gauff",
     "first_name": "Coco",
     "last_name": "Gauff",
-    "email": "coco_gauff_demo@example.test",
+    "email": "coco_gauff@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:38.616Z",
@@ -238,10 +238,10 @@
     "password": "pbkdf2_sha256$1000000$MuKxDVKMkZ9jhwgILSTL6H$x1HF9kRMO3v9bnaPaxwYlpVEDO+HzfzyxgWHuWVP30E=",
     "last_login": null,
     "is_superuser": false,
-    "username": "stephen_curry_demo",
+    "username": "stephen_curry",
     "first_name": "Stephen",
     "last_name": "Curry",
-    "email": "stephen_curry_demo@example.test",
+    "email": "stephen_curry@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:34.164Z",
@@ -267,10 +267,10 @@
     "password": "pbkdf2_sha256$1000000$o7VA1LsGeggRE2kYfoC3Xx$0FPJHBckw8yF6n9OPcFI0TECQthX1I1layToZyguDAE=",
     "last_login": null,
     "is_superuser": false,
-    "username": "kilian_jornet_demo",
+    "username": "kilian_jornet",
     "first_name": "Kilian",
     "last_name": "Jornet",
-    "email": "kilian_jornet_demo@example.test",
+    "email": "kilian_jornet@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:48.795Z",
@@ -296,10 +296,10 @@
     "password": "pbkdf2_sha256$1000000$6YTMVGNJldmSNVfsb1Eo81$wNctvAIWubu2uPh2MLFdiySWTlVPLxjiGIu8VbxCMEc=",
     "last_login": null,
     "is_superuser": false,
-    "username": "luka_doncic_demo",
+    "username": "luka_doncic",
     "first_name": "Luka",
     "last_name": "Dončić",
-    "email": "luka_doncic_demo@example.test",
+    "email": "luka_doncic@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:34.924Z",
@@ -325,10 +325,10 @@
     "password": "pbkdf2_sha256$1000000$GGnmjH6VDEncjsaHq7REaq$bO4fmKtYJMtFOQaxRsYauanpGf4mEOkNWT6aMdtzdZg=",
     "last_login": null,
     "is_superuser": false,
-    "username": "usain_bolt_demo",
+    "username": "usain_bolt",
     "first_name": "Usain",
     "last_name": "Bolt",
-    "email": "usain_bolt_demo@example.test",
+    "email": "usain_bolt@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:39.251Z",
@@ -354,10 +354,10 @@
     "password": "pbkdf2_sha256$1000000$vhrcB6SC4kobWMTLW3Mbty$NQR0p3mS0BD4OgqRpWSDM9VvSEc138XwFXVgseYcS3Y=",
     "last_login": null,
     "is_superuser": false,
-    "username": "oleksandr_usyk_demo",
+    "username": "oleksandr_usyk",
     "first_name": "Oleksandr",
     "last_name": "Usyk",
-    "email": "oleksandr_usyk_demo@example.test",
+    "email": "oleksandr_usyk@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:43.050Z",
@@ -383,10 +383,10 @@
     "password": "pbkdf2_sha256$1000000$nZLpeuqSdrorDAQfZCj7ET$0exvO4kneFD7/EZFjxcv4LeAYCWfKR8D+WaC0qb6WvM=",
     "last_login": null,
     "is_superuser": false,
-    "username": "faith_kipyegon_demo",
+    "username": "faith_kipyegon",
     "first_name": "Faith",
     "last_name": "Kipyegon",
-    "email": "faith_kipyegon_demo@example.test",
+    "email": "faith_kipyegon@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:40.356Z",
@@ -507,10 +507,10 @@
     "password": "pbkdf2_sha256$1000000$cWiW3E9nLBNCKJlRuSj4Tc$+Z34ExPQaGMdf079QI7Xfwb4WGWGbciv8wwQmHXz1no=",
     "last_login": null,
     "is_superuser": false,
-    "username": "katie_ledecky_demo",
+    "username": "katie_ledecky",
     "first_name": "Katie",
     "last_name": "Ledecky",
-    "email": "katie_ledecky_demo@example.test",
+    "email": "katie_ledecky@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:41.332Z",
@@ -536,10 +536,10 @@
     "password": "pbkdf2_sha256$1000000$aKb6dCJg1snrU3teFKElad$x+cpMuIlTaKxoGXY0wUIVhrQGDqXaxyGCdudN0ZdSmk=",
     "last_login": null,
     "is_superuser": false,
-    "username": "arnold_schwarzenegger_demo",
+    "username": "arnold_schwarzenegger",
     "first_name": "Arnold",
     "last_name": "Schwarzenegger",
-    "email": "arnold_schwarzenegger_demo@example.test",
+    "email": "arnold_schwarzenegger@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:49.229Z",
@@ -565,10 +565,10 @@
     "password": "pbkdf2_sha256$1000000$kHGN9tfpiqrypkwAn2D6Cb$xpTxLPVgur9GiUY1rJNmE8MwJRy1d22z7++Jk4XC04c=",
     "last_login": null,
     "is_superuser": false,
-    "username": "janja_garnbret_demo",
+    "username": "janja_garnbret",
     "first_name": "Janja",
     "last_name": "Garnbret",
-    "email": "janja_garnbret_demo@example.test",
+    "email": "janja_garnbret@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:45.378Z",
@@ -594,10 +594,10 @@
     "password": "pbkdf2_sha256$1000000$yXIp3dlAKNzSEPe8WjKY4z$pKkzsWMuKqFYqApjkf61BFscxGEf/aYKkp3mMl3Njg4=",
     "last_login": null,
     "is_superuser": false,
-    "username": "eliud_kipchoge_demo",
+    "username": "eliud_kipchoge",
     "first_name": "Eliud",
     "last_name": "Kipchoge",
-    "email": "eliud_kipchoge_demo@example.test",
+    "email": "eliud_kipchoge@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:39.856Z",
@@ -623,10 +623,10 @@
     "password": "pbkdf2_sha256$1000000$S0gjw7NKKx7ID3hBBoMSBY$WkYXNl5mCJ2p0TmZ/Fxd+eXEA4MGG6BkAF5j7CN7f10=",
     "last_login": null,
     "is_superuser": false,
-    "username": "magnus_carlsen_demo",
+    "username": "magnus_carlsen",
     "first_name": "Magnus",
     "last_name": "Carlsen",
-    "email": "magnus_carlsen_demo@example.test",
+    "email": "magnus_carlsen@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:45.832Z",
@@ -652,10 +652,10 @@
     "password": "pbkdf2_sha256$1000000$inuJiKQZqPMBF3grlwvC3c$dO/JEmCbqjjIMYPmnkjBYq9WilQLQNm4zsY9nPVRceQ=",
     "last_login": null,
     "is_superuser": false,
-    "username": "rafael_nadal_demo",
+    "username": "rafael_nadal",
     "first_name": "Rafael",
     "last_name": "Nadal",
-    "email": "rafael_nadal_demo@example.test",
+    "email": "rafael_nadal@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:37.424Z",
@@ -681,10 +681,10 @@
     "password": "pbkdf2_sha256$1000000$cvyuGZF8muE04ADGfYPMHv$xVq/MxbhCXEDCDGfKeOy/JSmrK8DLAos6a/QN2t00/w=",
     "last_login": null,
     "is_superuser": false,
-    "username": "novak_djokovic_demo",
+    "username": "novak_djokovic",
     "first_name": "Novak",
     "last_name": "Djokovic",
-    "email": "novak_djokovic_demo@example.test",
+    "email": "novak_djokovic@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:36.752Z",
@@ -710,10 +710,10 @@
     "password": "pbkdf2_sha256$1000000$0AODd0NN97uhrcRW0RRehz$KZrnQYwlmXTSfjuzGZkBSD6GQW5HyqrW08BB9Ts5V1A=",
     "last_login": null,
     "is_superuser": false,
-    "username": "chloe_kim_demo",
+    "username": "chloe_kim",
     "first_name": "Chloe",
     "last_name": "Kim",
-    "email": "chloe_kim_demo@example.test",
+    "email": "chloe_kim@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:44.930Z",
@@ -796,10 +796,10 @@
     "password": "pbkdf2_sha256$1000000$CPvCB49lgGe9URs0upw9E4$SzfD9qRmsSJy9XkNum6oFxqVHyo94kasxP/BZyJ9n4I=",
     "last_login": null,
     "is_superuser": false,
-    "username": "michael_phelps_demo",
+    "username": "michael_phelps",
     "first_name": "Michael",
     "last_name": "Phelps",
-    "email": "michael_phelps_demo@example.test",
+    "email": "michael_phelps@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:40.837Z",
@@ -825,10 +825,10 @@
     "password": "pbkdf2_sha256$1000000$Tc2OEdKniYgRMARKMGXGEJ$0Jrma9R2vt95vWE9pGz/hh/qtjpQln+xwNrMEqaesx0=",
     "last_login": null,
     "is_superuser": false,
-    "username": "lebron_james_demo",
+    "username": "lebron_james",
     "first_name": "LeBron",
     "last_name": "James",
-    "email": "lebron_james_demo@example.test",
+    "email": "lebron_james@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:33.500Z",
@@ -854,10 +854,10 @@
     "password": "pbkdf2_sha256$1000000$8uJQnw5Q8Vq0OxSQUEOIoM$PWjkSLdiq18CRT1a43TZx2z0S93doYxO0/e1qryg/jk=",
     "last_login": null,
     "is_superuser": false,
-    "username": "erling_haaland_demo",
+    "username": "erling_haaland",
     "first_name": "Erling",
     "last_name": "Haaland",
-    "email": "erling_haaland_demo@example.test",
+    "email": "erling_haaland@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:32.827Z",
@@ -883,10 +883,10 @@
     "password": "pbkdf2_sha256$1000000$Aj6fL3XnqVAAKjleCvq9oM$0JkqG4jXUIzzgsv4VeSnSrnxVQeHCENmopgfxIXkFsQ=",
     "last_login": null,
     "is_superuser": false,
-    "username": "viktor_axelsen_demo",
+    "username": "viktor_axelsen",
     "first_name": "Viktor",
     "last_name": "Axelsen",
-    "email": "viktor_axelsen_demo@example.test",
+    "email": "viktor_axelsen@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:46.255Z",
@@ -912,10 +912,10 @@
     "password": "pbkdf2_sha256$1000000$iVFQoYcBv1jIuLWTDdTJqa$ZD2k+J3FD2BJA57yqLxi+cAUaFeovn0un3O8SnNsXng=",
     "last_login": null,
     "is_superuser": false,
-    "username": "jonas_vingegaard_demo",
+    "username": "jonas_vingegaard",
     "first_name": "Jonas",
     "last_name": "Vingegaard",
-    "email": "jonas_vingegaard_demo@example.test",
+    "email": "jonas_vingegaard@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:42.100Z",
@@ -941,10 +941,10 @@
     "password": "pbkdf2_sha256$1000000$b6MSWwGHYgyReB15RwFMxX$VuWNgY9RfnWovne3nb05AdB1cOYdVEh9jhKGOpY/0VE=",
     "last_login": null,
     "is_superuser": false,
-    "username": "giannis_antetokounmpo_demo",
+    "username": "giannis_antetokounmpo",
     "first_name": "Giannis",
     "last_name": "Antetokounmpo",
-    "email": "giannis_antetokounmpo_demo@example.test",
+    "email": "giannis_antetokounmpo@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:35.934Z",
@@ -995,10 +995,10 @@
     "password": "pbkdf2_sha256$1000000$Om8HvIDVMxmQ7If7rJOyeQ$THjP25ETyBHT7T7Jypw9IpLqzxWQo+YRZWz3x8TRWVc=",
     "last_login": null,
     "is_superuser": false,
-    "username": "misty_copeland_demo",
+    "username": "misty_copeland",
     "first_name": "Misty",
     "last_name": "Copeland",
-    "email": "misty_copeland_demo@example.test",
+    "email": "misty_copeland@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:48.313Z",
@@ -1024,10 +1024,10 @@
     "password": "pbkdf2_sha256$1000000$Uq7ZzrxG5advqfr6cvDR1n$T7Ocrpv/4e3Mp42yWVKUk0WGQUlTnFrgcX+wYPDvH5Y=",
     "last_login": null,
     "is_superuser": false,
-    "username": "fan_zhendong_demo",
+    "username": "fan_zhendong",
     "first_name": "Fan",
     "last_name": "Zhendong",
-    "email": "fan_zhendong_demo@example.test",
+    "email": "fan_zhendong@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:44.022Z",
@@ -1053,10 +1053,10 @@
     "password": "pbkdf2_sha256$1000000$y0e8QPMw5sIbcXH3taLnY6$4Fbr//KwBOqBxFi2wH5mJjXo56jAmsF3Hze4od/rv54=",
     "last_login": null,
     "is_superuser": false,
-    "username": "gabi_guimaraes_demo",
+    "username": "gabi_guimaraes",
     "first_name": "Gabi",
     "last_name": "Guimarães",
-    "email": "gabi_guimaraes_demo@example.test",
+    "email": "gabi_guimaraes@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:46.679Z",
@@ -1082,10 +1082,10 @@
     "password": "pbkdf2_sha256$1000000$eyOnzLWP0obdfxvy6S7pRg$P14J4VJFmKnPgpsIMsGKZ0VqoU3jYy5rXE2db3dRV14=",
     "last_login": null,
     "is_superuser": false,
-    "username": "cristiano_ronaldo_demo",
+    "username": "cristiano_ronaldo",
     "first_name": "Cristiano",
     "last_name": "Ronaldo",
-    "email": "cristiano_ronaldo_demo@example.test",
+    "email": "cristiano_ronaldo@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:31.658Z",
@@ -1111,10 +1111,10 @@
     "password": "pbkdf2_sha256$1000000$74HnETtCzYrpn9rYdX6Zmc$HUWuHMgIS8R+uRNlxVsktM1E7xzRIQW32tbemWwtEj0=",
     "last_login": null,
     "is_superuser": false,
-    "username": "tadej_pogacar_demo",
+    "username": "tadej_pogacar",
     "first_name": "Tadej",
     "last_name": "Pogačar",
-    "email": "tadej_pogacar_demo@example.test",
+    "email": "tadej_pogacar@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:41.726Z",
@@ -1140,10 +1140,10 @@
     "password": "pbkdf2_sha256$1000000$ESUuSCgujX4BGkSzqs03y6$z2C9pYKzvuHSmiDcR98tF7Pus6F5Fk8NMDzWGvQJ2Xc=",
     "last_login": null,
     "is_superuser": false,
-    "username": "olaf_tufte_demo",
+    "username": "olaf_tufte",
     "first_name": "Olaf",
     "last_name": "Tufte",
-    "email": "olaf_tufte_demo@example.test",
+    "email": "olaf_tufte@example.test",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2026-08-18T10:46:47.263Z",
@@ -2386,33 +2386,6 @@
 },
 {
   "model": "events.event",
-  "pk": "5dd7a1a1-67b5-4ef2-8676-72a60b64bac6",
-  "fields": {
-    "title": "Football in Hofburg",
-    "description": "Casual test event.",
-    "image": "event-images/unnamed_lLdWbPN.png",
-    "sport": "football",
-    "level": "all",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Burggasse",
-    "location_address": "Burggasse, 1070 Lerchenfelder Straße, Wien, Österreich",
-    "latitude": 48.20425750653858,
-    "longitude": 16.348629221320152,
-    "start_at": "2026-08-27T07:00:00Z",
-    "end_at": "2026-08-27T18:00:00Z",
-    "max_slots": 10,
-    "creator": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "group": null,
-    "visibility": "public",
-    "created_at": "2026-08-14T11:06:14.762Z",
-    "updated_at": "2026-08-14T11:06:14.762Z"
-  }
-},
-{
-  "model": "events.event",
   "pk": "5f2db088-4e51-4eb9-9589-028df7d988ef",
   "fields": {
     "title": "Eliud's Prater Long-Loop Social · Dawn edition",
@@ -2435,33 +2408,6 @@
     "visibility": "public",
     "created_at": "2026-08-18T10:46:50.449Z",
     "updated_at": "2026-08-18T11:25:53.431Z"
-  }
-},
-{
-  "model": "events.event",
-  "pk": "6082eca8-590b-4168-ba4d-a0f98016624a",
-  "fields": {
-    "title": "Football in Prater",
-    "description": "Casual test event.",
-    "image": "",
-    "sport": "football",
-    "level": "all",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Prater, Vienna",
-    "location_address": "Prater, Vienna",
-    "latitude": 48.2167,
-    "longitude": 16.395,
-    "start_at": "2026-06-20T16:00:00Z",
-    "end_at": "2026-06-20T18:00:00Z",
-    "max_slots": 10,
-    "creator": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "group": "5ec26bf8-f874-41d9-abf3-7f320220b009",
-    "visibility": "public",
-    "created_at": "2026-08-03T15:51:59.202Z",
-    "updated_at": "2026-08-03T15:51:59.203Z"
   }
 },
 {
@@ -3740,33 +3686,6 @@
 },
 {
   "model": "events.event",
-  "pk": "9fe85d98-8b9d-4c24-b97e-276bee967c3d",
-  "fields": {
-    "title": "Football in Prater",
-    "description": "Casual test event.",
-    "image": "",
-    "sport": "football",
-    "level": "all",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Praterstraße",
-    "location_address": "Praterstraße 32, 1020 Czerninviertel, Wien, Österreich",
-    "latitude": 48.214419,
-    "longitude": 16.384470999999962,
-    "start_at": "2026-06-20T16:00:00Z",
-    "end_at": "2026-06-20T18:00:00Z",
-    "max_slots": 10,
-    "creator": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "group": null,
-    "visibility": "public",
-    "created_at": "2026-06-21T15:49:31.672Z",
-    "updated_at": "2026-06-22T09:45:40.765Z"
-  }
-},
-{
-  "model": "events.event",
   "pk": "a282b20e-6bd7-4a39-87c6-c04a2df874b8",
   "fields": {
     "title": "Replay · Kilian's Kahlenberg View Walk",
@@ -3920,33 +3839,6 @@
     "visibility": "public",
     "created_at": "2026-08-18T10:46:51.101Z",
     "updated_at": "2026-08-18T11:25:54.216Z"
-  }
-},
-{
-  "model": "events.event",
-  "pk": "a9bf7e84-da60-45ba-918a-afb55a3fffd3",
-  "fields": {
-    "title": "Chess in park",
-    "description": "Casual test event.",
-    "image": "",
-    "sport": "Chess",
-    "level": "all",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Innstraße",
-    "location_address": "Innstraße 25, 1200 Nordbahnviertel, Wien, Österreich",
-    "latitude": 48.233324,
-    "longitude": 16.391785000000027,
-    "start_at": "2026-06-20T16:00:00Z",
-    "end_at": "2026-06-20T18:00:00Z",
-    "max_slots": 10,
-    "creator": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "group": null,
-    "visibility": "public",
-    "created_at": "2026-06-22T09:59:46.773Z",
-    "updated_at": "2026-06-22T09:59:46.773Z"
   }
 },
 {
@@ -4133,60 +4025,6 @@
 },
 {
   "model": "events.event",
-  "pk": "be1255a7-0c75-42c9-83e1-83e133777aa4",
-  "fields": {
-    "title": "Tennis",
-    "description": "Casual test event.",
-    "image": "",
-    "sport": "Tennis",
-    "level": "beginner",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Linzer Straße",
-    "location_address": "Linzer Straße 432, 1140 Vienna, Wien, Österreich",
-    "latitude": 48.203355,
-    "longitude": 16.254570000000058,
-    "start_at": "2026-06-20T16:00:00Z",
-    "end_at": "2026-06-20T18:00:00Z",
-    "max_slots": 10,
-    "creator": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "group": null,
-    "visibility": "public",
-    "created_at": "2026-06-22T08:15:08.568Z",
-    "updated_at": "2026-06-22T09:35:56.486Z"
-  }
-},
-{
-  "model": "events.event",
-  "pk": "c479501e-8db1-481c-a581-b588d19c30dc",
-  "fields": {
-    "title": "Group football",
-    "description": "Casual test event.",
-    "image": "",
-    "sport": "football",
-    "level": "all",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Mariahilf",
-    "location_address": "Mariahilf, Wien, Österreich",
-    "latitude": 48.19475943837692,
-    "longitude": 16.349826139387233,
-    "start_at": "2026-06-20T16:00:00Z",
-    "end_at": "2026-06-20T18:00:00Z",
-    "max_slots": 10,
-    "creator": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "group": "2daa4b24-61f6-4a32-847e-753407d630f5",
-    "visibility": "public",
-    "created_at": "2026-08-06T08:44:12.444Z",
-    "updated_at": "2026-08-06T08:44:12.444Z"
-  }
-},
-{
-  "model": "events.event",
   "pk": "c51cb6c7-33b0-499c-9da9-750d30b6e296",
   "fields": {
     "title": "Serena's Second-Serve Workshop · Dawn edition",
@@ -4261,33 +4099,6 @@
     "visibility": "public",
     "created_at": "2026-08-18T10:46:50.291Z",
     "updated_at": "2026-08-18T11:25:53.284Z"
-  }
-},
-{
-  "model": "events.event",
-  "pk": "cb32b56d-9636-4823-9148-0730bcbb4fd2",
-  "fields": {
-    "title": "Solo Spot Evening Run",
-    "description": "Demo event linked to Solo Spot Test group.",
-    "image": "",
-    "sport": "running",
-    "level": "all",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Vienna",
-    "location_address": "Vienna",
-    "latitude": 48.2082,
-    "longitude": 16.3738,
-    "start_at": "2026-08-10T16:00:00Z",
-    "end_at": "2026-08-10T17:00:00Z",
-    "max_slots": 1,
-    "creator": "b2924d2f-69fe-480b-be4d-61402b1a1032",
-    "group": "ee588fa9-6f5d-4bbc-b903-153f9e937025",
-    "visibility": "public",
-    "created_at": "2026-08-03T17:45:10.812Z",
-    "updated_at": "2026-08-03T17:45:10.812Z"
   }
 },
 {
@@ -4838,33 +4649,6 @@
 },
 {
   "model": "events.event",
-  "pk": "e8292031-1597-41c8-8524-d66e66498597",
-  "fields": {
-    "title": "Football in Augarten",
-    "description": "Casual test event.",
-    "image": "",
-    "sport": "football",
-    "level": "all",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Obere Augartenstraße",
-    "location_address": "Obere Augartenstraße 32, 1020 Rembrandthof, Wien, Österreich",
-    "latitude": 48.222396,
-    "longitude": 16.37532699999997,
-    "start_at": "2026-06-20T16:00:00Z",
-    "end_at": "2026-06-20T18:00:00Z",
-    "max_slots": 10,
-    "creator": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "group": null,
-    "visibility": "public",
-    "created_at": "2026-06-22T08:11:18.063Z",
-    "updated_at": "2026-06-22T09:34:37.631Z"
-  }
-},
-{
-  "model": "events.event",
   "pk": "eb33804d-beaf-41f7-baf1-4ccd475a391a",
   "fields": {
     "title": "Replay · Jonas's Danube Drafting Basics",
@@ -5177,33 +4961,6 @@
 },
 {
   "model": "events.event",
-  "pk": "fb5306fa-9ad7-4bb2-8642-ecd6abacbefb",
-  "fields": {
-    "title": "Sunset run on Donaukanal",
-    "description": "Casual test event.",
-    "image": "event-images/unnamed.png",
-    "sport": "running",
-    "level": "all",
-    "languages": [
-      "en",
-      "de"
-    ],
-    "location_name": "Brigittenauer Lände",
-    "location_address": "Brigittenauer Lände 30, 1200 Althangrund, Wien, Österreich",
-    "latitude": 48.227009,
-    "longitude": 16.367525,
-    "start_at": "2026-06-20T16:00:00Z",
-    "end_at": "2026-06-20T18:00:00Z",
-    "max_slots": 10,
-    "creator": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "group": null,
-    "visibility": "public",
-    "created_at": "2026-06-22T11:20:55.211Z",
-    "updated_at": "2026-06-22T11:20:55.211Z"
-  }
-},
-{
-  "model": "events.event",
   "pk": "fb961df3-027e-4927-8112-b35f680bcf01",
   "fields": {
     "title": "Janja's Project Picnic · Sunset edition",
@@ -5256,83 +5013,6 @@
 },
 {
   "model": "events.eventparticipant",
-  "pk": 1,
-  "fields": {
-    "user": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "event": "9fe85d98-8b9d-4c24-b97e-276bee967c3d",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-06-22T10:51:43.152Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 2,
-  "fields": {
-    "user": "a2f58d5a-4eed-4954-9f53-8da1a185308f",
-    "event": "9fe85d98-8b9d-4c24-b97e-276bee967c3d",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-06-22T10:52:14.500Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 3,
-  "fields": {
-    "user": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "event": "a9bf7e84-da60-45ba-918a-afb55a3fffd3",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-06-30T07:34:48.108Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 16,
-  "fields": {
-    "user": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "event": "6082eca8-590b-4168-ba4d-a0f98016624a",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-08-03T16:37:53.064Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 17,
-  "fields": {
-    "user": "b2924d2f-69fe-480b-be4d-61402b1a1032",
-    "event": "6082eca8-590b-4168-ba4d-a0f98016624a",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-08-03T16:49:06.040Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 23,
-  "fields": {
-    "user": "b2924d2f-69fe-480b-be4d-61402b1a1032",
-    "event": "cb32b56d-9636-4823-9148-0730bcbb4fd2",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-08-03T18:30:52.689Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 27,
-  "fields": {
-    "user": "55000875-2615-4b1e-9be6-6b577768ab1d",
-    "event": "5dd7a1a1-67b5-4ef2-8676-72a60b64bac6",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-08-14T11:09:58.357Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
   "pk": 31,
   "fields": {
     "user": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
@@ -5351,39 +5031,6 @@
     "status": "attending",
     "queue_position": 0,
     "joined_at": "2026-08-15T15:50:13.635Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 33,
-  "fields": {
-    "user": "55000875-2615-4b1e-9be6-6b577768ab1d",
-    "event": "c479501e-8db1-481c-a581-b588d19c30dc",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-08-16T12:17:04.533Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 34,
-  "fields": {
-    "user": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "event": "5dd7a1a1-67b5-4ef2-8676-72a60b64bac6",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-08-17T20:00:36.710Z"
-  }
-},
-{
-  "model": "events.eventparticipant",
-  "pk": 35,
-  "fields": {
-    "user": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "event": "c479501e-8db1-481c-a581-b588d19c30dc",
-    "status": "attending",
-    "queue_position": 0,
-    "joined_at": "2026-08-18T00:06:08.638Z"
   }
 },
 {
@@ -11701,96 +11348,6 @@
   }
 },
 {
-  "model": "chat.message",
-  "pk": "15245c28-d667-4211-8bb2-6e326a92dfa7",
-  "fields": {
-    "event": "6082eca8-590b-4168-ba4d-a0f98016624a",
-    "sender": "55000875-2615-4b1e-9be6-6b577768ab1d",
-    "text": "hi!",
-    "created_at": "2026-08-14T10:23:07.581Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": "2a96c281-1d10-4e55-8f29-a2d03587d098",
-  "fields": {
-    "event": "a9bf7e84-da60-45ba-918a-afb55a3fffd3",
-    "sender": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "text": "test",
-    "created_at": "2026-06-30T08:25:11.050Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": "56df9f8c-5e1f-44d6-aaf9-82e8dfe6cc37",
-  "fields": {
-    "event": "c479501e-8db1-481c-a581-b588d19c30dc",
-    "sender": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "text": "hi again",
-    "created_at": "2026-08-16T12:17:16.227Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": "7570b7ee-fa61-4409-9b30-baa1d7ba7ab7",
-  "fields": {
-    "event": "9fe85d98-8b9d-4c24-b97e-276bee967c3d",
-    "sender": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "text": "Hello!",
-    "created_at": "2026-06-22T10:51:55.952Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": "9580bc1d-70e3-4976-acb6-af76606061d7",
-  "fields": {
-    "event": "9fe85d98-8b9d-4c24-b97e-276bee967c3d",
-    "sender": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "text": "test",
-    "created_at": "2026-06-30T08:24:31.635Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": "a8a71f85-b621-44de-bf59-9cba3650841d",
-  "fields": {
-    "event": "9fe85d98-8b9d-4c24-b97e-276bee967c3d",
-    "sender": "a2f58d5a-4eed-4954-9f53-8da1a185308f",
-    "text": "HELLO!!!",
-    "created_at": "2026-06-22T10:52:30.143Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": "d435d867-7dbf-4bd7-a0df-ad1c2cf75828",
-  "fields": {
-    "event": "9fe85d98-8b9d-4c24-b97e-276bee967c3d",
-    "sender": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "text": "hi!",
-    "created_at": "2026-06-22T10:38:49.701Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": "e60dbfe4-c6de-4db9-a59d-0447f2d0f3e7",
-  "fields": {
-    "event": "9fe85d98-8b9d-4c24-b97e-276bee967c3d",
-    "sender": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "text": "YEAH!",
-    "created_at": "2026-06-26T12:03:54.084Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": "fdb1728e-c621-4643-bfb8-c14498b8dbb0",
-  "fields": {
-    "event": "c479501e-8db1-481c-a581-b588d19c30dc",
-    "sender": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "text": "hi",
-    "created_at": "2026-08-16T12:16:33.836Z"
-  }
-},
-{
   "model": "chat.directconversation",
   "pk": "6af615c1-01cd-470f-8123-4c5f380550d9",
   "fields": {
@@ -11886,16 +11443,6 @@
     "sender": "55000875-2615-4b1e-9be6-6b577768ab1d",
     "text": "111",
     "created_at": "2026-08-06T07:46:36.297Z"
-  }
-},
-{
-  "model": "chat.groupmessage",
-  "pk": "8ba5a4a4-b580-44e0-94b3-d28377aceeee",
-  "fields": {
-    "group": "2daa4b24-61f6-4a32-847e-753407d630f5",
-    "sender": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "text": "Hi!",
-    "created_at": "2026-08-06T07:19:01.395Z"
   }
 },
 {
@@ -12046,30 +11593,6 @@
     "is_active": true,
     "created_at": "2026-08-03T13:58:28.537Z",
     "updated_at": "2026-08-03T13:58:28.537Z"
-  }
-},
-{
-  "model": "groups.group",
-  "pk": "2daa4b24-61f6-4a32-847e-753407d630f5",
-  "fields": {
-    "name": "Test group",
-    "description": "Test",
-    "sport": "running",
-    "levels": [
-      "beginner"
-    ],
-    "kind": "training",
-    "visibility": "public",
-    "join_policy": "open",
-    "max_members": 0,
-    "languages": [],
-    "location_name": "Praterstrasse 1",
-    "location_address": "",
-    "cover_image": "group-images/unnamed.png",
-    "owner": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "is_active": true,
-    "created_at": "2026-08-04T07:14:29.813Z",
-    "updated_at": "2026-08-04T07:14:29.813Z"
   }
 },
 {
@@ -12866,30 +12389,6 @@
 },
 {
   "model": "groups.group",
-  "pk": "ee588fa9-6f5d-4bbc-b903-153f9e937025",
-  "fields": {
-    "name": "Solo Spot Test",
-    "description": "Tiny test group with only 1 member slot — use to demo full-group Apply message.",
-    "sport": "running",
-    "levels": [
-      "all"
-    ],
-    "kind": "social",
-    "visibility": "public",
-    "join_policy": "open",
-    "max_members": 1,
-    "languages": [],
-    "location_name": "Vienna",
-    "location_address": "",
-    "cover_image": "",
-    "owner": "b2924d2f-69fe-480b-be4d-61402b1a1032",
-    "is_active": true,
-    "created_at": "2026-08-03T17:42:46.843Z",
-    "updated_at": "2026-08-03T17:42:46.843Z"
-  }
-},
-{
-  "model": "groups.group",
   "pk": "efe4cdf6-6e8d-46cf-91b8-161fcedd6ddd",
   "fields": {
     "name": "Mikaela's Alpine Lines",
@@ -13013,17 +12512,6 @@
 },
 {
   "model": "groups.groupmembership",
-  "pk": 10,
-  "fields": {
-    "group": "ee588fa9-6f5d-4bbc-b903-153f9e937025",
-    "user": "b2924d2f-69fe-480b-be4d-61402b1a1032",
-    "role": "owner",
-    "status": "active",
-    "joined_at": "2026-08-03T17:42:46.954Z"
-  }
-},
-{
-  "model": "groups.groupmembership",
   "pk": 12,
   "fields": {
     "group": "220862b6-2b8f-40c2-ba7f-0468fdfad4fb",
@@ -13035,17 +12523,6 @@
 },
 {
   "model": "groups.groupmembership",
-  "pk": 13,
-  "fields": {
-    "group": "2daa4b24-61f6-4a32-847e-753407d630f5",
-    "user": "6869ae7f-8431-4c83-9217-5df55d96ee4c",
-    "role": "owner",
-    "status": "active",
-    "joined_at": "2026-08-04T07:14:29.830Z"
-  }
-},
-{
-  "model": "groups.groupmembership",
   "pk": 14,
   "fields": {
     "group": "3858e078-bd61-4600-bbf3-c01444178e93",
@@ -13053,17 +12530,6 @@
     "role": "member",
     "status": "active",
     "joined_at": "2026-08-05T08:31:27.015Z"
-  }
-},
-{
-  "model": "groups.groupmembership",
-  "pk": 16,
-  "fields": {
-    "group": "2daa4b24-61f6-4a32-847e-753407d630f5",
-    "user": "55000875-2615-4b1e-9be6-6b577768ab1d",
-    "role": "member",
-    "status": "active",
-    "joined_at": "2026-08-16T12:15:41.598Z"
   }
 },
 {
